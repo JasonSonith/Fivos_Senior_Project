@@ -1,0 +1,184 @@
+What the code does (step by step)
+1) Starts one invisible browser for the whole run
+
+async with BrowserEngine(...) as engine: kicks off Playwright.
+
+It launches Chromium in headless mode (no UI) one time.
+
+That’s important because launching a browser per URL is slow; this keeps it efficient.
+
+2) Controls how many pages can load at once
+
+max_concurrency sets an async Semaphore.
+
+If max_concurrency=3, only 3 URLs are allowed to be “in-flight” at the same time.
+
+This prevents your server from melting or getting flagged.
+
+3) Enforces “don’t spam websites”
+
+The AsyncRateLimiter ensures there’s at least rate_limit_delay_s (default 2s) between the start of requests.
+
+This is your basic rate limiting / politeness layer to reduce blocks.
+
+4) Loads a URL with timeouts and JS rendering
+
+Inside _fetch_once(url):
+
+Creates a fresh browser context (isolated session) and a new page
+
+Sets:
+
+navigation timeout
+
+general timeout
+both to page_timeout_ms (default 30 seconds)
+
+page.goto(url, wait_until="domcontentloaded"):
+
+waits until the HTML is initially loaded (fast checkpoint)
+
+Then tries page.wait_for_load_state("networkidle"):
+
+this is the “wait for JS-heavy stuff” attempt
+
+if it times out, it doesn’t fail automatically (because some sites never go idle)
+
+Finally page.content() returns the fully rendered HTML (what your extractor wants)
+
+5) Retries if something fails
+
+Inside _fetch_with_retries(url):
+
+If navigation fails, timeouts, crashes, etc.:
+
+it retries up to retries=3
+
+waits retry_delay_s=5 between attempts
+
+If all attempts fail, it returns a FetchResult(ok=False, error=...) instead of crashing your whole run.
+
+6) Returns a clean “result object” for every URL
+
+It always returns a FetchResult that includes:
+
+ok (True/False)
+
+status (HTTP status if available)
+
+final_url (after redirects)
+
+html (rendered page HTML if success)
+
+error (reason if failed)
+
+attempts, elapsed_ms (debug/metrics)
+
+That’s the whole “driver” responsibility: turn URL → rendered HTML or a failure record reliably.
+
+How it connects to the rest of the project
+
+Think of your overall pipeline like this:
+
+A) Input layer (upstream)
+
+Something else in your system provides URLs, like:
+
+a seed list
+
+a search module
+
+a sitemap crawler
+
+a database queue
+
+Contract into your module:
+
+Your engine receives a URL string (or a job object that contains a URL).
+
+B) Your layer: “Browser Fetch / Navigation”
+
+Your module is responsible for:
+
+loading pages with JS
+
+retries/timeouts
+
+rate limiting
+
+returning HTML + metadata
+
+Contract out of your module:
+
+returns FetchResult
+
+if ok=True: includes html
+
+if ok=False: includes error
+
+C) Extraction layer (Jason’s code)
+
+Jason’s extraction code should be written to accept:
+
+the HTML (string)
+
+optionally the final URL (useful for relative links)
+
+maybe status code / headers if needed later
+
+Example integration:
+
+result = await engine.fetch(url)
+if result.ok and result.html:
+    data = jason_extract(result.html, base_url=result.final_url or result.url)
+    # store data
+else:
+    # log/store failure
+
+D) Storage / output layer (downstream)
+
+After extraction, another component likely:
+
+saves JSON to a database
+
+writes to a CSV
+
+sends results back to an API
+
+marks the job as done/failed in a queue
+
+Your result object already includes the data needed to log and track jobs.
+
+The key “interface” your team should agree on
+
+To keep the group project clean, define the interface like this:
+
+Your module promise:
+
+“Give me a URL and I’ll return {ok, html, final_url, status, error}.”
+
+Extractor promise:
+
+“Give me HTML (+ base_url) and I’ll return structured data.”
+
+That separation is what makes the project modular.
+
+How you’ll probably wire it in a real project structure
+
+Typical layout:
+
+crawler/engine.py → your BrowserEngine + rate limiting + retry
+
+crawler/runner.py → consumes URL list/queue and calls engine.fetch
+
+extractor/extract.py → Jason’s parsing logic
+
+pipeline/main.py → orchestrates:
+
+get URL jobs
+
+fetch HTML (your part)
+
+extract data (Jason)
+
+store/log results
