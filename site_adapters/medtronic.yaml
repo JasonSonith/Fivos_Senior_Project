@@ -1,0 +1,15 @@
+manufacturer: medtronic
+base_url: https://www.medtronic.com/en-us/healthcare-professionals/products
+
+seed_urls:
+  - https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html
+
+catalog_mode:
+  product_list_selector: ""
+  pagination_selector: ""
+
+extraction:
+  device_name: ".product-heading h1"
+  model_number: ""
+  specs_container: "".table-wrapper table""
+  dimensions: ""
