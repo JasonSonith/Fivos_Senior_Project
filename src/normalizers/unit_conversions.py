@@ -38,12 +38,12 @@ unit_conversions = {
     'bar': ('mmHg', lambda x: x* 750.062)
 }
 
-def normalize_measurement(measurement: str):
-    if not measurement or not isinstance(measurement, str):
+def normalize_measurement(raw_value: str):
+    if not raw_value or not isinstance(raw_value, str):
         return {"value": None, "unit": None, "raw": measurement}
     
-    measurement = measurement.strip()
-    range_match = re.match(r"([\d.]+)\s*[-–—to]+\s*([\d.]+)\s*([a-zA-Z°\"]+)", measurement)
+    raw_value = raw_value.strip()
+    range_match = re.match(r"([\d.]+)\s*[-–—to]+\s*([\d.]+)\s*([a-zA-Z°\"]+)", raw_value)
     
     if range_match:
         low = float(range_match.group(1))
@@ -51,8 +51,8 @@ def normalize_measurement(measurement: str):
         unit = range_match.group(3).lower().strip(".")
         midpoint = round((low + high) / 2, 4)
     
-    
-    
+    if unit in unit_conversions:
+        canonical_unit, converter = unit_conversions[unit]
 
 #fill this in for test cases
 def main():
