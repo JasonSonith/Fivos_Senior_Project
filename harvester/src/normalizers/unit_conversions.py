@@ -61,6 +61,33 @@ def normalize_measurement(raw_value: str):
             'range_low': round(converter(low), 4),
             'range_high': round(converter(high), 4)
         }
+        
+    match = re.match(r"([\d.]+)\s*([a-zA-Z°\"]+)", raw_value)
+    
+    if not match:
+        return {
+            'value': None,
+            'unit': None,
+            'raw': raw_value
+        }
+    
+    value = float(match.group(1))
+    unit = match.group(2).lower().strip(".")
+    
+    if unit in unit_conversions:
+        canonical_unit, converter = unit_conversions[unit]
+        
+        return {
+            'value': round(converter(value), 4),
+            'unit': canonical_unit
+        }
+    
+    #for unknown units
+    return {
+        'value': value,
+        'unit': unit,
+        'raw_value': raw_value
+    }
 
 #fill this in for test cases
 def main():
