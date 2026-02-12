@@ -40,7 +40,7 @@ unit_conversions = {
 
 def normalize_measurement(raw_value: str):
     if not raw_value or not isinstance(raw_value, str):
-        return {"value": None, "unit": None, "raw": measurement}
+        return {"value": None, "unit": None, "raw": raw_value}
     
     raw_value = raw_value.strip()
     range_match = re.match(r"([\d.]+)\s*[-–—to]+\s*([\d.]+)\s*([a-zA-Z°\"]+)", raw_value)
@@ -53,6 +53,14 @@ def normalize_measurement(raw_value: str):
     
     if unit in unit_conversions:
         canonical_unit, converter = unit_conversions[unit]
+        
+        return {
+            'value': round(converter(midpoint), 4),
+            'unit': canonical_unit,
+            'is_range': True,
+            'range_low': round(converter(low), 4),
+            'range_high': round(converter(high), 4)
+        }
 
 #fill this in for test cases
 def main():
