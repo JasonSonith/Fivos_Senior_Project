@@ -156,8 +156,36 @@ class BrowserEngine:
 
 async def main():
     urls = [
-        "https://example.com",
-        "https://httpbin.org/delay/2",
+        "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
+        "https://www.goremedical.com/products/vbx/specifications",
+        "https://www.goremedical.com/products/viabahn/specifications",
+        "https://www.bostonscientific.com/content/dam/bostonscientific/pi/product-catalog/PI_Product_Catalog.pdf",
+        "https://www.cookmedical.com/products/224e3666-308f-4244-8695-6fd23bbd671c/",
+        "https://shockwavemedical.com/en-eu/products/shockwave-m5-plus/",
+        "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-biliary-stents/protege-everflex-self-expanding-biliary-stent-system.html",
+        "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/directional-atherectomy-systems/hawkone-directional-atherectomy-system.html",
+        "https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/atherectomy-systems/diamondback-360/ordering-information.html",
+        "https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/peripheral-stents/omnilink-elite-vascular/ordering-information.html",
+        "https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/peripheral-stents/absolute-pro-vascular/ordering-information.html",
+        "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-biliary-stents/everflex-stent-system-with-entrust.html",
+        "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-biliary-stents/visi-pro-balloon-expandable-peripheral-stent-system.html",
+        "https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/supera-stent-system/ordering.html",
+        "https://cordis.com/na/products/intervene/endovascular/self-expanding-stents/s-m-a-r-t-control-vascular-stent-system",
+        "https://shockwavemedical.com/products/shockwave-e8/",
+        "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-biliary-stents/protege-gps-self-expanding-peripheral-biliary-stent-system.html",
+        "https://shockwavemedical.com/wp-content/uploads/2024/11/S4-Tech-Sheet-Global-SPL-66024-Rev.-B.pdf",
+        "https://www.cookmedical.com/products/esc_zilbs635/",
+        "https://www.terumois.com/products/stents/r2p-misago2.html",
+        "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-av-drug-coated-balloon.html",
+        "https://shockwavemedical.com/products/shockwave-l6/",
+        "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/coronary-stents/resolute-onyx-drug-eluting-stent.html",
+        "https://www.cookmedical.com/products/di_ziv_webds/",
+        "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/directional-atherectomy-systems/silverhawk-peripheral-plaque-excision-system.html",
+        "https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/esprit-btk-resorbable-scaffold-system.html",
+        "https://cordis.com/apac/products/intervene/endovascular/balloon-expandble-stents/palmaz-genesis-peripheral-stent",
+        "https://www.cardiovascular.abbott/us/en/hcp/products/percutaneous-coronary-intervention/xience-family/xience-skypoint/ordering-information-extra-large.html",
+        "https://www.cookmedical.com/products/cf1fddb1-9f10-4002-b9a5-3f4c83c28cbc/",
+        "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/directional-atherectomy-systems/turbohawk-peripheral-plaque-excision-system.html"
     ]
 
     async with BrowserEngine(
