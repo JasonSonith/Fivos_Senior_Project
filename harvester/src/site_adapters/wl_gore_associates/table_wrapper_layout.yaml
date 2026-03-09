@@ -1,0 +1,28 @@
+manufacturer: wl_gore_associates
+product_type: table_wrapper_layout
+
+base_url: https://www.goremedical.com
+
+# Seed URLs used for prototype testing
+seed_urls:
+  - https://www.goremedical.com/products/vbx/specifications
+  - https://www.goremedical.com/products/viabahn/specifications
+
+extraction:
+  # CSS selector for the product name/title
+  device_name: ""
+
+  # CSS selector for model number (leave blank if inconsistent)
+  model_number: ""
+
+  # CSS selector for the container holding the specs table/grid
+  specs_container: ""
+
+  # Optional: can be parsed later from the specs table
+  dimensions: ""
+
+notes: |
+  Generated from spreadsheet seed list.
+  Manufacturer display name: W L Gore & Associates.
+  Brands in sheet: VIABAHN VBX, VIABAHN, TIGRIS VASCULAR STENT.
+  Seed URLs: 2 total (2 html, 0 pdf).
