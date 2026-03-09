@@ -1,0 +1,28 @@
+manufacturer: cordis
+product_type: table_wrapper_layout
+
+base_url: https://cordis.com
+
+# Seed URLs used for prototype testing
+seed_urls:
+  - https://cordis.com/na/products/intervene/endovascular/self-expanding-stents/s-m-a-r-t-control-vascular-stent-system
+  - https://cordis.com/apac/products/intervene/endovascular/balloon-expandble-stents/palmaz-genesis-peripheral-stent
+
+extraction:
+  # CSS selector for the product name/title
+  device_name: ""
+
+  # CSS selector for model number (leave blank if inconsistent)
+  model_number: ""
+
+  # CSS selector for the container holding the specs table/grid
+  specs_container: ""
+
+  # Optional: can be parsed later from the specs table
+  dimensions: ""
+
+notes: |
+  Generated from spreadsheet seed list.
+  Manufacturer display name: Cordis.
+  Brands in sheet: S.M.A.R.T. CONTROL, PALMAZ GENESIS.
+  Seed URLs: 2 total (2 html, 0 pdf).

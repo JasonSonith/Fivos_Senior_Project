@@ -1,0 +1,30 @@
+manufacturer: cook_medical
+product_type: table_wrapper_layout
+
+base_url: https://www.cookmedical.com
+
+# Seed URLs used for prototype testing
+seed_urls:
+  - https://www.cookmedical.com/products/224e3666-308f-4244-8695-6fd23bbd671c/
+  - https://www.cookmedical.com/products/esc_zilbs635/
+  - https://www.cookmedical.com/products/di_ziv_webds/
+  - https://www.cookmedical.com/products/cf1fddb1-9f10-4002-b9a5-3f4c83c28cbc/
+
+extraction:
+  # CSS selector for the product name/title
+  device_name: ""
+
+  # CSS selector for model number (leave blank if inconsistent)
+  model_number: ""
+
+  # CSS selector for the container holding the specs table/grid
+  specs_container: ""
+
+  # Optional: can be parsed later from the specs table
+  dimensions: ""
+
+notes: |
+  Generated from spreadsheet seed list.
+  Manufacturer display name: Cook.
+  Brands in sheet: ZILVER PTX, ZILVER 635, ZILVER 518, ZILVER FLEX 35.
+  Seed URLs: 4 total (4 html, 0 pdf).

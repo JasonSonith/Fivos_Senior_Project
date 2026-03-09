@@ -1,0 +1,27 @@
+manufacturer: terumo
+product_type: table_wrapper_layout
+
+base_url: https://www.terumois.com
+
+# Seed URLs used for prototype testing
+seed_urls:
+  - https://www.terumois.com/products/stents/r2p-misago2.html
+
+extraction:
+  # CSS selector for the product name/title
+  device_name: ""
+
+  # CSS selector for model number (leave blank if inconsistent)
+  model_number: ""
+
+  # CSS selector for the container holding the specs table/grid
+  specs_container: ""
+
+  # Optional: can be parsed later from the specs table
+  dimensions: ""
+
+notes: |
+  Generated from spreadsheet seed list.
+  Manufacturer display name: Terumo.
+  Brands in sheet: R2P MISAGO.
+  Seed URLs: 1 total (1 html, 0 pdf).

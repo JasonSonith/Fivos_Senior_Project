@@ -1,27 +1,36 @@
 manufacturer: medtronic
 product_type: table_wrapper_layout
 
-base_url: https://www.medtronic.com/en-us/healthcare-professionals/products
+base_url: https://www.medtronic.com
 
-# Seed URLs are used for prototype testing before automation is added
+# Seed URLs used for prototype testing
 seed_urls:
   - https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html
   - https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-biliary-stents/protege-everflex-self-expanding-biliary-stent-system.html
+  - https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/directional-atherectomy-systems/hawkone-directional-atherectomy-system.html
+  - https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-biliary-stents/everflex-stent-system-with-entrust.html
+  - https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-biliary-stents/visi-pro-balloon-expandable-peripheral-stent-system.html
+  - https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-biliary-stents/protege-gps-self-expanding-peripheral-biliary-stent-system.html
+  - https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-av-drug-coated-balloon.html
+  - https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/coronary-stents/resolute-onyx-drug-eluting-stent.html
+  - https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/directional-atherectomy-systems/silverhawk-peripheral-plaque-excision-system.html
+  - https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/directional-atherectomy-systems/turbohawk-peripheral-plaque-excision-system.html
 
 extraction:
-  # Product title
+  # CSS selector for the product name/title
   device_name: ".product-heading h1"
 
-  # Model number not yet identified consistently
+  # CSS selector for model number (leave blank if inconsistent)
   model_number: ""
 
-  # Specifications are contained in tables inside div.table-wrapper
+  # CSS selector for the container holding the specs table/grid
   specs_container: ".table-wrapper table"
 
-  # Dimensions will be parsed later from the specs table
+  # Optional: can be parsed later from the specs table
   dimensions: ""
 
-# Notes for developers:
-# Medtronic pages using this layout store specifications inside
-# <div class="table-wrapper"> elements. Each table row (<tr>)
-# contains a label in the first column and values in subsequent columns.
+notes: |
+  Generated from spreadsheet seed list.
+  Manufacturer display name: Medtronic.
+  Brands in sheet: IN.PACT ADMIRAL, PROTEGE EVERFLEX, HAWKONE, EVERFLEX, IN.PACT, VISI-PRO, PROTEGE GPS, IN.PACT AV, RESOLUTE ONYX, SILVERHAWK, TURBOHAWK.
+  Seed URLs: 10 total (10 html, 0 pdf).
