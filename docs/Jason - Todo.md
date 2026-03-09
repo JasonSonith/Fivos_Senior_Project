@@ -42,16 +42,16 @@ Check off each item as you complete it.
 
 ## Stage 3 — Validation (`harvester/src/validators/`)
 
-- [ ] `record_validator.py` — `validate_record(record) → (bool, list[str])`: required fields, numeric ranges, string lengths, URL validity
-- [ ] `tests/test_record_validator.py` — missing required fields, invalid dimensions, suspicious ranges, bad URLs, clean record
+- [x] `record_validator.py` — `validate_record(record) → (bool, list[str])`: required fields, numeric ranges, string lengths, URL validity
+- [x] `tests/test_record_validator.py` — missing required fields, invalid dimensions, suspicious ranges, bad URLs, clean record
 
 ---
 
 ## Stage 4 — Security (`harvester/src/security/`)
 
-- [ ] `credentials.py` — `CredentialManager` class using `python-dotenv`, naming: `FIVOS_{MANUFACTURER}_{FIELD}`, never logs values
-- [ ] `sanitizer.py` — `sanitize_html()` strips `<script>`, `<iframe>`, `<object>`, `<embed>`, `<form>`, all `on*` event attributes
-- [ ] `tests/test_sanitizer.py` — XSS via script tag, iframe, onerror attr, clean HTML passthrough
+- [x] `credentials.py` — `CredentialManager` class using `python-dotenv`, naming: `FIVOS_{MANUFACTURER}_{FIELD}`, never logs values
+- [x] `sanitizer.py` — `sanitize_html()` strips `<script>`, `<iframe>`, `<object>`, `<embed>`, `<form>`, all `on*` event attributes
+- [x] `tests/test_sanitizer.py` — XSS via script tag, iframe, onerror attr, clean HTML passthrough
 
 ---
 
@@ -66,9 +66,9 @@ Check off each item as you complete it.
 
 ## Stage 6 — End-to-End Integration Test
 
-- [ ] Save a real manufacturer HTML page to `tests/fixtures/medtronic_sample.html`
-- [ ] Create `tests/fixtures/mock_adapters.py` with CSS selectors matching the saved HTML
-- [ ] `tests/test_pipeline_e2e.py` — full pipeline: saved HTML → parse → extract → normalize → validate → result dict
+- [x] Save a real manufacturer HTML page to `tests/fixtures/medtronic_sample.html`
+- [x] Create `tests/fixtures/mock_adapters.py` with CSS selectors matching the saved HTML
+- [x] `tests/test_pipeline_e2e.py` — full pipeline: saved HTML → parse → extract → normalize → validate → result dict
 
 ---
 

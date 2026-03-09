@@ -33,11 +33,11 @@ playwright install  # Install browser binaries for Playwright
 
 ### Run tests
 ```bash
-# All tests
-pytest harvester/src/normalizers/tests/
+# All tests (normalizers, pipeline, validators, security)
+pytest
 
 # Single test file
-pytest harvester/src/normalizers/tests/test_units.py
+pytest harvester/src/pipeline/tests/test_pipeline_e2e.py
 
 # Single test
 pytest harvester/src/normalizers/tests/test_units.py::TestWeightConversions::test_kg_to_g
@@ -103,6 +103,12 @@ Site Adapters                    Manufacturing Website
 | Normalization engine | `harvester/src/normalizers/unit_conversions.py` | Jason | Complete |
 | Model number normalizer | `harvester/src/normalizers/model_numbers.py` | Jason | Complete |
 | Date normalizer | `harvester/src/normalizers/dates.py` | Jason | Complete |
+| HTML sanitizer | `harvester/src/security/sanitizer.py` | Jason | Complete |
+| Credential manager | `harvester/src/security/credentials.py` | Jason | Complete |
+| Record validator | `harvester/src/validators/record_validator.py` | Jason | Complete |
+| HTML parser | `harvester/src/pipeline/parser.py` | Jason | Complete |
+| Field extractor | `harvester/src/pipeline/extractor.py` | Jason | Complete |
+| E2E integration test | `harvester/src/pipeline/tests/test_pipeline_e2e.py` | Jason | Complete — 8 tests passing (real Medtronic HTML) |
 | Unit tests | `harvester/src/normalizers/tests/test_units.py` | Jason | Complete — 69 tests passing |
 | Model number tests | `harvester/src/normalizers/tests/test_model_numbers.py` | Jason | Complete — 10 tests passing |
 | Date tests | `harvester/src/normalizers/tests/test_dates.py` | Jason | Complete — 18 tests passing |
@@ -129,6 +135,14 @@ Site Adapters                    Manufacturing Website
 **Stage 4 — Validation** — `validate_record(record: dict) -> tuple[bool, list[str]]`. Checks required fields (`device_name`, `manufacturer`, `model_number`), numeric ranges for dimensions, string lengths, URL validity. Critical failures reject; warnings emit with issues list.
 
 **Stage 5 — Emit** — Packages record with metadata: `harvest_run_id`, `harvested_at` (UTC), `source_url`, `adapter_version`, `normalization_version`, `validation_issues`, SHA-256 hash of raw HTML.
+
+### Pipeline module (`harvester/src/pipeline/`)
+
+- `parser.py` — `parse_html()`, `parse_json()`, `parse_xml()`, `parse_document(raw, fmt)`. Multi-format routing; errors return safe empty/None values, never raise.
+- `extractor.py` — `extract_fields(parsed_data, adapter, fmt)`. Adapter dict must have `"extraction"` key mapping field names to selectors. CSS selectors (HTML), dot-path (JSON), XPath (XML). Missing fields → log warning + `None`.
+- `tests/fixtures/medtronic_sample.html` — copy of Wyatt's real scraped Medtronic IN.PACT Admiral page (used as e2e fixture).
+- `tests/fixtures/mock_adapters.py` — `MEDTRONIC_INPACT_ADAPTER` dict with confirmed CSS selectors.
+- `tests/test_pipeline_e2e.py` — 8 e2e tests: real HTML → sanitize → parse → extract → normalize → validate → result dict.
 
 ### Error handling philosophy: "Never crash the run"
 - Parsing failure → log + store raw HTML + skip record
