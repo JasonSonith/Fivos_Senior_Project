@@ -12,8 +12,8 @@ extraction:
   # Product title
   device_name: ".product-heading h1"
 
-  # Model number not yet identified consistently
-  model_number: ""
+  # Model/catalog numbers found in table links
+  model_number: ".table-wrapper .cfnDetailLink a"
 
   # Specifications are contained in tables inside div.table-wrapper
   specs_container: ".table-wrapper table"

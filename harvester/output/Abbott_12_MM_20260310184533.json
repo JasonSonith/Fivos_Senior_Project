@@ -1,0 +1,14 @@
+{
+  "device_name": "XIENCE SkypointTM Stent 4.5 & 5.0 mm",
+  "model_number": "12 MM",
+  "specs_container": "Stent DiameterStent Length12 mm15 mm18 mm23 mm28 mm33 mmMaximum Expansion4.5 mm✓✓✓✓✓✓5.75 mm5.0 mm✓✓✓✓✓✓5.75 mm",
+  "dimensions": null,
+  "source_url": "https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/esprit-bti-stent.html",
+  "manufacturer": "Abbott",
+  "harvest_run_id": "HR-LOCAL-20260310184533",
+  "harvested_at": "2026-03-10T18:45:33Z",
+  "adapter_version": "abbott-ordering_layout",
+  "normalization_version": "1.0.0",
+  "validation_issues": [],
+  "raw_html_sha256": "f2fdf756166d687186b6e974d399546a27a458a895483477d87608ad11bbe96b"
+}

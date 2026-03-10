@@ -1,0 +1,14 @@
+{
+  "device_name": "Shockwave L6",
+  "model_number": "8.0",
+  "specs_container": "Balloon Diameter (mm)Balloon length (mm)Sheath Compatibility (Fr)Catheter Working Length (cm)Pulses/CyclesCyclesMax PulsesBalloon Crossing Profile (in)Guidewire Compatibility (in)8.030711030103000.0860.0189.030711030103000.0870.01810.030811030103000.0910.01812.030811030103000.0930.018",
+  "dimensions": null,
+  "source_url": "https://shockwavemedical.com/providers/peripheral/shockwave-m5-peripheral-ivl-catheter/",
+  "manufacturer": "Shockwave",
+  "harvest_run_id": "HR-LOCAL-20260310184533",
+  "harvested_at": "2026-03-10T18:45:33Z",
+  "adapter_version": "shockwave-product_page_layout",
+  "normalization_version": "1.0.0",
+  "validation_issues": [],
+  "raw_html_sha256": "a94d295b2edf5a6cb4176246df5ff4360657a777e0cec066aedcb02252a64b7b"
+}

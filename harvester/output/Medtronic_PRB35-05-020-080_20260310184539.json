@@ -1,0 +1,14 @@
+{
+  "device_name": "ProtégéTM EverFlexTM self-expanding biliary stent system",
+  "model_number": "PRB35-05-020-080",
+  "specs_container": "Item numberUncon-strainedstentdiameter(mm)Uncon-strainedstentlength(mm)Recom-mendedlumen size(mm)Usablelength(cm)Sheathsize(Fr)Guidewireacceptance(in)Outsidediameter(in)PRB35-05-020-0805203.5–4.58060.0350.079PRB35-05-020-1205203.5–4.512060.0350.079PRB35-05-030-0805303.5–4.58060.0350.079PRB35-05-030-1205303.5–4.512060.0350.079PRB35-05-040-0805403.5–4.58060.0350.079PRB35-05-040-1205403.5–4.512060.0350.079PRB35-05-060-0805603.5–4.58060.0350.079PRB35-05-060-1205603.5–4.512060.0350.079PRB35-05-080-0805803.5–4.58060.0350.079PRB35-05-080-1205803.5–4.512060.0350.079PRB35-05-100-08051003.5–4.58060.0350.079PRB35-05-100-12051003.5–4.512060.0350.079PRB35-05-120-08051203.5–4.58060.0350.079PRB35-05-120-12051203.5–4.512060.0350.079",
+  "dimensions": null,
+  "source_url": "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
+  "manufacturer": "Medtronic",
+  "harvest_run_id": "HR-LOCAL-20260310184539",
+  "harvested_at": "2026-03-10T18:45:39Z",
+  "adapter_version": "medtronic-table_wrapper_layout",
+  "normalization_version": "1.0.0",
+  "validation_issues": [],
+  "raw_html_sha256": "b4e5d5245bd82d586c423eaf9eb9e4a78f99e27f6ff3eeab87f8d806eda6f589"
+}

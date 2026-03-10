@@ -1,0 +1,14 @@
+{
+  "device_name": "EspritTM BTK",
+  "model_number": "X27P3TA",
+  "specs_container": "ICD-10 PCS CODEDESCRIPTION2X27P3TADilation of right anterior tibial artery with intraluminal device, everolimus-eluting resorbable scaffold(s), percutaneous approach, new technology group 10X27Q3TADilation of left anterior tibial artery with intraluminal device, everolimus-eluting resorbable scaffold(s), percutaneous approach, new technology group 10X27R3TADilation of right posterior tibial artery with intraluminal device, everolimus-eluting resorbable scaffold(s), percutaneous approach, new technology group 10X27S3TADilation of left posterior tibial artery with intraluminal device, everolimus-eluting resorbable scaffold(s), percutaneous approach, new technology group 10X27T3TADilation of right peroneal artery with intraluminal device, everolimus-eluting resorbable scaffold(s), percutaneous approach, new technology group 10X27U3TADilation of left peroneal artery with intraluminal device, everolimus-eluting resorbable scaffold(s), percutaneous approach, new technology group 10",
+  "dimensions": null,
+  "source_url": "https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/esprit-bti-stent.html",
+  "manufacturer": "Abbott",
+  "harvest_run_id": "HR-LOCAL-20260310184533",
+  "harvested_at": "2026-03-10T18:45:33Z",
+  "adapter_version": "abbott-ordering_layout",
+  "normalization_version": "1.0.0",
+  "validation_issues": [],
+  "raw_html_sha256": "65a835dbf776e8cc5e1f220fde3bd2f62db2c55a92870265ebc07dc265d63cff"
+}

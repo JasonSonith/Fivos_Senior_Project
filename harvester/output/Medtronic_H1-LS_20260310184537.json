@@ -1,0 +1,14 @@
+{
+  "device_name": "HawkOneTM directional atherectomy system",
+  "model_number": "H1-LS",
+  "specs_container": "7 F7 F6 F6 FModel nameLSLXMSItem numberH1-LSH1-LXH1-MH1-SVessel diameter (mm)3.5–7.03.5–7.03.0–7.02.0–4.0Sheath compatibility (Fr)7766Crossing profile (mm)2.62.62.22.2Working length†(cm)114114135151Effective length‡(cm)107104129145Tip length (cm)6.69.65.95.9Max. cut length (mm)50754040Packing deviceXXXX",
+  "dimensions": null,
+  "source_url": "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
+  "manufacturer": "Medtronic",
+  "harvest_run_id": "HR-LOCAL-20260310184537",
+  "harvested_at": "2026-03-10T18:45:37Z",
+  "adapter_version": "medtronic-table_wrapper_layout",
+  "normalization_version": "1.0.0",
+  "validation_issues": [],
+  "raw_html_sha256": "06529715f4b40114f313ea9b49cf037f7329a14e9648053a2576ef6aac84e32d"
+}

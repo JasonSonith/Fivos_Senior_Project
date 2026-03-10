@@ -1,0 +1,34 @@
+manufacturer: shockwave
+product_type: product_page_layout
+
+base_url: https://shockwavemedical.com
+
+seed_urls:
+  - https://shockwavemedical.com/providers/peripheral/shockwave-m5-peripheral-ivl-catheter/
+  - https://shockwavemedical.com/providers/coronary/shockwave-e8-coronary-ivl-catheter/
+  - https://shockwavemedical.com/providers/peripheral/shockwave-l6-peripheral-ivl-catheter/
+
+brands:
+  - SHOCKWAVE M5
+  - SHOCKWAVE E8
+  - SHOCKWAVE S4
+  - LITHOPLASTY
+  - SHOCKWAVE L6
+
+extraction:
+  # Product title heading
+  device_name: "h1.main-heading"
+
+  # Catalog numbers in table rows
+  model_number: "div.table-container table tbody tr td:not([scope]):first-child"
+
+  # Specifications in table containers
+  specs_container: "div.table-container table"
+
+  # Dimensions parsed from specs table
+  dimensions: ""
+
+# Notes for developers:
+# Shockwave Medical pages use a main-heading class for the product title
+# and store specifications in div.table-container elements. Catalog
+# numbers appear in the first or second column of those tables.

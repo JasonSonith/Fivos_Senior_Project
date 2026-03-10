@@ -1,0 +1,40 @@
+manufacturer: abbott
+product_type: ordering_layout
+
+base_url: https://www.cardiovascular.abbott
+
+seed_urls:
+  - https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/esprit-bti-stent.html
+  - https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/diamondback-360-coronary-system.html
+  - https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/omnilink-elite-vascular-balloon-expandable-stent.html
+  - https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/absolute-pro-vascular-self-expanding-stent.html
+  - https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/supera-peripheral-stent-system.html
+  - https://www.cardiovascular.abbott/us/en/hcp/products/coronary-intervention/xience-skypoint.html
+
+brands:
+  - DIAMONDBACK PERIPHERAL
+  - OMNILINK ELITE
+  - ABSOLUTE PRO
+  - DIAMONDBACK 360
+  - SUPERA
+  - SUPERA VERITAS
+  - ESPRIT
+  - XIENCE SKYPOINT
+
+extraction:
+  # Product title in hero banner
+  device_name: "h1.m-hbanner__content--title"
+
+  # Model/stock numbers in ordering tables
+  model_number: "section.cmp-text table tbody tr td:not([scope]):not([colspan]):first-child"
+
+  # Specifications contained in ordering tables
+  specs_container: "section.cmp-text table"
+
+  # Dimensions parsed from specs table
+  dimensions: ""
+
+# Notes for developers:
+# Abbott Vascular pages use a hero banner layout with ordering information
+# in tables within section.cmp-text elements. Model numbers and stock
+# numbers appear as columns in those tables.
