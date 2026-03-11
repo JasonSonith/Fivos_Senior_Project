@@ -36,7 +36,7 @@ from normalizers.booleans import normalize_boolean, normalize_mri_status
 logger = logging.getLogger(__name__)
 
 # Field-type classification for normalizer routing
-TEXT_FIELDS = {"device_name", "description", "brand_name", "product_type", "specs_container", "warning_text"}
+TEXT_FIELDS = {"description", "brand_name", "product_type", "specs_container", "warning_text"}
 MODEL_FIELDS = {"model_number", "catalog_number", "sku"}
 DATE_FIELDS = {"approval_date", "clearance_date", "expiration_date"}
 MEASUREMENT_FIELDS = {"length", "width", "height", "diameter", "weight", "volume", "pressure"}
@@ -114,6 +114,16 @@ def resolve_adapter(filename: str, adapter_map: dict) -> dict | None:
     return adapter_map.get(host)
 
 
+def _resolve_manufacturer(raw: str, adapter: dict) -> str:
+    """Normalize a manufacturer name, falling back to the adapter's manufacturer field."""
+    result = normalize_manufacturer(raw)
+    if result is not None:
+        return result
+    fallback = adapter.get("manufacturer", "")
+    fallback_result = normalize_manufacturer(fallback) if fallback else None
+    return fallback_result if fallback_result else raw
+
+
 def normalize_record(raw_fields: dict, adapter: dict) -> dict:
     """Apply the correct normalizer to each field based on its name.
 
@@ -129,14 +139,7 @@ def normalize_record(raw_fields: dict, adapter: dict) -> dict:
 
         try:
             if field == "manufacturer":
-                result = normalize_manufacturer(value)
-                if result is None:
-                    # Alias not found — fall back to adapter config via normalize_manufacturer
-                    fallback = adapter.get("manufacturer", "")
-                    fallback_result = normalize_manufacturer(fallback) if fallback else None
-                    normalized[field] = fallback_result if fallback_result else value
-                else:
-                    normalized[field] = result
+                normalized[field] = _resolve_manufacturer(value, adapter)
 
             elif field in MODEL_FIELDS:
                 normalized[field] = clean_model_number(value)
@@ -154,7 +157,6 @@ def normalize_record(raw_fields: dict, adapter: dict) -> dict:
                 normalized[field] = normalize_text(value)
 
             else:
-                # Unknown field — safe default
                 normalized[field] = normalize_text(value)
 
         except Exception as exc:
@@ -177,7 +179,8 @@ def process_single(
     or validation rejects the record. Never raises.
     """
     try:
-        raw_html = open(html_path, "r", encoding="utf-8").read()
+        with open(html_path, "r", encoding="utf-8") as f:
+            raw_html = f.read()
     except Exception as exc:
         logger.error("process_single: cannot read %s: %s", html_path, exc)
         return None
@@ -243,9 +246,9 @@ def process_single(
         # Inject source_url and manufacturer for validation
         normalized["source_url"] = source_url
         if "manufacturer" not in normalized or normalized.get("manufacturer") is None:
-            fallback = adapter.get("manufacturer", "unknown")
-            fallback_result = normalize_manufacturer(fallback) if fallback else None
-            normalized["manufacturer"] = fallback_result if fallback_result else "unknown"
+            normalized["manufacturer"] = _resolve_manufacturer(
+                adapter.get("manufacturer", "unknown"), adapter
+            ) or "unknown"
 
         # 5. Validate
         is_valid, issues = validate_record(normalized)
