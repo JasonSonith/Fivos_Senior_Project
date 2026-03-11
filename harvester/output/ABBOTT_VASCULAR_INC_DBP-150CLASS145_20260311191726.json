@@ -1,13 +1,14 @@
 {
-  "brandName": "Diamondback 360TM",
+  "brandName": "Diamondback 360",
   "versionModelNumber": "DBP-150CLASS145",
   "catalogNumber": "DBP-150CLASS145",
-  "companyName": "Abbott",
+  "companyName": "ABBOTT VASCULAR INC.",
   "deviceDescription": null,
   "deviceSizes": null,
+  "deviceSterile": true,
   "_harvest": {
-    "harvest_run_id": "HR-LOCAL-20260311165914",
-    "harvested_at": "2026-03-11T16:59:14Z",
+    "harvest_run_id": "HR-LOCAL-20260311191726",
+    "harvested_at": "2026-03-11T19:17:26Z",
     "source_url": "https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/esprit-bti-stent.html",
     "adapter_version": "abbott-ordering_layout",
     "normalization_version": "1.0.0",

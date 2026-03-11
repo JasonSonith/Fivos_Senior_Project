@@ -1,8 +1,8 @@
 {
-  "brandName": "Resolute OnyxTM drug-eluting stent (DES)",
+  "brandName": "Resolute Onyx",
   "versionModelNumber": "RONYX20008UX",
   "catalogNumber": "RONYX20008UX",
-  "companyName": "Medtronic",
+  "companyName": "MEDTRONIC, INC.",
   "deviceDescription": "Resolute OnyxTM drug-eluting stent (DES) offers flexibility,1conformability,1a 2.0 mm to 5.0 mm size matrix, and is indicated for high bleeding risk patients and labeled for one-month DAPT.2",
   "deviceSizes": [
     {
@@ -14,9 +14,10 @@
       "sizeText": null
     }
   ],
+  "rx": true,
   "_harvest": {
-    "harvest_run_id": "HR-LOCAL-20260311165918",
-    "harvested_at": "2026-03-11T16:59:18Z",
+    "harvest_run_id": "HR-LOCAL-20260311191729",
+    "harvested_at": "2026-03-11T19:17:29Z",
     "source_url": "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
     "adapter_version": "medtronic-table_wrapper_layout",
     "normalization_version": "1.0.0",

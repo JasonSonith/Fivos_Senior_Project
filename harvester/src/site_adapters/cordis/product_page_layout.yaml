@@ -24,6 +24,9 @@ extraction:
   # Specifications in product table
   specs_container: "table"
 
+  # Warning/regulatory text for boolean field extraction
+  warning_text: "div.prose"
+
 # Notes for developers:
 # Cordis pages use a hero section with white text for the product title.
 # SKU numbers use td.sort-sku class within tbody.list elements.

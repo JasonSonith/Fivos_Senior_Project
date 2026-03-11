@@ -1,8 +1,8 @@
 {
-  "brandName": "IN.PACTTM AdmiralTM and IN.PACTTM 018 drug-coated balloons",
+  "brandName": "IN.PACT Admiral and IN.PACT 018s",
   "versionModelNumber": "IPU04004013P",
   "catalogNumber": "IPU04004013P",
-  "companyName": "Medtronic",
+  "companyName": "MEDTRONIC, INC.",
   "deviceDescription": "The IN.PACTTM AdmiralTM and IN.PACTTM 018 drug-coated balloons (DCB) are a clinically proven primary endovascular therapy that treats femoropopliteal disease. They are indicated forde novo, restenotic, or in-stent restenotic lesions up to 360 mm, with reference vessel diameters of 4 mm to 7 mm.",
   "deviceSizes": [
     {
@@ -22,9 +22,12 @@
       "sizeText": null
     }
   ],
+  "singleUse": true,
+  "deviceSterile": true,
+  "rx": true,
   "_harvest": {
-    "harvest_run_id": "HR-LOCAL-20260311165917",
-    "harvested_at": "2026-03-11T16:59:17Z",
+    "harvest_run_id": "HR-LOCAL-20260311191728",
+    "harvested_at": "2026-03-11T19:17:28Z",
     "source_url": "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
     "adapter_version": "medtronic-table_wrapper_layout",
     "normalization_version": "1.0.0",

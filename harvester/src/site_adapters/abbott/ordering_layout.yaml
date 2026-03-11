@@ -31,6 +31,9 @@ extraction:
   # Specifications contained in ordering tables
   specs_container: "section.cmp-text table"
 
+  # Warning/regulatory text for boolean field extraction
+  warning_text: "div.richtext.text section.cmp-text"
+
 
 # Notes for developers:
 # Abbott Vascular pages use a hero banner layout with ordering information

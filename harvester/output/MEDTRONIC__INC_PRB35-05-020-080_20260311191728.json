@@ -1,8 +1,8 @@
 {
-  "brandName": "ProtégéTM EverFlexTM self-expanding biliary stent system",
+  "brandName": "Protégé EverFlex",
   "versionModelNumber": "PRB35-05-020-080",
   "catalogNumber": "PRB35-05-020-080",
-  "companyName": "Medtronic",
+  "companyName": "MEDTRONIC, INC.",
   "deviceDescription": "Place the same, trusted stent when your work calls for a 5 mm size in the biliary system by choosing the ProtégéTM EverFlexTM self-expanding biliary stent system.The Protégé EverFlex Self-expanding Biliary Stent System is intended as a palliative treatment of malignant neoplasms in the biliary tree.",
   "deviceSizes": [
     {
@@ -22,9 +22,10 @@
       "sizeText": null
     }
   ],
+  "rx": true,
   "_harvest": {
-    "harvest_run_id": "HR-LOCAL-20260311165917",
-    "harvested_at": "2026-03-11T16:59:17Z",
+    "harvest_run_id": "HR-LOCAL-20260311191728",
+    "harvested_at": "2026-03-11T19:17:28Z",
     "source_url": "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
     "adapter_version": "medtronic-table_wrapper_layout",
     "normalization_version": "1.0.0",

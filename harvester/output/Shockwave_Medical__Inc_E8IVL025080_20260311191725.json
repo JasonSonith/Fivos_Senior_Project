@@ -1,15 +1,15 @@
 {
-  "brandName": "Shockwave L6",
-  "versionModelNumber": "8.0",
-  "catalogNumber": "8.0",
-  "companyName": "Shockwave",
+  "brandName": "Shockwave E8",
+  "versionModelNumber": "E8IVL025080",
+  "catalogNumber": "E8IVL025080",
+  "companyName": "Shockwave Medical, Inc.",
   "deviceDescription": null,
   "deviceSizes": [
     {
       "sizeType": "Diameter",
       "size": {
         "unit": "Millimeter",
-        "value": "8.0"
+        "value": "2.5"
       },
       "sizeText": null
     },
@@ -17,18 +17,19 @@
       "sizeType": "Length",
       "size": {
         "unit": "Millimeter",
-        "value": "30.0"
+        "value": "80.0"
       },
       "sizeText": null
     }
   ],
+  "rx": true,
   "_harvest": {
-    "harvest_run_id": "HR-LOCAL-20260311165913",
-    "harvested_at": "2026-03-11T16:59:13Z",
+    "harvest_run_id": "HR-LOCAL-20260311191725",
+    "harvested_at": "2026-03-11T19:17:25Z",
     "source_url": "https://shockwavemedical.com/providers/peripheral/shockwave-m5-peripheral-ivl-catheter/",
     "adapter_version": "shockwave-product_page_layout",
     "normalization_version": "1.0.0",
     "validation_issues": [],
-    "raw_html_sha256": "a94d295b2edf5a6cb4176246df5ff4360657a777e0cec066aedcb02252a64b7b"
+    "raw_html_sha256": "5160048280407eada6f0215b16878c391e280d80d181a9d2c64f8e8f7d6be8ac"
   }
 }

@@ -25,6 +25,9 @@ extraction:
   # Specifications in dark-themed table containers
   specs_container: "div.table__container table.wf-dark"
 
+  # Warning/regulatory text for boolean field extraction
+  warning_text: "div.disclaimer"
+
   # MRI safety badge
   MRISafetyStatus: ".badge--MR .badge__text"
 

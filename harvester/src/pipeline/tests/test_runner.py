@@ -48,8 +48,8 @@ class TestNormalizeRecord:
         raw = {"manufacturer": "totally_unknown_mfr_xyz"}
         adapter = {"manufacturer": "medtronic"}
         result = normalize_record(raw, adapter)
-        # Falls back to adapter config title-cased
-        assert result["manufacturer"] == "Medtronic"
+        # Falls back to adapter config via normalize_manufacturer → GUDID legal entity
+        assert result["manufacturer"] == "MEDTRONIC, INC."
 
 
 class TestProcessSingle:

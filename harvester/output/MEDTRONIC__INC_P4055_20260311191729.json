@@ -1,8 +1,8 @@
 {
-  "brandName": "SilverHawkTM peripheral plaque excision system",
+  "brandName": "SilverHawk peripheral plaque excision system",
   "versionModelNumber": "P4055",
   "catalogNumber": "P4055",
-  "companyName": "Medtronic",
+  "companyName": "MEDTRONIC, INC.",
   "deviceDescription": "Use SilverHawk'sTM directional cutter to shave soft-to-mild plaque, while the nosecone captures the material for removal from the artery. The SilverHawkTM technology is backed by the landmark DEFINITIVE LE clinical study, which found that PAD patients with critical limb ischemia who were treated with plaque excision experienced a high rate (95%) of limb salvage at 12 months.1The SilverHawkTM peripheral plaque excision system is intended for use in atherectomy of the peripheral vasculature. The catheter is not intended for use in the coronary, carotid, iliac, or renal vasculature.",
   "deviceSizes": [
     {
@@ -22,9 +22,10 @@
       "sizeText": null
     }
   ],
+  "rx": true,
   "_harvest": {
-    "harvest_run_id": "HR-LOCAL-20260311165918",
-    "harvested_at": "2026-03-11T16:59:18Z",
+    "harvest_run_id": "HR-LOCAL-20260311191729",
+    "harvested_at": "2026-03-11T19:17:29Z",
     "source_url": "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
     "adapter_version": "medtronic-table_wrapper_layout",
     "normalization_version": "1.0.0",

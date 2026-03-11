@@ -1,13 +1,13 @@
 {
-  "brandName": "Zilver 635® Biliary Self-Expanding Stent",
+  "brandName": "Zilver 635 Biliary",
   "versionModelNumber": "G50616",
   "catalogNumber": "ZILBS-635-6-4",
-  "companyName": "Cook",
+  "companyName": "COOK IRELAND LTD",
   "deviceDescription": null,
   "deviceSizes": null,
   "_harvest": {
-    "harvest_run_id": "HR-LOCAL-20260311165915",
-    "harvested_at": "2026-03-11T16:59:15Z",
+    "harvest_run_id": "HR-LOCAL-20260311191727",
+    "harvested_at": "2026-03-11T19:17:27Z",
     "source_url": "https://www.cookmedical.com/products/zilver-ptx-drug-eluting-peripheral-stent/",
     "adapter_version": "cook-specifications_layout",
     "normalization_version": "1.0.0",

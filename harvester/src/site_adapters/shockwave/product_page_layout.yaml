@@ -25,6 +25,9 @@ extraction:
   # Specifications in table containers
   specs_container: "div.table-container table"
 
+  # Warning/regulatory text for boolean field extraction
+  warning_text: "div.footer_text"
+
 
 # Notes for developers:
 # Shockwave Medical pages use a main-heading class for the product title

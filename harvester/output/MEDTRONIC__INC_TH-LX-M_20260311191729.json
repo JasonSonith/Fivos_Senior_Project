@@ -1,8 +1,8 @@
 {
-  "brandName": "TurboHawkTM peripheral plaque excision system",
+  "brandName": "TurboHawk peripheral plaque excision system",
   "versionModelNumber": "TH-LX-M",
   "catalogNumber": "TH-LX-M",
-  "companyName": "Medtronic",
+  "companyName": "MEDTRONIC, INC.",
   "deviceDescription": "Choose from a high efficiency cutter model that can tackle calcified plaque or a smooth cutter model that can treat mild-to-moderately calcified lesions. TurboHawkTM is proven clinically in the landmark DEFINITIVE LE trial, the study found that diabetic PAD patients fared as well as nondiabetics and that claudicants had high patency at 12 months when treated with plaque excision technology.1The TurboHawkTM peripheral plaque excision system is intended for use in the atherectomy of the peripheral vasculature. The TurboHawkTM catheter is not intended for use in the coronary, carotid, iliac, or renal vasculature.The TurboHawkTM catheter is indicated for use in conjunction with the SpiderFXTM embolic protection device in the treatment of severely calcified lesions (LS-C and LX-C only).",
   "deviceSizes": [
     {
@@ -22,9 +22,10 @@
       "sizeText": null
     }
   ],
+  "rx": true,
   "_harvest": {
-    "harvest_run_id": "HR-LOCAL-20260311165918",
-    "harvested_at": "2026-03-11T16:59:18Z",
+    "harvest_run_id": "HR-LOCAL-20260311191729",
+    "harvested_at": "2026-03-11T19:17:29Z",
     "source_url": "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
     "adapter_version": "medtronic-table_wrapper_layout",
     "normalization_version": "1.0.0",

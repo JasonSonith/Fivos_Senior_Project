@@ -43,6 +43,17 @@ pytest harvester/src/pipeline/tests/test_pipeline_e2e.py
 pytest harvester/src/normalizers/tests/test_units.py::TestWeightConversions::test_kg_to_g
 ```
 
+### Run the pipeline
+```bash
+# Batch mode — all adapters, all HTML files (auto-routes by domain)
+python harvester/src/pipeline/runner.py --adapter-dir harvester/src/site_adapters --input-dir harvester/src/web-scraper/out_html
+
+# Single file — one adapter, one HTML
+python harvester/src/pipeline/runner.py --adapter harvester/src/site_adapters/medtronic/table_wrapper_layout.yaml --input harvester/src/web-scraper/out_html/some_file.html
+
+# Options: --output-dir DIR, --run-id HR-10011, -v (verbose)
+```
+
 ### Run the dashboard (Interface)
 ```bash
 uvicorn harvester.src.Interface.Interface:app --port 8000
@@ -108,22 +119,31 @@ Site Adapters                    Manufacturing Website
 | Record validator | `harvester/src/validators/record_validator.py` | Jason | Complete |
 | HTML parser | `harvester/src/pipeline/parser.py` | Jason | Complete |
 | Field extractor | `harvester/src/pipeline/extractor.py` | Jason | Complete |
+| Pipeline runner | `harvester/src/pipeline/runner.py` | Jason | Complete — 19 tests passing |
+| Dimension parser | `harvester/src/pipeline/dimension_parser.py` | Jason | Complete — 24 tests passing |
+| Regulatory parser | `harvester/src/pipeline/regulatory_parser.py` | Jason | Complete — 16 tests passing |
+| Boolean normalizer | `harvester/src/normalizers/booleans.py` | Jason | Complete — 24 tests passing |
+| GUDID emitter | `harvester/src/pipeline/emitter.py` | Jason | Complete — 35 tests passing |
 | E2E integration test | `harvester/src/pipeline/tests/test_pipeline_e2e.py` | Jason | Complete — 8 tests passing (real Medtronic HTML) |
 | Unit tests | `harvester/src/normalizers/tests/test_units.py` | Jason | Complete — 69 tests passing |
 | Model number tests | `harvester/src/normalizers/tests/test_model_numbers.py` | Jason | Complete — 10 tests passing |
 | Date tests | `harvester/src/normalizers/tests/test_dates.py` | Jason | Complete — 18 tests passing |
 | HITL Dashboard | `harvester/src/Interface/Interface.py` | Jonathan | Skeleton complete |
-| Site adapter configs | Not yet created | Ryan | Pending |
+| Site adapter configs | `harvester/src/site_adapters/` | Ryan | Complete — 7/8 manufacturers (Boston Scientific placeholder) |
 | MongoDB storage | Not yet created | Ralph | Pending |
 | Validator Agent | Not yet created | — | Pending |
 
 ## Normalization Pipeline (Jason — `harvester/src/normalizers/`)
 
-5 discrete, independently testable stages:
+7 discrete, independently testable stages:
 
 **Stage 1 — HTML Parsing** (`BeautifulSoup4` + `lxml`, fallback to `html.parser`). Input is already JS-rendered by Wyatt's Playwright.
 
-**Stage 2 — Field Extraction** — Uses Ryan's YAML/JSON adapter configs (CSS selectors per manufacturer). Missing fields: log warning, set `None`, continue.
+**Stage 2 — Field Extraction** — Uses Ryan's YAML adapter configs (CSS selectors per manufacturer). Missing fields: log warning, set `None`, continue.
+
+**Stage 2.5 — Dimension Parsing** (`dimension_parser.py`) — Extracts measurements from specs tables. Supports 3 formats: **Format A (Tabular)** — headers like "Diameter (mm)" with value rows (Abbott, Cook, Cordis, Gore, Shockwave, Terumo); **Format B (Key-value)** — labels like "Balloon diameters 4.0 to 7.0 mm" (Medtronic); **Format C (Description)** — inline "6 mm x 40 mm" patterns (Terumo R2P). Tab-separated text from the runner ensures reliable cell-boundary detection.
+
+**Stage 2.7 — Warning Text Aggregation** — Re-extracts `warning_text` using `select()` (all matches) instead of `select_one()` (first match only), joining text from all matching elements. This ensures regulatory disclaimers at the bottom of pages aren't missed when the CSS selector matches multiple elements (e.g. Terumo's `div.cmp-richtext` matches specs tables before the "RX ONLY" disclaimer).
 
 **Stage 3 — Normalization** — All normalizers Jason owns:
 - `normalize_measurement(raw_value: str)` — canonical units: length→mm, weight→g, volume→mL, pressure→mmHg. Returns `{value, unit, is_range, range_low?, range_high?}` or `None`.
@@ -131,13 +151,21 @@ Site Adapters                    Manufacturing Website
 - `normalize_date(raw: str)` — ISO 8601 output (YYYY-MM-DD), handles 11+ input formats including European. Returns `None` for unparseable.
 - `clean_model_number(raw: str)` (`model_numbers.py`) — strips prefixes (Model:, Cat. No., REF, SKU, Part Number, P/N, Item #), uppercases, collapses whitespace.
 - `normalize_text(raw: str)` — HTML entity decode, NFKC unicode, removes invisible chars (zero-width spaces, BOM, soft hyphens), collapses whitespace.
+- `normalize_boolean(raw: str)` (`booleans.py`) — maps yes/true/1/y/on → `True`, no/false/0/n/off → `False`. Returns `None` for unrecognized.
+- `normalize_mri_status(raw: str)` (`booleans.py`) — maps to GUDID enum: `"MR Safe"`, `"MR Conditional"`, `"MR Unsafe"`, `"Labeling does not contain MRI Safety Information"`.
+
+**Stage 3.5 — Regulatory Parsing** (`regulatory_parser.py`) — Extracts GUDID boolean fields (`singleUse`, `rx`, `deviceSterile`) from warning/precaution text via regex patterns (e.g. "single use", "prescription only", "supplied sterile"). Only emits fields when patterns match.
 
 **Stage 4 — Validation** — `validate_record(record: dict) -> tuple[bool, list[str]]`. Checks required fields (`device_name`, `manufacturer`, `model_number`), numeric ranges for dimensions, string lengths, URL validity. Critical failures reject; warnings emit with issues list.
 
-**Stage 5 — Emit** — Packages record with metadata: `harvest_run_id`, `harvested_at` (UTC), `source_url`, `adapter_version`, `normalization_version`, `validation_issues`, SHA-256 hash of raw HTML.
+**Stage 5 — Emit** — Packages record with GUDID-aligned field names via `package_gudid_record()`. Field mapping: `device_name` → `brandName`, `model_number` → `versionModelNumber`, `catalog_number` → `catalogNumber`, `manufacturer` → `companyName`, `description` → `deviceDescription`. Measurements → `deviceSizes` array with `sizeType` and `unit` (mm → Millimeter, g → Gram, etc.). Regulatory booleans (`singleUse`, `rx`, `deviceSterile`, `otc`, `sterilizationPriorToUse`) and `MRISafetyStatus` are passed through. Harvest metadata nested under `_harvest` key: `harvest_run_id`, `harvested_at` (UTC), `source_url`, `adapter_version`, `normalization_version`, `validation_issues`, `raw_html_sha256`.
 
 ### Pipeline module (`harvester/src/pipeline/`)
 
+- `runner.py` — CLI orchestrator. Single-file (`--adapter` + `--input`) and batch (`--adapter-dir` + `--input-dir`) modes. Auto-routes HTML files to adapters by matching filename host segments to adapter `base_url` domains. Field-type classification for normalizer routing: `TEXT_FIELDS`, `MODEL_FIELDS`, `DATE_FIELDS`, `MEASUREMENT_FIELDS`, `BOOLEAN_FIELDS`, `ENUM_FIELDS`. Re-extracts both `specs_container` (step 3.5, tab-separated) and `warning_text` (step 3.6, `select()` aggregation) before normalization to handle multi-element selectors.
+- `dimension_parser.py` — Specs table mining. 3 formats: tabular (header + value rows), key-value (label + inline values), description (inline "D mm x L mm"). Label map covers diameter/length/width/height/weight/volume/pressure with skip-list for non-device dimensions (shaft length, catheter length, etc.).
+- `regulatory_parser.py` — Warning text pattern matching for GUDID booleans. Regex patterns for `singleUse` (single-use, disposable, do not reuse), `rx` (federal law restricts, prescription only), `deviceSterile` (supplied sterile, sterile-packaged).
+- `emitter.py` — GUDID-aligned record packaging via `package_gudid_record()`. Also provides legacy `package_record()`, `write_record_json()`, and `write_batch_json()`. Unit mapping: mm→Millimeter, cm→Centimeter, g→Gram, kg→Kilogram, mL→Milliliter, mmHg→Millimeter Mercury.
 - `parser.py` — `parse_html()`, `parse_json()`, `parse_xml()`, `parse_document(raw, fmt)`. Multi-format routing; errors return safe empty/None values, never raise.
 - `extractor.py` — `extract_fields(parsed_data, adapter, fmt)`. Adapter dict must have `"extraction"` key mapping field names to selectors. CSS selectors (HTML), dot-path (JSON), XPath (XML). Missing fields → log warning + `None`.
 - `tests/fixtures/medtronic_sample.html` — copy of Wyatt's real scraped Medtronic IN.PACT Admiral page (used as e2e fixture).
@@ -149,6 +177,60 @@ Site Adapters                    Manufacturing Website
 - Extraction failure → log per missing field + emit partial if required fields present
 - Normalization failure → keep raw value in `raw_*` field + flag for review
 - Validation failure (critical) → reject + log; (non-critical) → emit with issues list
+
+### Site Adapters (`harvester/src/site_adapters/`)
+
+8 YAML adapter configs (1 per manufacturer), each with `manufacturer`, `product_type`, `base_url`, `seed_urls`, and `extraction` selectors:
+
+| Manufacturer | File | Key Selectors |
+|---|---|---|
+| Abbott | `abbott/ordering_layout.yaml` | Hero banner + ordering tables |
+| Boston Scientific | `boston_scientific/product_page_layout.yaml` | Placeholder selectors (pending real HTML) |
+| Cook | `cook/specifications_layout.yaml` | `.specifications-table` class |
+| Cordis | `cordis/product_page_layout.yaml` | Hero section + `.sort-sku` |
+| Gore | `gore/specifications_layout.yaml` | Dark-themed tables + MRI badge |
+| Medtronic | `medtronic/table_wrapper_layout.yaml` | `.table-wrapper` + `.cfnDetailLink` |
+| Shockwave | `shockwave/product_page_layout.yaml` | `.table-container` wrapper |
+| Terumo | `terumo/product_page_layout.yaml` | `.cmp-richtext` tables |
+
+### GUDID Output Schema
+
+Each pipeline output JSON follows this structure:
+```json
+{
+  "brandName": "...",
+  "versionModelNumber": "...",
+  "catalogNumber": "...",
+  "companyName": "...",
+  "deviceDescription": "...",
+  "deviceSizes": [
+    {"sizeType": "Diameter", "size": {"unit": "Millimeter", "value": "6.0"}, "sizeText": null}
+  ],
+  "singleUse": true,
+  "rx": true,
+  "deviceSterile": true,
+  "MRISafetyStatus": "MR Conditional",
+  "_harvest": {
+    "harvest_run_id": "HR-10011",
+    "harvested_at": "2026-03-11T12:00:00Z",
+    "source_url": "https://...",
+    "adapter_version": "medtronic-table_wrapper_layout",
+    "normalization_version": "1.0.0",
+    "validation_issues": [],
+    "raw_html_sha256": "..."
+  }
+}
+```
+
+### Runner Field Classification
+
+The runner routes each extracted field to the correct normalizer based on these sets:
+- **TEXT_FIELDS**: `device_name`, `description`, `brand_name`, `product_type`, `specs_container`, `warning_text`
+- **MODEL_FIELDS**: `model_number`, `catalog_number`, `sku`
+- **DATE_FIELDS**: `approval_date`, `clearance_date`, `expiration_date`
+- **MEASUREMENT_FIELDS**: `length`, `width`, `height`, `diameter`, `weight`, `volume`, `pressure`
+- **BOOLEAN_FIELDS**: `singleUse`, `deviceSterile`, `sterilizationPriorToUse`, `rx`, `otc`
+- **ENUM_FIELDS**: `MRISafetyStatus`
 
 ## Security (Jason)
 

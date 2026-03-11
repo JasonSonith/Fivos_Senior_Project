@@ -19,6 +19,9 @@ extraction:
   # Specifications in rich text table containers
   specs_container: "div.cmp-richtext table"
 
+  # Warning/regulatory text for boolean field extraction
+  warning_text: "div.cmp-richtext"
+
 
 # Notes for developers:
 # Terumo pages use a light-green bar heading for product titles and

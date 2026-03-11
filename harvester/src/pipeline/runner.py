@@ -23,7 +23,7 @@ import yaml
 from security.sanitizer import sanitize_html
 from pipeline.parser import parse_html
 from pipeline.extractor import extract_fields
-from normalizers.text import normalize_text
+from normalizers.text import normalize_text, clean_brand_name
 from normalizers.model_numbers import clean_model_number
 from normalizers.unit_conversions import normalize_measurement, normalize_manufacturer
 from normalizers.dates import normalize_date
@@ -131,9 +131,10 @@ def normalize_record(raw_fields: dict, adapter: dict) -> dict:
             if field == "manufacturer":
                 result = normalize_manufacturer(value)
                 if result is None:
-                    # Alias not found — fall back to adapter config
+                    # Alias not found — fall back to adapter config via normalize_manufacturer
                     fallback = adapter.get("manufacturer", "")
-                    normalized[field] = fallback.title() if fallback else value
+                    fallback_result = normalize_manufacturer(fallback) if fallback else None
+                    normalized[field] = fallback_result if fallback_result else value
                 else:
                     normalized[field] = result
 
@@ -145,6 +146,9 @@ def normalize_record(raw_fields: dict, adapter: dict) -> dict:
 
             elif field in MEASUREMENT_FIELDS:
                 normalized[field] = normalize_measurement(value)
+
+            elif field == "device_name":
+                normalized[field] = clean_brand_name(value)
 
             elif field in TEXT_FIELDS:
                 normalized[field] = normalize_text(value)
@@ -205,6 +209,13 @@ def process_single(
             if field in MEASUREMENT_FIELDS and raw_fields.get(field) is None:
                 raw_fields[field] = value
 
+        # 3.6 Re-extract warning_text using select() to aggregate ALL matching elements
+        warning_selector = adapter.get("extraction", {}).get("warning_text", "")
+        if warning_selector:
+            elements = parsed.select(warning_selector)
+            if elements:
+                raw_fields["warning_text"] = " ".join(el.get_text(strip=True) for el in elements)
+
         # 4. Normalize
         normalized = normalize_record(raw_fields, adapter)
 
@@ -233,7 +244,8 @@ def process_single(
         normalized["source_url"] = source_url
         if "manufacturer" not in normalized or normalized.get("manufacturer") is None:
             fallback = adapter.get("manufacturer", "unknown")
-            normalized["manufacturer"] = fallback.title() if fallback else "unknown"
+            fallback_result = normalize_manufacturer(fallback) if fallback else None
+            normalized["manufacturer"] = fallback_result if fallback_result else "unknown"
 
         # 5. Validate
         is_valid, issues = validate_record(normalized)

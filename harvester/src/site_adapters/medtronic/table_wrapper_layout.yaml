@@ -22,7 +22,7 @@ extraction:
   specs_container: ".table-wrapper table"
 
   # Warning/precaution text for regulatory field extraction
-  warning_text: "ul li"
+  warning_text: "#indicationSafetyWarnings ~ noscript"
 
 # Notes for developers:
 # Medtronic pages using this layout store specifications inside
