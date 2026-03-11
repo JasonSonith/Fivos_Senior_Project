@@ -34,7 +34,8 @@ playwright install  # Install browser binaries for Playwright
 ### Run tests
 ```bash
 # All tests (normalizers, pipeline, validators, security)
-pytest
+pytest --ignore=harvester/src/pipeline/tests/test_runner.py
+# Note: test_runner.py requires pyyaml; exclude it if not installed
 
 # Single test file
 pytest harvester/src/pipeline/tests/test_pipeline_e2e.py
@@ -225,7 +226,7 @@ Each pipeline output JSON follows this structure:
 ### Runner Field Classification
 
 The runner routes each extracted field to the correct normalizer based on these sets:
-- **TEXT_FIELDS**: `device_name`, `description`, `brand_name`, `product_type`, `specs_container`, `warning_text`
+- **TEXT_FIELDS**: `description`, `brand_name`, `product_type`, `specs_container`, `warning_text` (note: `device_name` is NOT here — it has its own `elif` branch using `clean_brand_name`)
 - **MODEL_FIELDS**: `model_number`, `catalog_number`, `sku`
 - **DATE_FIELDS**: `approval_date`, `clearance_date`, `expiration_date`
 - **MEASUREMENT_FIELDS**: `length`, `width`, `height`, `diameter`, `weight`, `volume`, `pressure`

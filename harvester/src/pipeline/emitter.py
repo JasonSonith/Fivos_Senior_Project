@@ -55,6 +55,28 @@ def _build_device_sizes(normalized: dict) -> list[dict] | None:
     return sizes if sizes else None
 
 
+def _build_harvest_metadata(
+    harvest_run_id: str | None,
+    source_url: str,
+    adapter_version: str,
+    validation_issues: list[str] | None,
+    raw_html: str,
+) -> dict:
+    """Build harvest metadata dict shared by both packaging functions."""
+    if harvest_run_id is None:
+        ts = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
+        harvest_run_id = f"HR-LOCAL-{ts}"
+    return {
+        "harvest_run_id": harvest_run_id,
+        "harvested_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "source_url": source_url,
+        "adapter_version": adapter_version,
+        "normalization_version": NORMALIZATION_VERSION,
+        "validation_issues": validation_issues if validation_issues is not None else [],
+        "raw_html_sha256": hashlib.sha256(raw_html.encode("utf-8")).hexdigest(),
+    }
+
+
 def package_gudid_record(
     normalized_record: dict,
     raw_html: str,
@@ -91,19 +113,9 @@ def package_gudid_record(
             record["MRISafetyStatus"] = normalized_record["MRISafetyStatus"]
 
         # Harvest metadata
-        if harvest_run_id is None:
-            ts = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
-            harvest_run_id = f"HR-LOCAL-{ts}"
-
-        record["_harvest"] = {
-            "harvest_run_id": harvest_run_id,
-            "harvested_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "source_url": source_url,
-            "adapter_version": adapter_version,
-            "normalization_version": NORMALIZATION_VERSION,
-            "validation_issues": validation_issues if validation_issues is not None else [],
-            "raw_html_sha256": hashlib.sha256(raw_html.encode("utf-8")).hexdigest(),
-        }
+        record["_harvest"] = _build_harvest_metadata(
+            harvest_run_id, source_url, adapter_version, validation_issues, raw_html
+        )
 
         return record
 
@@ -128,19 +140,9 @@ def package_record(
     """
     try:
         record = dict(normalized_record)
-
-        if harvest_run_id is None:
-            ts = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
-            harvest_run_id = f"HR-LOCAL-{ts}"
-
-        record["harvest_run_id"] = harvest_run_id
-        record["harvested_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-        record["source_url"] = source_url
-        record["adapter_version"] = adapter_version
-        record["normalization_version"] = NORMALIZATION_VERSION
-        record["validation_issues"] = validation_issues if validation_issues is not None else []
-        record["raw_html_sha256"] = hashlib.sha256(raw_html.encode("utf-8")).hexdigest()
-
+        record.update(_build_harvest_metadata(
+            harvest_run_id, source_url, adapter_version, validation_issues, raw_html
+        ))
         return record
 
     except Exception as exc:
