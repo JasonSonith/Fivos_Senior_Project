@@ -1,0 +1,34 @@
+{
+  "brandName": "Visi-ProTM balloon-expandable peripheral stent system",
+  "versionModelNumber": "PXB35-05-12-080",
+  "catalogNumber": "PXB35-05-12-080",
+  "companyName": "Medtronic",
+  "deviceDescription": "Ensure visibility before and after stent placement with the Visi-ProTM balloon-expandable peripheral stent system for treatment of peripheral arterial disease (PAD). The stent’s patented design balances strength and flexibility for proven patency as found in the VISIBILITY ILIAC study. Radiopaque markers on the stent ensure precise placement. Deliver over a 0.035\" guidewire for use in the common or external iliac arteries or in the biliary system.The Visi-ProTM balloon-expandable peripheral stent system is indicated for improving luminal diameter in patients with atherosclerotic disease of the common and/or external iliac arteries up to 100 mm in length, with a reference vessel diameter of 5 mm to 10 mm.The Visi-ProTM balloon-expandable peripheral stent system is intended as a palliative treatment of malignant neoplasms in the biliary tree.",
+  "deviceSizes": [
+    {
+      "sizeType": "Diameter",
+      "size": {
+        "unit": "Millimeter",
+        "value": "35.0"
+      },
+      "sizeText": null
+    },
+    {
+      "sizeType": "Length",
+      "size": {
+        "unit": "Millimeter",
+        "value": "12.0"
+      },
+      "sizeText": null
+    }
+  ],
+  "_harvest": {
+    "harvest_run_id": "HR-LOCAL-20260311165919",
+    "harvested_at": "2026-03-11T16:59:19Z",
+    "source_url": "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
+    "adapter_version": "medtronic-table_wrapper_layout",
+    "normalization_version": "1.0.0",
+    "validation_issues": [],
+    "raw_html_sha256": "eeec9a33a740b4e2f1db481ba0faf04897aa56ede8df385f6bbb5f141b6699dd"
+  }
+}

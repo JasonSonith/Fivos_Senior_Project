@@ -1,0 +1,17 @@
+{
+  "brandName": "Zilver Flex® 35 Vascular Stent",
+  "versionModelNumber": "G61183",
+  "catalogNumber": "ZFV6-35-80-5-20",
+  "companyName": "Cook",
+  "deviceDescription": null,
+  "deviceSizes": null,
+  "_harvest": {
+    "harvest_run_id": "HR-LOCAL-20260311165915",
+    "harvested_at": "2026-03-11T16:59:15Z",
+    "source_url": "https://www.cookmedical.com/products/zilver-ptx-drug-eluting-peripheral-stent/",
+    "adapter_version": "cook-specifications_layout",
+    "normalization_version": "1.0.0",
+    "validation_issues": [],
+    "raw_html_sha256": "5fcf67d236f52046066cc9808d6c89d2fcf120c8592b51dc999cbf9b7ca1c8f0"
+  }
+}

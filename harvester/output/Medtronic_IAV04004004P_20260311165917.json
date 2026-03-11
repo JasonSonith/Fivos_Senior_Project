@@ -1,0 +1,34 @@
+{
+  "brandName": "IN.PACTTM AV drug-coated balloon",
+  "versionModelNumber": "IAV04004004P",
+  "catalogNumber": "IAV04004004P",
+  "companyName": "Medtronic",
+  "deviceDescription": "The IN.PACTTM AV drug-coated balloon (DCB) enables you to get ahead of AV fistula restenosis by treating the cause — not just the symptoms — of fistula stenosis, helping to preserve the fistula for dialysis.1It's the only device to achieve more than 80% primary patency†through six months.The IN.PACTTM AV paclitaxel-coated PTA balloon is indicated for percutaneous transluminal angioplasty, after appropriate vessel preparation, for the treatment of obstructive lesions up to 100 mm in length in the native arteriovenous dialysis fistulae with reference vessel diameters of 4 mm to 12 mm.",
+  "deviceSizes": [
+    {
+      "sizeType": "Diameter",
+      "size": {
+        "unit": "Millimeter",
+        "value": "8.0"
+      },
+      "sizeText": null
+    },
+    {
+      "sizeType": "Length",
+      "size": {
+        "unit": "Millimeter",
+        "value": "80.0"
+      },
+      "sizeText": null
+    }
+  ],
+  "_harvest": {
+    "harvest_run_id": "HR-LOCAL-20260311165917",
+    "harvested_at": "2026-03-11T16:59:17Z",
+    "source_url": "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
+    "adapter_version": "medtronic-table_wrapper_layout",
+    "normalization_version": "1.0.0",
+    "validation_issues": [],
+    "raw_html_sha256": "844a13f28c3435346883eb4e123040c2187f2cad49bd0443a94a0b598b1d42b6"
+  }
+}

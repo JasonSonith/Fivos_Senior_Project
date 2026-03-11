@@ -1,0 +1,34 @@
+{
+  "brandName": "R2P®MISAGO®RX Self-Expanding Peripheral Stent",
+  "versionModelNumber": "SXR06040R",
+  "catalogNumber": "SXR06040R",
+  "companyName": "Terumo",
+  "deviceDescription": null,
+  "deviceSizes": [
+    {
+      "sizeType": "Diameter",
+      "size": {
+        "unit": "Millimeter",
+        "value": "6.0"
+      },
+      "sizeText": null
+    },
+    {
+      "sizeType": "Length",
+      "size": {
+        "unit": "Millimeter",
+        "value": "40.0"
+      },
+      "sizeText": null
+    }
+  ],
+  "_harvest": {
+    "harvest_run_id": "HR-LOCAL-20260311165919",
+    "harvested_at": "2026-03-11T16:59:19Z",
+    "source_url": "https://www.terumois.com/products/stents/r2p-misago-peripheral-stent-system.html",
+    "adapter_version": "terumo-product_page_layout",
+    "normalization_version": "1.0.0",
+    "validation_issues": [],
+    "raw_html_sha256": "a9a17821501e4ac574c3e38824c3243a33e1800291c9dea3833fea873baad7a0"
+  }
+}

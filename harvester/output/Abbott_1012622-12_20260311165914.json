@@ -1,0 +1,42 @@
+{
+  "brandName": "Omnilink EliteTM",
+  "versionModelNumber": "1012622-12",
+  "catalogNumber": "1012622-12",
+  "companyName": "Abbott",
+  "deviceDescription": null,
+  "deviceSizes": [
+    {
+      "sizeType": "Diameter",
+      "size": {
+        "unit": "Millimeter",
+        "value": "6.0"
+      },
+      "sizeText": null
+    },
+    {
+      "sizeType": "Length",
+      "size": {
+        "unit": "Millimeter",
+        "value": "12.0"
+      },
+      "sizeText": null
+    },
+    {
+      "sizeType": "Pressure",
+      "size": {
+        "unit": "Millimeter Mercury",
+        "value": "4560.0"
+      },
+      "sizeText": null
+    }
+  ],
+  "_harvest": {
+    "harvest_run_id": "HR-LOCAL-20260311165914",
+    "harvested_at": "2026-03-11T16:59:14Z",
+    "source_url": "https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/esprit-bti-stent.html",
+    "adapter_version": "abbott-ordering_layout",
+    "normalization_version": "1.0.0",
+    "validation_issues": [],
+    "raw_html_sha256": "29d6efb9094dbf1e7ae335687a47f49dde0d08dce96cbde56d80b4536c492698"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "brandName": "SuperaTM Stent",
+  "versionModelNumber": "CONSTRUCTION SYSTEM",
+  "catalogNumber": "CONSTRUCTION SYSTEM",
+  "companyName": "Abbott",
+  "deviceDescription": null,
+  "deviceSizes": null,
+  "_harvest": {
+    "harvest_run_id": "HR-LOCAL-20260311165914",
+    "harvested_at": "2026-03-11T16:59:14Z",
+    "source_url": "https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/esprit-bti-stent.html",
+    "adapter_version": "abbott-ordering_layout",
+    "normalization_version": "1.0.0",
+    "validation_issues": [],
+    "raw_html_sha256": "3943db6a2a684d5dcc40eb76c20de62af24084d0c204da15b9a9f4e63b23c78d"
+  }
+}

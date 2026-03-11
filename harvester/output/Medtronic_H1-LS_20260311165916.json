@@ -1,0 +1,34 @@
+{
+  "brandName": "HawkOneTM directional atherectomy system",
+  "versionModelNumber": "H1-LS",
+  "catalogNumber": "H1-LS",
+  "companyName": "Medtronic",
+  "deviceDescription": "The HawkOneTM directional atherectomy system is intended for use in atherectomy of the peripheral vasculature. The HawkOneTM catheter is indicated for use in conjunction with the SpiderFXTM embolic protection device in the treatment of severely calcified lesions. The HawkOneTM catheter is NOT intended for use in the coronary, carotid, iliac, or renal vasculature.Risks may include but are not limited to: arterial perforation, embolism or arterial thrombosis, arterial dissection, arterial spasm, and vascular complications that could require surgical repair.",
+  "deviceSizes": [
+    {
+      "sizeType": "Diameter",
+      "size": {
+        "unit": "Millimeter",
+        "value": "50.0"
+      },
+      "sizeText": null
+    },
+    {
+      "sizeType": "Length",
+      "size": {
+        "unit": "Millimeter",
+        "value": "40.0"
+      },
+      "sizeText": null
+    }
+  ],
+  "_harvest": {
+    "harvest_run_id": "HR-LOCAL-20260311165916",
+    "harvested_at": "2026-03-11T16:59:16Z",
+    "source_url": "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
+    "adapter_version": "medtronic-table_wrapper_layout",
+    "normalization_version": "1.0.0",
+    "validation_issues": [],
+    "raw_html_sha256": "06529715f4b40114f313ea9b49cf037f7329a14e9648053a2576ef6aac84e32d"
+  }
+}

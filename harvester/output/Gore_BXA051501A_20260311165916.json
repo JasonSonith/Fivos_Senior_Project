@@ -1,0 +1,35 @@
+{
+  "brandName": "Catalogue numbers for GORE®VIABAHN®VBX Balloon Expandable Endoprosthesis",
+  "versionModelNumber": "BXA051501A",
+  "catalogNumber": "BXA051501A",
+  "companyName": "Gore",
+  "deviceDescription": null,
+  "deviceSizes": [
+    {
+      "sizeType": "Diameter",
+      "size": {
+        "unit": "Millimeter",
+        "value": "5.0"
+      },
+      "sizeText": null
+    },
+    {
+      "sizeType": "Length",
+      "size": {
+        "unit": "Millimeter",
+        "value": "8.0"
+      },
+      "sizeText": null
+    }
+  ],
+  "MRISafetyStatus": "MR Conditional",
+  "_harvest": {
+    "harvest_run_id": "HR-LOCAL-20260311165916",
+    "harvested_at": "2026-03-11T16:59:16Z",
+    "source_url": "https://www.goremedical.com/products/viabahn-vbx",
+    "adapter_version": "gore-specifications_layout",
+    "normalization_version": "1.0.0",
+    "validation_issues": [],
+    "raw_html_sha256": "5a28395bee021295b14292c919c4a24540f2902899aaf975e7e9faa348700b37"
+  }
+}

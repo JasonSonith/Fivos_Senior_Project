@@ -1,0 +1,17 @@
+{
+  "brandName": "EverFlexTM self-expanding peripheral stent system with EntrustTM delivery system",
+  "versionModelNumber": "EVD35-06-020-080",
+  "catalogNumber": "EVD35-06-020-080",
+  "companyName": "Medtronic",
+  "deviceDescription": "Simple. Predictable. Precise.The market leading EverFlexTM stent†offers precision, strength, and flexibility. Delivered by the physician-inspired EntrustTM delivery system, it offers a 5 Fr low profile, 0.035\" guidewire compatibility, triaxial design, and 150 cm catheter lengths. Medtronic also offers a traditional 6 Fr pin-pull delivery system.",
+  "deviceSizes": null,
+  "_harvest": {
+    "harvest_run_id": "HR-LOCAL-20260311165916",
+    "harvested_at": "2026-03-11T16:59:16Z",
+    "source_url": "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
+    "adapter_version": "medtronic-table_wrapper_layout",
+    "normalization_version": "1.0.0",
+    "validation_issues": [],
+    "raw_html_sha256": "32087d51b6093bf59bcdab29fa1c7904a2bd50f7fdc49923cce2cf390f4dfbd5"
+  }
+}

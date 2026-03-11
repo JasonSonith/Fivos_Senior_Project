@@ -1,0 +1,17 @@
+{
+  "brandName": "Zilver 518® Vascular Self-Expanding Stent",
+  "versionModelNumber": "G43769",
+  "catalogNumber": "ZIV5-18-125-6-20",
+  "companyName": "Cook",
+  "deviceDescription": null,
+  "deviceSizes": null,
+  "_harvest": {
+    "harvest_run_id": "HR-LOCAL-20260311165915",
+    "harvested_at": "2026-03-11T16:59:15Z",
+    "source_url": "https://www.cookmedical.com/products/zilver-ptx-drug-eluting-peripheral-stent/",
+    "adapter_version": "cook-specifications_layout",
+    "normalization_version": "1.0.0",
+    "validation_issues": [],
+    "raw_html_sha256": "138a7d5160dea8d3aa669deb60ec22fe8afeb473bfd5b66229757bb2f9a72122"
+  }
+}

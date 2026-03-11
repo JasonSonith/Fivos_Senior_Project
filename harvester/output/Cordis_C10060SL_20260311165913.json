@@ -1,0 +1,34 @@
+{
+  "brandName": "S.M.A.R.T. CONTROL Vascular Stent System",
+  "versionModelNumber": "C10060SL",
+  "catalogNumber": "C10060SL",
+  "companyName": "Cordis",
+  "deviceDescription": null,
+  "deviceSizes": [
+    {
+      "sizeType": "Diameter",
+      "size": {
+        "unit": "Millimeter",
+        "value": "10.0"
+      },
+      "sizeText": null
+    },
+    {
+      "sizeType": "Length",
+      "size": {
+        "unit": "Millimeter",
+        "value": "60.0"
+      },
+      "sizeText": null
+    }
+  ],
+  "_harvest": {
+    "harvest_run_id": "HR-LOCAL-20260311165913",
+    "harvested_at": "2026-03-11T16:59:13Z",
+    "source_url": "https://www.cordis.com/en-us/peripheral-intervention/palmaz-genesis-peripheral-stent.html",
+    "adapter_version": "cordis-product_page_layout",
+    "normalization_version": "1.0.0",
+    "validation_issues": [],
+    "raw_html_sha256": "6a6cfbbd80a3dfe44a1082ff1f0b1cc5cb23f9eb60cba3d5a73459a4dd6f89c5"
+  }
+}
