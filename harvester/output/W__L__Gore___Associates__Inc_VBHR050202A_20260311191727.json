@@ -1,0 +1,18 @@
+{
+  "brandName": "Catalogue numbers for GOREVIABAHNEndoprosthesis with Heparin Bioactive Surface and GOREVIABAHNEndoprosthesis",
+  "versionModelNumber": "VBHR050202A",
+  "catalogNumber": "VBHR050202A",
+  "companyName": "W. L. Gore & Associates, Inc.",
+  "deviceDescription": null,
+  "deviceSizes": null,
+  "MRISafetyStatus": "MR Conditional",
+  "_harvest": {
+    "harvest_run_id": "HR-LOCAL-20260311191727",
+    "harvested_at": "2026-03-11T19:17:27Z",
+    "source_url": "https://www.goremedical.com/products/viabahn-vbx",
+    "adapter_version": "gore-specifications_layout",
+    "normalization_version": "1.0.0",
+    "validation_issues": [],
+    "raw_html_sha256": "8c371bb248c8f6c5fc03180d83439357295ab2fba3180f52a0bb79815e2877e5"
+  }
+}

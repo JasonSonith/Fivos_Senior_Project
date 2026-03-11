@@ -1,0 +1,37 @@
+manufacturer: gore
+product_type: specifications_layout
+
+base_url: https://www.goremedical.com
+
+seed_urls:
+  - https://www.goremedical.com/products/viabahn-vbx
+  - https://www.goremedical.com/products/viabahn
+
+brands:
+  - VIABAHN VBX
+  - VIABAHN
+  - TIGRIS VASCULAR STENT
+
+extraction:
+  # Product title heading
+  device_name: "h1.heading.heading--2"
+
+  # Catalogue numbers in dark-themed tables
+  model_number: "table.wf-dark tbody tr td:first-child"
+
+  # Catalog numbers (same column as model number for Gore)
+  catalog_number: "table.wf-dark tbody tr td:first-child"
+
+  # Specifications in dark-themed table containers
+  specs_container: "div.table__container table.wf-dark"
+
+  # Warning/regulatory text for boolean field extraction
+  warning_text: "div.disclaimer"
+
+  # MRI safety badge
+  MRISafetyStatus: ".badge--MR .badge__text"
+
+# Notes for developers:
+# Gore Medical pages use a heading--2 class for product titles and
+# store specifications in dark-themed tables (table.wf-dark) within
+# div.table__container elements. Catalogue numbers appear in table rows.

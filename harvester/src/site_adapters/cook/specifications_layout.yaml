@@ -1,0 +1,34 @@
+manufacturer: cook
+product_type: specifications_layout
+
+base_url: https://www.cookmedical.com
+
+seed_urls:
+  - https://www.cookmedical.com/products/zilver-ptx-drug-eluting-peripheral-stent/
+  - https://www.cookmedical.com/products/zilver-635-vascular-self-expanding-stent/
+  - https://www.cookmedical.com/products/zilver-518-peripheral-self-expanding-stent/
+  - https://www.cookmedical.com/products/zilver-flex-35/
+
+brands:
+  - ZILVER PTX
+  - ZILVER 635
+  - ZILVER 518
+  - ZILVER FLEX 35
+
+extraction:
+  # Product title with span inside h1
+  device_name: "h1.page-title span"
+
+  # Order numbers in specifications table
+  model_number: "table.specifications-table tbody tr td[data-swiftype-name=\"gpn-string\"]"
+
+  # Catalog numbers in second column
+  catalog_number: "table.specifications-table tbody tr td:nth-child(2)"
+
+  # Specifications in boxed table layout
+  specs_container: "div.box.specifications table.specifications-table"
+
+# Notes for developers:
+# Cook Medical pages use a specifications box layout with a dedicated
+# table class. Order numbers appear in the first column of the
+# specifications-table. The page title uses a span within h1.page-title.

@@ -1,5 +1,5 @@
-#docs/*
-#CLAUDE.md
+docs/*
+CLAUDE.md
 .env
 .env.*
 venv/

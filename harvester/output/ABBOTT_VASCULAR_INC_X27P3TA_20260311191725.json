@@ -1,0 +1,18 @@
+{
+  "brandName": "Esprit BTK",
+  "versionModelNumber": "X27P3TA",
+  "catalogNumber": "X27P3TA",
+  "companyName": "ABBOTT VASCULAR INC.",
+  "deviceDescription": null,
+  "deviceSizes": null,
+  "singleUse": true,
+  "_harvest": {
+    "harvest_run_id": "HR-LOCAL-20260311191725",
+    "harvested_at": "2026-03-11T19:17:25Z",
+    "source_url": "https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/esprit-bti-stent.html",
+    "adapter_version": "abbott-ordering_layout",
+    "normalization_version": "1.0.0",
+    "validation_issues": [],
+    "raw_html_sha256": "65a835dbf776e8cc5e1f220fde3bd2f62db2c55a92870265ebc07dc265d63cff"
+  }
+}
