@@ -63,10 +63,12 @@ class TestProcessSingle:
 
         record = process_single(str(FIXTURE_HTML), adapter)
         assert record is not None
-        assert "device_name" in record
-        assert "IN.PACT" in record["device_name"]
-        assert "harvest_run_id" in record
-        assert "raw_html_sha256" in record
+        # GUDID-aligned field names
+        assert "brandName" in record
+        assert "IN.PACT" in record["brandName"]
+        assert "_harvest" in record
+        assert "harvest_run_id" in record["_harvest"]
+        assert "raw_html_sha256" in record["_harvest"]
 
     def test_process_single_returns_none_for_empty_html(self, tmp_path):
         empty_file = tmp_path / "empty.html"

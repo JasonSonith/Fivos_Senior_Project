@@ -31,8 +31,6 @@ extraction:
   # Specifications contained in ordering tables
   specs_container: "section.cmp-text table"
 
-  # Dimensions parsed from specs table
-  dimensions: ""
 
 # Notes for developers:
 # Abbott Vascular pages use a hero banner layout with ordering information

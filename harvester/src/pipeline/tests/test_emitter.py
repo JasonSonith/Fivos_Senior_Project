@@ -3,7 +3,11 @@ import json
 import os
 import re
 
-from pipeline.emitter import package_record, write_record_json, write_batch_json, _sanitize_filename, NORMALIZATION_VERSION
+from pipeline.emitter import (
+    package_record, package_gudid_record, _build_device_sizes,
+    write_record_json, write_batch_json, _sanitize_filename,
+    NORMALIZATION_VERSION, GUDID_UNIT_MAP,
+)
 
 
 SAMPLE_RECORD = {
@@ -76,6 +80,123 @@ class TestPackageRecord:
         original_copy = dict(original)
         package_record(original, SAMPLE_HTML, SAMPLE_URL, SAMPLE_ADAPTER_VERSION)
         assert original == original_copy
+
+
+GUDID_SAMPLE_RECORD = {
+    "device_name": "IN.PACT Admiral",
+    "manufacturer": "Medtronic",
+    "model_number": "ABC123",
+    "diameter": {"value": 6.0, "unit": "mm", "is_range": False},
+    "length": {"value": 120.0, "unit": "mm", "is_range": False},
+}
+
+
+class TestBuildDeviceSizes:
+    def test_basic_sizes(self):
+        sizes = _build_device_sizes(GUDID_SAMPLE_RECORD)
+        assert sizes is not None
+        assert len(sizes) == 2
+        assert sizes[0]["sizeType"] == "Diameter"
+        assert sizes[0]["size"]["unit"] == "Millimeter"
+        assert sizes[0]["size"]["value"] == "6.0"
+        assert sizes[0]["sizeText"] is None
+        assert sizes[1]["sizeType"] == "Length"
+        assert sizes[1]["size"]["unit"] == "Millimeter"
+        assert sizes[1]["size"]["value"] == "120.0"
+
+    def test_no_measurements(self):
+        record = {"device_name": "Test", "manufacturer": "TestCo"}
+        assert _build_device_sizes(record) is None
+
+    def test_none_measurements(self):
+        record = {"diameter": None, "length": None}
+        assert _build_device_sizes(record) is None
+
+    def test_raw_string_measurement(self):
+        record = {"diameter": "6.0 mm"}
+        sizes = _build_device_sizes(record)
+        assert sizes is not None
+        assert sizes[0]["sizeType"] == "Diameter"
+        assert sizes[0]["size"] is None
+        assert sizes[0]["sizeText"] == "6.0 mm"
+
+    def test_unit_mapping(self):
+        record = {"weight": {"value": 500, "unit": "g", "is_range": False}}
+        sizes = _build_device_sizes(record)
+        assert sizes[0]["size"]["unit"] == "Gram"
+
+
+class TestPackageGudidRecord:
+    def test_field_mapping(self):
+        result = package_gudid_record(
+            GUDID_SAMPLE_RECORD, SAMPLE_HTML, SAMPLE_URL,
+            SAMPLE_ADAPTER_VERSION, SAMPLE_RUN_ID,
+        )
+        assert result["brandName"] == "IN.PACT Admiral"
+        assert result["versionModelNumber"] == "ABC123"
+        assert result["companyName"] == "Medtronic"
+        assert result["catalogNumber"] == "ABC123"  # falls back to model_number
+
+    def test_harvest_metadata_nested(self):
+        result = package_gudid_record(
+            GUDID_SAMPLE_RECORD, SAMPLE_HTML, SAMPLE_URL,
+            SAMPLE_ADAPTER_VERSION, SAMPLE_RUN_ID,
+        )
+        assert "_harvest" in result
+        h = result["_harvest"]
+        assert h["harvest_run_id"] == SAMPLE_RUN_ID
+        assert h["source_url"] == SAMPLE_URL
+        assert h["adapter_version"] == SAMPLE_ADAPTER_VERSION
+        assert h["normalization_version"] == NORMALIZATION_VERSION
+        assert "harvested_at" in h
+        assert "raw_html_sha256" in h
+
+    def test_device_sizes_included(self):
+        result = package_gudid_record(
+            GUDID_SAMPLE_RECORD, SAMPLE_HTML, SAMPLE_URL,
+            SAMPLE_ADAPTER_VERSION, SAMPLE_RUN_ID,
+        )
+        assert result["deviceSizes"] is not None
+        assert len(result["deviceSizes"]) == 2
+
+    def test_null_device_sizes_when_no_measurements(self):
+        result = package_gudid_record(
+            SAMPLE_RECORD, SAMPLE_HTML, SAMPLE_URL,
+            SAMPLE_ADAPTER_VERSION, SAMPLE_RUN_ID,
+        )
+        assert result["deviceSizes"] is None
+
+    def test_regulatory_fields_passed_through(self):
+        record = {**SAMPLE_RECORD, "singleUse": True, "rx": True}
+        result = package_gudid_record(
+            record, SAMPLE_HTML, SAMPLE_URL, SAMPLE_ADAPTER_VERSION, SAMPLE_RUN_ID,
+        )
+        assert result["singleUse"] is True
+        assert result["rx"] is True
+
+    def test_mri_status_passed_through(self):
+        record = {**SAMPLE_RECORD, "MRISafetyStatus": "MR Conditional"}
+        result = package_gudid_record(
+            record, SAMPLE_HTML, SAMPLE_URL, SAMPLE_ADAPTER_VERSION, SAMPLE_RUN_ID,
+        )
+        assert result["MRISafetyStatus"] == "MR Conditional"
+
+    def test_original_record_not_mutated(self):
+        original = dict(GUDID_SAMPLE_RECORD)
+        package_gudid_record(GUDID_SAMPLE_RECORD, SAMPLE_HTML, SAMPLE_URL, SAMPLE_ADAPTER_VERSION)
+        assert GUDID_SAMPLE_RECORD == original
+
+    def test_default_harvest_run_id(self):
+        result = package_gudid_record(
+            SAMPLE_RECORD, SAMPLE_HTML, SAMPLE_URL, SAMPLE_ADAPTER_VERSION,
+        )
+        assert result["_harvest"]["harvest_run_id"].startswith("HR-LOCAL-")
+
+    def test_validation_issues_default_empty(self):
+        result = package_gudid_record(
+            SAMPLE_RECORD, SAMPLE_HTML, SAMPLE_URL, SAMPLE_ADAPTER_VERSION,
+        )
+        assert result["_harvest"]["validation_issues"] == []
 
 
 class TestWriteRecordJson:

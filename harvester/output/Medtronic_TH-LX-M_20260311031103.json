@@ -3,10 +3,18 @@
   "model_number": "TH-LX-M",
   "specs_container": "Model nameLX-MSX-CSS-CLItem numberTH-LX-MTHS-SX-CTHS-SS-CLVessel diameter (mm)3.5–7.02.0–4.02.0–4.0Sheath compatibility‡(Fr)7/866Crossing profile (mm)2.72.22.2Working length§(cm)113135149Effective length◊(cm)104129145Tip length (cm)9.05.93.9Maximum cut length (mm)754020Packing deviceXX—",
   "dimensions": null,
+  "diameter": {
+    "value": 75.0,
+    "unit": "mm"
+  },
+  "length": {
+    "value": 20.0,
+    "unit": "mm"
+  },
   "source_url": "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
   "manufacturer": "Medtronic",
-  "harvest_run_id": "HR-LOCAL-20260310184541",
-  "harvested_at": "2026-03-10T18:45:41Z",
+  "harvest_run_id": "HR-LOCAL-20260311031103",
+  "harvested_at": "2026-03-11T03:11:03Z",
   "adapter_version": "medtronic-table_wrapper_layout",
   "normalization_version": "1.0.0",
   "validation_issues": [],

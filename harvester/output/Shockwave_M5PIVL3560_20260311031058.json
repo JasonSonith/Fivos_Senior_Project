@@ -3,10 +3,18 @@
   "model_number": "M5PIVL3560",
   "specs_container": "Catalog NumberDiameter (mm)Balloon Length (mm)Sheath CompatibilityWorking Length (cm)Balloon Crossing Profile Range (in)Pulses/CyclePulses (max)M5PIVL35603.5606 Fr1350.05430300M5PIVL40604.0606 Fr1350.05430300M5PIVL45604.5606 Fr1350.05730300M5PIVL50605.0606 Fr1350.06130300M5PIVL55605.5606 Fr1350.06230300M5PIVL60606.0606 Fr1350.06530300M5PIVL65606.5606 Fr*1350.06630300M5PIVL70607.0606 Fr*1350.06830300M5PIVL80608.0607 Fr1350.07430300",
   "dimensions": null,
+  "diameter": {
+    "value": 3.5,
+    "unit": "mm"
+  },
+  "length": {
+    "value": 60.0,
+    "unit": "mm"
+  },
   "source_url": "https://shockwavemedical.com/providers/peripheral/shockwave-m5-peripheral-ivl-catheter/",
   "manufacturer": "Shockwave",
-  "harvest_run_id": "HR-LOCAL-20260310184533",
-  "harvested_at": "2026-03-10T18:45:33Z",
+  "harvest_run_id": "HR-LOCAL-20260311031058",
+  "harvested_at": "2026-03-11T03:10:58Z",
   "adapter_version": "shockwave-product_page_layout",
   "normalization_version": "1.0.0",
   "validation_issues": [],

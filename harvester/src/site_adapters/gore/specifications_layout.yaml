@@ -19,11 +19,14 @@ extraction:
   # Catalogue numbers in dark-themed tables
   model_number: "table.wf-dark tbody tr td:first-child"
 
+  # Catalog numbers (same column as model number for Gore)
+  catalog_number: "table.wf-dark tbody tr td:first-child"
+
   # Specifications in dark-themed table containers
   specs_container: "div.table__container table.wf-dark"
 
-  # Dimensions parsed from specs table
-  dimensions: ""
+  # MRI safety badge
+  MRISafetyStatus: ".badge--MR .badge__text"
 
 # Notes for developers:
 # Gore Medical pages use a heading--2 class for product titles and

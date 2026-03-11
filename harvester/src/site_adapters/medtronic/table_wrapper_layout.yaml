@@ -15,11 +15,14 @@ extraction:
   # Model/catalog numbers found in table links
   model_number: ".table-wrapper .cfnDetailLink a"
 
+  # Product description
+  description: ".description-text .descnotes"
+
   # Specifications are contained in tables inside div.table-wrapper
   specs_container: ".table-wrapper table"
 
-  # Dimensions will be parsed later from the specs table
-  dimensions: ""
+  # Warning/precaution text for regulatory field extraction
+  warning_text: "ul li"
 
 # Notes for developers:
 # Medtronic pages using this layout store specifications inside

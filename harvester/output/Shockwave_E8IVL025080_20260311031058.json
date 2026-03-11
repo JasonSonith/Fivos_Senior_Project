@@ -3,10 +3,18 @@
   "model_number": "E8IVL025080",
   "specs_container": "Catalog NumberBalloon Diameter (mm)Balloon Length (mm)Sheath Compatibility (Fr)Working Length (cm)Pulses/CyclesCyclesPulses (max)Balloon Crossing ProfileE8IVL0250802.58051504010400.050E8IVL0300803.08051504010400.051E8IVL0350803.58051504010400.053E8IVL0400804.08051504010400.055E8IVL0500805.08061504010400.061E8IVL0600806.08061504010400.066",
   "dimensions": null,
+  "diameter": {
+    "value": 2.5,
+    "unit": "mm"
+  },
+  "length": {
+    "value": 80.0,
+    "unit": "mm"
+  },
   "source_url": "https://shockwavemedical.com/providers/peripheral/shockwave-m5-peripheral-ivl-catheter/",
   "manufacturer": "Shockwave",
-  "harvest_run_id": "HR-LOCAL-20260310184533",
-  "harvested_at": "2026-03-10T18:45:33Z",
+  "harvest_run_id": "HR-LOCAL-20260311031058",
+  "harvested_at": "2026-03-11T03:10:58Z",
   "adapter_version": "shockwave-product_page_layout",
   "normalization_version": "1.0.0",
   "validation_issues": [],

@@ -28,15 +28,20 @@ from normalizers.model_numbers import clean_model_number
 from normalizers.unit_conversions import normalize_measurement, normalize_manufacturer
 from normalizers.dates import normalize_date
 from validators.record_validator import validate_record
-from pipeline.emitter import package_record, write_record_json
+from pipeline.emitter import package_gudid_record, write_record_json
+from pipeline.dimension_parser import parse_dimensions_from_specs
+from pipeline.regulatory_parser import parse_regulatory_from_text
+from normalizers.booleans import normalize_boolean, normalize_mri_status
 
 logger = logging.getLogger(__name__)
 
 # Field-type classification for normalizer routing
-TEXT_FIELDS = {"device_name", "description", "brand_name", "product_type", "specs_container"}
+TEXT_FIELDS = {"device_name", "description", "brand_name", "product_type", "specs_container", "warning_text"}
 MODEL_FIELDS = {"model_number", "catalog_number", "sku"}
 DATE_FIELDS = {"approval_date", "clearance_date", "expiration_date"}
 MEASUREMENT_FIELDS = {"length", "width", "height", "diameter", "weight", "volume", "pressure"}
+BOOLEAN_FIELDS = {"singleUse", "deviceSterile", "sterilizationPriorToUse", "rx", "otc"}
+ENUM_FIELDS = {"MRISafetyStatus"}
 
 
 def load_adapter(yaml_path: str) -> dict:
@@ -183,8 +188,38 @@ def process_single(
         # 3. Extract
         raw_fields = extract_fields(parsed, adapter, "html")
 
+        # 3.5 Parse dimensions from specs_container
+        # Re-extract specs table with tab separators so cells are distinguishable
+        specs_selector = adapter.get("extraction", {}).get("specs_container", "")
+        specs_tabbed = None
+        if specs_selector:
+            element = parsed.select_one(specs_selector)
+            if element:
+                specs_tabbed = element.get_text(separator="\t")
+        parsed_dims = parse_dimensions_from_specs(
+            specs_tabbed or raw_fields.get("specs_container"),
+            model_number=raw_fields.get("model_number"),
+            adapter=adapter,
+        )
+        for field, value in parsed_dims.items():
+            if field in MEASUREMENT_FIELDS and raw_fields.get(field) is None:
+                raw_fields[field] = value
+
         # 4. Normalize
         normalized = normalize_record(raw_fields, adapter)
+
+        # 4.5 Parse regulatory fields from warning_text
+        warning_text = normalized.get("warning_text")
+        if warning_text:
+            regulatory = parse_regulatory_from_text(warning_text)
+            for field, value in regulatory.items():
+                if field not in normalized:
+                    normalized[field] = value
+
+        # 4.6 Normalize MRI safety status if present
+        mri_raw = normalized.get("MRISafetyStatus")
+        if mri_raw and isinstance(mri_raw, str):
+            normalized["MRISafetyStatus"] = normalize_mri_status(mri_raw)
 
         # Resolve source URL
         if source_url is None:
@@ -206,9 +241,9 @@ def process_single(
             logger.warning("process_single: record rejected for %s: %s", html_path, issues)
             return None
 
-        # 6. Package
+        # 6. Package with GUDID-aligned field names
         adapter_version = f"{adapter.get('manufacturer', 'unknown')}-{adapter.get('product_type', 'unknown')}"
-        record = package_record(
+        record = package_gudid_record(
             normalized_record=normalized,
             raw_html=raw_html,
             source_url=source_url,

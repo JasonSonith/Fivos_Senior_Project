@@ -3,10 +3,14 @@
   "model_number": "RONYX20008UX",
   "specs_container": "Stent designContinuous sinusoid technology with core wire technologyPolymer and drugBioLinxTM polymer and zotarolimusDelivery systemResolute OnyxTM delivery systemCatheter distal OD (Fr)2.00–4.00 mm: 2.74.50–5.00 mm: 3.2Catheter distal OD (in)2.00–4.00 mm: 0.0364.50–5.00 mm: 0.042CrownsSmall vessel (2.00–2.50 mm): 6.5Medium vessel (2.75–3.00 mm): 8.5Large vessel (3.50–4.00 mm): 9.5Extra-large vessel (4.50–5.00 mm): 10.5Stent materialShell: Cobalt alloy, Core: Pt–IrStrut thickness2.00–4.00 mm: 81 μm (0.0032 in)4.50–5.00 mm: 91 μm (0.0036 in)Base coatingParylene CPolymer coatingBioLinxTM polymerDrug densityZotarolimus (~1.6 μg/mm2)Balloon materialEnhanced FulcrumTM materialPlatformRX (2.00–5.00 mm) and OTW (2.00–4.00 mm)Catheter length (cm)140Nominal pressure (atm)12Rated burst pressure (atm)2.00–4.00 mm: 184.50–5.00 mm: 16Marker band materialPlatinum iridium",
   "dimensions": null,
+  "pressure": {
+    "value": 106400.0,
+    "unit": "mmHg"
+  },
   "source_url": "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
   "manufacturer": "Medtronic",
-  "harvest_run_id": "HR-LOCAL-20260310184540",
-  "harvested_at": "2026-03-10T18:45:40Z",
+  "harvest_run_id": "HR-LOCAL-20260311031102",
+  "harvested_at": "2026-03-11T03:11:02Z",
   "adapter_version": "medtronic-table_wrapper_layout",
   "normalization_version": "1.0.0",
   "validation_issues": [],

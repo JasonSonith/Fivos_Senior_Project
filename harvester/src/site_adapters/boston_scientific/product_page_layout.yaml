@@ -26,8 +26,6 @@ extraction:
   # Generic table selector as placeholder
   specs_container: "table"
 
-  # Dimensions parsed from specs table
-  dimensions: ""
 
 # Notes for developers:
 # Boston Scientific pages have NOT been scraped yet. All selectors above

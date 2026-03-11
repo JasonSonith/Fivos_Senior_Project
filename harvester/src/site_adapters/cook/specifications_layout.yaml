@@ -22,11 +22,11 @@ extraction:
   # Order numbers in specifications table
   model_number: "table.specifications-table tbody tr td[data-swiftype-name=\"gpn-string\"]"
 
+  # Catalog numbers in second column
+  catalog_number: "table.specifications-table tbody tr td:nth-child(2)"
+
   # Specifications in boxed table layout
   specs_container: "div.box.specifications table.specifications-table"
-
-  # Dimensions parsed from specs table
-  dimensions: ""
 
 # Notes for developers:
 # Cook Medical pages use a specifications box layout with a dedicated

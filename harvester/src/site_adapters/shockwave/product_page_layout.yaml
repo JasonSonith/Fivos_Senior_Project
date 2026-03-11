@@ -25,8 +25,6 @@ extraction:
   # Specifications in table containers
   specs_container: "div.table-container table"
 
-  # Dimensions parsed from specs table
-  dimensions: ""
 
 # Notes for developers:
 # Shockwave Medical pages use a main-heading class for the product title

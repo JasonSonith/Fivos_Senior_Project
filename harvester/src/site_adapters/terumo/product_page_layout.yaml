@@ -19,8 +19,6 @@ extraction:
   # Specifications in rich text table containers
   specs_container: "div.cmp-richtext table"
 
-  # Dimensions parsed from specs table
-  dimensions: ""
 
 # Notes for developers:
 # Terumo pages use a light-green bar heading for product titles and

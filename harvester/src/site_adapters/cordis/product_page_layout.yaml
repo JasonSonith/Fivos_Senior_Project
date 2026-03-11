@@ -18,11 +18,11 @@ extraction:
   # SKU numbers in scrollable tables
   model_number: "tbody.list td.sort-sku"
 
+  # Product description
+  description: "div.product-description p"
+
   # Specifications in product table
   specs_container: "table"
-
-  # Dimensions parsed from specs table
-  dimensions: ""
 
 # Notes for developers:
 # Cordis pages use a hero section with white text for the product title.
