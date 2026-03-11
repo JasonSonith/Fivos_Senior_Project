@@ -11,6 +11,39 @@ INVISIBLE_CHARS = re.compile(
     r"]"
 )
 
+_BRAND_SUFFIX_RE = re.compile(
+    r"\s+(?:drug[- ](?:coated|eluting)\s+(?:\w+\s+)*?(?:balloon|stent)(?:\s+system)?"
+    r"|(?:self[- ]expanding|balloon[- ]expandable)\s+(?:\w+\s+)*?(?:stent|endoprosthesis)(?:\s+system)?"
+    r"|(?:peripheral|coronary|vascular)\s+(?:IVL\s+)?(?:catheter|stent)(?:\s+system)?"
+    r"|directional\s+atherectomy\s+system"
+    r"|endoprosthesis(?:\s+with\s+heparin)?"
+    r"|(?:vascular\s+)?stent\s+system"
+    r"|(?:\(DES\)))",
+    re.IGNORECASE,
+)
+
+_TM_SYMBOLS_RE = re.compile(r"[™®©]|(?<=\w)TM(?=\s|$|\b)")
+
+
+def clean_brand_name(raw: str) -> str | None:
+    """Clean a brand name for GUDID alignment.
+
+    Strips ™/®/©/TM symbols and trailing descriptive text
+    (e.g. 'drug-eluting stent', 'directional atherectomy system').
+    """
+    if not raw or not isinstance(raw, str):
+        return None
+    text = normalize_text(raw)
+    if not text:
+        return None
+    # Strip TM/®/© symbols
+    text = _TM_SYMBOLS_RE.sub("", text)
+    # Strip trailing descriptive suffixes
+    text = _BRAND_SUFFIX_RE.sub("", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text if text else None
+
+
 def normalize_text(raw: str) -> str | None:
     """Clean a general text field.
     Steps: HTML decode → NFKC normalize → strip invisible chars → collapse whitespace.

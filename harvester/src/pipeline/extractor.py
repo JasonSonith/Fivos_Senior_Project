@@ -40,6 +40,11 @@ def extract_fields(parsed_data, adapter: dict, fmt: str) -> dict:
     for field_name, selector in selectors.items():
         value = None
 
+        if not selector or not str(selector).strip():
+            logger.warning("Field '%s' has empty selector, skipping", field_name)
+            raw_fields[field_name] = None
+            continue
+
         try:
             if fmt == "html":
                 if not isinstance(parsed_data, BeautifulSoup):

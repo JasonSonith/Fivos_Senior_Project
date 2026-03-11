@@ -1,0 +1,17 @@
+{
+  "brandName": "Zilver PTX",
+  "versionModelNumber": "G38404",
+  "catalogNumber": "ZISV6-35-125-5-40-PTX",
+  "companyName": "COOK IRELAND LTD",
+  "deviceDescription": null,
+  "deviceSizes": null,
+  "_harvest": {
+    "harvest_run_id": "HR-LOCAL-20260311191726",
+    "harvested_at": "2026-03-11T19:17:26Z",
+    "source_url": "https://www.cookmedical.com/products/zilver-ptx-drug-eluting-peripheral-stent/",
+    "adapter_version": "cook-specifications_layout",
+    "normalization_version": "1.0.0",
+    "validation_issues": [],
+    "raw_html_sha256": "3f074942b08d499b537ee693f464c2b3a5438fe0fc3da9fe61f9bd03ff3a9d35"
+  }
+}

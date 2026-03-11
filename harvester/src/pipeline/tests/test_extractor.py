@@ -56,6 +56,21 @@ class TestExtractFieldsHtml:
         result = extract_fields(soup, {}, "html")
         assert result == {}
 
+    def test_empty_string_selector_skipped(self):
+        """Empty selectors (e.g. dimensions: '') should yield None, not crash."""
+        soup = _soup('<html><body><h1 class="product-title">Stent X</h1></body></html>')
+        adapter = {
+            "extraction": {
+                "device_name": "h1.product-title",
+                "dimensions": "",
+                "weight": "   ",
+            }
+        }
+        result = extract_fields(soup, adapter, "html")
+        assert result["device_name"] == "Stent X"
+        assert result["dimensions"] is None
+        assert result["weight"] is None
+
 
 # ---------------------------------------------------------------------------
 # JSON extraction

@@ -61,11 +61,28 @@ class TestMedtronicInpactPipeline:
         sanitized = sanitize_html(self.raw_html)
         soup = parse_html(sanitized)
         fields = extract_fields(soup, MEDTRONIC_INPACT_ADAPTER, "html")
+        # Validator supports both old and new field names
         record = {
             "device_name": normalize_text(fields["device_name"]),
             "manufacturer": "Medtronic",
             "model_number": clean_model_number(fields["model_number"]),
             "source_url": "https://www.medtronic.com/en-us/products/product.IPU04004013P.html",
+        }
+        is_valid, issues = validate_record(record)
+        assert is_valid, f"Record invalid: {issues}"
+
+    def test_validate_gudid_record_passes(self):
+        """Validate a GUDID-aligned record structure."""
+        sanitized = sanitize_html(self.raw_html)
+        soup = parse_html(sanitized)
+        fields = extract_fields(soup, MEDTRONIC_INPACT_ADAPTER, "html")
+        record = {
+            "brandName": normalize_text(fields["device_name"]),
+            "companyName": "Medtronic",
+            "versionModelNumber": clean_model_number(fields["model_number"]),
+            "_harvest": {
+                "source_url": "https://www.medtronic.com/en-us/products/product.IPU04004013P.html",
+            },
         }
         is_valid, issues = validate_record(record)
         assert is_valid, f"Record invalid: {issues}"

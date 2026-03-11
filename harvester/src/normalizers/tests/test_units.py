@@ -197,106 +197,113 @@ class TestEdgeCases:
 
 class TestManufacturerNormalization:
 
-    # Canonical name pass-through
+    # Canonical GUDID legal entity names
     def test_canonical_medtronic(self):
-        assert normalize_manufacturer('Medtronic') == 'Medtronic'
+        assert normalize_manufacturer('Medtronic') == 'MEDTRONIC, INC.'
 
     def test_canonical_abbott_vascular(self):
-        assert normalize_manufacturer('Abbott Vascular') == 'Abbott Vascular'
+        assert normalize_manufacturer('Abbott Vascular') == 'ABBOTT VASCULAR INC.'
 
     def test_canonical_boston_scientific(self):
-        assert normalize_manufacturer('Boston Scientific') == 'Boston Scientific'
+        assert normalize_manufacturer('Boston Scientific') == 'Boston Scientific Corporation'
 
     def test_canonical_shockwave_medical(self):
-        assert normalize_manufacturer('Shockwave Medical') == 'Shockwave Medical'
+        assert normalize_manufacturer('Shockwave Medical') == 'Shockwave Medical, Inc.'
 
     def test_canonical_cook(self):
-        assert normalize_manufacturer('Cook') == 'Cook'
+        assert normalize_manufacturer('Cook') == 'COOK IRELAND LTD'
 
     def test_canonical_wl_gore(self):
-        assert normalize_manufacturer('W L Gore & Associates') == 'W L Gore & Associates'
+        assert normalize_manufacturer('W L Gore & Associates') == 'W. L. Gore & Associates, Inc.'
 
     def test_canonical_cordis(self):
-        assert normalize_manufacturer('Cordis') == 'Cordis'
+        assert normalize_manufacturer('Cordis') == 'Cordis US Corp.'
 
     def test_canonical_terumo(self):
-        assert normalize_manufacturer('Terumo') == 'Terumo'
+        assert normalize_manufacturer('Terumo') == 'TERUMO CORPORATION'
 
     # Common aliases — Medtronic
     def test_medtronic_inc(self):
-        assert normalize_manufacturer('Medtronic Inc.') == 'Medtronic'
+        assert normalize_manufacturer('Medtronic Inc.') == 'MEDTRONIC, INC.'
 
     def test_medtronic_plc(self):
-        assert normalize_manufacturer('Medtronic plc') == 'Medtronic'
+        assert normalize_manufacturer('Medtronic plc') == 'MEDTRONIC, INC.'
+
+    # Covidien (some Medtronic devices listed under Covidien in GUDID)
+    def test_covidien(self):
+        assert normalize_manufacturer('Covidien') == 'Covidien LP'
+
+    def test_covidien_lp(self):
+        assert normalize_manufacturer('Covidien LP') == 'Covidien LP'
 
     # Common aliases — Abbott Vascular
     def test_abbott(self):
-        assert normalize_manufacturer('Abbott') == 'Abbott Vascular'
+        assert normalize_manufacturer('Abbott') == 'ABBOTT VASCULAR INC.'
 
     def test_st_jude_medical(self):
-        assert normalize_manufacturer('St. Jude Medical') == 'Abbott Vascular'
+        assert normalize_manufacturer('St. Jude Medical') == 'ABBOTT VASCULAR INC.'
 
     # Common aliases — Boston Scientific
     def test_boston_scientific_corporation(self):
-        assert normalize_manufacturer('Boston Scientific Corporation') == 'Boston Scientific'
+        assert normalize_manufacturer('Boston Scientific Corporation') == 'Boston Scientific Corporation'
 
     def test_bsc(self):
-        assert normalize_manufacturer('BSC') == 'Boston Scientific'
+        assert normalize_manufacturer('BSC') == 'Boston Scientific Corporation'
 
     # Common aliases — Shockwave Medical
     def test_shockwave(self):
-        assert normalize_manufacturer('Shockwave') == 'Shockwave Medical'
+        assert normalize_manufacturer('Shockwave') == 'Shockwave Medical, Inc.'
 
     def test_shockwave_medical_inc(self):
-        assert normalize_manufacturer('Shockwave Medical Inc') == 'Shockwave Medical'
+        assert normalize_manufacturer('Shockwave Medical Inc') == 'Shockwave Medical, Inc.'
 
     # Common aliases — Cook
     def test_cook_medical(self):
-        assert normalize_manufacturer('Cook Medical') == 'Cook'
+        assert normalize_manufacturer('Cook Medical') == 'COOK IRELAND LTD'
 
     def test_cook_medical_llc(self):
-        assert normalize_manufacturer('Cook Medical LLC') == 'Cook'
+        assert normalize_manufacturer('Cook Medical LLC') == 'COOK IRELAND LTD'
 
     # Common aliases — W L Gore & Associates
     def test_gore(self):
-        assert normalize_manufacturer('Gore') == 'W L Gore & Associates'
+        assert normalize_manufacturer('Gore') == 'W. L. Gore & Associates, Inc.'
 
     def test_wl_gore_dotted(self):
-        assert normalize_manufacturer('W.L. Gore & Associates') == 'W L Gore & Associates'
+        assert normalize_manufacturer('W.L. Gore & Associates') == 'W. L. Gore & Associates, Inc.'
 
     # Common aliases — Cordis
     def test_cordis_corporation(self):
-        assert normalize_manufacturer('Cordis Corporation') == 'Cordis'
+        assert normalize_manufacturer('Cordis Corporation') == 'Cordis US Corp.'
 
     def test_cordis_corp(self):
-        assert normalize_manufacturer('Cordis Corp') == 'Cordis'
+        assert normalize_manufacturer('Cordis Corp') == 'Cordis US Corp.'
 
     # Common aliases — Terumo
     def test_terumo_corporation(self):
-        assert normalize_manufacturer('Terumo Corporation') == 'Terumo'
+        assert normalize_manufacturer('Terumo Corporation') == 'TERUMO CORPORATION'
 
     def test_terumo_medical(self):
-        assert normalize_manufacturer('Terumo Medical') == 'Terumo'
+        assert normalize_manufacturer('Terumo Medical') == 'TERUMO CORPORATION'
 
     # Case insensitivity
     def test_all_caps_medtronic(self):
-        assert normalize_manufacturer('MEDTRONIC') == 'Medtronic'
+        assert normalize_manufacturer('MEDTRONIC') == 'MEDTRONIC, INC.'
 
     def test_all_caps_boston_scientific(self):
-        assert normalize_manufacturer('BOSTON SCIENTIFIC') == 'Boston Scientific'
+        assert normalize_manufacturer('BOSTON SCIENTIFIC') == 'Boston Scientific Corporation'
 
     def test_mixed_case_cook(self):
-        assert normalize_manufacturer('cOoK mEdIcAl') == 'Cook'
+        assert normalize_manufacturer('cOoK mEdIcAl') == 'COOK IRELAND LTD'
 
     # Whitespace normalization
     def test_leading_trailing_spaces(self):
-        assert normalize_manufacturer('  Medtronic  ') == 'Medtronic'
+        assert normalize_manufacturer('  Medtronic  ') == 'MEDTRONIC, INC.'
 
     def test_internal_double_spaces(self):
-        assert normalize_manufacturer('Boston  Scientific') == 'Boston Scientific'
+        assert normalize_manufacturer('Boston  Scientific') == 'Boston Scientific Corporation'
 
     def test_leading_trailing_with_alias(self):
-        assert normalize_manufacturer('  Cook Medical  ') == 'Cook'
+        assert normalize_manufacturer('  Cook Medical  ') == 'COOK IRELAND LTD'
 
     # Unknown manufacturer
     def test_unknown_returns_none(self):
