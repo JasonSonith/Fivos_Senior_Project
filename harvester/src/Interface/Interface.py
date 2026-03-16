@@ -290,8 +290,12 @@ def runs_page():
         </div>
     """)
 
+_VALID_RUN_TYPES = {"harvest", "validate"}
+
 @app.get("/run/{rtype}")
 def run_agent(rtype: str):
+    if rtype not in _VALID_RUN_TYPES:
+        return HTMLResponse("Invalid agent type", status_code=400)
     runs.append({
         "id": str(uuid.uuid4())[:8],
         "type": rtype,
@@ -344,6 +348,8 @@ def review_queue():
 @app.get("/review/{disc_id}", response_class=HTMLResponse)
 def review_page(disc_id: str):
     d = next((x for x in discrepancies if x["id"] == disc_id), None)
+    if d is None:
+        return HTMLResponse("Not found", status_code=404)
 
     return layout(f"""
         <div class="card">
@@ -368,6 +374,8 @@ def review_page(disc_id: str):
 @app.post("/review/{disc_id}")
 def submit_review(disc_id: str, decision: str = Form(...), notes: str = Form("")):
     d = next((x for x in discrepancies if x["id"] == disc_id), None)
+    if d is None:
+        return HTMLResponse("Not found", status_code=404)
     d["status"] = "Resolved"
     d["audit"].append({
         "decision": decision,
