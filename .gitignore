@@ -1,5 +1,4 @@
 docs/*
-CLAUDE.md
 .env
 !.env.example
 venv/
