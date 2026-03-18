@@ -1,6 +1,7 @@
 # normalizers/
 
 Cleans and standardizes raw scraped field values before they enter the pipeline.
+Called by `pipeline/runner.py` in the normalize stage. Tests in `tests/`.
 
 ## Modules
 

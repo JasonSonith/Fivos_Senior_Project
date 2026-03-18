@@ -34,6 +34,10 @@ python harvester/src/pipeline/runner.py --adapter <yaml> --input <html>  # singl
 uvicorn harvester.src.Interface.Interface:app --port 8000
 ```
 
+## Environment
+Copy `.env.example` → `.env` and fill in credentials before running.
+Required vars are listed in `.env.example`.
+
 ## Architecture
 
 ```
@@ -67,6 +71,8 @@ Site Adapters                    Manufacturing Website
                                                └──────────────────────┘
 ```
 
+**Other modules:** `security/` (input sanitization, credential handling) · `validators/` (GUDID record validation) · `database/` (MongoDB import/build utilities)
+
 ## Error Handling Philosophy: "Never crash the run"
 
 - Parsing failure → log + store raw HTML + skip record
@@ -94,6 +100,6 @@ For deeper context, reference these files as needed:
 - `docs/Fivos Multi-Agent AI System for Automated Medical Device Data Harvesting and Regulatory Validation` — High level overview of the project.
 - `docs/Team Roles -Harvester Agent.md` - For roles of the project, who does what, etc.
 - `docs/Jason - Todo.md` - Jason's todo list.
--`docs/Target Brands.xlsx` - Brands that we are scraping the manufacturing websites for.
+- `docs/Target Brands.xlsx` - Brands that we are scraping the manufacturing websites for.
 - `docs/Fivos System Architecture Diagram.md` - Architecture of our entire system.
 
