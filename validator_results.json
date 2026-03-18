@@ -1,0 +1,1460 @@
+[
+    {
+        "record_number": 1,
+        "source_file": "ABBOTT_VASCULAR_INC_1012528-20_20260311191726.json",
+        "source_url": "https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/esprit-bti-stent.html",
+        "harvested_record": {
+            "device_name": "Absolute Pro",
+            "manufacturer": "ABBOTT VASCULAR INC.",
+            "model_number": "1012528-20",
+            "catalog_number": "1012528-20",
+            "device_description": null,
+            "dimensions": "Diameter:6.0Millimeter | Length:20.0Millimeter"
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "Absolute Pro",
+                    "gudid": "Absolute Pro",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "ABBOTT VASCULAR INC.",
+                    "gudid": "ABBOTT VASCULAR INC.",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "1012528-20",
+                    "gudid": "1012528-20",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "1012528-20",
+                    "gudid": "1012528-20",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                },
+                "dimensions": {
+                    "harvested": "Diameter:6.0Millimeter | Length:20.0Millimeter",
+                    "gudid": "Diameter:6.0Millimeter | Length:20.0Millimeter",
+                    "status": "match"
+                }
+            },
+            "overall_status": "partial",
+            "summary": {
+                "matches": 5,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 1
+            }
+        }
+    },
+    {
+        "record_number": 2,
+        "source_file": "ABBOTT_VASCULAR_INC_1012622-12_20260311191726.json",
+        "source_url": "https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/esprit-bti-stent.html",
+        "harvested_record": {
+            "device_name": "Omnilink Elite",
+            "manufacturer": "ABBOTT VASCULAR INC.",
+            "model_number": "1012622-12",
+            "catalog_number": "1012622-12",
+            "device_description": null,
+            "dimensions": "Diameter:6.0Millimeter | Length:12.0Millimeter | Pressure:4560.0Millimeter Mercury"
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "Omnilink Elite",
+                    "gudid": "Omnilink Elite",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "ABBOTT VASCULAR INC.",
+                    "gudid": "ABBOTT VASCULAR INC.",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "1012622-12",
+                    "gudid": "1012622-12",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "1012622-12",
+                    "gudid": "1012622-12",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                },
+                "dimensions": {
+                    "harvested": "Diameter:6.0Millimeter | Length:12.0Millimeter | Pressure:4560.0Millimeter Mercury",
+                    "gudid": "Diameter:6.0Millimeter | Length:12.0Millimeter | Pressure:4560.0Millimeter Mercury",
+                    "status": "match"
+                }
+            },
+            "overall_status": "partial",
+            "summary": {
+                "matches": 5,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 1
+            }
+        }
+    },
+    {
+        "record_number": 3,
+        "source_file": "ABBOTT_VASCULAR_INC_12_MM_20260311191725.json",
+        "source_url": "https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/esprit-bti-stent.html",
+        "harvested_record": {
+            "device_name": "XIENCE Skypoint Stent 4.5 & 5.0 mm",
+            "manufacturer": "ABBOTT VASCULAR INC.",
+            "model_number": "12 MM",
+            "catalog_number": "12 MM",
+            "device_description": null,
+            "dimensions": "Length:12.0Millimeter"
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "XIENCE Skypoint Stent 4.5 & 5.0 mm",
+                    "gudid": "XIENCE Skypoint Stent 4.5 & 5.0 mm",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "ABBOTT VASCULAR INC.",
+                    "gudid": "ABBOTT VASCULAR INC.",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "12 MM",
+                    "gudid": "12 MM",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "12 MM",
+                    "gudid": "12 MM",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                },
+                "dimensions": {
+                    "harvested": "Length:12.0Millimeter",
+                    "gudid": "Length:12.0Millimeter",
+                    "status": "match"
+                }
+            },
+            "overall_status": "partial",
+            "summary": {
+                "matches": 5,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 1
+            }
+        }
+    },
+    {
+        "record_number": 4,
+        "source_file": "ABBOTT_VASCULAR_INC_CONSTRUCTION_SYSTEM_20260311191726.json",
+        "source_url": "https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/esprit-bti-stent.html",
+        "harvested_record": {
+            "device_name": "Supera Stent",
+            "manufacturer": "ABBOTT VASCULAR INC.",
+            "model_number": "CONSTRUCTION SYSTEM",
+            "catalog_number": "CONSTRUCTION SYSTEM",
+            "device_description": null,
+            "dimensions": null
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "Supera Stent",
+                    "gudid": "Supera Stent",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "ABBOTT VASCULAR INC.",
+                    "gudid": "ABBOTT VASCULAR INC.",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "CONSTRUCTION SYSTEM",
+                    "gudid": "CONSTRUCTION SYSTEM",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "CONSTRUCTION SYSTEM",
+                    "gudid": "CONSTRUCTION SYSTEM",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                },
+                "dimensions": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                }
+            },
+            "overall_status": "partial",
+            "summary": {
+                "matches": 4,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 2
+            }
+        }
+    },
+    {
+        "record_number": 5,
+        "source_file": "ABBOTT_VASCULAR_INC_DBP-150CLASS145_20260311191726.json",
+        "source_url": "https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/esprit-bti-stent.html",
+        "harvested_record": {
+            "device_name": "Diamondback 360",
+            "manufacturer": "ABBOTT VASCULAR INC.",
+            "model_number": "DBP-150CLASS145",
+            "catalog_number": "DBP-150CLASS145",
+            "device_description": null,
+            "dimensions": null
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "Diamondback 360",
+                    "gudid": "Diamondback 360",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "ABBOTT VASCULAR INC.",
+                    "gudid": "ABBOTT VASCULAR INC.",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "DBP-150CLASS145",
+                    "gudid": "DBP-150CLASS145",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "DBP-150CLASS145",
+                    "gudid": "DBP-150CLASS145",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                },
+                "dimensions": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                }
+            },
+            "overall_status": "partial",
+            "summary": {
+                "matches": 4,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 2
+            }
+        }
+    },
+    {
+        "record_number": 6,
+        "source_file": "ABBOTT_VASCULAR_INC_X27P3TA_20260311191725.json",
+        "source_url": "https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/esprit-bti-stent.html",
+        "harvested_record": {
+            "device_name": "Esprit BTK",
+            "manufacturer": "ABBOTT VASCULAR INC.",
+            "model_number": "X27P3TA",
+            "catalog_number": "X27P3TA",
+            "device_description": null,
+            "dimensions": null
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "Esprit BTK",
+                    "gudid": "Esprit BTK",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "ABBOTT VASCULAR INC.",
+                    "gudid": "ABBOTT VASCULAR INC.",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "X27P3TA",
+                    "gudid": "X27P3TA",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "X27P3TA",
+                    "gudid": "X27P3TA",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                },
+                "dimensions": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                }
+            },
+            "overall_status": "partial",
+            "summary": {
+                "matches": 4,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 2
+            }
+        }
+    },
+    {
+        "record_number": 7,
+        "source_file": "COOK_IRELAND_LTD_G38404_20260311191726.json",
+        "source_url": "https://www.cookmedical.com/products/zilver-ptx-drug-eluting-peripheral-stent/",
+        "harvested_record": {
+            "device_name": "Zilver PTX",
+            "manufacturer": "COOK IRELAND LTD",
+            "model_number": "G38404",
+            "catalog_number": "ZISV6-35-125-5-40-PTX",
+            "device_description": null,
+            "dimensions": null
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "Zilver PTX",
+                    "gudid": "Zilver PTX",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "COOK IRELAND LTD",
+                    "gudid": "COOK IRELAND LTD",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "G38404",
+                    "gudid": "G38404",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "ZISV6-35-125-5-40-PTX",
+                    "gudid": "ZISV6-35-125-5-40-PTX",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                },
+                "dimensions": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                }
+            },
+            "overall_status": "partial",
+            "summary": {
+                "matches": 4,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 2
+            }
+        }
+    },
+    {
+        "record_number": 8,
+        "source_file": "COOK_IRELAND_LTD_G43769_20260311191726.json",
+        "source_url": "https://www.cookmedical.com/products/zilver-ptx-drug-eluting-peripheral-stent/",
+        "harvested_record": {
+            "device_name": "Zilver 518 Vascular",
+            "manufacturer": "COOK IRELAND LTD",
+            "model_number": "G43769",
+            "catalog_number": "ZIV5-18-125-6-20",
+            "device_description": null,
+            "dimensions": null
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "Zilver 518 Vascular",
+                    "gudid": "Zilver 518 Vascular",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "COOK IRELAND LTD",
+                    "gudid": "COOK IRELAND LTD",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "G43769",
+                    "gudid": "G43769",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "ZIV5-18-125-6-20",
+                    "gudid": "ZIV5-18-125-6-20",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                },
+                "dimensions": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                }
+            },
+            "overall_status": "partial",
+            "summary": {
+                "matches": 4,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 2
+            }
+        }
+    },
+    {
+        "record_number": 9,
+        "source_file": "COOK_IRELAND_LTD_G50616_20260311191727.json",
+        "source_url": "https://www.cookmedical.com/products/zilver-ptx-drug-eluting-peripheral-stent/",
+        "harvested_record": {
+            "device_name": "Zilver 635 Biliary",
+            "manufacturer": "COOK IRELAND LTD",
+            "model_number": "G50616",
+            "catalog_number": "ZILBS-635-6-4",
+            "device_description": null,
+            "dimensions": null
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "Zilver 635 Biliary",
+                    "gudid": "Zilver 635 Biliary",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "COOK IRELAND LTD",
+                    "gudid": "COOK IRELAND LTD",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "G50616",
+                    "gudid": "G50616",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "ZILBS-635-6-4",
+                    "gudid": "ZILBS-635-6-4",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                },
+                "dimensions": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                }
+            },
+            "overall_status": "partial",
+            "summary": {
+                "matches": 4,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 2
+            }
+        }
+    },
+    {
+        "record_number": 10,
+        "source_file": "COOK_IRELAND_LTD_G61183_20260311191726.json",
+        "source_url": "https://www.cookmedical.com/products/zilver-ptx-drug-eluting-peripheral-stent/",
+        "harvested_record": {
+            "device_name": "Zilver Flex 35",
+            "manufacturer": "COOK IRELAND LTD",
+            "model_number": "G61183",
+            "catalog_number": "ZFV6-35-80-5-20",
+            "device_description": null,
+            "dimensions": null
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "Zilver Flex 35",
+                    "gudid": "Zilver Flex 35",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "COOK IRELAND LTD",
+                    "gudid": "COOK IRELAND LTD",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "G61183",
+                    "gudid": "G61183",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "ZFV6-35-80-5-20",
+                    "gudid": "ZFV6-35-80-5-20",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                },
+                "dimensions": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                }
+            },
+            "overall_status": "partial",
+            "summary": {
+                "matches": 4,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 2
+            }
+        }
+    },
+    {
+        "record_number": 11,
+        "source_file": "Cordis_US_Corp_C10060SL_20260311191725.json",
+        "source_url": "https://www.cordis.com/en-us/peripheral-intervention/palmaz-genesis-peripheral-stent.html",
+        "harvested_record": {
+            "device_name": "S.M.A.R.T. CONTROL",
+            "manufacturer": "Cordis US Corp.",
+            "model_number": "C10060SL",
+            "catalog_number": "C10060SL",
+            "device_description": null,
+            "dimensions": "Diameter:10.0Millimeter | Length:60.0Millimeter"
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "S.M.A.R.T. CONTROL",
+                    "gudid": "S.M.A.R.T. CONTROL",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "Cordis US Corp.",
+                    "gudid": "Cordis US Corp.",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "C10060SL",
+                    "gudid": "C10060SL",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "C10060SL",
+                    "gudid": "C10060SL",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                },
+                "dimensions": {
+                    "harvested": "Diameter:10.0Millimeter | Length:60.0Millimeter",
+                    "gudid": "Diameter:10.0Millimeter | Length:60.0Millimeter",
+                    "status": "match"
+                }
+            },
+            "overall_status": "partial",
+            "summary": {
+                "matches": 5,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 1
+            }
+        }
+    },
+    {
+        "record_number": 12,
+        "source_file": "MEDTRONIC__INC_EVD35-06-020-080_20260311191727.json",
+        "source_url": "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
+        "harvested_record": {
+            "device_name": "EverFlex with Entrust delivery system",
+            "manufacturer": "MEDTRONIC, INC.",
+            "model_number": "EVD35-06-020-080",
+            "catalog_number": "EVD35-06-020-080",
+            "device_description": "Simple. Predictable. Precise.The market leading EverFlexTM stent\u2020offers precision, strength, and flexibility. Delivered by the physician-inspired EntrustTM delivery system, it offers a 5 Fr low profile, 0.035\" guidewire compatibility, triaxial design, and 150 cm catheter lengths. Medtronic also offers a traditional 6 Fr pin-pull delivery system.",
+            "dimensions": null
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "EverFlex with Entrust delivery system",
+                    "gudid": "EverFlex with Entrust delivery system",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "MEDTRONIC, INC.",
+                    "gudid": "MEDTRONIC, INC.",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "EVD35-06-020-080",
+                    "gudid": "EVD35-06-020-080",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "EVD35-06-020-080",
+                    "gudid": "EVD35-06-020-080",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": "Simple. Predictable. Precise.The market leading EverFlexTM stent\u2020offers precision, strength, and flexibility. Delivered by the physician-inspired EntrustTM delivery system, it offers a 5 Fr low profile, 0.035\" guidewire compatibility, triaxial design, and 150 cm catheter lengths. Medtronic also offers a traditional 6 Fr pin-pull delivery system.",
+                    "gudid": "Simple. Predictable. Precise.The market leading EverFlexTM stent\u2020offers precision, strength, and flexibility. Delivered by the physician-inspired EntrustTM delivery system, it offers a 5 Fr low profile, 0.035\" guidewire compatibility, triaxial design, and 150 cm catheter lengths. Medtronic also offers a traditional 6 Fr pin-pull delivery system.",
+                    "status": "match"
+                },
+                "dimensions": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                }
+            },
+            "overall_status": "partial",
+            "summary": {
+                "matches": 5,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 1
+            }
+        }
+    },
+    {
+        "record_number": 13,
+        "source_file": "MEDTRONIC__INC_H1-LS_20260311191727.json",
+        "source_url": "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
+        "harvested_record": {
+            "device_name": "HawkOne",
+            "manufacturer": "MEDTRONIC, INC.",
+            "model_number": "H1-LS",
+            "catalog_number": "H1-LS",
+            "device_description": "The HawkOneTM directional atherectomy system is intended for use in atherectomy of the peripheral vasculature. The HawkOneTM catheter is indicated for use in conjunction with the SpiderFXTM embolic protection device in the treatment of severely calcified lesions. The HawkOneTM catheter is NOT intended for use in the coronary, carotid, iliac, or renal vasculature.Risks may include but are not limited to: arterial perforation, embolism or arterial thrombosis, arterial dissection, arterial spasm, and vascular complications that could require surgical repair.",
+            "dimensions": "Diameter:50.0Millimeter | Length:40.0Millimeter"
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "HawkOne",
+                    "gudid": "HawkOne",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "MEDTRONIC, INC.",
+                    "gudid": "MEDTRONIC, INC.",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "H1-LS",
+                    "gudid": "H1-LS",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "H1-LS",
+                    "gudid": "H1-LS",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": "The HawkOneTM directional atherectomy system is intended for use in atherectomy of the peripheral vasculature. The HawkOneTM catheter is indicated for use in conjunction with the SpiderFXTM embolic protection device in the treatment of severely calcified lesions. The HawkOneTM catheter is NOT intended for use in the coronary, carotid, iliac, or renal vasculature.Risks may include but are not limited to: arterial perforation, embolism or arterial thrombosis, arterial dissection, arterial spasm, and vascular complications that could require surgical repair.",
+                    "gudid": "The HawkOneTM directional atherectomy system is intended for use in atherectomy of the peripheral vasculature. The HawkOneTM catheter is indicated for use in conjunction with the SpiderFXTM embolic protection device in the treatment of severely calcified lesions. The HawkOneTM catheter is NOT intended for use in the coronary, carotid, iliac, or renal vasculature.Risks may include but are not limited to: arterial perforation, embolism or arterial thrombosis, arterial dissection, arterial spasm, and vascular complications that could require surgical repair.",
+                    "status": "match"
+                },
+                "dimensions": {
+                    "harvested": "Diameter:50.0Millimeter | Length:40.0Millimeter",
+                    "gudid": "Diameter:50.0Millimeter | Length:40.0Millimeter",
+                    "status": "match"
+                }
+            },
+            "overall_status": "match",
+            "summary": {
+                "matches": 6,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 0
+            }
+        }
+    },
+    {
+        "record_number": 14,
+        "source_file": "MEDTRONIC__INC_IAV04004004P_20260311191728.json",
+        "source_url": "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
+        "harvested_record": {
+            "device_name": "IN.PACT AV",
+            "manufacturer": "MEDTRONIC, INC.",
+            "model_number": "IAV04004004P",
+            "catalog_number": "IAV04004004P",
+            "device_description": "The IN.PACTTM AV drug-coated balloon (DCB) enables you to get ahead of AV fistula restenosis by treating the cause \u2014 not just the symptoms \u2014 of fistula stenosis, helping to preserve the fistula for dialysis.1It's the only device to achieve more than 80% primary patency\u2020through six months.The IN.PACTTM AV paclitaxel-coated PTA balloon is indicated for percutaneous transluminal angioplasty, after appropriate vessel preparation, for the treatment of obstructive lesions up to 100 mm in length in the native arteriovenous dialysis fistulae with reference vessel diameters of 4 mm to 12 mm.",
+            "dimensions": "Diameter:8.0Millimeter | Length:80.0Millimeter"
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "IN.PACT AV",
+                    "gudid": "IN.PACT AV",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "MEDTRONIC, INC.",
+                    "gudid": "MEDTRONIC, INC.",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "IAV04004004P",
+                    "gudid": "IAV04004004P",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "IAV04004004P",
+                    "gudid": "IAV04004004P",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": "The IN.PACTTM AV drug-coated balloon (DCB) enables you to get ahead of AV fistula restenosis by treating the cause \u2014 not just the symptoms \u2014 of fistula stenosis, helping to preserve the fistula for dialysis.1It's the only device to achieve more than 80% primary patency\u2020through six months.The IN.PACTTM AV paclitaxel-coated PTA balloon is indicated for percutaneous transluminal angioplasty, after appropriate vessel preparation, for the treatment of obstructive lesions up to 100 mm in length in the native arteriovenous dialysis fistulae with reference vessel diameters of 4 mm to 12 mm.",
+                    "gudid": "The IN.PACTTM AV drug-coated balloon (DCB) enables you to get ahead of AV fistula restenosis by treating the cause \u2014 not just the symptoms \u2014 of fistula stenosis, helping to preserve the fistula for dialysis.1It's the only device to achieve more than 80% primary patency\u2020through six months.The IN.PACTTM AV paclitaxel-coated PTA balloon is indicated for percutaneous transluminal angioplasty, after appropriate vessel preparation, for the treatment of obstructive lesions up to 100 mm in length in the native arteriovenous dialysis fistulae with reference vessel diameters of 4 mm to 12 mm.",
+                    "status": "match"
+                },
+                "dimensions": {
+                    "harvested": "Diameter:8.0Millimeter | Length:80.0Millimeter",
+                    "gudid": "Diameter:8.0Millimeter | Length:80.0Millimeter",
+                    "status": "match"
+                }
+            },
+            "overall_status": "match",
+            "summary": {
+                "matches": 6,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 0
+            }
+        }
+    },
+    {
+        "record_number": 15,
+        "source_file": "MEDTRONIC__INC_IPU04004013P_20260311191728.json",
+        "source_url": "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
+        "harvested_record": {
+            "device_name": "IN.PACT Admiral and IN.PACT 018s",
+            "manufacturer": "MEDTRONIC, INC.",
+            "model_number": "IPU04004013P",
+            "catalog_number": "IPU04004013P",
+            "device_description": "The IN.PACTTM AdmiralTM and IN.PACTTM 018 drug-coated balloons (DCB) are a clinically proven primary endovascular therapy that treats femoropopliteal disease. They are indicated forde novo, restenotic, or in-stent restenotic lesions up to 360 mm, with reference vessel diameters of 4 mm to 7 mm.",
+            "dimensions": "Diameter:5.5Millimeter"
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "IN.PACT Admiral and IN.PACT 018s",
+                    "gudid": "IN.PACT Admiral and IN.PACT 018s",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "MEDTRONIC, INC.",
+                    "gudid": "MEDTRONIC, INC.",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "IPU04004013P",
+                    "gudid": "IPU04004013P",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "IPU04004013P",
+                    "gudid": "IPU04004013P",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": "The IN.PACTTM AdmiralTM and IN.PACTTM 018 drug-coated balloons (DCB) are a clinically proven primary endovascular therapy that treats femoropopliteal disease. They are indicated forde novo, restenotic, or in-stent restenotic lesions up to 360 mm, with reference vessel diameters of 4 mm to 7 mm.",
+                    "gudid": "The IN.PACTTM AdmiralTM and IN.PACTTM 018 drug-coated balloons (DCB) are a clinically proven primary endovascular therapy that treats femoropopliteal disease. They are indicated forde novo, restenotic, or in-stent restenotic lesions up to 360 mm, with reference vessel diameters of 4 mm to 7 mm.",
+                    "status": "match"
+                },
+                "dimensions": {
+                    "harvested": "Diameter:5.5Millimeter",
+                    "gudid": "Diameter:5.5Millimeter",
+                    "status": "match"
+                }
+            },
+            "overall_status": "match",
+            "summary": {
+                "matches": 6,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 0
+            }
+        }
+    },
+    {
+        "record_number": 16,
+        "source_file": "MEDTRONIC__INC_P4055_20260311191729.json",
+        "source_url": "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
+        "harvested_record": {
+            "device_name": "SilverHawk peripheral plaque excision system",
+            "manufacturer": "MEDTRONIC, INC.",
+            "model_number": "P4055",
+            "catalog_number": "P4055",
+            "device_description": "Use SilverHawk'sTM directional cutter to shave soft-to-mild plaque, while the nosecone captures the material for removal from the artery. The SilverHawkTM technology is backed by the landmark DEFINITIVE LE clinical study, which found that PAD patients with critical limb ischemia who were treated with plaque excision experienced a high rate (95%) of limb salvage at 12 months.1The SilverHawkTM peripheral plaque excision system is intended for use in atherectomy of the peripheral vasculature. The catheter is not intended for use in the coronary, carotid, iliac, or renal vasculature.",
+            "dimensions": "Diameter:75.0Millimeter | Length:15.0Millimeter"
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "SilverHawk peripheral plaque excision system",
+                    "gudid": "SilverHawk peripheral plaque excision system",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "MEDTRONIC, INC.",
+                    "gudid": "MEDTRONIC, INC.",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "P4055",
+                    "gudid": "P4055",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "P4055",
+                    "gudid": "P4055",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": "Use SilverHawk'sTM directional cutter to shave soft-to-mild plaque, while the nosecone captures the material for removal from the artery. The SilverHawkTM technology is backed by the landmark DEFINITIVE LE clinical study, which found that PAD patients with critical limb ischemia who were treated with plaque excision experienced a high rate (95%) of limb salvage at 12 months.1The SilverHawkTM peripheral plaque excision system is intended for use in atherectomy of the peripheral vasculature. The catheter is not intended for use in the coronary, carotid, iliac, or renal vasculature.",
+                    "gudid": "Use SilverHawk'sTM directional cutter to shave soft-to-mild plaque, while the nosecone captures the material for removal from the artery. The SilverHawkTM technology is backed by the landmark DEFINITIVE LE clinical study, which found that PAD patients with critical limb ischemia who were treated with plaque excision experienced a high rate (95%) of limb salvage at 12 months.1The SilverHawkTM peripheral plaque excision system is intended for use in atherectomy of the peripheral vasculature. The catheter is not intended for use in the coronary, carotid, iliac, or renal vasculature.",
+                    "status": "match"
+                },
+                "dimensions": {
+                    "harvested": "Diameter:75.0Millimeter | Length:15.0Millimeter",
+                    "gudid": "Diameter:75.0Millimeter | Length:15.0Millimeter",
+                    "status": "match"
+                }
+            },
+            "overall_status": "match",
+            "summary": {
+                "matches": 6,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 0
+            }
+        }
+    },
+    {
+        "record_number": 17,
+        "source_file": "MEDTRONIC__INC_PRB35-05-020-080_20260311191728.json",
+        "source_url": "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
+        "harvested_record": {
+            "device_name": "Prot\u00e9g\u00e9 EverFlex",
+            "manufacturer": "MEDTRONIC, INC.",
+            "model_number": "PRB35-05-020-080",
+            "catalog_number": "PRB35-05-020-080",
+            "device_description": "Place the same, trusted stent when your work calls for a 5 mm size in the biliary system by choosing the Prot\u00e9g\u00e9TM EverFlexTM self-expanding biliary stent system.The Prot\u00e9g\u00e9 EverFlex Self-expanding Biliary Stent System is intended as a palliative treatment of malignant neoplasms in the biliary tree.",
+            "dimensions": "Diameter:2032.0Millimeter | Length:200.0Millimeter"
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "Prot\u00e9g\u00e9 EverFlex",
+                    "gudid": "Prot\u00e9g\u00e9 EverFlex",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "MEDTRONIC, INC.",
+                    "gudid": "MEDTRONIC, INC.",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "PRB35-05-020-080",
+                    "gudid": "PRB35-05-020-080",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "PRB35-05-020-080",
+                    "gudid": "PRB35-05-020-080",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": "Place the same, trusted stent when your work calls for a 5 mm size in the biliary system by choosing the Prot\u00e9g\u00e9TM EverFlexTM self-expanding biliary stent system.The Prot\u00e9g\u00e9 EverFlex Self-expanding Biliary Stent System is intended as a palliative treatment of malignant neoplasms in the biliary tree.",
+                    "gudid": "Place the same, trusted stent when your work calls for a 5 mm size in the biliary system by choosing the Prot\u00e9g\u00e9TM EverFlexTM self-expanding biliary stent system.The Prot\u00e9g\u00e9 EverFlex Self-expanding Biliary Stent System is intended as a palliative treatment of malignant neoplasms in the biliary tree.",
+                    "status": "match"
+                },
+                "dimensions": {
+                    "harvested": "Diameter:2032.0Millimeter | Length:200.0Millimeter",
+                    "gudid": "Diameter:2032.0Millimeter | Length:200.0Millimeter",
+                    "status": "match"
+                }
+            },
+            "overall_status": "match",
+            "summary": {
+                "matches": 6,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 0
+            }
+        }
+    },
+    {
+        "record_number": 18,
+        "source_file": "MEDTRONIC__INC_PXB35-05-12-080_20260311191730.json",
+        "source_url": "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
+        "harvested_record": {
+            "device_name": "Visi-Pro",
+            "manufacturer": "MEDTRONIC, INC.",
+            "model_number": "PXB35-05-12-080",
+            "catalog_number": "PXB35-05-12-080",
+            "device_description": "Ensure visibility before and after stent placement with the Visi-ProTM balloon-expandable peripheral stent system for treatment of peripheral arterial disease (PAD). The stent\u2019s patented design balances strength and flexibility for proven patency as found in the VISIBILITY ILIAC study. Radiopaque markers on the stent ensure precise placement. Deliver over a 0.035\" guidewire for use in the common or external iliac arteries or in the biliary system.The Visi-ProTM balloon-expandable peripheral stent system is indicated for improving luminal diameter in patients with atherosclerotic disease of the common and/or external iliac arteries up to 100 mm in length, with a reference vessel diameter of 5 mm to 10 mm.The Visi-ProTM balloon-expandable peripheral stent system is intended as a palliative treatment of malignant neoplasms in the biliary tree.",
+            "dimensions": "Diameter:35.0Millimeter | Length:12.0Millimeter"
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "Visi-Pro",
+                    "gudid": "Visi-Pro",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "MEDTRONIC, INC.",
+                    "gudid": "MEDTRONIC, INC.",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "PXB35-05-12-080",
+                    "gudid": "PXB35-05-12-080",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "PXB35-05-12-080",
+                    "gudid": "PXB35-05-12-080",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": "Ensure visibility before and after stent placement with the Visi-ProTM balloon-expandable peripheral stent system for treatment of peripheral arterial disease (PAD). The stent\u2019s patented design balances strength and flexibility for proven patency as found in the VISIBILITY ILIAC study. Radiopaque markers on the stent ensure precise placement. Deliver over a 0.035\" guidewire for use in the common or external iliac arteries or in the biliary system.The Visi-ProTM balloon-expandable peripheral stent system is indicated for improving luminal diameter in patients with atherosclerotic disease of the common and/or external iliac arteries up to 100 mm in length, with a reference vessel diameter of 5 mm to 10 mm.The Visi-ProTM balloon-expandable peripheral stent system is intended as a palliative treatment of malignant neoplasms in the biliary tree.",
+                    "gudid": "Ensure visibility before and after stent placement with the Visi-ProTM balloon-expandable peripheral stent system for treatment of peripheral arterial disease (PAD). The stent\u2019s patented design balances strength and flexibility for proven patency as found in the VISIBILITY ILIAC study. Radiopaque markers on the stent ensure precise placement. Deliver over a 0.035\" guidewire for use in the common or external iliac arteries or in the biliary system.The Visi-ProTM balloon-expandable peripheral stent system is indicated for improving luminal diameter in patients with atherosclerotic disease of the common and/or external iliac arteries up to 100 mm in length, with a reference vessel diameter of 5 mm to 10 mm.The Visi-ProTM balloon-expandable peripheral stent system is intended as a palliative treatment of malignant neoplasms in the biliary tree.",
+                    "status": "match"
+                },
+                "dimensions": {
+                    "harvested": "Diameter:35.0Millimeter | Length:12.0Millimeter",
+                    "gudid": "Diameter:35.0Millimeter | Length:12.0Millimeter",
+                    "status": "match"
+                }
+            },
+            "overall_status": "match",
+            "summary": {
+                "matches": 6,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 0
+            }
+        }
+    },
+    {
+        "record_number": 19,
+        "source_file": "MEDTRONIC__INC_RONYX20008UX_20260311191729.json",
+        "source_url": "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
+        "harvested_record": {
+            "device_name": "Resolute Onyx",
+            "manufacturer": "MEDTRONIC, INC.",
+            "model_number": "RONYX20008UX",
+            "catalog_number": "RONYX20008UX",
+            "device_description": "Resolute OnyxTM drug-eluting stent (DES) offers flexibility,1conformability,1a 2.0 mm to 5.0 mm size matrix, and is indicated for high bleeding risk patients and labeled for one-month DAPT.2",
+            "dimensions": "Pressure:106400.0Millimeter Mercury"
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "Resolute Onyx",
+                    "gudid": "Resolute Onyx",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "MEDTRONIC, INC.",
+                    "gudid": "MEDTRONIC, INC.",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "RONYX20008UX",
+                    "gudid": "RONYX20008UX",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "RONYX20008UX",
+                    "gudid": "RONYX20008UX",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": "Resolute OnyxTM drug-eluting stent (DES) offers flexibility,1conformability,1a 2.0 mm to 5.0 mm size matrix, and is indicated for high bleeding risk patients and labeled for one-month DAPT.2",
+                    "gudid": "Resolute OnyxTM drug-eluting stent (DES) offers flexibility,1conformability,1a 2.0 mm to 5.0 mm size matrix, and is indicated for high bleeding risk patients and labeled for one-month DAPT.2",
+                    "status": "match"
+                },
+                "dimensions": {
+                    "harvested": "Pressure:106400.0Millimeter Mercury",
+                    "gudid": "Pressure:106400.0Millimeter Mercury",
+                    "status": "match"
+                }
+            },
+            "overall_status": "match",
+            "summary": {
+                "matches": 6,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 0
+            }
+        }
+    },
+    {
+        "record_number": 20,
+        "source_file": "MEDTRONIC__INC_SERB65-9-20-80_20260311191729.json",
+        "source_url": "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
+        "harvested_record": {
+            "device_name": "Prot\u00e9g\u00e9 GPS",
+            "manufacturer": "MEDTRONIC, INC.",
+            "model_number": "SERB65-9-20-80",
+            "catalog_number": "SERB65-9-20-80",
+            "device_description": "Opt for the Prot\u00e9g\u00e9TM GPSTM self-expanding peripheral biliary stent system when your work depends on precision, radial strength, and flexibility in treating lesions in the common or external iliac arteries, or in the biliary system.The Prot\u00e9g\u00e9TM GPSTM self-expanding peripheral biliary stent system is indicated for improving luminal diameter in patients with atherosclerotic disease of the common and/or external iliac arteries up to and including 100 mm in length, with reference vessel diameters of 7.5 mm to 11 mm.The stent is intended as a palliative treatment of malignant neoplasms in the biliary tree.",
+            "dimensions": "Diameter:9.0Millimeter | Length:20.0Millimeter"
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "Prot\u00e9g\u00e9 GPS",
+                    "gudid": "Prot\u00e9g\u00e9 GPS",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "MEDTRONIC, INC.",
+                    "gudid": "MEDTRONIC, INC.",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "SERB65-9-20-80",
+                    "gudid": "SERB65-9-20-80",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "SERB65-9-20-80",
+                    "gudid": "SERB65-9-20-80",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": "Opt for the Prot\u00e9g\u00e9TM GPSTM self-expanding peripheral biliary stent system when your work depends on precision, radial strength, and flexibility in treating lesions in the common or external iliac arteries, or in the biliary system.The Prot\u00e9g\u00e9TM GPSTM self-expanding peripheral biliary stent system is indicated for improving luminal diameter in patients with atherosclerotic disease of the common and/or external iliac arteries up to and including 100 mm in length, with reference vessel diameters of 7.5 mm to 11 mm.The stent is intended as a palliative treatment of malignant neoplasms in the biliary tree.",
+                    "gudid": "Opt for the Prot\u00e9g\u00e9TM GPSTM self-expanding peripheral biliary stent system when your work depends on precision, radial strength, and flexibility in treating lesions in the common or external iliac arteries, or in the biliary system.The Prot\u00e9g\u00e9TM GPSTM self-expanding peripheral biliary stent system is indicated for improving luminal diameter in patients with atherosclerotic disease of the common and/or external iliac arteries up to and including 100 mm in length, with reference vessel diameters of 7.5 mm to 11 mm.The stent is intended as a palliative treatment of malignant neoplasms in the biliary tree.",
+                    "status": "match"
+                },
+                "dimensions": {
+                    "harvested": "Diameter:9.0Millimeter | Length:20.0Millimeter",
+                    "gudid": "Diameter:9.0Millimeter | Length:20.0Millimeter",
+                    "status": "match"
+                }
+            },
+            "overall_status": "match",
+            "summary": {
+                "matches": 6,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 0
+            }
+        }
+    },
+    {
+        "record_number": 21,
+        "source_file": "MEDTRONIC__INC_TH-LX-M_20260311191729.json",
+        "source_url": "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html",
+        "harvested_record": {
+            "device_name": "TurboHawk peripheral plaque excision system",
+            "manufacturer": "MEDTRONIC, INC.",
+            "model_number": "TH-LX-M",
+            "catalog_number": "TH-LX-M",
+            "device_description": "Choose from a high efficiency cutter model that can tackle calcified plaque or a smooth cutter model that can treat mild-to-moderately calcified lesions. TurboHawkTM is proven clinically in the landmark DEFINITIVE LE trial, the study found that diabetic PAD patients fared as well as nondiabetics and that claudicants had high patency at 12 months when treated with plaque excision technology.1The TurboHawkTM peripheral plaque excision system is intended for use in the atherectomy of the peripheral vasculature. The TurboHawkTM catheter is not intended for use in the coronary, carotid, iliac, or renal vasculature.The TurboHawkTM catheter is indicated for use in conjunction with the SpiderFXTM embolic protection device in the treatment of severely calcified lesions (LS-C and LX-C only).",
+            "dimensions": "Diameter:75.0Millimeter | Length:20.0Millimeter"
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "TurboHawk peripheral plaque excision system",
+                    "gudid": "TurboHawk peripheral plaque excision system",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "MEDTRONIC, INC.",
+                    "gudid": "MEDTRONIC, INC.",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "TH-LX-M",
+                    "gudid": "TH-LX-M",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "TH-LX-M",
+                    "gudid": "TH-LX-M",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": "Choose from a high efficiency cutter model that can tackle calcified plaque or a smooth cutter model that can treat mild-to-moderately calcified lesions. TurboHawkTM is proven clinically in the landmark DEFINITIVE LE trial, the study found that diabetic PAD patients fared as well as nondiabetics and that claudicants had high patency at 12 months when treated with plaque excision technology.1The TurboHawkTM peripheral plaque excision system is intended for use in the atherectomy of the peripheral vasculature. The TurboHawkTM catheter is not intended for use in the coronary, carotid, iliac, or renal vasculature.The TurboHawkTM catheter is indicated for use in conjunction with the SpiderFXTM embolic protection device in the treatment of severely calcified lesions (LS-C and LX-C only).",
+                    "gudid": "Choose from a high efficiency cutter model that can tackle calcified plaque or a smooth cutter model that can treat mild-to-moderately calcified lesions. TurboHawkTM is proven clinically in the landmark DEFINITIVE LE trial, the study found that diabetic PAD patients fared as well as nondiabetics and that claudicants had high patency at 12 months when treated with plaque excision technology.1The TurboHawkTM peripheral plaque excision system is intended for use in the atherectomy of the peripheral vasculature. The TurboHawkTM catheter is not intended for use in the coronary, carotid, iliac, or renal vasculature.The TurboHawkTM catheter is indicated for use in conjunction with the SpiderFXTM embolic protection device in the treatment of severely calcified lesions (LS-C and LX-C only).",
+                    "status": "match"
+                },
+                "dimensions": {
+                    "harvested": "Diameter:75.0Millimeter | Length:20.0Millimeter",
+                    "gudid": "Diameter:75.0Millimeter | Length:20.0Millimeter",
+                    "status": "match"
+                }
+            },
+            "overall_status": "match",
+            "summary": {
+                "matches": 6,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 0
+            }
+        }
+    },
+    {
+        "record_number": 22,
+        "source_file": "Shockwave_Medical__Inc_8_0_20260311191725.json",
+        "source_url": "https://shockwavemedical.com/providers/peripheral/shockwave-m5-peripheral-ivl-catheter/",
+        "harvested_record": {
+            "device_name": "Shockwave L6",
+            "manufacturer": "Shockwave Medical, Inc.",
+            "model_number": "8.0",
+            "catalog_number": "8.0",
+            "device_description": null,
+            "dimensions": "Diameter:8.0Millimeter | Length:30.0Millimeter"
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "Shockwave L6",
+                    "gudid": "Shockwave L6",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "Shockwave Medical, Inc.",
+                    "gudid": "Shockwave Medical, Inc.",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "8.0",
+                    "gudid": "8.0",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "8.0",
+                    "gudid": "8.0",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                },
+                "dimensions": {
+                    "harvested": "Diameter:8.0Millimeter | Length:30.0Millimeter",
+                    "gudid": "Diameter:8.0Millimeter | Length:30.0Millimeter",
+                    "status": "match"
+                }
+            },
+            "overall_status": "partial",
+            "summary": {
+                "matches": 5,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 1
+            }
+        }
+    },
+    {
+        "record_number": 23,
+        "source_file": "Shockwave_Medical__Inc_E8IVL025080_20260311191725.json",
+        "source_url": "https://shockwavemedical.com/providers/peripheral/shockwave-m5-peripheral-ivl-catheter/",
+        "harvested_record": {
+            "device_name": "Shockwave E8",
+            "manufacturer": "Shockwave Medical, Inc.",
+            "model_number": "E8IVL025080",
+            "catalog_number": "E8IVL025080",
+            "device_description": null,
+            "dimensions": "Diameter:2.5Millimeter | Length:80.0Millimeter"
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "Shockwave E8",
+                    "gudid": "Shockwave E8",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "Shockwave Medical, Inc.",
+                    "gudid": "Shockwave Medical, Inc.",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "E8IVL025080",
+                    "gudid": "E8IVL025080",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "E8IVL025080",
+                    "gudid": "E8IVL025080",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                },
+                "dimensions": {
+                    "harvested": "Diameter:2.5Millimeter | Length:80.0Millimeter",
+                    "gudid": "Diameter:2.5Millimeter | Length:80.0Millimeter",
+                    "status": "match"
+                }
+            },
+            "overall_status": "partial",
+            "summary": {
+                "matches": 5,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 1
+            }
+        }
+    },
+    {
+        "record_number": 24,
+        "source_file": "Shockwave_Medical__Inc_M5PIVL3560_20260311191725.json",
+        "source_url": "https://shockwavemedical.com/providers/peripheral/shockwave-m5-peripheral-ivl-catheter/",
+        "harvested_record": {
+            "device_name": "Shockwave M5+",
+            "manufacturer": "Shockwave Medical, Inc.",
+            "model_number": "M5PIVL3560",
+            "catalog_number": "M5PIVL3560",
+            "device_description": null,
+            "dimensions": "Diameter:3.5Millimeter | Length:60.0Millimeter"
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "Shockwave M5+",
+                    "gudid": "Shockwave M5+",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "Shockwave Medical, Inc.",
+                    "gudid": "Shockwave Medical, Inc.",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "M5PIVL3560",
+                    "gudid": "M5PIVL3560",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "M5PIVL3560",
+                    "gudid": "M5PIVL3560",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                },
+                "dimensions": {
+                    "harvested": "Diameter:3.5Millimeter | Length:60.0Millimeter",
+                    "gudid": "Diameter:3.5Millimeter | Length:60.0Millimeter",
+                    "status": "match"
+                }
+            },
+            "overall_status": "partial",
+            "summary": {
+                "matches": 5,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 1
+            }
+        }
+    },
+    {
+        "record_number": 25,
+        "source_file": "TERUMO_CORPORATION_SXR06040R_20260311191730.json",
+        "source_url": "https://www.terumois.com/products/stents/r2p-misago-peripheral-stent-system.html",
+        "harvested_record": {
+            "device_name": "R2PMISAGORX",
+            "manufacturer": "TERUMO CORPORATION",
+            "model_number": "SXR06040R",
+            "catalog_number": "SXR06040R",
+            "device_description": null,
+            "dimensions": "Diameter:6.0Millimeter | Length:40.0Millimeter"
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "R2PMISAGORX",
+                    "gudid": "R2PMISAGORX",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "TERUMO CORPORATION",
+                    "gudid": "TERUMO CORPORATION",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "SXR06040R",
+                    "gudid": "SXR06040R",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "SXR06040R",
+                    "gudid": "SXR06040R",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                },
+                "dimensions": {
+                    "harvested": "Diameter:6.0Millimeter | Length:40.0Millimeter",
+                    "gudid": "Diameter:6.0Millimeter | Length:40.0Millimeter",
+                    "status": "match"
+                }
+            },
+            "overall_status": "partial",
+            "summary": {
+                "matches": 5,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 1
+            }
+        }
+    },
+    {
+        "record_number": 26,
+        "source_file": "W__L__Gore___Associates__Inc_BXA051501A_20260311191727.json",
+        "source_url": "https://www.goremedical.com/products/viabahn-vbx",
+        "harvested_record": {
+            "device_name": "Catalogue numbers for GOREVIABAHNVBX",
+            "manufacturer": "W. L. Gore & Associates, Inc.",
+            "model_number": "BXA051501A",
+            "catalog_number": "BXA051501A",
+            "device_description": null,
+            "dimensions": "Diameter:5.0Millimeter | Length:8.0Millimeter"
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "Catalogue numbers for GOREVIABAHNVBX",
+                    "gudid": "Catalogue numbers for GOREVIABAHNVBX",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "W. L. Gore & Associates, Inc.",
+                    "gudid": "W. L. Gore & Associates, Inc.",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "BXA051501A",
+                    "gudid": "BXA051501A",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "BXA051501A",
+                    "gudid": "BXA051501A",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                },
+                "dimensions": {
+                    "harvested": "Diameter:5.0Millimeter | Length:8.0Millimeter",
+                    "gudid": "Diameter:5.0Millimeter | Length:8.0Millimeter",
+                    "status": "match"
+                }
+            },
+            "overall_status": "partial",
+            "summary": {
+                "matches": 5,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 1
+            }
+        }
+    },
+    {
+        "record_number": 27,
+        "source_file": "W__L__Gore___Associates__Inc_VBHR050202A_20260311191727.json",
+        "source_url": "https://www.goremedical.com/products/viabahn-vbx",
+        "harvested_record": {
+            "device_name": "Catalogue numbers for GOREVIABAHNEndoprosthesis with Heparin Bioactive Surface and GOREVIABAHNEndoprosthesis",
+            "manufacturer": "W. L. Gore & Associates, Inc.",
+            "model_number": "VBHR050202A",
+            "catalog_number": "VBHR050202A",
+            "device_description": null,
+            "dimensions": null
+        },
+        "comparison_result": {
+            "fields": {
+                "device_name": {
+                    "harvested": "Catalogue numbers for GOREVIABAHNEndoprosthesis with Heparin Bioactive Surface and GOREVIABAHNEndoprosthesis",
+                    "gudid": "Catalogue numbers for GOREVIABAHNEndoprosthesis with Heparin Bioactive Surface and GOREVIABAHNEndoprosthesis",
+                    "status": "match"
+                },
+                "manufacturer": {
+                    "harvested": "W. L. Gore & Associates, Inc.",
+                    "gudid": "W. L. Gore & Associates, Inc.",
+                    "status": "match"
+                },
+                "model_number": {
+                    "harvested": "VBHR050202A",
+                    "gudid": "VBHR050202A",
+                    "status": "match"
+                },
+                "catalog_number": {
+                    "harvested": "VBHR050202A",
+                    "gudid": "VBHR050202A",
+                    "status": "match"
+                },
+                "device_description": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                },
+                "dimensions": {
+                    "harvested": null,
+                    "gudid": null,
+                    "status": "missing"
+                }
+            },
+            "overall_status": "partial",
+            "summary": {
+                "matches": 4,
+                "partials": 0,
+                "mismatches": 0,
+                "missing": 2
+            }
+        }
+    }
+]
