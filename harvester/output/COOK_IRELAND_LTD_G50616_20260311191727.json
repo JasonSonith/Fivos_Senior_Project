@@ -1,0 +1,17 @@
+{
+  "brandName": "Zilver 635 Biliary",
+  "versionModelNumber": "G50616",
+  "catalogNumber": "ZILBS-635-6-4",
+  "companyName": "COOK IRELAND LTD",
+  "deviceDescription": null,
+  "deviceSizes": null,
+  "_harvest": {
+    "harvest_run_id": "HR-LOCAL-20260311191727",
+    "harvested_at": "2026-03-11T19:17:27Z",
+    "source_url": "https://www.cookmedical.com/products/zilver-ptx-drug-eluting-peripheral-stent/",
+    "adapter_version": "cook-specifications_layout",
+    "normalization_version": "1.0.0",
+    "validation_issues": [],
+    "raw_html_sha256": "4a6c35209b840d90f8a28e5df9eab81a7ad58a76b06468c58c396c41f00920be"
+  }
+}

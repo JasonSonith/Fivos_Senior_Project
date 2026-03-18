@@ -40,65 +40,79 @@ unit_conversions = {
 
 
 manufacturer_aliases = {
-    # Medtronic
-    'medtronic': 'Medtronic',
-    'medtronic inc': 'Medtronic',
-    'medtronic inc.': 'Medtronic',
-    'medtronic plc': 'Medtronic',
-    'medtronic, inc.': 'Medtronic',
+    # Medtronic — GUDID legal entity: "MEDTRONIC, INC."
+    'medtronic': 'MEDTRONIC, INC.',
+    'medtronic inc': 'MEDTRONIC, INC.',
+    'medtronic inc.': 'MEDTRONIC, INC.',
+    'medtronic plc': 'MEDTRONIC, INC.',
+    'medtronic, inc.': 'MEDTRONIC, INC.',
+    'medtronic, inc': 'MEDTRONIC, INC.',
 
-    # Abbott Vascular
-    'abbott vascular': 'Abbott Vascular',
-    'abbott': 'Abbott Vascular',
-    'abbott laboratories': 'Abbott Vascular',
-    'abbott labs': 'Abbott Vascular',
-    'abbott vascular devices': 'Abbott Vascular',
-    'st. jude medical': 'Abbott Vascular',
-    'st jude medical': 'Abbott Vascular',
+    # Covidien (GUDID lists some Medtronic devices under Covidien)
+    'covidien': 'Covidien LP',
+    'covidien lp': 'Covidien LP',
 
-    # Boston Scientific
-    'boston scientific': 'Boston Scientific',
-    'boston scientific corporation': 'Boston Scientific',
-    'boston scientific corp': 'Boston Scientific',
-    'boston sci': 'Boston Scientific',
-    'bsc': 'Boston Scientific',
+    # Abbott Vascular — GUDID legal entity: "ABBOTT VASCULAR INC."
+    'abbott vascular': 'ABBOTT VASCULAR INC.',
+    'abbott': 'ABBOTT VASCULAR INC.',
+    'abbott vascular inc.': 'ABBOTT VASCULAR INC.',
+    'abbott vascular inc': 'ABBOTT VASCULAR INC.',
+    'abbott laboratories': 'ABBOTT VASCULAR INC.',
+    'abbott labs': 'ABBOTT VASCULAR INC.',
+    'abbott vascular devices': 'ABBOTT VASCULAR INC.',
+    'st. jude medical': 'ABBOTT VASCULAR INC.',
+    'st jude medical': 'ABBOTT VASCULAR INC.',
 
-    # Shockwave Medical
-    'shockwave medical': 'Shockwave Medical',
-    'shockwave': 'Shockwave Medical',
-    'shockwave medical inc': 'Shockwave Medical',
-    'shockwave medical, inc.': 'Shockwave Medical',
+    # Boston Scientific — GUDID legal entity: "Boston Scientific Corporation"
+    'boston scientific': 'Boston Scientific Corporation',
+    'boston scientific corporation': 'Boston Scientific Corporation',
+    'boston scientific corp': 'Boston Scientific Corporation',
+    'boston scientific corp.': 'Boston Scientific Corporation',
+    'boston sci': 'Boston Scientific Corporation',
+    'bsc': 'Boston Scientific Corporation',
 
-    # Cook
-    'cook': 'Cook',
-    'cook medical': 'Cook',
-    'cook medical inc': 'Cook',
-    'cook medical llc': 'Cook',
-    'cook group': 'Cook',
-    'cook medical incorporated': 'Cook',
+    # Shockwave Medical — GUDID legal entity: "Shockwave Medical, Inc."
+    'shockwave medical': 'Shockwave Medical, Inc.',
+    'shockwave': 'Shockwave Medical, Inc.',
+    'shockwave medical inc': 'Shockwave Medical, Inc.',
+    'shockwave medical, inc.': 'Shockwave Medical, Inc.',
+    'shockwave medical inc.': 'Shockwave Medical, Inc.',
 
-    # W L Gore & Associates
-    'w l gore & associates': 'W L Gore & Associates',
-    'w. l. gore & associates': 'W L Gore & Associates',
-    'w.l. gore & associates': 'W L Gore & Associates',
-    'w.l. gore': 'W L Gore & Associates',
-    'wl gore': 'W L Gore & Associates',
-    'gore': 'W L Gore & Associates',
-    'gore medical': 'W L Gore & Associates',
+    # Cook — GUDID legal entity: "COOK IRELAND LTD"
+    'cook': 'COOK IRELAND LTD',
+    'cook medical': 'COOK IRELAND LTD',
+    'cook medical inc': 'COOK IRELAND LTD',
+    'cook medical llc': 'COOK IRELAND LTD',
+    'cook group': 'COOK IRELAND LTD',
+    'cook medical incorporated': 'COOK IRELAND LTD',
+    'cook ireland': 'COOK IRELAND LTD',
+    'cook ireland ltd': 'COOK IRELAND LTD',
 
-    # Cordis
-    'cordis': 'Cordis',
-    'cordis corporation': 'Cordis',
-    'cordis corp': 'Cordis',
-    'cordis corp.': 'Cordis',
+    # W L Gore & Associates — GUDID legal entity: "W. L. Gore & Associates, Inc."
+    'w l gore & associates': 'W. L. Gore & Associates, Inc.',
+    'w. l. gore & associates': 'W. L. Gore & Associates, Inc.',
+    'w.l. gore & associates': 'W. L. Gore & Associates, Inc.',
+    'w. l. gore & associates, inc.': 'W. L. Gore & Associates, Inc.',
+    'w.l. gore': 'W. L. Gore & Associates, Inc.',
+    'wl gore': 'W. L. Gore & Associates, Inc.',
+    'gore': 'W. L. Gore & Associates, Inc.',
+    'gore medical': 'W. L. Gore & Associates, Inc.',
 
-    # Terumo
-    'terumo': 'Terumo',
-    'terumo corporation': 'Terumo',
-    'terumo corp': 'Terumo',
-    'terumo corp.': 'Terumo',
-    'terumo medical': 'Terumo',
-    'terumo bct': 'Terumo',
+    # Cordis — GUDID legal entity: "Cordis US Corp."
+    'cordis': 'Cordis US Corp.',
+    'cordis corporation': 'Cordis US Corp.',
+    'cordis corp': 'Cordis US Corp.',
+    'cordis corp.': 'Cordis US Corp.',
+    'cordis us corp.': 'Cordis US Corp.',
+    'cordis us corp': 'Cordis US Corp.',
+
+    # Terumo — GUDID legal entity: "TERUMO CORPORATION"
+    'terumo': 'TERUMO CORPORATION',
+    'terumo corporation': 'TERUMO CORPORATION',
+    'terumo corp': 'TERUMO CORPORATION',
+    'terumo corp.': 'TERUMO CORPORATION',
+    'terumo medical': 'TERUMO CORPORATION',
+    'terumo bct': 'TERUMO CORPORATION',
 }
 
 def normalize_manufacturer(raw: str):

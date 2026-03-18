@@ -1,4 +1,4 @@
-from normalizers.text import normalize_text
+from normalizers.text import normalize_text, clean_brand_name
 import pytest
 
 
@@ -130,3 +130,57 @@ class TestEdgeCases:
     def test_combined_html_invisible_whitespace(self):
         raw = "  &amp;\u200b\ufeff  multiple   spaces  "
         assert normalize_text(raw) == "& multiple spaces"
+
+
+class TestCleanBrandName:
+
+    def test_strips_tm_after_word(self):
+        assert clean_brand_name("Absolute ProTM") == "Absolute Pro"
+
+    def test_strips_unicode_trademark(self):
+        assert clean_brand_name("IN.PACT™ Admiral™") == "IN.PACT Admiral"
+
+    def test_strips_registered_symbol(self):
+        assert clean_brand_name("R2P®MISAGO®") == "R2PMISAGO"
+
+    def test_strips_copyright_symbol(self):
+        assert clean_brand_name("Device©") == "Device"
+
+    def test_strips_drug_eluting_stent_suffix(self):
+        assert clean_brand_name("Resolute Onyx™ drug-eluting stent (DES)") == "Resolute Onyx"
+
+    def test_strips_drug_coated_balloon_suffix(self):
+        assert clean_brand_name("IN.PACTTM AdmiralTM drug-coated balloon") == "IN.PACT Admiral"
+
+    def test_strips_atherectomy_suffix(self):
+        assert clean_brand_name("HawkOneTM directional atherectomy system") == "HawkOne"
+
+    def test_strips_self_expanding_stent_suffix(self):
+        result = clean_brand_name("R2P®MISAGO®RX Self-Expanding Peripheral Stent")
+        assert result == "R2PMISAGORX"
+
+    def test_strips_vascular_stent_system(self):
+        result = clean_brand_name("S.M.A.R.T. CONTROL Vascular Stent System")
+        assert result == "S.M.A.R.T. CONTROL"
+
+    def test_clean_name_unchanged(self):
+        assert clean_brand_name("Absolute Pro") == "Absolute Pro"
+
+    def test_none_returns_none(self):
+        assert clean_brand_name(None) is None
+
+    def test_empty_string_returns_none(self):
+        assert clean_brand_name("") is None
+
+    def test_nfkc_then_strip_tm(self):
+        # &trade; → ™ via NFKC → "TM", then TM is stripped
+        result = clean_brand_name("EverFlex&trade;")
+        assert result == "EverFlex"
+
+    def test_zilver_ptx_description(self):
+        result = clean_brand_name("Zilver® PTX® Drug-Eluting Peripheral Stent")
+        assert result == "Zilver PTX"
+
+    def test_peripheral_ivl_catheter(self):
+        result = clean_brand_name("Shockwave M5+ Peripheral IVL Catheter")
+        assert result == "Shockwave M5+"
