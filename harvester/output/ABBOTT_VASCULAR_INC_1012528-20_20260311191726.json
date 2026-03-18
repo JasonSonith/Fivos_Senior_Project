@@ -1,0 +1,35 @@
+{
+  "brandName": "Absolute Pro",
+  "versionModelNumber": "1012528-20",
+  "catalogNumber": "1012528-20",
+  "companyName": "ABBOTT VASCULAR INC.",
+  "deviceDescription": null,
+  "deviceSizes": [
+    {
+      "sizeType": "Diameter",
+      "size": {
+        "unit": "Millimeter",
+        "value": "6.0"
+      },
+      "sizeText": null
+    },
+    {
+      "sizeType": "Length",
+      "size": {
+        "unit": "Millimeter",
+        "value": "20.0"
+      },
+      "sizeText": null
+    }
+  ],
+  "singleUse": true,
+  "_harvest": {
+    "harvest_run_id": "HR-LOCAL-20260311191726",
+    "harvested_at": "2026-03-11T19:17:26Z",
+    "source_url": "https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/esprit-bti-stent.html",
+    "adapter_version": "abbott-ordering_layout",
+    "normalization_version": "1.0.0",
+    "validation_issues": [],
+    "raw_html_sha256": "e711757285b54b61d7944b79e5beddfaa9e453fe4f9ac40d7fd79cc059321ec5"
+  }
+}
