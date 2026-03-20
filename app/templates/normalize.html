@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <p class="eyebrow">Inspection</p>
+        <h1 class="page-title">Results Workspace</h1>
+        <p class="page-description">
+            Compare raw harvested values against normalized output to verify data quality and conversion accuracy.
+        </p>
+    </div>
+</section>
+
+<section class="content-grid">
+    <div class="panel">
+        <div class="panel-header">
+            <div>
+                <h3>Raw Records</h3>
+                <p>Direct values captured from harvested source data</p>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Device</th>
+                        <th>Outer Diameter</th>
+                        <th>Weight</th>
+                        <th>Volume</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in raw_records %}
+                    <tr>
+                        <td>{{ record.device_name }}</td>
+                        <td>{{ record.outer_diameter }}</td>
+                        <td>{{ record.weight }}</td>
+                        <td>{{ record.volume }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">
+            <div>
+                <h3>Normalized Records</h3>
+                <p>Standardized data after applying conversion and cleanup rules</p>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Device</th>
+                        <th>Outer Diameter</th>
+                        <th>Weight</th>
+                        <th>Volume</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in normalized_records %}
+                    <tr>
+                        <td>{{ record.device_name }}</td>
+                        <td>{{ record.outer_diameter }}</td>
+                        <td>{{ record.weight }}</td>
+                        <td>{{ record.volume }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

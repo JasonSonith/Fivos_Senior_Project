@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fivos Device Data Console</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="brand-wrap">
+                <div class="brand-logo">F</div>
+                <div>
+                    <h1 class="brand-title">Fivos</h1>
+                    <p class="brand-subtitle">Medical Device Data Console</p>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <p class="sidebar-label">Workspace</p>
+                <nav class="nav">
+                    <a href="/" class="nav-link">Dashboard</a>
+                    <a href="/harvester" class="nav-link">Harvester</a>
+                    <a href="/normalize" class="nav-link">Normalization</a>
+                    <a href="/results" class="nav-link">Results</a>
+                </nav>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="status-card">
+                    <p class="status-title">System Status</p>
+                    <div class="status-row">
+                        <span class="status-dot"></span>
+                        <span>Operational</span>
+                    </div>
+                    <p class="status-text">Scraping, normalization, and results tracking are available.</p>
+                </div>
+            </div>
+        </aside>
+
+        <div class="main-area">
+            <header class="topbar">
+                <div>
+                    <h2 class="topbar-title">Fivos Regulatory Intelligence Platform</h2>
+                    <p class="topbar-subtitle">Professional data harvesting and standardization for medical device information.</p>
+                </div>
+                <div class="topbar-actions">
+                    <div class="chip">Secure Session</div>
+                    <div class="chip chip-accent">Admin View</div>
+                </div>
+            </header>
+
+            <main class="page-content">
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+</body>
+</html>

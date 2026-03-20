@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <p class="eyebrow">Data Collection</p>
+        <h1 class="page-title">Harvester Console</h1>
+        <p class="page-description">
+            Run the Fivos web harvester against a manufacturer source page and store the resulting records.
+        </p>
+    </div>
+</section>
+
+<section class="content-grid single-wide">
+    <div class="panel">
+        <div class="panel-header">
+            <div>
+                <h3>Run Harvester</h3>
+                <p>Enter the manufacturer and source URL to begin a collection run</p>
+            </div>
+        </div>
+
+        <form method="post" action="/harvester/run" class="form-grid-modern">
+            <div class="field">
+                <label for="manufacturer">Manufacturer</label>
+                <input id="manufacturer" type="text" name="manufacturer" placeholder="Medtronic" required>
+            </div>
+
+            <div class="field">
+                <label for="url">Source URL</label>
+                <input id="url" type="text" name="url" placeholder="https://example.com/device" required>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Run Scraper</button>
+                <a href="/results" class="btn btn-secondary">Go to Results</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+{% if result %}
+<section class="panel">
+    <div class="panel-header">
+        <div>
+            <h3>Run Summary</h3>
+            <p>Most recent harvester execution details</p>
+        </div>
+    </div>
+
+    <div class="stats-grid compact">
+        <div class="metric-card small">
+            <p class="metric-label">Success</p>
+            <h3 class="metric-value">{{ result.success }}</h3>
+        </div>
+
+        <div class="metric-card small">
+            <p class="metric-label">Status</p>
+            <h3 class="metric-value">{{ result.status if result.status else "N/A" }}</h3>
+        </div>
+
+        <div class="metric-card small">
+            <p class="metric-label">Attempts</p>
+            <h3 class="metric-value">{{ result.attempts if result.attempts else "N/A" }}</h3>
+        </div>
+
+        <div class="metric-card small">
+            <p class="metric-label">Elapsed</p>
+            <h3 class="metric-value">
+                {% if result.elapsed_ms %}{{ result.elapsed_ms }} ms{% else %}N/A{% endif %}
+            </h3>
+        </div>
+    </div>
+
+    {% if result.error %}
+    <div class="alert-error">
+        <strong>Error:</strong> {{ result.error }}
+    </div>
+    {% endif %}
+
+    {% if result.records %}
+    <div class="table-wrap">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Device</th>
+                    <th>Manufacturer</th>
+                    <th>Outer Diameter</th>
+                    <th>Weight</th>
+                    <th>Volume</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in result.records %}
+                <tr>
+                    <td>{{ record.device_name }}</td>
+                    <td>{{ record.manufacturer }}</td>
+                    <td>{{ record.outer_diameter }}</td>
+                    <td>{{ record.weight }}</td>
+                    <td>{{ record.volume }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</section>
+{% endif %}
+{% endblock %}
