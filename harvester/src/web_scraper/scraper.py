@@ -30,8 +30,7 @@ class FetchResult:
 
 class AsyncRateLimiter:
     """
-    Simple global rate limiter: ensures at least `delay_s` between *starts* of requests.
-    Good enough for a project; you can upgrade to per-domain later.
+    Simple global rate limiter: ensures at least `delay_s` between starts of requests.
     """
     def __init__(self, delay_s: float = 2.0):
         self.delay_s = delay_s
@@ -125,9 +124,6 @@ class BrowserEngine:
             await self._playwright.stop()
 
     async def fetch(self, url: str) -> FetchResult:
-        """
-        Public method with concurrency limit + retry logic.
-        """
         async with self._sem:
             await self.rate_limiter.wait()
             return await self._fetch_with_retries(url)
@@ -135,6 +131,7 @@ class BrowserEngine:
     async def _fetch_with_retries(self, url: str) -> FetchResult:
         start = time.monotonic()
         last_err = None
+
 
         for attempt in range(1, self.retries + 1):
             try:
@@ -157,9 +154,6 @@ class BrowserEngine:
         )
 
     async def _fetch_once(self, url: str) -> FetchResult:
-        """
-        Single attempt: open isolated context/page, navigate, wait for JS, return HTML.
-        """
         context_kwargs: Dict[str, Any] = {}
         if self.user_agent:
             context_kwargs["user_agent"] = self.user_agent
@@ -207,6 +201,21 @@ class BrowserEngine:
         finally:
             await page.close()
             await context.close()
+
+
+async def fetch_page_html(url: str) -> FetchResult:
+    """
+    Wrapper function for the web interface.
+    """
+    async with BrowserEngine(
+        max_concurrency=1,
+        page_timeout_ms=30_000,
+        retries=3,
+        retry_delay_s=5.0,
+        rate_limit_delay_s=2.0,
+        headless=True,
+    ) as engine:
+        return await engine.fetch(url)
 
 
 async def main():

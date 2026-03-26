@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <p class="eyebrow">Overview</p>
+        <h1 class="page-title">Operational Dashboard</h1>
+        <p class="page-description">
+            Monitor harvested device records, normalized outputs, and the current readiness of your data pipeline.
+        </p>
+    </div>
+    <div class="hero-actions">
+        <a href="/harvester" class="btn btn-primary">Run Harvester</a>
+        <a href="/results" class="btn btn-secondary">View Results</a>
+    </div>
+</section>
+
+<section class="stats-grid">
+    <div class="metric-card">
+        <p class="metric-label">Raw Records</p>
+        <h3 class="metric-value">{{ stats.raw_records }}</h3>
+        <p class="metric-foot">Recently captured records from source pages</p>
+    </div>
+
+    <div class="metric-card">
+        <p class="metric-label">Normalized Records</p>
+        <h3 class="metric-value">{{ stats.normalized_records }}</h3>
+        <p class="metric-foot">Standardized values ready for downstream use</p>
+    </div>
+
+    <div class="metric-card">
+        <p class="metric-label">Last Run</p>
+        <h3 class="metric-value">{{ stats.last_run }}</h3>
+        <p class="metric-foot">Current system execution state</p>
+    </div>
+</section>
+
+<section class="content-grid">
+    <div class="panel">
+        <div class="panel-header">
+            <div>
+                <h3>Platform Summary</h3>
+                <p>Core capabilities available in this release</p>
+            </div>
+        </div>
+        <div class="feature-list">
+            <div class="feature-item">
+                <h4>Web Harvesting</h4>
+                <p>Capture manufacturer-facing device data from public web pages using Playwright.</p>
+            </div>
+            <div class="feature-item">
+                <h4>Unit Normalization</h4>
+                <p>Convert mixed measurements into standardized units for comparison and reporting.</p>
+            </div>
+            <div class="feature-item">
+                <h4>Data Review</h4>
+                <p>Inspect raw and normalized records side by side through a single interface.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">
+            <div>
+                <h3>Quick Actions</h3>
+                <p>Common tasks for a Fivos analyst</p>
+            </div>
+        </div>
+        <div class="quick-actions">
+            <a href="/harvester" class="action-card">
+                <span class="action-title">Launch Harvester</span>
+                <span class="action-text">Run the scraper against a target manufacturer page</span>
+            </a>
+            <a href="/normalize" class="action-card">
+                <span class="action-title">Normalize Records</span>
+                <span class="action-text">Apply unit conversion and standard formatting rules</span>
+            </a>
+            <a href="/results" class="action-card">
+                <span class="action-title">Open Results</span>
+                <span class="action-text">Review raw and normalized records for analysis</span>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

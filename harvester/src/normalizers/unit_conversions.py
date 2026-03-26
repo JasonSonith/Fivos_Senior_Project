@@ -1,4 +1,3 @@
-from bs4 import BeautifulSoup
 import re
 
 unit_conversions = {
@@ -132,7 +131,7 @@ def normalize_measurement(raw_value: str):
     if range_match:
         low = float(range_match.group(1))
         high = float(range_match.group(2))
-        unit = range_match.group(3).lower().strip(".")
+        unit = range_match.group(3).strip().rstrip(".")
         midpoint = round((low + high) / 2, 4)
 
         if unit in unit_conversions:
@@ -150,25 +149,24 @@ def normalize_measurement(raw_value: str):
     
     if not match:
         return {
-            'value': None,
-            'unit': None,
-            'raw': raw_value
+            "value": None,
+            "unit": None,
+            "raw": raw_value,
         }
-    
+
     value = float(match.group(1))
-    unit = match.group(2).lower().strip(".")
-    
+    unit = match.group(2).strip().rstrip(".")
+
     if unit in unit_conversions:
         canonical_unit, converter = unit_conversions[unit]
-        
         return {
-            'value': round(converter(value), 4),
-            'unit': canonical_unit
+            "value": round(converter(value), 4),
+            "unit": canonical_unit,
+            "raw": raw_value,
         }
-    
-    #for unknown units
+
     return {
-        'value': value,
-        'unit': unit,
-        'raw_value': raw_value
+        "value": value,
+        "unit": unit,
+        "raw": raw_value,
     }
