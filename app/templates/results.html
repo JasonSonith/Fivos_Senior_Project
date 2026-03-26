@@ -1,60 +1,103 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fivos Device Data Console</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
-</head>
-<body>
-    <div class="app-shell">
-        <aside class="sidebar">
-            <div class="brand-wrap">
-                <div class="brand-logo">F</div>
-                <div>
-                    <h1 class="brand-title">Fivos</h1>
-                    <p class="brand-subtitle">Medical Device Data Console</p>
-                </div>
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <p class="eyebrow">Inspection</p>
+        <h1 class="page-title">Results Workspace</h1>
+        <p class="page-description">
+            Review harvested device records and validation results against the FDA GUDID database.
+        </p>
+    </div>
+</section>
+
+<section class="content-grid single-wide">
+    <div class="panel">
+        <div class="panel-header">
+            <div>
+                <h3>Harvested Devices ({{ devices | length }})</h3>
+                <p>Records extracted and normalized by the pipeline</p>
             </div>
+        </div>
 
-            <div class="sidebar-section">
-                <p class="sidebar-label">Workspace</p>
-                <nav class="nav">
-                    <a href="/" class="nav-link">Dashboard</a>
-                    <a href="/harvester" class="nav-link">Harvester</a>
-                    <a href="/normalize" class="nav-link">Normalization</a>
-                    <a href="/results" class="nav-link">Results</a>
-                </nav>
-            </div>
-
-            <div class="sidebar-footer">
-                <div class="status-card">
-                    <p class="status-title">System Status</p>
-                    <div class="status-row">
-                        <span class="status-dot"></span>
-                        <span>Operational</span>
-                    </div>
-                    <p class="status-text">Scraping, normalization, and results tracking are available.</p>
-                </div>
-            </div>
-        </aside>
-
-        <div class="main-area">
-            <header class="topbar">
-                <div>
-                    <h2 class="topbar-title">Fivos Regulatory Intelligence Platform</h2>
-                    <p class="topbar-subtitle">Professional data harvesting and standardization for medical device information.</p>
-                </div>
-                <div class="topbar-actions">
-                    <div class="chip">Secure Session</div>
-                    <div class="chip chip-accent">Admin View</div>
-                </div>
-            </header>
-
-            <main class="page-content">
-                {% block content %}{% endblock %}
-            </main>
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Brand Name</th>
+                        <th>Company</th>
+                        <th>Model Number</th>
+                        <th>Catalog Number</th>
+                        <th>Run ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for device in devices %}
+                    <tr>
+                        <td>{{ device.brandName or "N/A" }}</td>
+                        <td>{{ device.companyName or "N/A" }}</td>
+                        <td>{{ device.versionModelNumber or "N/A" }}</td>
+                        <td>{{ device.catalogNumber or "N/A" }}</td>
+                        <td>{{ device.get("_harvest", {}).get("harvest_run_id", "N/A") if device.get("_harvest") else "N/A" }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% if not devices %}
+                    <tr><td colspan="5" style="text-align: center; opacity: 0.5;">No devices harvested yet</td></tr>
+                    {% endif %}
+                </tbody>
+            </table>
         </div>
     </div>
-</body>
-</html>
+</section>
+
+<section class="content-grid single-wide">
+    <div class="panel">
+        <div class="panel-header">
+            <div>
+                <h3>Validation Results ({{ validations | length }})</h3>
+                <p>Comparison of harvested data against FDA GUDID records</p>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Brand Name</th>
+                        <th>Status</th>
+                        <th>Match</th>
+                        <th>GUDID DI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for v in validations %}
+                    <tr>
+                        <td>{{ v.brandName or "N/A" }}</td>
+                        <td>
+                            {% if v.status == "matched" %}
+                            <span style="color: #22c55e;">Matched</span>
+                            {% elif v.status == "partial_match" %}
+                            <span style="color: #eab308;">Partial</span>
+                            {% elif v.status == "mismatch" %}
+                            <span style="color: #ef4444;">Mismatch</span>
+                            {% elif v.status == "gudid_not_found" %}
+                            <span style="opacity: 0.5;">GUDID Not Found</span>
+                            {% elif v.status == "ollama_failed" %}
+                            <span style="opacity: 0.5;">Ollama Failed</span>
+                            {% else %}
+                            {{ v.status or "N/A" }}
+                            {% endif %}
+                        </td>
+                        <td>{{ v.matched_fields or 0 }}/{{ v.total_fields or 5 }} ({{ v.match_percent or 0 }}%)</td>
+                        <td>{{ v.gudid_di or "N/A" }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% if not validations %}
+                    <tr><td colspan="4" style="text-align: center; opacity: 0.5;">No validation results yet. Run validation from the Validation page.</td></tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

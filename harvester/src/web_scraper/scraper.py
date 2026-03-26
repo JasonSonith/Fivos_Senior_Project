@@ -10,8 +10,8 @@ from playwright.async_api import async_playwright, TimeoutError as PWTimeoutErro
 
 
 # ====== CONFIG: where to save HTML ======
-BASE_DIR = r"C:\Users\walad\Documents\SouthClasses\Spring2026Classes\CIS497_498\Fivos_Senior_Project\Harvester\src\web-scraper"
-OUT_HTML_DIR = os.path.join(BASE_DIR, "out_html")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+OUT_HTML_DIR = os.path.join(BASE_DIR, "..", "web-scraper", "out_html")
 
 
 @dataclass

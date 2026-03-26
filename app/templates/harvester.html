@@ -16,14 +16,19 @@
         <div class="panel-header">
             <div>
                 <h3>Run Harvester</h3>
-                <p>Enter the manufacturer and source URL to begin a collection run</p>
+                <p>Select an adapter and enter the source URL to begin a collection run</p>
             </div>
         </div>
 
         <form method="post" action="/harvester/run" class="form-grid-modern">
             <div class="field">
-                <label for="manufacturer">Manufacturer</label>
-                <input id="manufacturer" type="text" name="manufacturer" placeholder="Medtronic" required>
+                <label for="adapter_path">Site Adapter</label>
+                <select id="adapter_path" name="adapter_path" required>
+                    <option value="" disabled selected>Select an adapter...</option>
+                    {% for adapter in adapters %}
+                    <option value="{{ adapter.value }}">{{ adapter.label }}</option>
+                    {% endfor %}
+                </select>
             </div>
 
             <div class="field">
@@ -32,13 +37,73 @@
             </div>
 
             <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Run Scraper</button>
+                <button type="submit" class="btn btn-primary" id="submit-btn">Run Scraper</button>
                 <a href="/results" class="btn btn-secondary">Go to Results</a>
             </div>
         </form>
     </div>
 </section>
 
+<!-- Processing indicator (shown while job is running) -->
+{% if job_id %}
+<section class="panel" id="processing-panel">
+    <div class="panel-header">
+        <div>
+            <h3>Processing...</h3>
+            <p>Scraping page and running the extraction pipeline. This may take 10-30 seconds.</p>
+        </div>
+    </div>
+    <div class="stats-grid compact">
+        <div class="metric-card small">
+            <p class="metric-label">Status</p>
+            <h3 class="metric-value" id="job-status">Running</h3>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Results (populated by JS after job completes) -->
+<section class="panel" id="results-panel" style="display: none;">
+    <div class="panel-header">
+        <div>
+            <h3>Run Summary</h3>
+            <p>Most recent harvester execution details</p>
+        </div>
+    </div>
+
+    <div class="stats-grid compact">
+        <div class="metric-card small">
+            <p class="metric-label">Success</p>
+            <h3 class="metric-value" id="res-success">--</h3>
+        </div>
+        <div class="metric-card small">
+            <p class="metric-label">Run ID</p>
+            <h3 class="metric-value" id="res-run-id">--</h3>
+        </div>
+        <div class="metric-card small">
+            <p class="metric-label">Scrape Time</p>
+            <h3 class="metric-value" id="res-elapsed">--</h3>
+        </div>
+    </div>
+
+    <div id="res-error" class="alert-error" style="display: none;"></div>
+
+    <div class="table-wrap" id="res-table-wrap" style="display: none;">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Brand Name</th>
+                    <th>Company</th>
+                    <th>Model Number</th>
+                    <th>Catalog Number</th>
+                </tr>
+            </thead>
+            <tbody id="res-table-body"></tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Static results (shown when result is passed server-side, e.g. on page reload) -->
 {% if result %}
 <section class="panel">
     <div class="panel-header">
@@ -53,21 +118,14 @@
             <p class="metric-label">Success</p>
             <h3 class="metric-value">{{ result.success }}</h3>
         </div>
-
         <div class="metric-card small">
-            <p class="metric-label">Status</p>
-            <h3 class="metric-value">{{ result.status if result.status else "N/A" }}</h3>
+            <p class="metric-label">Run ID</p>
+            <h3 class="metric-value">{{ result.run_id if result.run_id else "N/A" }}</h3>
         </div>
-
         <div class="metric-card small">
-            <p class="metric-label">Attempts</p>
-            <h3 class="metric-value">{{ result.attempts if result.attempts else "N/A" }}</h3>
-        </div>
-
-        <div class="metric-card small">
-            <p class="metric-label">Elapsed</p>
+            <p class="metric-label">Scrape Time</p>
             <h3 class="metric-value">
-                {% if result.elapsed_ms %}{{ result.elapsed_ms }} ms{% else %}N/A{% endif %}
+                {% if result.scrape_elapsed_ms %}{{ result.scrape_elapsed_ms }} ms{% else %}N/A{% endif %}
             </h3>
         </div>
     </div>
@@ -78,32 +136,87 @@
     </div>
     {% endif %}
 
-    {% if result.records %}
+    {% if result.record %}
     <div class="table-wrap">
         <table class="data-table">
             <thead>
                 <tr>
-                    <th>Device</th>
-                    <th>Manufacturer</th>
-                    <th>Outer Diameter</th>
-                    <th>Weight</th>
-                    <th>Volume</th>
+                    <th>Brand Name</th>
+                    <th>Company</th>
+                    <th>Model Number</th>
+                    <th>Catalog Number</th>
                 </tr>
             </thead>
             <tbody>
-                {% for record in result.records %}
                 <tr>
-                    <td>{{ record.device_name }}</td>
-                    <td>{{ record.manufacturer }}</td>
-                    <td>{{ record.outer_diameter }}</td>
-                    <td>{{ record.weight }}</td>
-                    <td>{{ record.volume }}</td>
+                    <td>{{ result.record.brandName or "N/A" }}</td>
+                    <td>{{ result.record.companyName or "N/A" }}</td>
+                    <td>{{ result.record.versionModelNumber or "N/A" }}</td>
+                    <td>{{ result.record.catalogNumber or "N/A" }}</td>
                 </tr>
-                {% endfor %}
             </tbody>
         </table>
     </div>
     {% endif %}
 </section>
+{% endif %}
+
+{% if job_id %}
+<script>
+(function() {
+    const jobId = "{{ job_id }}";
+    const processingPanel = document.getElementById("processing-panel");
+    const resultsPanel = document.getElementById("results-panel");
+    const jobStatus = document.getElementById("job-status");
+    const submitBtn = document.getElementById("submit-btn");
+
+    if (submitBtn) submitBtn.disabled = true;
+
+    const poll = setInterval(async () => {
+        try {
+            const resp = await fetch("/api/jobs/" + jobId);
+            if (!resp.ok) return;
+            const data = await resp.json();
+
+            if (data.status === "running") {
+                jobStatus.textContent = "Running...";
+                return;
+            }
+
+            clearInterval(poll);
+            if (submitBtn) submitBtn.disabled = false;
+
+            const result = data.result || {};
+            processingPanel.style.display = "none";
+            resultsPanel.style.display = "block";
+
+            document.getElementById("res-success").textContent = result.success ? "Yes" : "No";
+            document.getElementById("res-run-id").textContent = result.run_id || "N/A";
+            document.getElementById("res-elapsed").textContent =
+                result.scrape_elapsed_ms ? result.scrape_elapsed_ms + " ms" : "N/A";
+
+            if (result.error) {
+                const errEl = document.getElementById("res-error");
+                errEl.style.display = "block";
+                errEl.innerHTML = "<strong>Error:</strong> " + result.error;
+            }
+
+            if (result.record) {
+                const r = result.record;
+                document.getElementById("res-table-wrap").style.display = "block";
+                document.getElementById("res-table-body").innerHTML =
+                    "<tr>" +
+                    "<td>" + (r.brandName || "N/A") + "</td>" +
+                    "<td>" + (r.companyName || "N/A") + "</td>" +
+                    "<td>" + (r.versionModelNumber || "N/A") + "</td>" +
+                    "<td>" + (r.catalogNumber || "N/A") + "</td>" +
+                    "</tr>";
+            }
+        } catch (e) {
+            // Network error, keep polling
+        }
+    }, 2000);
+})();
+</script>
 {% endif %}
 {% endblock %}

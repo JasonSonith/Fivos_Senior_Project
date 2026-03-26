@@ -5,8 +5,8 @@ from harvester.src.validators.gudid_client import fetch_gudid_raw_text
 from harvester.src.validators.ollama_client import extract_gudid_fields_with_ollama
 
 
-def run_validator():
-    devices = list(devices_collection.find())
+def run_validator(query: dict | None = None) -> dict:
+    devices = list(devices_collection.find(query or {}))
     print(f"Found {len(devices)} devices")
 
     total_devices = 0
@@ -124,6 +124,14 @@ def run_validator():
     print(f"Partial Matches: {partial_matches}")
     print(f"Mismatches: {mismatches}")
     print(f"GUDID Not Found: {not_found}")
+
+    return {
+        "total": total_devices,
+        "full_matches": full_matches,
+        "partial_matches": partial_matches,
+        "mismatches": mismatches,
+        "not_found": not_found,
+    }
 
 
 if __name__ == "__main__":

@@ -1,11 +1,21 @@
-from pymongo import MongoClient
+import os
+import sys
 from collections import defaultdict
 from datetime import datetime
 
-MONGO_URI = "mongodb://localhost:27017/"
-DB_NAME = "fivos"
+from pymongo import MongoClient
+
+# Ensure harvester/src is on sys.path
+_SRC_DIR = os.path.join(os.path.dirname(__file__), os.pardir)
+if os.path.abspath(_SRC_DIR) not in sys.path:
+    sys.path.insert(0, os.path.abspath(_SRC_DIR))
+
+from security.credentials import CredentialManager
+
+DB_NAME = "fivos-shared"
 DEVICES_COLLECTION = "devices"
 RUNS_COLLECTION = "runs"
+
 
 def parse_dt(value):
     if not value:
@@ -15,8 +25,9 @@ def parse_dt(value):
     except Exception:
         return None
 
+
 def main():
-    client = MongoClient(MONGO_URI)
+    client = MongoClient(CredentialManager.get_db_uri())
     db = client[DB_NAME]
     devices = db[DEVICES_COLLECTION]
     runs = db[RUNS_COLLECTION]

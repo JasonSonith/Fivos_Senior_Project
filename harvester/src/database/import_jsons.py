@@ -1,14 +1,23 @@
 import os
+import sys
 import json
+
 from pymongo import MongoClient
 
-MONGO_URI = "mongodb://localhost:27017/"
-DB_NAME = "fivos"
+# Ensure harvester/src is on sys.path
+_SRC_DIR = os.path.join(os.path.dirname(__file__), os.pardir)
+if os.path.abspath(_SRC_DIR) not in sys.path:
+    sys.path.insert(0, os.path.abspath(_SRC_DIR))
+
+from security.credentials import CredentialManager
+
+DB_NAME = "fivos-shared"
 COLLECTION_NAME = "devices"
-JSON_FOLDER = r"harvester\output"
+JSON_FOLDER = os.path.join("harvester", "output")
+
 
 def main():
-    client = MongoClient(MONGO_URI)
+    client = MongoClient(CredentialManager.get_db_uri())
     db = client[DB_NAME]
     collection = db[COLLECTION_NAME]
 
