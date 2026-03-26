@@ -6,7 +6,7 @@
         <p class="eyebrow">Data Collection</p>
         <h1 class="page-title">Harvester Console</h1>
         <p class="page-description">
-            Run the Fivos web harvester against a manufacturer source page and store the resulting records.
+            Run the extraction pipeline on pre-downloaded HTML files. The pipeline auto-matches each file to the correct site adapter by domain and extracts device data.
         </p>
     </div>
 </section>
@@ -15,42 +15,53 @@
     <div class="panel">
         <div class="panel-header">
             <div>
-                <h3>Run Harvester</h3>
-                <p>Select an adapter and enter the source URL to begin a collection run</p>
+                <h3>HTML Files in out_html/ ({{ files | length }})</h3>
+                <p>Select files to process through the extraction pipeline, or run all</p>
             </div>
         </div>
 
-        <form method="post" action="/harvester/run" class="form-grid-modern">
-            <div class="field">
-                <label for="adapter_path">Site Adapter</label>
-                <select id="adapter_path" name="adapter_path" required>
-                    <option value="" disabled selected>Select an adapter...</option>
-                    {% for adapter in adapters %}
-                    <option value="{{ adapter.value }}">{{ adapter.label }}</option>
-                    {% endfor %}
-                </select>
+        <form method="post" action="/harvester/run">
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="select-all"></th>
+                            <th>Filename</th>
+                            <th>Manufacturer</th>
+                            <th>Size</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for file in files %}
+                        <tr>
+                            <td><input type="checkbox" name="files" value="{{ file.path }}"></td>
+                            <td>{{ file.filename }}</td>
+                            <td>{{ file.manufacturer }}</td>
+                            <td>{{ file.size_kb }} KB</td>
+                        </tr>
+                        {% endfor %}
+                        {% if not files %}
+                        <tr><td colspan="4" style="text-align: center; opacity: 0.5;">No HTML files found in out_html/</td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
             </div>
 
-            <div class="field">
-                <label for="url">Source URL</label>
-                <input id="url" type="text" name="url" placeholder="https://example.com/device" required>
-            </div>
-
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary" id="submit-btn">Run Scraper</button>
+            <div class="form-actions" style="margin-top: 1rem;">
+                <button type="submit" class="btn btn-primary" id="run-btn">Run Pipeline</button>
                 <a href="/results" class="btn btn-secondary">Go to Results</a>
             </div>
         </form>
     </div>
 </section>
 
-<!-- Processing indicator (shown while job is running) -->
+<!-- Processing indicator -->
 {% if job_id %}
 <section class="panel" id="processing-panel">
     <div class="panel-header">
         <div>
             <h3>Processing...</h3>
-            <p>Scraping page and running the extraction pipeline. This may take 10-30 seconds.</p>
+            <p>Running the extraction pipeline on selected HTML files. This may take a moment.</p>
         </div>
     </div>
     <div class="stats-grid compact">
@@ -66,100 +77,39 @@
 <section class="panel" id="results-panel" style="display: none;">
     <div class="panel-header">
         <div>
-            <h3>Run Summary</h3>
-            <p>Most recent harvester execution details</p>
+            <h3>Pipeline Results</h3>
+            <p>Batch processing summary</p>
         </div>
     </div>
 
     <div class="stats-grid compact">
         <div class="metric-card small">
-            <p class="metric-label">Success</p>
-            <h3 class="metric-value" id="res-success">--</h3>
+            <p class="metric-label">Processed</p>
+            <h3 class="metric-value" id="res-processed">--</h3>
         </div>
         <div class="metric-card small">
-            <p class="metric-label">Run ID</p>
-            <h3 class="metric-value" id="res-run-id">--</h3>
+            <p class="metric-label">Succeeded</p>
+            <h3 class="metric-value" id="res-succeeded" style="color: #22c55e;">--</h3>
         </div>
         <div class="metric-card small">
-            <p class="metric-label">Scrape Time</p>
-            <h3 class="metric-value" id="res-elapsed">--</h3>
+            <p class="metric-label">Failed</p>
+            <h3 class="metric-value" id="res-failed" style="color: #ef4444;">--</h3>
+        </div>
+        <div class="metric-card small">
+            <p class="metric-label">Skipped</p>
+            <h3 class="metric-value" id="res-skipped">--</h3>
         </div>
     </div>
 
     <div id="res-error" class="alert-error" style="display: none;"></div>
-
-    <div class="table-wrap" id="res-table-wrap" style="display: none;">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Brand Name</th>
-                    <th>Company</th>
-                    <th>Model Number</th>
-                    <th>Catalog Number</th>
-                </tr>
-            </thead>
-            <tbody id="res-table-body"></tbody>
-        </table>
-    </div>
 </section>
 
-<!-- Static results (shown when result is passed server-side, e.g. on page reload) -->
-{% if result %}
-<section class="panel">
-    <div class="panel-header">
-        <div>
-            <h3>Run Summary</h3>
-            <p>Most recent harvester execution details</p>
-        </div>
-    </div>
-
-    <div class="stats-grid compact">
-        <div class="metric-card small">
-            <p class="metric-label">Success</p>
-            <h3 class="metric-value">{{ result.success }}</h3>
-        </div>
-        <div class="metric-card small">
-            <p class="metric-label">Run ID</p>
-            <h3 class="metric-value">{{ result.run_id if result.run_id else "N/A" }}</h3>
-        </div>
-        <div class="metric-card small">
-            <p class="metric-label">Scrape Time</p>
-            <h3 class="metric-value">
-                {% if result.scrape_elapsed_ms %}{{ result.scrape_elapsed_ms }} ms{% else %}N/A{% endif %}
-            </h3>
-        </div>
-    </div>
-
-    {% if result.error %}
-    <div class="alert-error">
-        <strong>Error:</strong> {{ result.error }}
-    </div>
-    {% endif %}
-
-    {% if result.record %}
-    <div class="table-wrap">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Brand Name</th>
-                    <th>Company</th>
-                    <th>Model Number</th>
-                    <th>Catalog Number</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ result.record.brandName or "N/A" }}</td>
-                    <td>{{ result.record.companyName or "N/A" }}</td>
-                    <td>{{ result.record.versionModelNumber or "N/A" }}</td>
-                    <td>{{ result.record.catalogNumber or "N/A" }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    {% endif %}
-</section>
-{% endif %}
+<script>
+// Select All checkbox
+document.getElementById('select-all')?.addEventListener('change', function() {
+    document.querySelectorAll('input[name="files"]').forEach(cb => cb.checked = this.checked);
+});
+</script>
 
 {% if job_id %}
 <script>
@@ -167,10 +117,9 @@
     const jobId = "{{ job_id }}";
     const processingPanel = document.getElementById("processing-panel");
     const resultsPanel = document.getElementById("results-panel");
-    const jobStatus = document.getElementById("job-status");
-    const submitBtn = document.getElementById("submit-btn");
+    const runBtn = document.getElementById("run-btn");
 
-    if (submitBtn) submitBtn.disabled = true;
+    if (runBtn) runBtn.disabled = true;
 
     const poll = setInterval(async () => {
         try {
@@ -178,39 +127,24 @@
             if (!resp.ok) return;
             const data = await resp.json();
 
-            if (data.status === "running") {
-                jobStatus.textContent = "Running...";
-                return;
-            }
+            if (data.status === "running") return;
 
             clearInterval(poll);
-            if (submitBtn) submitBtn.disabled = false;
+            if (runBtn) runBtn.disabled = false;
 
             const result = data.result || {};
             processingPanel.style.display = "none";
             resultsPanel.style.display = "block";
 
-            document.getElementById("res-success").textContent = result.success ? "Yes" : "No";
-            document.getElementById("res-run-id").textContent = result.run_id || "N/A";
-            document.getElementById("res-elapsed").textContent =
-                result.scrape_elapsed_ms ? result.scrape_elapsed_ms + " ms" : "N/A";
+            document.getElementById("res-processed").textContent = result.processed ?? "--";
+            document.getElementById("res-succeeded").textContent = result.succeeded ?? "--";
+            document.getElementById("res-failed").textContent = result.failed ?? "--";
+            document.getElementById("res-skipped").textContent = result.skipped ?? "--";
 
             if (result.error) {
                 const errEl = document.getElementById("res-error");
                 errEl.style.display = "block";
                 errEl.innerHTML = "<strong>Error:</strong> " + result.error;
-            }
-
-            if (result.record) {
-                const r = result.record;
-                document.getElementById("res-table-wrap").style.display = "block";
-                document.getElementById("res-table-body").innerHTML =
-                    "<tr>" +
-                    "<td>" + (r.brandName || "N/A") + "</td>" +
-                    "<td>" + (r.companyName || "N/A") + "</td>" +
-                    "<td>" + (r.versionModelNumber || "N/A") + "</td>" +
-                    "<td>" + (r.catalogNumber || "N/A") + "</td>" +
-                    "</tr>";
             }
         } catch (e) {
             // Network error, keep polling

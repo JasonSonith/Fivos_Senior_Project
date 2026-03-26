@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "Bash(python:*)",
-      "Bash(pip install:*)"
+      "Bash(pip install:*)",
+      "Bash(find /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/src/web-scraper/out_html/ -type f -name *.html)",
+      "WebFetch(domain:accessgudid.nlm.nih.gov)",
+      "Bash(find /mnt/c/Users/sonit/Github/Fivos_Senior_Project -name *gudid* -o -name *validator* -type f)",
+      "Bash(grep -r \"device.get\\\\|gudid\" /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/src/validators --include=*.py)",
+      "Bash(find /mnt/c/Users/sonit/Github/Fivos_Senior_Project -name *.json -path *test* -o -name *.json -path *sample*)",
+      "Bash(find /mnt/c/Users/sonit/Github/Fivos_Senior_Project -name *.md -o -name *.txt -o -name *.rst)"
     ]
   }
 }

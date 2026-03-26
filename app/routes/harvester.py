@@ -1,6 +1,6 @@
 import uuid
 
-from fastapi import APIRouter, BackgroundTasks, Form, Request
+from fastapi import APIRouter, BackgroundTasks, Request
 from fastapi.templating import Jinja2Templates
 
 router = APIRouter(prefix="/harvester", tags=["Harvester"])
@@ -9,36 +9,36 @@ templates = Jinja2Templates(directory="app/templates")
 
 @router.get("/")
 def harvester_page(request: Request):
-    adapters = request.app.state.adapter_choices
+    from orchestrator import list_html_files
+    files = list_html_files()
     return templates.TemplateResponse(
         request, "harvester.html",
-        context={"result": None, "adapters": adapters, "job_id": None},
+        context={"files": files, "job_id": None},
     )
 
 
 @router.post("/run")
-async def run_harvester(
-    request: Request,
-    background_tasks: BackgroundTasks,
-    adapter_path: str = Form(...),
-    url: str = Form(...),
-):
+async def run_pipeline(request: Request, background_tasks: BackgroundTasks):
+    form = await request.form()
+    selected = form.getlist("files")
+    file_paths = list(selected) if selected else None
+
     job_id = str(uuid.uuid4())
     request.app.state.jobs[job_id] = {"status": "running", "result": None}
+    background_tasks.add_task(_do_pipeline, request.app, job_id, file_paths)
 
-    background_tasks.add_task(_do_harvest, request.app, job_id, url, adapter_path)
-
-    adapters = request.app.state.adapter_choices
+    from orchestrator import list_html_files
+    files = list_html_files()
     return templates.TemplateResponse(
         request, "harvester.html",
-        context={"result": None, "adapters": adapters, "job_id": job_id},
+        context={"files": files, "job_id": job_id},
     )
 
 
-async def _do_harvest(app, job_id: str, url: str, adapter_path: str):
-    from orchestrator import run_harvest
+def _do_pipeline(app, job_id: str, file_paths: list[str] | None):
+    from orchestrator import run_pipeline_batch
     try:
-        result = await run_harvest(url=url, adapter_path=adapter_path)
+        result = run_pipeline_batch(file_paths=file_paths)
         app.state.jobs[job_id] = {"status": "completed", "result": result}
     except Exception as e:
-        app.state.jobs[job_id] = {"status": "failed", "result": {"success": False, "error": str(e)}}
+        app.state.jobs[job_id] = {"status": "failed", "result": {"error": str(e)}}

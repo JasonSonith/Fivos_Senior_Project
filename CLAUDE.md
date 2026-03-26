@@ -25,13 +25,13 @@ pytest                                    # all tests
 pytest harvester/src/pipeline/tests/test_pipeline_e2e.py  # single file
 pytest harvester/src/normalizers/tests/test_units.py::TestWeightConversions::test_kg_to_g  # single test
 
-# Run pipeline
+# Run pipeline (processes pre-downloaded HTML files using site adapters for extraction)
 python harvester/src/pipeline/runner.py --adapter-dir harvester/src/site_adapters --input-dir harvester/src/web-scraper/out_html  # batch
 python harvester/src/pipeline/runner.py --adapter <yaml> --input <html>  # single file
 # Options: --output-dir DIR, --run-id HR-10011, -v
 
 # Dashboard
-uvicorn harvester.src.Interface.Interface:app --port 8000
+uvicorn app.main:app --port 8000
 ```
 
 ## Environment
@@ -40,36 +40,59 @@ Required vars are listed in `.env.example`.
 
 ## Architecture
 
+### Data Flow
+
 ```
-Site Adapters                    Manufacturing Website
-(Config Files)                          ^
-        |                               | Page Requests
-        | Scraping Rules                |
-        v                               |
-   Web Scraper  ─────────────────────────
+Manufacturing Website
+        ^
+        | Page Requests (Playwright, standalone)
         |
-        | Raw HTML File
-        v
-  Normalization Pipeline
+   Web Scraper (harvester/src/web_scraper/scraper.py)
         |
-        | Normalized Files
+        | Raw HTML Files saved to harvester/src/web-scraper/out_html/
         v
-  MongoDB ◄─────────────────────────────────────────┐
-  (Harvested Data)                                  |
-        |                                    Update Records
-        |                                           |
-        └──────────────────────────────────────┐    |
-  FDA GUDID Database                           |    |
-  (Reference Data)                             |    |
-        |                                      v    |
-        | Compare              ──────> Validator Agent
-        └──────────────────────                |
-                                               | Flagged Discrepancies
-                                               v
-                                        Review Dashboard
-                                               |
-                                               └──────────────────────┘
+   Extraction Pipeline (harvester/src/pipeline/runner.py)
+        |
+        | Uses Site Adapters (YAML CSS-selector configs) to locate fields on each page
+        | Adapters are for PARSING, not scraping. They tell the pipeline WHERE
+        | to find device_name, model_number, specs_container, etc. in the HTML.
+        |
+        | Steps: sanitize → parse → extract (via adapter selectors) → normalize → validate → package
+        |
+        | GUDID-format JSON records
+        v
+   MongoDB (devices collection)
+        |
+        v
+   Validator ◄──── FDA GUDID API (v3 JSON, https://accessgudid.nlm.nih.gov/api/v3/devices/lookup.json)
+        |              (reference data for comparison)
+        |
+        | Flagged Discrepancies (match / partial_match / mismatch)
+        v
+   Review Dashboard (FastAPI web UI)
+        |
+        └──── Human approves/rejects ──── MongoDB updated
 ```
+
+### Key Distinction: Scraper vs Adapters vs Pipeline
+
+| Component | Role | Triggered by |
+|-----------|------|-------------|
+| **Web Scraper** (`web_scraper/scraper.py`) | Fetches and renders HTML pages from manufacturer websites using Playwright. Saves to `web-scraper/out_html/`. | Standalone CLI tool (run separately) |
+| **Site Adapters** (`site_adapters/*.yaml`) | CSS selector configs that tell the pipeline WHERE to find fields (device_name, model_number, specs_container, warning_text) on each manufacturer's HTML page layout. **NOT for scraping.** | Read by the pipeline at extraction time |
+| **Pipeline** (`pipeline/runner.py`) | Reads HTML from `out_html/`, applies adapter selectors to extract data, normalizes values, validates, packages into GUDID-format JSON. | CLI or web UI |
+| **GUDID API** | FDA's device lookup API. Used for validation (compare harvested vs official) and direct device lookup. | Validator or GUDID lookup page |
+
+### Module Map
+
+- `pipeline/` — Core extraction: parser, extractor, dimension_parser, regulatory_parser, emitter, runner
+- `normalizers/` — Field-specific cleaners: text, model_numbers, dates, unit_conversions, booleans
+- `validators/` — GUDID comparison: gudid_client, comparison_validator, record_validator, ollama_client
+- `security/` — Input sanitization, credential management
+- `database/` — MongoDB connection, JSON import, run aggregation
+- `web_scraper/` — Playwright-based browser automation (standalone)
+- `site_adapters/` — YAML config files with CSS selectors per manufacturer layout
+- `app/` — FastAPI web dashboard
 
 **Other modules:** `security/` (input sanitization, credential handling) · `validators/` (GUDID record validation) · `database/` (MongoDB import/build utilities)
 
@@ -86,11 +109,11 @@ Site Adapters                    Manufacturing Website
 |-------|-----------|
 | Browser automation | Python + Playwright + asyncio |
 | HTML parsing | BeautifulSoup4 + lxml |
-| Site adapters | YAML/JSON config files |
+| Site adapters | YAML config files (CSS selectors for extraction) |
 | Data lake | MongoDB (NoSQL) |
-| Validation DB | PostgreSQL |
-| Web UI | FastAPI (current); React/Next.js (planned) |
-| AI (local) | Ollama (open source, runs locally) |
+| Validation reference | FDA GUDID API v3 (JSON) |
+| Web UI | FastAPI + Jinja2 |
+| AI (local, optional) | Ollama (for unstructured text extraction fallback) |
 | Source control | Git / GitHub |
 
 ## Detailed Documentation
@@ -102,4 +125,3 @@ For deeper context, reference these files as needed:
 - `docs/Jason - Todo.md` - Jason's todo list.
 - `docs/Target Brands.xlsx` - Brands that we are scraping the manufacturing websites for.
 - `docs/Fivos System Architecture Diagram.md` - Architecture of our entire system.
-

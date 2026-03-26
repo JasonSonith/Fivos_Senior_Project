@@ -1,7 +1,7 @@
 from datetime import datetime, UTC
 from harvester.src.database.db_connection import devices_collection, validation_collection
 from harvester.src.validators.comparison_validator import compare_records
-from harvester.src.validators.gudid_client import fetch_gudid_raw_text
+from harvester.src.validators.gudid_client import fetch_gudid_record
 from harvester.src.validators.ollama_client import extract_gudid_fields_with_ollama
 
 
@@ -18,12 +18,12 @@ def run_validator(query: dict | None = None) -> dict:
     for device in devices:
         total_devices += 1
 
-        di, raw_gudid_text = fetch_gudid_raw_text(
+        di, gudid_record = fetch_gudid_record(
             catalog_number=device.get("catalogNumber"),
             version_model_number=device.get("versionModelNumber"),
         )
 
-        if not raw_gudid_text:
+        if not gudid_record:
             not_found += 1
 
             validation_collection.update_one(
@@ -50,8 +50,11 @@ def run_validator(query: dict | None = None) -> dict:
             print(f"GUDID not found: {device.get('brandName')}")
             continue
 
+        # Use Ollama AI agent to extract/verify fields from GUDID data
         try:
-            gudid_record = extract_gudid_fields_with_ollama(raw_gudid_text)
+            import json
+            gudid_text = json.dumps(gudid_record, indent=2)
+            ollama_record = extract_gudid_fields_with_ollama(gudid_text)
         except Exception as e:
             validation_collection.update_one(
                 {"device_id": device.get("_id")},
@@ -78,7 +81,7 @@ def run_validator(query: dict | None = None) -> dict:
             print(f"Ollama failed: {device.get('brandName')}")
             continue
 
-        result = compare_records(device, gudid_record)
+        result = compare_records(device, ollama_record)
 
         matched_fields = sum(1 for value in result.values() if value["match"])
         total_fields = len(result)
@@ -105,7 +108,7 @@ def run_validator(query: dict | None = None) -> dict:
                     "total_fields": total_fields,
                     "match_percent": match_percent,
                     "comparison_result": result,
-                    "gudid_record": gudid_record,
+                    "gudid_record": ollama_record,
                     "gudid_di": di,
                     "updated_at": datetime.now(UTC),
                 },

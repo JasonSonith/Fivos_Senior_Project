@@ -6,32 +6,38 @@
         <p class="eyebrow">Overview</p>
         <h1 class="page-title">Operational Dashboard</h1>
         <p class="page-description">
-            Monitor harvested device records, normalized outputs, and the current readiness of your data pipeline.
+            Monitor harvested device records, validation results, and the current readiness of your data pipeline.
         </p>
     </div>
     <div class="hero-actions">
-        <a href="/harvester" class="btn btn-primary">Run Harvester</a>
+        <a href="/harvester" class="btn btn-primary">Run Pipeline</a>
         <a href="/results" class="btn btn-secondary">View Results</a>
     </div>
 </section>
 
 <section class="stats-grid">
     <div class="metric-card">
-        <p class="metric-label">Raw Records</p>
-        <h3 class="metric-value">{{ stats.raw_records }}</h3>
-        <p class="metric-foot">Recently captured records from source pages</p>
+        <p class="metric-label">HTML Files</p>
+        <h3 class="metric-value">{{ stats.html_files or 0 }}</h3>
+        <p class="metric-foot">Pre-downloaded pages ready for extraction</p>
     </div>
 
     <div class="metric-card">
-        <p class="metric-label">Normalized Records</p>
+        <p class="metric-label">Harvested Devices</p>
+        <h3 class="metric-value">{{ stats.raw_records }}</h3>
+        <p class="metric-foot">Device records extracted and stored in MongoDB</p>
+    </div>
+
+    <div class="metric-card">
+        <p class="metric-label">Validation Results</p>
         <h3 class="metric-value">{{ stats.normalized_records }}</h3>
-        <p class="metric-foot">Standardized values ready for downstream use</p>
+        <p class="metric-foot">Devices compared against FDA GUDID</p>
     </div>
 
     <div class="metric-card">
         <p class="metric-label">Last Run</p>
         <h3 class="metric-value">{{ stats.last_run }}</h3>
-        <p class="metric-foot">Current system execution state</p>
+        <p class="metric-foot">Most recent pipeline execution</p>
     </div>
 </section>
 
@@ -45,16 +51,16 @@
         </div>
         <div class="feature-list">
             <div class="feature-item">
-                <h4>Web Harvesting</h4>
-                <p>Capture manufacturer-facing device data from public web pages using Playwright.</p>
+                <h4>Extraction Pipeline</h4>
+                <p>Process pre-downloaded HTML files using site adapters to extract device specifications.</p>
             </div>
             <div class="feature-item">
-                <h4>Unit Normalization</h4>
-                <p>Convert mixed measurements into standardized units for comparison and reporting.</p>
+                <h4>GUDID Lookup</h4>
+                <p>Query the FDA's GUDID database directly for official device information.</p>
             </div>
             <div class="feature-item">
-                <h4>Data Review</h4>
-                <p>Inspect raw and normalized records side by side through a single interface.</p>
+                <h4>AI Validation</h4>
+                <p>Compare harvested data against GUDID records using Ollama for intelligent field matching.</p>
             </div>
         </div>
     </div>
@@ -68,16 +74,16 @@
         </div>
         <div class="quick-actions">
             <a href="/harvester" class="action-card">
-                <span class="action-title">Launch Harvester</span>
-                <span class="action-text">Run the scraper against a target manufacturer page</span>
+                <span class="action-title">Run Pipeline</span>
+                <span class="action-text">Process HTML files through the extraction pipeline</span>
             </a>
-            <a href="/normalize" class="action-card">
-                <span class="action-title">Normalize Records</span>
-                <span class="action-text">Apply unit conversion and standard formatting rules</span>
+            <a href="/gudid" class="action-card">
+                <span class="action-title">GUDID Lookup</span>
+                <span class="action-text">Search the FDA GUDID database by DI or model number</span>
             </a>
-            <a href="/results" class="action-card">
-                <span class="action-title">Open Results</span>
-                <span class="action-text">Review raw and normalized records for analysis</span>
+            <a href="/validate" class="action-card">
+                <span class="action-title">Run Validation</span>
+                <span class="action-text">Compare harvested devices against GUDID with AI</span>
             </a>
         </div>
     </div>

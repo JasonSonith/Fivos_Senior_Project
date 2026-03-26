@@ -15,16 +15,12 @@ from fastapi.staticfiles import StaticFiles
 
 from app.routes import dashboard, harvester, normalize, results
 from app.routes import api as api_routes
+from app.routes import gudid as gudid_routes
 from app.routes import validate as validate_routes
 
 app = FastAPI(title="Fivos Device Data Interface")
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
-
-# Load adapter choices once at startup
-from orchestrator import get_adapter_choices
-
-app.state.adapter_choices = get_adapter_choices()
 
 # In-memory job store for background task polling
 app.state.jobs = {}
@@ -34,4 +30,5 @@ app.include_router(harvester.router)
 app.include_router(normalize.router)
 app.include_router(results.router)
 app.include_router(api_routes.router)
+app.include_router(gudid_routes.router)
 app.include_router(validate_routes.router)

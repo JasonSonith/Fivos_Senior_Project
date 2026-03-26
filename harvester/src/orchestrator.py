@@ -1,14 +1,14 @@
-"""Orchestration layer — single entry point for the UI to trigger harvest and validation flows.
+"""Orchestration layer — single entry point for the UI.
 
-The pipeline (runner.py) stays pure: HTML in, dict out.
-This module handles persistence (MongoDB) and coordination.
+Two main operations:
+1. run_pipeline_batch() — process existing HTML files from out_html/ through the extraction pipeline
+2. run_validation() — compare harvested devices against GUDID via Ollama AI agent
 """
 
-import asyncio
+import json
 import logging
 import os
 import sys
-import tempfile
 import uuid
 from datetime import datetime, timezone
 
@@ -21,151 +21,147 @@ import yaml
 
 logger = logging.getLogger(__name__)
 
-# ---------------------------------------------------------------------------
-# Adapter scanning
-# ---------------------------------------------------------------------------
-
 _DEFAULT_ADAPTER_DIR = os.path.join(_SRC_DIR, "site_adapters")
+_DEFAULT_HTML_DIR = os.path.join(_SRC_DIR, "web-scraper", "out_html")
+_DEFAULT_OUTPUT_DIR = os.path.join(_SRC_DIR, "..", "output")
 
 
-def scan_adapters(adapter_dir: str | None = None) -> list[dict]:
-    """Walk site_adapters/, parse each YAML, return sorted metadata list."""
-    adapter_dir = adapter_dir or _DEFAULT_ADAPTER_DIR
-    adapters = []
-    for root, _dirs, files in os.walk(adapter_dir):
-        for fname in files:
-            if not fname.endswith((".yaml", ".yml")):
-                continue
-            path = os.path.join(root, fname)
-            try:
-                with open(path, "r", encoding="utf-8") as f:
-                    data = yaml.safe_load(f)
-                adapters.append({
-                    "path": path,
-                    "manufacturer": data.get("manufacturer", "unknown"),
-                    "product_type": data.get("product_type", "unknown"),
-                    "base_url": data.get("base_url", ""),
-                    "seed_url_count": len(data.get("seed_urls", [])),
-                })
-            except Exception as e:
-                logger.warning("scan_adapters: skipping %s: %s", path, e)
-    return sorted(adapters, key=lambda a: (a["manufacturer"], a["product_type"]))
+# ---------------------------------------------------------------------------
+# HTML file listing (for harvester page)
+# ---------------------------------------------------------------------------
+
+def list_html_files(html_dir: str | None = None) -> list[dict]:
+    """List available HTML files in out_html/ for the harvester page."""
+    html_dir = html_dir or _DEFAULT_HTML_DIR
+    files = []
+    if not os.path.isdir(html_dir):
+        return files
+    for fname in sorted(os.listdir(html_dir)):
+        if not fname.endswith((".html", ".htm")):
+            continue
+        path = os.path.join(html_dir, fname)
+        # Extract manufacturer domain from filename (format: host__page__hash.html)
+        parts = fname.split("__")
+        manufacturer = parts[0] if parts else "unknown"
+        if manufacturer.startswith("www."):
+            manufacturer = manufacturer[4:]
+        files.append({
+            "filename": fname,
+            "path": path,
+            "size_kb": round(os.path.getsize(path) / 1024, 1),
+            "manufacturer": manufacturer,
+        })
+    return files
 
 
-def get_adapter_choices(adapter_dir: str | None = None) -> list[dict]:
-    """Return adapter list formatted for a UI dropdown.
+# ---------------------------------------------------------------------------
+# Pipeline batch processing
+# ---------------------------------------------------------------------------
 
-    Each entry: {"value": "/abs/path/to.yaml", "label": "Medtronic - table wrapper layout"}
+def run_pipeline_batch(file_paths: list[str] | None = None) -> dict:
+    """Run the extraction pipeline on HTML files in out_html/.
+
+    Uses runner.process_batch() with auto-adapter-matching by domain.
+    After pipeline writes JSON files, inserts each record into MongoDB.
+
+    Args:
+        file_paths: Specific file paths to process, or None for all in out_html/
     """
-    adapters = scan_adapters(adapter_dir)
-    return [
-        {
-            "value": a["path"],
-            "label": f"{a['manufacturer'].replace('_', ' ').title()} - {a['product_type'].replace('_', ' ')}",
-        }
-        for a in adapters
-    ]
+    from pipeline.runner import load_adapters, process_batch
 
+    run_id = f"HR-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}-{uuid.uuid4().hex[:6]}"
 
-# ---------------------------------------------------------------------------
-# Harvest orchestration
-# ---------------------------------------------------------------------------
+    # Load all adapters keyed by domain
+    adapter_map = load_adapters(_DEFAULT_ADAPTER_DIR)
 
-async def run_harvest(
-    url: str,
-    adapter_path: str,
-    run_id: str | None = None,
-) -> dict:
-    """End-to-end: scrape URL -> pipeline -> MongoDB -> return result dict."""
-    if run_id is None:
-        run_id = f"HR-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}-{uuid.uuid4().hex[:6]}"
+    # Determine input directory
+    if file_paths:
+        # If specific files given, use the directory of the first file
+        input_dir = os.path.dirname(file_paths[0])
+    else:
+        input_dir = _DEFAULT_HTML_DIR
 
-    result = {
-        "success": False,
-        "run_id": run_id,
-        "record": None,
-        "mongo_id": None,
-        "error": None,
-        "scrape_elapsed_ms": None,
-        "pipeline_ok": False,
-    }
+    output_dir = os.path.abspath(_DEFAULT_OUTPUT_DIR)
+    os.makedirs(output_dir, exist_ok=True)
 
-    # 1. Load adapter
-    from pipeline.runner import load_adapter
-    try:
-        adapter = load_adapter(adapter_path)
-    except Exception as e:
-        result["error"] = f"Adapter load failed: {e}"
-        return result
+    # Run the pipeline batch
+    summary = process_batch(
+        input_dir=input_dir,
+        adapter_map=adapter_map,
+        output_dir=output_dir,
+        harvest_run_id=run_id,
+    )
 
-    # 2. Scrape (async)
-    from web_scraper.scraper import fetch_page_html
-    try:
-        fetch_result = await fetch_page_html(url)
-    except Exception as e:
-        result["error"] = f"Scrape failed: {e}"
-        return result
-
-    result["scrape_elapsed_ms"] = fetch_result.elapsed_ms
-
-    if not fetch_result.ok or not fetch_result.html:
-        result["error"] = f"Scrape failed: {fetch_result.error}"
-        return result
-
-    # 3. Write HTML to temp file, run pipeline
-    tmp_path = None
-    try:
-        fd, tmp_path = tempfile.mkstemp(suffix=".html", prefix="fivos_")
-        with os.fdopen(fd, "w", encoding="utf-8") as f:
-            f.write(fetch_result.html)
-
-        # 4. Run pipeline (synchronous) in thread pool
-        from pipeline.runner import process_single
-        record = await asyncio.to_thread(
-            process_single,
-            tmp_path,
-            adapter,
-            source_url=fetch_result.final_url or url,
-            harvest_run_id=run_id,
-        )
-    except Exception as e:
-        result["error"] = f"Pipeline error: {e}"
-        return result
-    finally:
-        if tmp_path and os.path.exists(tmp_path):
-            os.unlink(tmp_path)
-
-    result["pipeline_ok"] = record is not None
-
-    if record is None:
-        result["error"] = "Pipeline rejected the record (validation failed or extraction empty)"
-        return result
-
-    # 5. Insert into MongoDB
+    # Insert succeeded records into MongoDB
+    records = []
     from database.db_connection import get_db
     try:
         db = get_db()
-        insert_result = db["devices"].insert_one(record)
-        result["mongo_id"] = str(insert_result.inserted_id)
+        for json_path in summary.get("files", []):
+            try:
+                with open(json_path, "r", encoding="utf-8") as f:
+                    record = json.load(f)
+                db["devices"].insert_one(record)
+                records.append(_serialize_record(record))
+            except Exception as e:
+                logger.warning("run_pipeline_batch: failed to import %s: %s", json_path, e)
     except Exception as e:
-        result["error"] = f"MongoDB insert failed: {e}"
-        result["record"] = _serialize_record(record)
-        return result
+        logger.warning("run_pipeline_batch: MongoDB unavailable: %s", e)
 
-    result["success"] = True
-    result["record"] = _serialize_record(record)
+    summary["records"] = records
+    summary["run_id"] = run_id
+    return summary
+
+
+# ---------------------------------------------------------------------------
+# GUDID API lookup
+# ---------------------------------------------------------------------------
+
+def lookup_gudid_device(di: str | None = None, model_number: str | None = None) -> dict:
+    """Query GUDID API for a device.
+
+    Returns: {"success": bool, "record": dict | None, "di": str | None, "error": str | None}
+    """
+    from validators.gudid_client import lookup_by_di, search_gudid_di
+
+    result = {"success": False, "record": None, "di": None, "error": None}
+
+    try:
+        if di:
+            device = lookup_by_di(di)
+            result["di"] = di
+        elif model_number:
+            found_di = search_gudid_di(version_model_number=model_number)
+            if not found_di:
+                result["error"] = f"No GUDID device found for model number: {model_number}"
+                return result
+            result["di"] = found_di
+            device = lookup_by_di(found_di)
+        else:
+            result["error"] = "Provide either a DI or model number"
+            return result
+
+        if not device:
+            result["error"] = f"Device not found for DI: {result['di']}"
+            return result
+
+        result["success"] = True
+        result["record"] = device
+    except Exception as e:
+        result["error"] = str(e)
+
     return result
 
 
 # ---------------------------------------------------------------------------
-# Validation orchestration
+# Validation orchestration (with Ollama AI agent)
 # ---------------------------------------------------------------------------
 
 def run_validation(run_id: str | None = None) -> dict:
-    """Health-check Ollama, run GUDID validation, return structured results."""
+    """Validate harvested devices against GUDID via Ollama AI agent."""
     import requests
     from database.db_connection import get_db
-    from validators.gudid_client import fetch_gudid_raw_text
+    from validators.gudid_client import fetch_gudid_record
     from validators.ollama_client import extract_gudid_fields_with_ollama
     from validators.comparison_validator import compare_records
 
@@ -208,12 +204,12 @@ def run_validation(run_id: str | None = None) -> dict:
 
     # 3. Validate each device
     for device in devices:
-        di, raw_gudid_text = fetch_gudid_raw_text(
+        di, gudid_record = fetch_gudid_record(
             catalog_number=device.get("catalogNumber"),
             version_model_number=device.get("versionModelNumber"),
         )
 
-        if not raw_gudid_text:
+        if not gudid_record:
             result["not_found"] += 1
             validation_col.update_one(
                 {"device_id": device.get("_id")},
@@ -236,8 +232,10 @@ def run_validation(run_id: str | None = None) -> dict:
             )
             continue
 
+        # Use Ollama AI agent to extract/verify fields
         try:
-            gudid_record = extract_gudid_fields_with_ollama(raw_gudid_text)
+            gudid_text = json.dumps(gudid_record, indent=2)
+            ollama_record = extract_gudid_fields_with_ollama(gudid_text)
         except Exception:
             result["ollama_failed"] += 1
             validation_col.update_one(
@@ -255,7 +253,7 @@ def run_validation(run_id: str | None = None) -> dict:
             )
             continue
 
-        comparison = compare_records(device, gudid_record)
+        comparison = compare_records(device, ollama_record)
         matched_fields = sum(1 for v in comparison.values() if v["match"])
         total_fields = len(comparison)
         match_percent = round((matched_fields / total_fields) * 100, 2) if total_fields > 0 else 0.0
@@ -281,7 +279,7 @@ def run_validation(run_id: str | None = None) -> dict:
                     "total_fields": total_fields,
                     "match_percent": match_percent,
                     "comparison_result": comparison,
-                    "gudid_record": gudid_record,
+                    "gudid_record": ollama_record,
                     "gudid_di": di,
                     "updated_at": datetime.now(timezone.utc),
                 },
@@ -304,6 +302,7 @@ def get_dashboard_stats() -> dict:
         db = get_db()
         device_count = db["devices"].count_documents({})
         validation_count = db["validationResults"].count_documents({})
+        html_count = len(list_html_files())
 
         last_device = db["devices"].find_one(sort=[("_harvest.harvested_at", -1)])
         last_run = "No runs yet"
@@ -312,11 +311,12 @@ def get_dashboard_stats() -> dict:
             last_run = harvest.get("harvested_at", "Unknown")
     except Exception as e:
         logger.warning("get_dashboard_stats: MongoDB unavailable: %s", e)
-        return {"raw_records": 0, "normalized_records": 0, "last_run": "DB unavailable"}
+        return {"raw_records": 0, "normalized_records": 0, "html_files": 0, "last_run": "DB unavailable"}
 
     return {
         "raw_records": device_count,
         "normalized_records": validation_count,
+        "html_files": html_count,
         "last_run": last_run,
     }
 
