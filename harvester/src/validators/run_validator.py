@@ -1,112 +1,130 @@
-import json
-from pathlib import Path
-from typing import Any, Dict, List
-
-from comparison_validator import ComparisonValidator
-
-
-def extract_dimensions(device_sizes: Any) -> str | None:
-    if not device_sizes or not isinstance(device_sizes, list):
-        return None
-
-    parts: List[str] = []
-
-    for item in device_sizes:
-        if not isinstance(item, dict):
-            continue
-
-        size_type = item.get("sizeType")
-        size_data = item.get("size", {})
-        size_value = size_data.get("value") if isinstance(size_data, dict) else None
-        size_unit = size_data.get("unit") if isinstance(size_data, dict) else None
-
-        if size_value in (None, "", "None"):
-            continue
-
-        piece = ""
-
-        if size_type:
-            piece += f"{size_type}:"
-
-        piece += str(size_value)
-
-        if size_unit not in (None, "", "None"):
-            piece += str(size_unit)
-
-        parts.append(piece)
-
-    return " | ".join(parts) if parts else None
+from datetime import datetime, UTC
+from harvester.src.database.db_connection import devices_collection, validation_collection
+from harvester.src.validators.comparison_validator import compare_records
+from harvester.src.validators.gudid_client import fetch_gudid_raw_text
+from harvester.src.validators.ollama_client import extract_gudid_fields_with_ollama
 
 
-def map_harvested_record(record: Dict[str, Any]) -> Dict[str, Any]:
-    return {
-        "device_name": record.get("brandName"),
-        "manufacturer": record.get("companyName"),
-        "model_number": record.get("versionModelNumber"),
-        "catalog_number": record.get("catalogNumber"),
-        "device_description": record.get("deviceDescription"),
-        "dimensions": extract_dimensions(record.get("deviceSizes")),
-    }
+def run_validator():
+    devices = list(devices_collection.find())
+    print(f"Found {len(devices)} devices")
 
+    total_devices = 0
+    full_matches = 0
+    partial_matches = 0
+    mismatches = 0
+    not_found = 0
 
-def build_placeholder_gudid_record(harvested_record: Dict[str, Any]) -> Dict[str, Any]:
-    return {
-        "device_name": harvested_record.get("device_name"),
-        "manufacturer": harvested_record.get("manufacturer"),
-        "model_number": harvested_record.get("model_number"),
-        "catalog_number": harvested_record.get("catalog_number"),
-        "device_description": harvested_record.get("device_description"),
-        "dimensions": harvested_record.get("dimensions"),
-    }
+    for device in devices:
+        total_devices += 1
 
-
-def validate_records(input_file: str) -> List[Dict[str, Any]]:
-    validator = ComparisonValidator()
-
-    with open(input_file, "r", encoding="utf-8") as file:
-        records = json.load(file)
-
-    all_results: List[Dict[str, Any]] = []
-
-    for index, raw_record in enumerate(records, start=1):
-        harvested_record = map_harvested_record(raw_record)
-        gudid_record = build_placeholder_gudid_record(harvested_record)
-
-        comparison_result = validator.compare_records(harvested_record, gudid_record)
-
-        all_results.append(
-            {
-                "record_number": index,
-                "source_file": raw_record.get("_source_file"),
-                "source_url": raw_record.get("_harvest", {}).get("source_url"),
-                "harvested_record": harvested_record,
-                "comparison_result": comparison_result,
-            }
+        di, raw_gudid_text = fetch_gudid_raw_text(
+            catalog_number=device.get("catalogNumber"),
+            version_model_number=device.get("versionModelNumber"),
         )
 
-    return all_results
+        if not raw_gudid_text:
+            not_found += 1
 
+            validation_collection.update_one(
+                {"device_id": device.get("_id")},
+                {
+                    "$set": {
+                        "device_id": device.get("_id"),
+                        "brandName": device.get("brandName"),
+                        "status": "gudid_not_found",
+                        "matched_fields": 0,
+                        "total_fields": 5,
+                        "match_percent": 0.0,
+                        "comparison_result": None,
+                        "gudid_record": None,
+                        "gudid_di": di,
+                        "updated_at": datetime.now(UTC),
+                    },
+                    "$setOnInsert": {
+                        "created_at": datetime.now(UTC),
+                    },
+                },
+                upsert=True,
+            )
+            print(f"GUDID not found: {device.get('brandName')}")
+            continue
 
-def main() -> None:
-    input_file = "C:/Users/tucke/Downloads/fivos.devices.json"
-    output_file = "validator_results.json"
+        try:
+            gudid_record = extract_gudid_fields_with_ollama(raw_gudid_text)
+        except Exception as e:
+            validation_collection.update_one(
+                {"device_id": device.get("_id")},
+                {
+                    "$set": {
+                        "device_id": device.get("_id"),
+                        "brandName": device.get("brandName"),
+                        "status": "ollama_failed",
+                        "matched_fields": 0,
+                        "total_fields": 5,
+                        "match_percent": 0.0,
+                        "comparison_result": None,
+                        "gudid_record": None,
+                        "gudid_di": di,
+                        "error": str(e),
+                        "updated_at": datetime.now(UTC),
+                    },
+                    "$setOnInsert": {
+                        "created_at": datetime.now(UTC),
+                    },
+                },
+                upsert=True,
+            )
+            print(f"Ollama failed: {device.get('brandName')}")
+            continue
 
-    if not Path(input_file).exists():
-        print(f"Input file not found: {input_file}")
-        return
+        result = compare_records(device, gudid_record)
 
-    results = validate_records(input_file)
+        matched_fields = sum(1 for value in result.values() if value["match"])
+        total_fields = len(result)
+        match_percent = round((matched_fields / total_fields) * 100, 2) if total_fields > 0 else 0.0
 
-    with open(output_file, "w", encoding="utf-8") as file:
-        json.dump(results, file, indent=4)
+        if matched_fields == total_fields:
+            overall_status = "matched"
+            full_matches += 1
+        elif matched_fields > 0:
+            overall_status = "partial_match"
+            partial_matches += 1
+        else:
+            overall_status = "mismatch"
+            mismatches += 1
 
-    print(f"Validated {len(results)} records.")
-    print(f"Results written to {output_file}")
+        validation_collection.update_one(
+            {"device_id": device.get("_id")},
+            {
+                "$set": {
+                    "device_id": device.get("_id"),
+                    "brandName": device.get("brandName"),
+                    "status": overall_status,
+                    "matched_fields": matched_fields,
+                    "total_fields": total_fields,
+                    "match_percent": match_percent,
+                    "comparison_result": result,
+                    "gudid_record": gudid_record,
+                    "gudid_di": di,
+                    "updated_at": datetime.now(UTC),
+                },
+                "$setOnInsert": {
+                    "created_at": datetime.now(UTC),
+                },
+            },
+            upsert=True,
+        )
 
-    if results:
-        print("\nFirst record preview:")
-        print(json.dumps(results[0], indent=4))
+        print(f"{device.get('brandName')} → {matched_fields}/{total_fields} ({match_percent}%)")
+
+    print("\n===== VALIDATION SUMMARY =====")
+    print(f"Total Devices: {total_devices}")
+    print(f"Full Matches: {full_matches}")
+    print(f"Partial Matches: {partial_matches}")
+    print(f"Mismatches: {mismatches}")
+    print(f"GUDID Not Found: {not_found}")
 
 
 if __name__ == "__main__":
-    main()
+    run_validator()

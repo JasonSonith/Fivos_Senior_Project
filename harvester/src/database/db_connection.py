@@ -7,10 +7,10 @@ URI = f"mongodb+srv://{USERNAME}:{PASSWORD}@fivos.1bnjrns.mongodb.net/?appName=F
 
 client = MongoClient(URI)
 
-db = client["fivos_db"]
+db = client["fivos-shared"]
 
 devices_collection = db["devices"]
-validation_collection = db["validation_results"]
+validation_collection = db["validationResults"]
 
 def test_connection():
     try:
