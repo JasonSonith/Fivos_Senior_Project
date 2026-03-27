@@ -2,7 +2,7 @@
 
 Two main operations:
 1. run_pipeline_batch() — process existing HTML files from out_html/ through the extraction pipeline
-2. run_validation() — compare harvested devices against GUDID via Ollama AI agent
+2. run_validation() — compare harvested devices against GUDID API
 """
 
 import json
@@ -58,7 +58,7 @@ def list_html_files(html_dir: str | None = None) -> list[dict]:
 # Pipeline batch processing
 # ---------------------------------------------------------------------------
 
-def run_pipeline_batch(file_paths: list[str] | None = None) -> dict:
+def run_pipeline_batch(file_paths: list[str] | None = None, overwrite: bool = True) -> dict:
     """Run the extraction pipeline on HTML files in out_html/.
 
     Uses runner.process_batch() with auto-adapter-matching by domain.
@@ -66,17 +66,14 @@ def run_pipeline_batch(file_paths: list[str] | None = None) -> dict:
 
     Args:
         file_paths: Specific file paths to process, or None for all in out_html/
+        overwrite: If True, drop devices collection before inserting.
     """
-    from pipeline.runner import load_adapters, process_batch
+    from pipeline.runner import process_batch
 
     run_id = f"HR-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}-{uuid.uuid4().hex[:6]}"
 
-    # Load all adapters keyed by domain
-    adapter_map = load_adapters(_DEFAULT_ADAPTER_DIR)
-
     # Determine input directory
     if file_paths:
-        # If specific files given, use the directory of the first file
         input_dir = os.path.dirname(file_paths[0])
     else:
         input_dir = _DEFAULT_HTML_DIR
@@ -84,10 +81,9 @@ def run_pipeline_batch(file_paths: list[str] | None = None) -> dict:
     output_dir = os.path.abspath(_DEFAULT_OUTPUT_DIR)
     os.makedirs(output_dir, exist_ok=True)
 
-    # Run the pipeline batch
+    # Run the pipeline batch (Ollama extraction for all files)
     summary = process_batch(
         input_dir=input_dir,
-        adapter_map=adapter_map,
         output_dir=output_dir,
         harvest_run_id=run_id,
     )
@@ -97,6 +93,8 @@ def run_pipeline_batch(file_paths: list[str] | None = None) -> dict:
     from database.db_connection import get_db
     try:
         db = get_db()
+        if overwrite:
+            db["devices"].drop()
         for json_path in summary.get("files", []):
             try:
                 with open(json_path, "r", encoding="utf-8") as f:
@@ -157,38 +155,29 @@ def lookup_gudid_device(di: str | None = None, model_number: str | None = None) 
 # Validation orchestration (with Ollama AI agent)
 # ---------------------------------------------------------------------------
 
-def run_validation(run_id: str | None = None) -> dict:
-    """Validate harvested devices against GUDID via Ollama AI agent."""
-    import requests
+def run_validation(run_id: str | None = None, overwrite: bool = True) -> dict:
+    """Validate harvested devices against GUDID."""
     from database.db_connection import get_db
     from validators.gudid_client import fetch_gudid_record
-    from validators.ollama_client import extract_gudid_fields_with_ollama
     from validators.comparison_validator import compare_records
 
     result = {
         "success": False,
-        "ollama_available": False,
         "total": 0,
         "full_matches": 0,
         "partial_matches": 0,
         "mismatches": 0,
         "not_found": 0,
-        "ollama_failed": 0,
         "error": None,
     }
 
-    # 1. Health-check Ollama
-    try:
-        resp = requests.get("http://localhost:11434/api/tags", timeout=5)
-        result["ollama_available"] = resp.status_code == 200
-    except Exception:
-        result["error"] = "Ollama is not reachable at localhost:11434. Start Ollama to enable GUDID validation."
-        return result
-
-    # 2. Query devices
+    # Query devices
     db = get_db()
     devices_col = db["devices"]
     validation_col = db["validationResults"]
+
+    if overwrite:
+        validation_col.drop()
 
     query = {}
     if run_id:
@@ -202,7 +191,6 @@ def run_validation(run_id: str | None = None) -> dict:
         result["error"] = "No devices found to validate"
         return result
 
-    # 3. Validate each device
     for device in devices:
         di, gudid_record = fetch_gudid_record(
             catalog_number=device.get("catalogNumber"),
@@ -211,52 +199,32 @@ def run_validation(run_id: str | None = None) -> dict:
 
         if not gudid_record:
             result["not_found"] += 1
-            validation_col.update_one(
-                {"device_id": device.get("_id")},
-                {
-                    "$set": {
-                        "device_id": device.get("_id"),
-                        "brandName": device.get("brandName"),
-                        "status": "gudid_not_found",
-                        "matched_fields": 0,
-                        "total_fields": 5,
-                        "match_percent": 0.0,
-                        "comparison_result": None,
-                        "gudid_record": None,
-                        "gudid_di": di,
-                        "updated_at": datetime.now(timezone.utc),
-                    },
-                    "$setOnInsert": {"created_at": datetime.now(timezone.utc)},
-                },
-                upsert=True,
-            )
+            validation_col.insert_one({
+                "device_id": device.get("_id"),
+                "brandName": device.get("brandName"),
+                "status": "gudid_not_found",
+                "matched_fields": 0,
+                "total_fields": 0,
+                "match_percent": 0.0,
+                "comparison_result": None,
+                "gudid_record": None,
+                "gudid_di": di,
+                "created_at": datetime.now(timezone.utc),
+                "updated_at": datetime.now(timezone.utc),
+            })
             continue
 
-        # Use Ollama AI agent to extract/verify fields
-        try:
-            gudid_text = json.dumps(gudid_record, indent=2)
-            ollama_record = extract_gudid_fields_with_ollama(gudid_text)
-        except Exception:
-            result["ollama_failed"] += 1
-            validation_col.update_one(
-                {"device_id": device.get("_id")},
-                {
-                    "$set": {
-                        "device_id": device.get("_id"),
-                        "brandName": device.get("brandName"),
-                        "status": "ollama_failed",
-                        "updated_at": datetime.now(timezone.utc),
-                    },
-                    "$setOnInsert": {"created_at": datetime.now(timezone.utc)},
-                },
-                upsert=True,
-            )
-            continue
+        comparison = compare_records(device, gudid_record)
 
-        comparison = compare_records(device, ollama_record)
-        matched_fields = sum(1 for v in comparison.values() if v["match"])
-        total_fields = len(comparison)
+        # Only count fields that were actually compared (match is True/False, not None)
+        compared = {
+            k: v for k, v in comparison.items()
+            if k != "deviceDescription" and v.get("match") is not None
+        }
+        matched_fields = sum(1 for v in compared.values() if v["match"])
+        total_fields = len(compared)
         match_percent = round((matched_fields / total_fields) * 100, 2) if total_fields > 0 else 0.0
+        description_similarity = comparison.get("deviceDescription", {}).get("description_similarity", 0.0)
 
         if matched_fields == total_fields:
             status = "matched"
@@ -268,25 +236,20 @@ def run_validation(run_id: str | None = None) -> dict:
             status = "mismatch"
             result["mismatches"] += 1
 
-        validation_col.update_one(
-            {"device_id": device.get("_id")},
-            {
-                "$set": {
-                    "device_id": device.get("_id"),
-                    "brandName": device.get("brandName"),
-                    "status": status,
-                    "matched_fields": matched_fields,
-                    "total_fields": total_fields,
-                    "match_percent": match_percent,
-                    "comparison_result": comparison,
-                    "gudid_record": ollama_record,
-                    "gudid_di": di,
-                    "updated_at": datetime.now(timezone.utc),
-                },
-                "$setOnInsert": {"created_at": datetime.now(timezone.utc)},
-            },
-            upsert=True,
-        )
+        validation_col.insert_one({
+            "device_id": device.get("_id"),
+            "brandName": device.get("brandName"),
+            "status": status,
+            "matched_fields": matched_fields,
+            "total_fields": total_fields,
+            "match_percent": match_percent,
+            "description_similarity": description_similarity,
+            "comparison_result": comparison,
+            "gudid_record": gudid_record,
+            "gudid_di": di,
+            "created_at": datetime.now(timezone.utc),
+            "updated_at": datetime.now(timezone.utc),
+        })
 
     result["success"] = True
     return result

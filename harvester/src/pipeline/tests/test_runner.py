@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 import yaml
@@ -91,7 +92,6 @@ class TestProcessSingle:
 
 class TestProcessBatch:
     def test_process_batch_writes_output(self, tmp_path):
-        # Copy fixture into a temp input dir
         input_dir = tmp_path / "input"
         input_dir.mkdir()
         html_src = FIXTURE_HTML.read_text(encoding="utf-8")
@@ -99,14 +99,14 @@ class TestProcessBatch:
 
         output_dir = tmp_path / "output"
 
-        adapter = MEDTRONIC_INPACT_ADAPTER.copy()
-        adapter["manufacturer"] = "medtronic"
-        adapter["product_type"] = "table_wrapper_layout"
-        adapter["seed_urls"] = [
-            "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html"
-        ]
-
-        summary = process_batch(str(input_dir), adapter, str(output_dir))
+        mock_record = {
+            "brandName": "IN.PACT Admiral",
+            "versionModelNumber": "ABC123",
+            "companyName": "MEDTRONIC, INC.",
+            "_harvest": {"extraction_method": "ollama"},
+        }
+        with patch("pipeline.runner._process_single_ollama", return_value=[mock_record]):
+            summary = process_batch(str(input_dir), str(output_dir))
         assert summary["processed"] == 1
         assert summary["succeeded"] == 1
         assert summary["failed"] == 0
@@ -118,10 +118,7 @@ class TestProcessBatch:
         input_dir.mkdir()
         output_dir = tmp_path / "output"
 
-        adapter = MEDTRONIC_INPACT_ADAPTER.copy()
-        adapter["manufacturer"] = "test"
-
-        summary = process_batch(str(input_dir), adapter, str(output_dir))
+        summary = process_batch(str(input_dir), str(output_dir))
         assert summary["processed"] == 0
         assert summary["succeeded"] == 0
         assert summary["failed"] == 0
@@ -169,48 +166,56 @@ class TestResolveAdapter:
         assert result is None
 
 
-class TestProcessBatchMultiAdapter:
-    def test_batch_routes_by_adapter_map(self, tmp_path):
-        """Two files with different domain prefixes get routed to their adapters."""
+class TestProcessBatchOllama:
+    def test_batch_ollama_failure_counts_as_failed(self, tmp_path):
+        """Ollama returning no records counts as failed."""
         input_dir = tmp_path / "input"
         input_dir.mkdir()
         output_dir = tmp_path / "output"
 
-        # Use real Medtronic fixture content for both files
-        html_content = FIXTURE_HTML.read_text(encoding="utf-8")
-        (input_dir / "medtronic.com__product__aaa.html").write_text(html_content, encoding="utf-8")
-        (input_dir / "medtronic.com__product__bbb.html").write_text(html_content, encoding="utf-8")
+        (input_dir / "unknown.com__product__hash.html").write_text("<html><body>Test</body></html>", encoding="utf-8")
 
-        adapter = MEDTRONIC_INPACT_ADAPTER.copy()
-        adapter["manufacturer"] = "medtronic"
-        adapter["product_type"] = "table_wrapper_layout"
-        adapter["base_url"] = "https://www.medtronic.com"
-        adapter["seed_urls"] = [
-            "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html"
-        ]
-
-        adapter_map = {"medtronic.com": adapter}
-
-        summary = process_batch(
-            str(input_dir), adapter_map=adapter_map, output_dir=str(output_dir)
-        )
-        assert summary["processed"] == 2
-        assert summary["succeeded"] == 2
-        assert summary["skipped"] == 0
-
-    def test_batch_skips_unmatched(self, tmp_path):
-        """File with unknown domain is counted as skipped."""
-        input_dir = tmp_path / "input"
-        input_dir.mkdir()
-        output_dir = tmp_path / "output"
-
-        (input_dir / "unknown.com__product__hash.html").write_text("<html></html>", encoding="utf-8")
-
-        adapter_map = {"medtronic.com": MEDTRONIC_INPACT_ADAPTER}
-
-        summary = process_batch(
-            str(input_dir), adapter_map=adapter_map, output_dir=str(output_dir)
-        )
+        with patch("pipeline.runner._process_single_ollama", return_value=[]):
+            summary = process_batch(str(input_dir), str(output_dir))
         assert summary["processed"] == 1
-        assert summary["skipped"] == 1
-        assert summary["succeeded"] == 0
+        assert summary["failed"] == 1
+
+    def test_batch_ollama_success(self, tmp_path):
+        """Ollama-extracted records are written and counted."""
+        input_dir = tmp_path / "input"
+        input_dir.mkdir()
+        output_dir = tmp_path / "output"
+
+        (input_dir / "device.html").write_text("<html><body>Test</body></html>", encoding="utf-8")
+
+        mock_record = {
+            "brandName": "Test Device",
+            "versionModelNumber": "TD-001",
+            "companyName": "Test Corp",
+            "_harvest": {"extraction_method": "ollama"},
+        }
+        with patch("pipeline.runner._process_single_ollama", return_value=[mock_record]):
+            summary = process_batch(str(input_dir), str(output_dir))
+        assert summary["processed"] == 1
+        assert summary["succeeded"] == 1
+        assert summary["ollama_extracted"] == 1
+        assert len(summary["files"]) == 1
+
+    def test_batch_multi_product_page(self, tmp_path):
+        """Multi-product pages produce multiple records."""
+        input_dir = tmp_path / "input"
+        input_dir.mkdir()
+        output_dir = tmp_path / "output"
+
+        (input_dir / "device.html").write_text("<html><body>Test</body></html>", encoding="utf-8")
+
+        mock_records = [
+            {"brandName": "Device", "versionModelNumber": f"SKU-{i}", "companyName": "Corp",
+             "_harvest": {"extraction_method": "ollama"}}
+            for i in range(3)
+        ]
+        with patch("pipeline.runner._process_single_ollama", return_value=mock_records):
+            summary = process_batch(str(input_dir), str(output_dir))
+        assert summary["processed"] == 1
+        assert summary["succeeded"] == 3
+        assert summary["ollama_extracted"] == 3

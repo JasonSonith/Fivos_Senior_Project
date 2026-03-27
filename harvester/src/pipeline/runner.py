@@ -1,22 +1,41 @@
 """Pipeline runner — CLI-runnable orchestration for the harvesting pipeline.
 
 Usage:
-    python -m pipeline.runner --adapter path/to.yaml --input file.html
-    python -m pipeline.runner --adapter path/to.yaml --input-dir html_dir/ [--output-dir out/] [--run-id HR-10011] [-v]
-    python -m pipeline.runner --adapter-dir harvester/src/site_adapters/ --input-dir html_dir/ [-v]
+    # End-to-end: scrape → extract → DB (append) → validate
+    python harvester/src/pipeline/runner.py --urls harvester/src/urls.txt
+
+    # End-to-end with DB overwrite
+    python harvester/src/pipeline/runner.py --urls harvester/src/urls.txt --overwrite
+
+    # Extract only (existing HTML, no DB)
+    python harvester/src/pipeline/runner.py
+    python harvester/src/pipeline/runner.py --input file.html
+
+    # Extract + DB
+    python harvester/src/pipeline/runner.py --db --overwrite --validate
 """
 
 import argparse
+import asyncio
 import glob
+import json
 import logging
 import os
 import sys
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime, timezone
+from pathlib import Path
 from urllib.parse import urlparse
 
 # Ensure harvester/src is on sys.path so imports resolve the same way pytest does.
 _SRC_DIR = os.path.join(os.path.dirname(__file__), os.pardir)
 if os.path.abspath(_SRC_DIR) not in sys.path:
     sys.path.insert(0, os.path.abspath(_SRC_DIR))
+
+# Default paths (relative to project root)
+_PROJECT_ROOT = Path(__file__).resolve().parents[3]
+DEFAULT_INPUT_DIR = _PROJECT_ROOT / "harvester" / "src" / "web-scraper" / "out_html"
+DEFAULT_OUTPUT_DIR = _PROJECT_ROOT / "harvester" / "output"
 
 import yaml
 
@@ -31,7 +50,7 @@ from validators.record_validator import validate_record
 from pipeline.emitter import package_gudid_record, write_record_json
 from pipeline.dimension_parser import parse_dimensions_from_specs
 from pipeline.regulatory_parser import parse_regulatory_from_text
-from normalizers.booleans import normalize_boolean, normalize_mri_status
+from normalizers.booleans import normalize_mri_status
 
 logger = logging.getLogger(__name__)
 
@@ -40,8 +59,6 @@ TEXT_FIELDS = {"description", "brand_name", "product_type", "specs_container", "
 MODEL_FIELDS = {"model_number", "catalog_number", "sku"}
 DATE_FIELDS = {"approval_date", "clearance_date", "expiration_date"}
 MEASUREMENT_FIELDS = {"length", "width", "height", "diameter", "weight", "volume", "pressure"}
-BOOLEAN_FIELDS = {"singleUse", "deviceSterile", "sterilizationPriorToUse", "rx", "otc"}
-ENUM_FIELDS = {"MRISafetyStatus"}
 
 
 def load_adapter(yaml_path: str) -> dict:
@@ -212,6 +229,25 @@ def process_single(
             if field in MEASUREMENT_FIELDS and raw_fields.get(field) is None:
                 raw_fields[field] = value
 
+        # 3.7 Ollama description extraction (only if CSS didn't get it)
+        if raw_fields.get("description") is not None:
+            raw_fields["_description_source"] = "css"
+        else:
+            try:
+                from pipeline.ollama_extractor import extract_description
+                page_text = parsed.get_text(separator=" ", strip=True)[:4000]
+                ollama_desc = extract_description(
+                    page_text,
+                    device_name=raw_fields.get("device_name", ""),
+                    model_number=raw_fields.get("model_number", ""),
+                    manufacturer=adapter.get("manufacturer", ""),
+                )
+                if ollama_desc:
+                    raw_fields["description"] = ollama_desc
+                    raw_fields["_description_source"] = "ollama"
+            except Exception as exc:
+                logger.warning("process_single: Ollama description extraction failed: %s", exc)
+
         # 3.6 Re-extract warning_text using select() to aggregate ALL matching elements
         warning_selector = adapter.get("extraction", {}).get("warning_text", "")
         if warning_selector:
@@ -273,24 +309,108 @@ def process_single(
         return None
 
 
+def _process_single_ollama(
+    html_path: str,
+    source_url: str | None = None,
+    harvest_run_id: str | None = None,
+) -> list[dict]:
+    """Run Ollama-based extraction on one HTML file (no adapter needed).
+
+    Returns a list of packaged GUDID record dicts (one per product/SKU found).
+    Returns empty list if extraction fails. Never raises.
+    """
+    try:
+        with open(html_path, "r", encoding="utf-8") as f:
+            raw_html = f.read()
+    except Exception as exc:
+        logger.error("_process_single_ollama: cannot read %s: %s", html_path, exc)
+        return []
+
+    try:
+        from pipeline.ollama_extractor import extract_all_fields
+
+        sanitized = sanitize_html(raw_html)
+        parsed = parse_html(sanitized)
+
+        visible_text = parsed.get_text(separator=" ", strip=True)
+
+        # Find the largest table for Pass 2
+        tables = parsed.find_all("table")
+        table_text = None
+        if tables:
+            best = max(tables, key=lambda t: len(t.find_all("tr")))
+            table_text = best.get_text(separator="\t")
+
+        raw_fields_list = extract_all_fields(visible_text, table_text)
+        if not raw_fields_list:
+            logger.warning("_process_single_ollama: Ollama returned no fields for %s", html_path)
+            return []
+
+        # Resolve source URL from filename
+        if source_url is None:
+            host = _extract_host_from_filename(html_path)
+            source_url = f"https://{host}/"
+
+        pseudo_adapter = {"manufacturer": "unknown", "product_type": "ollama_extracted"}
+        records = []
+
+        for raw_fields in raw_fields_list:
+            normalized = normalize_record(raw_fields, pseudo_adapter)
+
+            # Parse regulatory fields from warning_text
+            warning_text = normalized.get("warning_text")
+            if warning_text:
+                regulatory = parse_regulatory_from_text(warning_text)
+                for field, value in regulatory.items():
+                    if field not in normalized:
+                        normalized[field] = value
+
+            # Normalize MRI safety status
+            mri_raw = normalized.get("MRISafetyStatus")
+            if mri_raw and isinstance(mri_raw, str):
+                normalized["MRISafetyStatus"] = normalize_mri_status(mri_raw)
+
+            normalized["source_url"] = source_url
+            if not normalized.get("manufacturer") or normalized["manufacturer"] is None:
+                normalized["manufacturer"] = "unknown"
+
+            is_valid, issues = validate_record(normalized)
+            if not is_valid:
+                logger.warning("_process_single_ollama: record rejected: %s", issues)
+                continue
+
+            record = package_gudid_record(
+                normalized_record=normalized,
+                raw_html=raw_html,
+                source_url=source_url,
+                adapter_version="ollama-llama3.2",
+                harvest_run_id=harvest_run_id,
+                validation_issues=issues,
+                extraction_method="ollama",
+                extraction_model="llama3.2",
+            )
+            records.append(record)
+
+        return records
+
+    except Exception as exc:
+        logger.error("_process_single_ollama: unexpected error for %s: %s", html_path, exc)
+        return []
+
+
 def process_batch(
     input_dir: str,
-    adapter: dict | None = None,
     output_dir: str = "harvester/output",
     harvest_run_id: str | None = None,
-    adapter_map: dict | None = None,
+    max_workers: int = 4,
 ) -> dict:
-    """Process all HTML files in a directory.
+    """Process all HTML files in a directory using Ollama extraction.
 
-    If *adapter_map* is provided, each file is routed to the adapter whose
-    domain matches the filename's host segment.  Files with no matching
-    adapter are counted as ``skipped``.
+    Every file is extracted via Ollama (two-pass: page fields + product rows).
+    Uses ThreadPoolExecutor for concurrent extraction.
 
-    If *adapter* is provided instead, it is used for every file (original
-    behavior).
-
-    Returns a summary dict with keys: processed, succeeded, failed, skipped,
-    output_dir, files.
+    Returns a summary dict with keys: processed, succeeded, failed,
+    ollama_extracted, output_dir, files.
     """
     html_files = sorted(
         glob.glob(os.path.join(input_dir, "*.html"))
@@ -301,58 +421,162 @@ def process_batch(
         "processed": 0,
         "succeeded": 0,
         "failed": 0,
-        "skipped": 0,
+        "ollama_extracted": 0,
         "output_dir": output_dir,
         "files": [],
     }
 
-    for html_path in html_files:
-        summary["processed"] += 1
+    if not html_files:
+        return summary
 
-        # Determine which adapter to use for this file
-        if adapter_map is not None:
-            file_adapter = resolve_adapter(html_path, adapter_map)
-            if file_adapter is None:
-                host = _extract_host_from_filename(html_path)
-                logger.warning("process_batch: no adapter for domain '%s' (%s), skipping", host, os.path.basename(html_path))
-                summary["skipped"] += 1
-                continue
-        else:
-            file_adapter = adapter
+    def _process_one(html_path):
+        records = _process_single_ollama(html_path, harvest_run_id=harvest_run_id)
+        paths = []
+        if records:
+            for record in records:
+                paths.append(write_record_json(record, output_dir))
+        return html_path, paths
 
-        record = process_single(html_path, file_adapter, harvest_run_id=harvest_run_id)
-
-        if record is not None:
-            out_path = write_record_json(record, output_dir)
-            summary["succeeded"] += 1
-            summary["files"].append(out_path)
-        else:
-            summary["failed"] += 1
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = {executor.submit(_process_one, p): p for p in html_files}
+        for future in as_completed(futures):
+            html_path = futures[future]
+            try:
+                _, paths = future.result()
+            except Exception as exc:
+                logger.error("process_batch: thread error for %s: %s", html_path, exc)
+                paths = []
+            summary["processed"] += 1
+            if paths:
+                summary["succeeded"] += len(paths)
+                summary["ollama_extracted"] += len(paths)
+                summary["files"].extend(paths)
+            else:
+                summary["failed"] += 1
 
     return summary
 
 
+# ---------------------------------------------------------------------------
+# End-to-end helpers: scrape, DB write, validation
+# ---------------------------------------------------------------------------
+
+def _parse_urls(urls_arg: str) -> list[str]:
+    """Parse URLs from a file path (one per line) or comma-separated string."""
+    if os.path.isfile(urls_arg):
+        with open(urls_arg, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+        return [line.strip() for line in lines
+                if line.strip() and not line.strip().startswith("#")]
+    return [u.strip() for u in urls_arg.split(",") if u.strip()]
+
+
+def scrape_urls(urls: list[str], output_dir: str) -> list[str]:
+    """Scrape URLs via Playwright and save HTML files. Returns list of saved paths."""
+    from web_scraper.scraper import (
+        BrowserEngine, safe_filename_from_url, is_pdf_url, dedupe_keep_order,
+    )
+
+    urls = dedupe_keep_order(urls)
+    urls = [u for u in urls if not is_pdf_url(u)]
+    os.makedirs(output_dir, exist_ok=True)
+
+    print(f"Scraping {len(urls)} URL(s)...")
+
+    async def _run():
+        async with BrowserEngine(
+            max_concurrency=3,
+            page_timeout_ms=30_000,
+            retries=3,
+            retry_delay_s=5.0,
+            rate_limit_delay_s=2.0,
+            user_agent=(
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/121.0.0.0 Safari/537.36"
+            ),
+            headless=True,
+        ) as engine:
+            return await asyncio.gather(*(engine.fetch(u) for u in urls))
+
+    results = asyncio.run(_run())
+    saved = []
+    for r in results:
+        if r.ok and r.html:
+            fname = safe_filename_from_url(r.final_url or r.url)
+            path = os.path.join(output_dir, fname)
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(r.html)
+            saved.append(path)
+            logger.info("Scraped: %s", r.final_url or r.url)
+        else:
+            logger.warning("Scrape failed: %s — %s", r.url, r.error)
+
+    print(f"Scraped {len(saved)}/{len(urls)} pages.")
+    return saved
+
+
+def write_records_to_db(json_paths: list[str], overwrite: bool = False) -> int:
+    """Load JSON files and insert into MongoDB devices collection."""
+    from database.db_connection import get_db
+
+    try:
+        db = get_db()
+    except Exception as e:
+        logger.warning("MongoDB unavailable — skipping DB write: %s", e)
+        print(f"WARNING: MongoDB unavailable ({e}). Records saved as JSON only.")
+        return 0
+
+    if overwrite:
+        db["devices"].drop()
+        logger.info("Dropped devices collection (--overwrite)")
+
+    count = 0
+    for path in json_paths:
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                record = json.load(f)
+            db["devices"].insert_one(record)
+            count += 1
+        except Exception as e:
+            logger.warning("DB insert failed for %s: %s", path, e)
+
+    print(f"Inserted {count}/{len(json_paths)} records into MongoDB (overwrite={overwrite}).")
+    return count
+
+
+def run_gudid_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
+    """Run GUDID validation on devices in DB. Returns result dict."""
+    from orchestrator import run_validation
+    result = run_validation(run_id=run_id, overwrite=overwrite)
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser(
-        description="Run the Fivos harvesting pipeline on HTML files."
+        description="Run the Fivos harvesting pipeline. Supports end-to-end: scrape → extract → DB → validate."
     )
 
-    # Adapter source: single file OR directory (mutually exclusive, required)
-    adapter_group = parser.add_mutually_exclusive_group(required=True)
-    adapter_group.add_argument("--adapter", help="Path to a single YAML adapter config")
-    adapter_group.add_argument(
-        "--adapter-dir", dest="adapter_dir",
-        help="Directory of YAML adapter configs (auto-routes files by domain)"
-    )
-
-    # Input source: single file OR directory (mutually exclusive, required)
-    input_group = parser.add_mutually_exclusive_group(required=True)
-    input_group.add_argument("--input", dest="input_file", help="Single HTML file to process")
-    input_group.add_argument("--input-dir", dest="input_dir", help="Directory of HTML files to process")
-
-    parser.add_argument("--output-dir", default="harvester/output", help="Output directory for JSON records")
+    # Input / output
+    parser.add_argument("--input", dest="input_file", help="Single HTML file to process")
+    parser.add_argument("--input-dir", dest="input_dir", default=str(DEFAULT_INPUT_DIR),
+                        help="Directory of HTML files to process (default: web-scraper/out_html)")
+    parser.add_argument("--output-dir", default=str(DEFAULT_OUTPUT_DIR),
+                        help="Output directory for JSON records (default: harvester/output)")
+    parser.add_argument("--adapter", help="Path to a YAML adapter config (CSS extraction override)")
     parser.add_argument("--run-id", dest="run_id", help="Harvest run ID (e.g. HR-10011)")
     parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose logging")
+
+    # End-to-end flags
+    parser.add_argument("--urls", help="File with URLs (one per line) or comma-separated URLs to scrape")
+    parser.add_argument("--db", action="store_true", help="Write records to MongoDB after extraction")
+    parser.add_argument("--overwrite", action="store_true",
+                        help="Drop DB collections before inserting (default: append)")
+    parser.add_argument("--validate", action="store_true", help="Run GUDID validation after extraction")
+    parser.add_argument("--no-validate", action="store_true", dest="no_validate",
+                        help="Skip GUDID validation (only relevant with --urls)")
+    parser.add_argument("--workers", type=int, default=4,
+                        help="Number of concurrent extraction threads (default: 4)")
 
     args = parser.parse_args()
 
@@ -361,47 +585,76 @@ def main():
         format="%(levelname)s %(name)s: %(message)s",
     )
 
-    # Load adapter(s)
-    if args.adapter:
-        adapter = load_adapter(args.adapter)
-        adapter_map = None
+    # Determine effective modes
+    end_to_end = args.urls is not None
+    do_db = args.db or end_to_end
+    do_validate = (args.validate or end_to_end) and not args.no_validate
 
-    else:
-        adapter = None
-        adapter_map = load_adapters(args.adapter_dir)
-        print(f"Loaded {len(adapter_map)} adapter(s): {', '.join(sorted(adapter_map))}")
+    run_id = args.run_id or f"HR-LOCAL-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}"
+    output_files = []
 
+    # Step 1: Scrape (if --urls provided)
+    if args.urls:
+        urls = _parse_urls(args.urls)
+        if not urls:
+            print("No URLs found in --urls argument.")
+            sys.exit(1)
+        scrape_urls(urls, args.input_dir)
+
+    # Step 2: Extract
     if args.input_file:
         # Single-file mode
-        if adapter_map is not None:
-            adapter = resolve_adapter(args.input_file, adapter_map)
-            if adapter is None:
-                host = _extract_host_from_filename(args.input_file)
-                print(f"No adapter found for domain '{host}'.")
+        if args.adapter:
+            adapter = load_adapter(args.adapter)
+            record = process_single(args.input_file, adapter, harvest_run_id=run_id)
+            if record is None:
+                print("Pipeline rejected the record (see logs above).")
                 sys.exit(1)
-
-        record = process_single(args.input_file, adapter, harvest_run_id=args.run_id)
-        if record is None:
-            print("Pipeline rejected the record (see logs above).")
-            sys.exit(1)
-        out_path = write_record_json(record, args.output_dir)
-        print(f"Record written to: {out_path}")
+            out_path = write_record_json(record, args.output_dir)
+            output_files.append(out_path)
+            print(f"Record written to: {out_path}")
+        else:
+            records = _process_single_ollama(args.input_file, harvest_run_id=run_id)
+            if not records:
+                print("Ollama extraction returned no records (see logs above).")
+                sys.exit(1)
+            for record in records:
+                out_path = write_record_json(record, args.output_dir)
+                output_files.append(out_path)
+                print(f"Record written to: {out_path}")
     else:
         # Batch mode
         summary = process_batch(
             args.input_dir,
-            adapter=adapter,
             output_dir=args.output_dir,
-            harvest_run_id=args.run_id,
-            adapter_map=adapter_map,
+            harvest_run_id=run_id,
+            max_workers=args.workers,
         )
+        output_files = summary.get("files", [])
         print(f"\n{'='*40}")
-        print(f"  Processed: {summary['processed']}")
-        print(f"  Succeeded: {summary['succeeded']}")
-        print(f"  Failed:    {summary['failed']}")
-        print(f"  Skipped:   {summary['skipped']}")
-        print(f"  Output:    {summary['output_dir']}")
+        print(f"  Processed:        {summary['processed']}")
+        print(f"  Succeeded:        {summary['succeeded']}")
+        print(f"  Failed:           {summary['failed']}")
+        print(f"  Ollama-extracted: {summary['ollama_extracted']}")
+        print(f"  Output:           {summary['output_dir']}")
         print(f"{'='*40}")
+
+    # Step 3: Write to DB
+    if do_db and output_files:
+        write_records_to_db(output_files, overwrite=args.overwrite)
+
+    # Step 4: GUDID validation
+    if do_validate:
+        print("\nRunning GUDID validation...")
+        val = run_gudid_validation(run_id=run_id, overwrite=args.overwrite)
+        if val.get("success"):
+            print(f"  Total:            {val['total']}")
+            print(f"  Full matches:     {val['full_matches']}")
+            print(f"  Partial matches:  {val['partial_matches']}")
+            print(f"  Mismatches:       {val['mismatches']}")
+            print(f"  Not found:        {val['not_found']}")
+        else:
+            print(f"  Validation error: {val.get('error')}")
 
 
 if __name__ == "__main__":

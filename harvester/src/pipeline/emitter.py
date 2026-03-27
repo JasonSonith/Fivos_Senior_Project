@@ -61,6 +61,8 @@ def _build_harvest_metadata(
     adapter_version: str,
     validation_issues: list[str] | None,
     raw_html: str,
+    extraction_method: str = "css",
+    extraction_model: str | None = None,
 ) -> dict:
     """Build harvest metadata dict shared by both packaging functions."""
     if harvest_run_id is None:
@@ -74,6 +76,8 @@ def _build_harvest_metadata(
         "normalization_version": NORMALIZATION_VERSION,
         "validation_issues": validation_issues if validation_issues is not None else [],
         "raw_html_sha256": hashlib.sha256(raw_html.encode("utf-8")).hexdigest(),
+        "extraction_method": extraction_method,
+        "extraction_model": extraction_model,
     }
 
 
@@ -84,6 +88,8 @@ def package_gudid_record(
     adapter_version: str,
     harvest_run_id: str | None = None,
     validation_issues: list[str] | None = None,
+    extraction_method: str = "css",
+    extraction_model: str | None = None,
 ) -> dict:
     """Package a normalized record with GUDID-aligned field names.
 
@@ -96,9 +102,10 @@ def package_gudid_record(
         # GUDID device identification fields
         record["brandName"] = normalized_record.get("device_name")
         record["versionModelNumber"] = normalized_record.get("model_number")
-        record["catalogNumber"] = normalized_record.get("catalog_number") or normalized_record.get("model_number")
+        record["catalogNumber"] = normalized_record.get("catalog_number")
         record["companyName"] = normalized_record.get("manufacturer")
         record["deviceDescription"] = normalized_record.get("description")
+        description_source = normalized_record.get("_description_source")
 
         # Device sizes
         record["deviceSizes"] = _build_device_sizes(normalized_record)
@@ -114,8 +121,10 @@ def package_gudid_record(
 
         # Harvest metadata
         record["_harvest"] = _build_harvest_metadata(
-            harvest_run_id, source_url, adapter_version, validation_issues, raw_html
+            harvest_run_id, source_url, adapter_version, validation_issues, raw_html,
+            extraction_method=extraction_method, extraction_model=extraction_model,
         )
+        record["_harvest"]["description_source"] = description_source
 
         return record
 

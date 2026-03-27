@@ -1,34 +1,51 @@
 # Pipeline Layer
 
-Transforms raw HTML/JSON/XML from the web scraper into GUDID-aligned JSON records.
+Transforms raw HTML from the web scraper into GUDID-aligned JSON records.
 
-**Data flow:** Web Scraper → **Pipeline** → MongoDB
+**Data flow:** Web Scraper → **Pipeline** → JSON → MongoDB → Validation
 
 ## Modules
 
 | File | Role | Key Functions |
 |------|------|---------------|
-| `runner.py` | Orchestrator / CLI entry point | `process_single()`, `process_batch()`, `run_stage()` |
-| `parser.py` | Raw content → typed objects | `parse_html()` → BS4, `parse_json()` → dict, `parse_xml()` → Element |
-| `extractor.py` | CSS selector extraction via adapter YAML | `extract_fields(parsed, adapter_config)` → `dict[str, str]` |
-| `dimension_parser.py` | Mine measurements from `specs_container` text | `parse_dimensions(specs_text)` → `dict[str, str]` |
-| `regulatory_parser.py` | Regex booleans from `warning_text` | `parse_regulatory_flags(warning_text)` → `dict[str, bool]` |
+| `runner.py` | CLI entry point, end-to-end orchestration | `process_batch()`, `main()`, `scrape_urls()`, `write_records_to_db()` |
+| `ollama_extractor.py` | **Primary extractor.** LLM two-pass extraction | `extract_all_fields()`, `extract_page_fields()`, `extract_product_rows()` |
+| `parser.py` | Raw content → typed objects | `parse_html()` → BS4 |
+| `extractor.py` | CSS selector extraction (legacy `--adapter` path) | `extract_fields(parsed, adapter_config)` |
+| `dimension_parser.py` | Mine measurements from specs text | `parse_dimensions_from_specs()` |
+| `regulatory_parser.py` | Regex booleans from warning text | `parse_regulatory_from_text()` |
 | `emitter.py` | Build + write GUDID output | `package_gudid_record()`, `write_record_json()` |
 
-`dimension_parser.py` handles 3 formats: tabular (`Length\t4.5 cm`), key-value (`Length: 4.5 cm`), and embedded description strings (Terumo-style).
-
-## Pipeline Stages (runner.py)
+## Pipeline Stages
 
 ```
-sanitize → parse → extract → normalize → validate → package
+sanitize → parse → extract (Ollama) → normalize → validate → package → JSON
 ```
 
-1. **sanitize** — strip malformed HTML, normalize whitespace
-2. **parse** — `parser.py` → BeautifulSoup / dict / Element
-3. **extract** — `extractor.py` → `{field: raw_string}`
-4. **normalize** — `dimension_parser.py` + `regulatory_parser.py` → `{field: typed_value}`
-5. **validate** — check required fields, populate `issues` list
-6. **package** — `emitter.py` → GUDID dict → `output/*.json`
+Extraction uses Ollama by default (two-pass: page-level fields + product table rows). CSS adapters are a legacy override via `--adapter` flag.
+
+## End-to-End CLI
+
+```bash
+# Full pipeline: scrape → extract → DB (append) → validate
+python harvester/src/pipeline/runner.py --urls harvester/src/urls.txt
+
+# With DB overwrite
+python harvester/src/pipeline/runner.py --urls harvester/src/urls.txt --overwrite
+
+# Extract only (no scrape, no DB)
+python harvester/src/pipeline/runner.py
+
+# Extract + DB + validate
+python harvester/src/pipeline/runner.py --db --validate
+
+# Single file
+python harvester/src/pipeline/runner.py --input file.html
+```
+
+**Flags:** `--urls FILE`, `--db`, `--overwrite`, `--validate`, `--no-validate`, `--workers N`, `--input`, `--input-dir`, `--output-dir`, `--run-id`, `-v`
+
+`--urls` triggers end-to-end mode (scrape + DB + validate all on by default). `--workers` controls concurrent Ollama extraction threads (default: 4).
 
 ## Field Classification
 
@@ -37,38 +54,15 @@ TEXT_FIELDS        = {"description", "brand_name", "product_type", "specs_contai
 MODEL_FIELDS       = {"model_number", "catalog_number", "sku"}
 DATE_FIELDS        = {"approval_date", "clearance_date", "expiration_date"}
 MEASUREMENT_FIELDS = {"length", "width", "height", "diameter", "weight", "volume", "pressure"}
-BOOLEAN_FIELDS     = {"singleUse", "deviceSterile", "sterilizationPriorToUse", "rx", "otc"}
-ENUM_FIELDS        = {"MRISafetyStatus"}
 ```
-
-`MEASUREMENT_FIELDS` → `{"value": float, "unit": str}` | `DATE_FIELDS` → ISO 8601 | `MODEL_FIELDS` → uppercased
 
 ## Error Handling ("never crash the run")
 
-All errors are caught in `run_stage()`. The run always continues to the next record.
-
 | Stage | Failure | Behavior |
 |-------|---------|----------|
-| parse | Malformed content | Log + store raw HTML + skip |
-| extract | Selector miss | Log; emit partial if required fields present |
+| parse | Malformed content | Log + skip |
+| extract | Ollama timeout/error | Log + skip file |
 | normalize | Unparseable value | Keep in `raw_<field>` + flag |
 | validate critical | Required field missing | Reject + log |
 | validate non-critical | Suspicious value | Emit with `issues` list |
-
-## Running
-
-See root `CLAUDE.md` for full CLI reference.
-
-```bash
-python harvester/src/pipeline/runner.py --adapter <yaml> --input <html>
-python harvester/src/pipeline/runner.py --adapter-dir harvester/src/site_adapters --input-dir harvester/src/web-scraper/out_html
-# --output-dir DIR  --run-id HR-10011  -v
-```
-
-## Adding a New Field
-
-1. Add selector to the adapter YAML in `harvester/src/site_adapters/`
-2. Add field name to the correct set in `runner.py`
-3. Add normalization logic: dimension → `dimension_parser.py`, boolean → `regulatory_parser.py`, other → inline in `runner.py`
-4. Add GUDID mapping in `emitter.py`'s `package_gudid_record()`
-5. Add a test in `tests/test_pipeline_e2e.py`
+| DB write | MongoDB unavailable | Log warning, JSON files already saved |

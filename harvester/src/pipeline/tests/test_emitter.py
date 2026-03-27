@@ -135,7 +135,7 @@ class TestPackageGudidRecord:
         assert result["brandName"] == "IN.PACT Admiral"
         assert result["versionModelNumber"] == "ABC123"
         assert result["companyName"] == "Medtronic"
-        assert result["catalogNumber"] == "ABC123"  # falls back to model_number
+        assert result["catalogNumber"] is None  # no catalog_number in input, no fallback
 
     def test_harvest_metadata_nested(self):
         result = package_gudid_record(
