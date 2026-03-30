@@ -1,15 +1,24 @@
 import json
 import logging
+import os
 
 import requests
+from dotenv import load_dotenv
+
+load_dotenv()
 
 logger = logging.getLogger(__name__)
 
 OLLAMA_URL = "http://localhost:11434/api/chat"
+GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
+GROQ_MODEL = "llama-3.3-70b-versatile"
+OLLAMA_MODEL = "mistral"
+
 _OLLAMA_WARNED = False
+_GROQ_WARNED = False
 
 # ---------------------------------------------------------------------------
-# Schemas for Ollama structured output
+# Schemas for structured output
 # ---------------------------------------------------------------------------
 
 DESCRIPTION_SCHEMA = {
@@ -120,8 +129,64 @@ Table/specs text:
 {table_text}"""
 
 # ---------------------------------------------------------------------------
-# Shared HTTP helper
+# HTTP helpers
 # ---------------------------------------------------------------------------
+
+
+def _get_groq_key() -> str | None:
+    return os.environ.get("GROQ_API_KEY")
+
+
+def _groq_request(messages: list[dict], schema: dict, timeout: int = 60) -> dict | None:
+    global _GROQ_WARNED
+
+    api_key = _get_groq_key()
+    if not api_key:
+        if not _GROQ_WARNED:
+            logger.info("GROQ_API_KEY not set, falling back to Ollama")
+            _GROQ_WARNED = True
+        return None
+
+    payload = {
+        "model": GROQ_MODEL,
+        "messages": messages,
+        "response_format": {
+            "type": "json_object",
+        },
+        "temperature": 0,
+    }
+
+    try:
+        response = requests.post(
+            GROQ_URL,
+            json=payload,
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            },
+            timeout=timeout,
+        )
+        response.raise_for_status()
+    except requests.HTTPError as exc:
+        try:
+            detail = exc.response.json().get("error", {}).get("message", str(exc))
+        except Exception:
+            detail = str(exc)
+        logger.warning("Groq request failed: %s", detail)
+        return None
+    except Exception as exc:
+        logger.warning("Groq request failed: %s", exc)
+        return None
+
+    try:
+        data = response.json()
+        content = data["choices"][0]["message"]["content"]
+        if isinstance(content, dict):
+            return content
+        return json.loads(content)
+    except Exception as exc:
+        logger.warning("Failed to parse Groq response: %s", exc)
+        return None
 
 
 def _ollama_request(payload: dict, timeout: int = 60) -> dict | None:
@@ -150,12 +215,34 @@ def _ollama_request(payload: dict, timeout: int = 60) -> dict | None:
         return None
 
 
+def _llm_request(system_msg: str, user_msg: str, schema: dict, timeout: int = 60) -> dict | None:
+    """Try Groq first, fall back to Ollama."""
+    messages = [
+        {"role": "system", "content": system_msg},
+        {"role": "user", "content": user_msg},
+    ]
+
+    # Try Groq
+    result = _groq_request(messages, schema, timeout=timeout)
+    if result is not None:
+        return result
+
+    # Fall back to Ollama
+    payload = {
+        "model": OLLAMA_MODEL,
+        "messages": messages,
+        "stream": False,
+        "format": schema,
+    }
+    return _ollama_request(payload, timeout=timeout)
+
+
 # ---------------------------------------------------------------------------
 # Original description-only extraction (kept for backward compatibility)
 # ---------------------------------------------------------------------------
 
 
-def extract_description(visible_text, device_name="", model_number="", manufacturer="", model="mistral"):
+def extract_description(visible_text, device_name="", model_number="", manufacturer="", model=None):
     if not visible_text or not visible_text.strip():
         return None
 
@@ -166,17 +253,12 @@ def extract_description(visible_text, device_name="", model_number="", manufactu
         visible_text=visible_text[:4000],
     )
 
-    payload = {
-        "model": model,
-        "messages": [
-            {"role": "system", "content": "Extract only the requested field. Return valid JSON."},
-            {"role": "user", "content": prompt},
-        ],
-        "stream": False,
-        "format": DESCRIPTION_SCHEMA,
-    }
-
-    parsed = _ollama_request(payload, timeout=120)
+    parsed = _llm_request(
+        "Extract only the requested field. Return valid JSON.",
+        prompt,
+        DESCRIPTION_SCHEMA,
+        timeout=120,
+    )
     if parsed is None:
         return None
 
@@ -189,35 +271,29 @@ def extract_description(visible_text, device_name="", model_number="", manufactu
 # ---------------------------------------------------------------------------
 
 
-def extract_page_fields(visible_text: str, model: str = "mistral") -> dict | None:
+def extract_page_fields(visible_text: str, model: str | None = None) -> dict | None:
     if not visible_text or not visible_text.strip():
         return None
 
     prompt = PAGE_FIELDS_PROMPT.format(visible_text=visible_text[:6000])
 
-    payload = {
-        "model": model,
-        "messages": [
-            {"role": "system", "content": "Extract medical device fields from the page. Return valid JSON."},
-            {"role": "user", "content": prompt},
-        ],
-        "stream": False,
-        "format": PAGE_FIELDS_SCHEMA,
-    }
-
-    parsed = _ollama_request(payload, timeout=300)
+    parsed = _llm_request(
+        "Extract medical device fields from the page. Return valid JSON.",
+        prompt,
+        PAGE_FIELDS_SCHEMA,
+        timeout=300,
+    )
     if parsed is None:
         return None
 
-    # Must have at least device_name to be useful
     if not parsed.get("device_name"):
-        logger.warning("Ollama returned no device_name, skipping page")
+        logger.warning("LLM returned no device_name, skipping page")
         return None
 
     return parsed
 
 
-def extract_product_rows(table_text: str, device_name: str = "", model: str = "mistral") -> list[dict]:
+def extract_product_rows(table_text: str, device_name: str = "", model: str | None = None) -> list[dict]:
     if not table_text or not table_text.strip():
         return []
 
@@ -226,40 +302,34 @@ def extract_product_rows(table_text: str, device_name: str = "", model: str = "m
         table_text=table_text[:8000],
     )
 
-    payload = {
-        "model": model,
-        "messages": [
-            {"role": "system", "content": "Extract product rows from the table. Return valid JSON."},
-            {"role": "user", "content": prompt},
-        ],
-        "stream": False,
-        "format": PRODUCT_ROWS_SCHEMA,
-    }
-
-    parsed = _ollama_request(payload, timeout=300)
+    parsed = _llm_request(
+        "Extract product rows from the table. Return valid JSON.",
+        prompt,
+        PRODUCT_ROWS_SCHEMA,
+        timeout=300,
+    )
     if parsed is None:
         return []
 
     products = parsed.get("products", [])
-    # Filter out rows without a model_number
     return [p for p in products if p.get("model_number")]
 
 
-def extract_all_fields(visible_text: str, table_text: str | None = None, model: str = "mistral") -> list[dict]:
+def extract_all_fields(visible_text: str, table_text: str | None = None, model: str | None = None) -> list[dict]:
     # Pass 1: page-level fields
-    page_fields = extract_page_fields(visible_text, model)
+    page_fields = extract_page_fields(visible_text)
     if page_fields is None:
         return []
 
     # Pass 2: product rows from table
-    products = extract_product_rows(table_text or visible_text, page_fields.get("device_name", ""), model)
+    products = extract_product_rows(table_text or visible_text, page_fields.get("device_name", ""))
+
+    source = "groq" if _get_groq_key() else "ollama"
 
     if not products:
-        # Single record with page-level data only
-        page_fields["_description_source"] = "ollama"
+        page_fields["_description_source"] = source
         return [page_fields]
 
-    # Merge each product row with page-level fields
     records = []
     for product in products:
         merged = {
@@ -268,9 +338,8 @@ def extract_all_fields(visible_text: str, table_text: str | None = None, model: 
             "description": page_fields.get("description"),
             "warning_text": page_fields.get("warning_text"),
             "MRISafetyStatus": page_fields.get("MRISafetyStatus"),
-            "_description_source": "ollama",
+            "_description_source": source,
         }
-        # Product-level fields (model_number, dimensions)
         merged["model_number"] = product.get("model_number")
         merged["catalog_number"] = product.get("catalog_number")
         for dim in ("diameter", "length", "width", "height", "weight", "volume", "pressure"):

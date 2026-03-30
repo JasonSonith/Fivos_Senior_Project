@@ -42,7 +42,7 @@ The system follows a **Collect, Compare, Correct** workflow:
 │   └── static/             # CSS
 ├── harvester/
 │   └── src/
-│       ├── pipeline/       # Core: runner, ollama_extractor, parser, emitter
+│       ├── pipeline/       # Core: runner, llm_extractor, parser, emitter
 │       ├── web_scraper/    # Playwright browser automation
 │       ├── site_adapters/  # YAML CSS selector configs (optional override)
 │       ├── normalizers/    # Text, model numbers, dates, units, booleans
@@ -95,7 +95,21 @@ The dashboard provides:
 - **GUDID Lookup** — Search the FDA database directly
 - **Discrepancy Review** — Pick correct values for mismatched fields
 
-### Running the Pipeline (CLI)
+### Running the Pipeline (Interactive Menu)
+
+```bash
+python harvester/src/pipeline/cli.py
+```
+
+This launches an interactive menu:
+- **[1] Harvest Only** — Scrape URLs + extract with Ollama, output JSON files
+- **[2] Harvest + Save to DB** — Scrape + extract + save to MongoDB
+- **[3] Harvest + Save + Validate** — Full pipeline: scrape + extract + DB + GUDID validation
+- **[0] Quit**
+
+After selecting a mode, you choose Append or Overwrite for database writes.
+
+### Running the Pipeline (CLI flags)
 
 ```bash
 # Harvest only (scrape + extract to JSON, no DB)

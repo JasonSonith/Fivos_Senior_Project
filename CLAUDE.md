@@ -67,7 +67,7 @@ python harvester/src/pipeline/runner.py --db --validate          # extract + DB 
 python harvester/src/pipeline/runner.py --input <html>           # single file
 python harvester/src/pipeline/runner.py --adapter <yaml> --input <html>  # CSS adapter override
 
-# Options: --input-dir DIR, --output-dir DIR, --run-id HR-10011, --workers N, -v
+# Options: --input-dir DIR, --output-dir DIR, --run-id HR-10011, -v
 ```
 
 ### Web Dashboard
@@ -96,7 +96,7 @@ Manufacturing Website
         v
    Extraction Pipeline (harvester/src/pipeline/runner.py)
         |
-        | Ollama extracts ALL fields (multithreaded, --workers N)
+        | Ollama extracts ALL fields (sequential, one page at a time)
         | Two-pass: page-level fields, then product rows from tables
         | Produces one GUDID record per SKU
         |
@@ -133,7 +133,7 @@ The dashboard UI always appends to the database. The `--overwrite` flag is CLI-o
 | Component | Role | Triggered by |
 |-----------|------|-------------|
 | **Web Scraper** (`web_scraper/scraper.py`) | Fetches and renders HTML pages from manufacturer websites using Playwright. Saves to `web-scraper/out_html/`. | `runner.py --urls` or standalone |
-| **Ollama Extractor** (`pipeline/ollama_extractor.py`) | **Primary extractor.** LLM-based extraction for all pages. Extracts all fields (device_name, model_number, dimensions, description, warnings) via structured JSON output. Two-pass: page-level fields + product table rows. | Called by pipeline for every file |
+| **Ollama Extractor** (`pipeline/llm_extractor.py`) | **Primary extractor.** LLM-based extraction for all pages. Extracts all fields (device_name, model_number, dimensions, description, warnings) via structured JSON output. Two-pass: page-level fields + product table rows. | Called by pipeline for every file |
 | **Site Adapters** (`site_adapters/*.yaml`) | CSS selector configs. **Optional override** — only used when explicitly passed via `--adapter` flag. Not used in default batch mode. | Manual CLI override |
 | **Pipeline** (`pipeline/runner.py`) | End-to-end: scrape → extract → normalize → validate → JSON → DB → GUDID validation. Multithreaded extraction via `concurrent.futures`. | CLI (`--urls` for e2e) or web UI |
 | **GUDID API** | FDA's device lookup API. Used for validation (compare harvested vs official) and direct device lookup. | Validator or GUDID lookup page |
@@ -161,7 +161,7 @@ If Ollama is not running, the pipeline produces no records (counted as `failed`)
 
 ### Module Map
 
-- `pipeline/` — Core extraction: parser, extractor, dimension_parser, regulatory_parser, ollama_extractor, emitter, runner
+- `pipeline/` — Core extraction: parser, extractor, dimension_parser, regulatory_parser, llm_extractor, emitter, runner
 - `normalizers/` — Field-specific cleaners: text, model_numbers, dates, unit_conversions, booleans
 - `validators/` — GUDID comparison: gudid_client, comparison_validator, record_validator
 - `security/` — Input sanitization, credential management
@@ -197,7 +197,7 @@ If Ollama is not running, the pipeline produces no records (counted as `failed`)
 
 For deeper context, reference these files as needed:
 
-- `docs/Fivos Multi-Agent AI System for Automated Medical Device Data Harvesting and Regulatory Validation` — High level overview of the project.
+- `docs/Fivos - Project Overview.md` — High level overview of the project (client, goals, milestones, tech constraints).
 - `docs/Team Roles -Harvester Agent.md` - For roles of the project, who does what, etc.
 - `docs/Jason - Todo.md` - Jason's todo list.
 - `docs/Target Brands.xlsx` - Brands that we are scraping the manufacturing websites for.

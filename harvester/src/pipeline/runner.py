@@ -22,7 +22,6 @@ import json
 import logging
 import os
 import sys
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlparse
@@ -234,7 +233,7 @@ def process_single(
             raw_fields["_description_source"] = "css"
         else:
             try:
-                from pipeline.ollama_extractor import extract_description
+                from pipeline.llm_extractor import extract_description
                 page_text = parsed.get_text(separator=" ", strip=True)[:4000]
                 ollama_desc = extract_description(
                     page_text,
@@ -327,7 +326,7 @@ def _process_single_ollama(
         return []
 
     try:
-        from pipeline.ollama_extractor import extract_all_fields
+        from pipeline.llm_extractor import extract_all_fields
 
         sanitized = sanitize_html(raw_html)
         parsed = parse_html(sanitized)
@@ -383,11 +382,11 @@ def _process_single_ollama(
                 normalized_record=normalized,
                 raw_html=raw_html,
                 source_url=source_url,
-                adapter_version="ollama-mistral",
+                adapter_version="groq" if os.environ.get("GROQ_API_KEY") else "ollama-mistral",
                 harvest_run_id=harvest_run_id,
                 validation_issues=issues,
-                extraction_method="ollama",
-                extraction_model="mistral",
+                extraction_method="groq" if os.environ.get("GROQ_API_KEY") else "ollama",
+                extraction_model="llama-3.3-70b-versatile" if os.environ.get("GROQ_API_KEY") else "mistral",
             )
             records.append(record)
 
@@ -402,12 +401,11 @@ def process_batch(
     input_dir: str,
     output_dir: str = "harvester/output",
     harvest_run_id: str | None = None,
-    max_workers: int = 4,
 ) -> dict:
     """Process all HTML files in a directory using Ollama extraction.
 
     Every file is extracted via Ollama (two-pass: page fields + product rows).
-    Uses ThreadPoolExecutor for concurrent extraction.
+    Files are processed sequentially (Ollama handles one inference at a time).
 
     Returns a summary dict with keys: processed, succeeded, failed,
     ollama_extracted, output_dir, files.
@@ -429,30 +427,21 @@ def process_batch(
     if not html_files:
         return summary
 
-    def _process_one(html_path):
-        records = _process_single_ollama(html_path, harvest_run_id=harvest_run_id)
-        paths = []
-        if records:
-            for record in records:
-                paths.append(write_record_json(record, output_dir))
-        return html_path, paths
-
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        futures = {executor.submit(_process_one, p): p for p in html_files}
-        for future in as_completed(futures):
-            html_path = futures[future]
-            try:
-                _, paths = future.result()
-            except Exception as exc:
-                logger.error("process_batch: thread error for %s: %s", html_path, exc)
-                paths = []
-            summary["processed"] += 1
-            if paths:
-                summary["succeeded"] += len(paths)
-                summary["ollama_extracted"] += len(paths)
-                summary["files"].extend(paths)
+    for html_path in html_files:
+        summary["processed"] += 1
+        try:
+            records = _process_single_ollama(html_path, harvest_run_id=harvest_run_id)
+            if records:
+                for record in records:
+                    path = write_record_json(record, output_dir)
+                    summary["files"].append(path)
+                summary["succeeded"] += len(records)
+                summary["ollama_extracted"] += len(records)
             else:
                 summary["failed"] += 1
+        except Exception as exc:
+            logger.error("process_batch: error for %s: %s", html_path, exc)
+            summary["failed"] += 1
 
     return summary
 
@@ -575,9 +564,6 @@ def main():
     parser.add_argument("--validate", action="store_true", help="Run GUDID validation after extraction")
     parser.add_argument("--no-validate", action="store_true", dest="no_validate",
                         help="Skip GUDID validation (only relevant with --urls)")
-    parser.add_argument("--workers", type=int, default=4,
-                        help="Number of concurrent extraction threads (default: 4)")
-
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -628,7 +614,6 @@ def main():
             args.input_dir,
             output_dir=args.output_dir,
             harvest_run_id=run_id,
-            max_workers=args.workers,
         )
         output_files = summary.get("files", [])
         print(f"\n{'='*40}")

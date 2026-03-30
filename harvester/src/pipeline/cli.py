@@ -156,18 +156,6 @@ def prompt_url_source() -> str:
     return raw
 
 
-def prompt_workers() -> int:
-    raw = input("  Number of workers [4]: ").strip()
-    if not raw:
-        return 4
-    try:
-        n = int(raw)
-        return max(1, min(n, 16))
-    except ValueError:
-        print("  Invalid number, using 4.")
-        return 4
-
-
 def prompt_db_mode() -> bool:
     """Prompt for append vs overwrite. Returns True if overwrite."""
     print("\n  Database write mode:\n")
@@ -192,7 +180,6 @@ def collect_options(mode: dict) -> dict:
     else:
         options["overwrite"] = False
 
-    options["workers"] = prompt_workers()
     options["verbose"] = prompt_yes_no("Verbose logging?", default=False)
 
     return options
@@ -216,7 +203,6 @@ def print_confirmation(mode: dict, options: dict):
         print(f"  DB:        No")
 
     print(f"  Validate:  {'Yes' if mode['validate'] else 'No'}")
-    print(f"  Workers:   {options['workers']}")
     print(f"  Verbose:   {'Yes' if options['verbose'] else 'No'}")
     print(f"  {'='*50}\n")
 
@@ -277,7 +263,6 @@ def run_mode(mode: dict, options: dict):
             input_dir=str(DEFAULT_INPUT_DIR),
             output_dir=output_dir,
             harvest_run_id=run_id,
-            max_workers=options["workers"],
         )
         output_files = summary.get("files", [])
         bar.finish(success=summary["succeeded"] > 0 or summary["processed"] == 0)

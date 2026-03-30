@@ -9,7 +9,7 @@ Transforms raw HTML from the web scraper into GUDID-aligned JSON records.
 | File | Role | Key Functions |
 |------|------|---------------|
 | `runner.py` | CLI entry point, end-to-end orchestration | `process_batch()`, `main()`, `scrape_urls()`, `write_records_to_db()` |
-| `ollama_extractor.py` | **Primary extractor.** LLM two-pass extraction | `extract_all_fields()`, `extract_page_fields()`, `extract_product_rows()` |
+| `llm_extractor.py` | **Primary extractor.** LLM two-pass extraction | `extract_all_fields()`, `extract_page_fields()`, `extract_product_rows()` |
 | `parser.py` | Raw content → typed objects | `parse_html()` → BS4 |
 | `extractor.py` | CSS selector extraction (legacy `--adapter` path) | `extract_fields(parsed, adapter_config)` |
 | `dimension_parser.py` | Mine measurements from specs text | `parse_dimensions_from_specs()` |
@@ -43,9 +43,9 @@ python harvester/src/pipeline/runner.py --db --validate
 python harvester/src/pipeline/runner.py --input file.html
 ```
 
-**Flags:** `--urls FILE`, `--db`, `--overwrite`, `--validate`, `--no-validate`, `--workers N`, `--input`, `--input-dir`, `--output-dir`, `--run-id`, `-v`
+**Flags:** `--urls FILE`, `--db`, `--overwrite`, `--validate`, `--no-validate`, `--input`, `--input-dir`, `--output-dir`, `--run-id`, `-v`
 
-`--urls` triggers end-to-end mode (scrape + DB + validate all on by default). `--workers` controls concurrent Ollama extraction threads (default: 4).
+`--urls` triggers end-to-end mode (scrape + DB + validate all on by default). Extraction is sequential (Ollama handles one page at a time).
 
 ## Field Classification
 
