@@ -13,10 +13,11 @@ if os.path.abspath(_HARVESTER_SRC) not in sys.path:
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
-from app.routes import dashboard, harvester, normalize, results
+from app.routes import dashboard, harvester
 from app.routes import api as api_routes
 from app.routes import gudid as gudid_routes
 from app.routes import validate as validate_routes
+from app.routes import review as review_routes
 
 app = FastAPI(title="Fivos Device Data Interface")
 
@@ -27,8 +28,7 @@ app.state.jobs = {}
 
 app.include_router(dashboard.router)
 app.include_router(harvester.router)
-app.include_router(normalize.router)
-app.include_router(results.router)
 app.include_router(api_routes.router)
 app.include_router(gudid_routes.router)
 app.include_router(validate_routes.router)
+app.include_router(review_routes.router)

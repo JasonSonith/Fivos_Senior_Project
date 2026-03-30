@@ -155,7 +155,7 @@ def _ollama_request(payload: dict, timeout: int = 60) -> dict | None:
 # ---------------------------------------------------------------------------
 
 
-def extract_description(visible_text, device_name="", model_number="", manufacturer="", model="llama3.2"):
+def extract_description(visible_text, device_name="", model_number="", manufacturer="", model="mistral"):
     if not visible_text or not visible_text.strip():
         return None
 
@@ -176,7 +176,7 @@ def extract_description(visible_text, device_name="", model_number="", manufactu
         "format": DESCRIPTION_SCHEMA,
     }
 
-    parsed = _ollama_request(payload, timeout=30)
+    parsed = _ollama_request(payload, timeout=120)
     if parsed is None:
         return None
 
@@ -189,7 +189,7 @@ def extract_description(visible_text, device_name="", model_number="", manufactu
 # ---------------------------------------------------------------------------
 
 
-def extract_page_fields(visible_text: str, model: str = "llama3.2") -> dict | None:
+def extract_page_fields(visible_text: str, model: str = "mistral") -> dict | None:
     if not visible_text or not visible_text.strip():
         return None
 
@@ -205,7 +205,7 @@ def extract_page_fields(visible_text: str, model: str = "llama3.2") -> dict | No
         "format": PAGE_FIELDS_SCHEMA,
     }
 
-    parsed = _ollama_request(payload, timeout=60)
+    parsed = _ollama_request(payload, timeout=300)
     if parsed is None:
         return None
 
@@ -217,7 +217,7 @@ def extract_page_fields(visible_text: str, model: str = "llama3.2") -> dict | No
     return parsed
 
 
-def extract_product_rows(table_text: str, device_name: str = "", model: str = "llama3.2") -> list[dict]:
+def extract_product_rows(table_text: str, device_name: str = "", model: str = "mistral") -> list[dict]:
     if not table_text or not table_text.strip():
         return []
 
@@ -236,7 +236,7 @@ def extract_product_rows(table_text: str, device_name: str = "", model: str = "l
         "format": PRODUCT_ROWS_SCHEMA,
     }
 
-    parsed = _ollama_request(payload, timeout=90)
+    parsed = _ollama_request(payload, timeout=300)
     if parsed is None:
         return []
 
@@ -245,7 +245,7 @@ def extract_product_rows(table_text: str, device_name: str = "", model: str = "l
     return [p for p in products if p.get("model_number")]
 
 
-def extract_all_fields(visible_text: str, table_text: str | None = None, model: str = "llama3.2") -> list[dict]:
+def extract_all_fields(visible_text: str, table_text: str | None = None, model: str = "mistral") -> list[dict]:
     # Pass 1: page-level fields
     page_fields = extract_page_fields(visible_text, model)
     if page_fields is None:

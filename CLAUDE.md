@@ -24,22 +24,57 @@ playwright install
 pytest                                    # all tests
 pytest harvester/src/pipeline/tests/test_pipeline_e2e.py  # single file
 pytest harvester/src/normalizers/tests/test_units.py::TestWeightConversions::test_kg_to_g  # single test
+```
 
-# Run pipeline — end-to-end
-python harvester/src/pipeline/runner.py --urls harvester/src/urls.txt            # scrape → extract → DB (append) → validate
-python harvester/src/pipeline/runner.py --urls harvester/src/urls.txt --overwrite # same, but wipe DB first
-python harvester/src/pipeline/runner.py --urls harvester/src/urls.txt --no-validate  # skip GUDID validation
+### Interactive CLI Menu
 
-# Run pipeline — extract only (from existing HTML)
-python harvester/src/pipeline/runner.py              # batch, default paths
-python harvester/src/pipeline/runner.py --db         # extract + write to DB (append)
-python harvester/src/pipeline/runner.py --db --overwrite --validate  # extract + DB overwrite + validate
-python harvester/src/pipeline/runner.py --input <html>  # single file
+```bash
+python harvester/src/pipeline/cli.py
+# Launches an interactive menu with human-friendly options:
+#   [1] Harvest Only
+#   [2] Harvest + Save to DB
+#   [3] Harvest + Save + Validate
+#   [0] Quit
+# After selecting 1-3, choose: [1] Append or [2] Overwrite
+```
+
+### Pipeline CLI (`harvester/src/pipeline/runner.py`)
+
+```bash
+# ── Harvest only (scrape + extract, no DB) ──
+python harvester/src/pipeline/runner.py --urls harvester/src/urls.txt --no-validate
+# Scrapes URLs, extracts with Ollama, writes JSON to harvester/output/. No DB, no validation.
+
+# ── Harvest + write to DB (append, default) ──
+python harvester/src/pipeline/runner.py --urls harvester/src/urls.txt --no-validate
+# With --urls, DB write is automatic in append mode. Use --no-validate to skip GUDID check.
+
+# ── Harvest + DB overwrite (CLI only, wipes devices collection first) ──
+python harvester/src/pipeline/runner.py --urls harvester/src/urls.txt --overwrite --no-validate
+
+# ── Full pipeline: harvest → DB (append) → validate ──
+python harvester/src/pipeline/runner.py --urls harvester/src/urls.txt
+# Scrape → extract → append to DB → compare against GUDID API. This is the default e2e mode.
+
+# ── Full pipeline with DB overwrite ──
+python harvester/src/pipeline/runner.py --urls harvester/src/urls.txt --overwrite
+
+# ── Extract only (from existing HTML in out_html/, no scrape) ──
+python harvester/src/pipeline/runner.py                          # batch, Ollama extraction
+python harvester/src/pipeline/runner.py --db                     # extract + append to DB
+python harvester/src/pipeline/runner.py --db --overwrite         # extract + overwrite DB
+python harvester/src/pipeline/runner.py --db --validate          # extract + DB + GUDID validation
+python harvester/src/pipeline/runner.py --input <html>           # single file
 python harvester/src/pipeline/runner.py --adapter <yaml> --input <html>  # CSS adapter override
-# Options: --input-dir DIR, --output-dir DIR, --run-id HR-10011, --workers N, -v
 
-# Dashboard
+# Options: --input-dir DIR, --output-dir DIR, --run-id HR-10011, --workers N, -v
+```
+
+### Web Dashboard
+
+```bash
 uvicorn app.main:app --port 8000
+# Open http://localhost:8000
 ```
 
 ## Environment
@@ -52,9 +87,9 @@ Required vars are listed in `.env.example`.
 
 ```
 Manufacturing Website
-        ^
-        | runner.py --urls (Playwright scraping)
         |
+        | runner.py --urls (Playwright scraping)
+        v
    Web Scraper (harvester/src/web_scraper/scraper.py)
         |
         | Raw HTML Files → harvester/src/web-scraper/out_html/
@@ -69,17 +104,29 @@ Manufacturing Website
         |
         | GUDID-format JSON records → harvester/output/
         v
-   MongoDB (devices collection)          ← --db flag (append default, --overwrite to drop first)
+   MongoDB (devices collection)          ← append by default, --overwrite to drop first
         |
         v
-   Validator ◄──── FDA GUDID API         ← --validate flag
+   Validator ◄──── FDA GUDID API         ← --validate flag (auto with --urls)
         |
         | Flagged Discrepancies (match / partial_match / mismatch)
         v
    Review Dashboard (FastAPI web UI)
         |
-        └──── Human approves/rejects ──── MongoDB updated
+        └──── Human reviews discrepancies ──── picks correct value ──── MongoDB updated
 ```
+
+### Web Dashboard Pages
+
+| Page | Route | Purpose |
+|------|-------|---------|
+| Dashboard | `/` | Stats (device count, matches, partials, mismatches) + discrepancy review queue |
+| Harvester | `/harvester` | Single URL or batch .txt upload → scrape + extract + append to DB |
+| Validator | `/validate` | Run GUDID validation, per-field match/mismatch table with Review links |
+| GUDID Lookup | `/gudid` | Direct FDA GUDID API query by DI or model number |
+| Review | `/review/<id>` | Side-by-side field comparison, pick harvested vs GUDID value |
+
+The dashboard UI always appends to the database. The `--overwrite` flag is CLI-only.
 
 ### Key Distinction: Scraper vs Adapters vs Ollama vs Pipeline
 
@@ -121,7 +168,10 @@ If Ollama is not running, the pipeline produces no records (counted as `failed`)
 - `database/` — MongoDB connection (`db_connection.py`)
 - `web_scraper/` — Playwright-based browser automation (standalone)
 - `site_adapters/` — YAML config files with CSS selectors per manufacturer layout
-- `app/` — FastAPI web dashboard
+- `app/` — FastAPI web dashboard (routes, templates, static assets)
+  - `routes/` — dashboard, harvester, validate, gudid, review, api
+  - `templates/` — Jinja2 HTML (base, dashboard, harvester, validate, gudid, review)
+  - `static/` — CSS styles
 
 ## Error Handling Philosophy: "Never crash the run"
 
@@ -140,7 +190,7 @@ If Ollama is not running, the pipeline produces no records (counted as `failed`)
 | Data lake | MongoDB (NoSQL) |
 | Validation reference | FDA GUDID API v3 (JSON) |
 | Web UI | FastAPI + Jinja2 |
-| AI (local) | Ollama — primary extractor for adapterless pages; description fallback for adapter pages |
+| AI (local) | Ollama — primary extractor for all pages |
 | Source control | Git / GitHub |
 
 ## Detailed Documentation

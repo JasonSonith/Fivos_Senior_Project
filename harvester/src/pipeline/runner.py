@@ -383,11 +383,11 @@ def _process_single_ollama(
                 normalized_record=normalized,
                 raw_html=raw_html,
                 source_url=source_url,
-                adapter_version="ollama-llama3.2",
+                adapter_version="ollama-mistral",
                 harvest_run_id=harvest_run_id,
                 validation_issues=issues,
                 extraction_method="ollama",
-                extraction_model="llama3.2",
+                extraction_model="mistral",
             )
             records.append(record)
 

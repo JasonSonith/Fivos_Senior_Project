@@ -1,8 +1,10 @@
 """Orchestration layer — single entry point for the UI.
 
-Two main operations:
-1. run_pipeline_batch() — process existing HTML files from out_html/ through the extraction pipeline
+Operations:
+1. run_harvest_single() / run_harvest_batch() — scrape + extract + append to DB
 2. run_validation() — compare harvested devices against GUDID API
+3. get_discrepancy_detail() / resolve_discrepancy() — human review of mismatches
+4. lookup_gudid_device() — direct GUDID API lookup
 """
 
 import json
@@ -12,67 +14,151 @@ import sys
 import uuid
 from datetime import datetime, timezone
 
-# Ensure harvester/src is on sys.path
 _SRC_DIR = os.path.dirname(os.path.abspath(__file__))
 if _SRC_DIR not in sys.path:
     sys.path.insert(0, _SRC_DIR)
 
-import yaml
+from bson import ObjectId
 
 logger = logging.getLogger(__name__)
 
-_DEFAULT_ADAPTER_DIR = os.path.join(_SRC_DIR, "site_adapters")
 _DEFAULT_HTML_DIR = os.path.join(_SRC_DIR, "web-scraper", "out_html")
 _DEFAULT_OUTPUT_DIR = os.path.join(_SRC_DIR, "..", "output")
 
 
 # ---------------------------------------------------------------------------
-# HTML file listing (for harvester page)
+# Helpers
 # ---------------------------------------------------------------------------
 
-def list_html_files(html_dir: str | None = None) -> list[dict]:
-    """List available HTML files in out_html/ for the harvester page."""
-    html_dir = html_dir or _DEFAULT_HTML_DIR
-    files = []
-    if not os.path.isdir(html_dir):
-        return files
-    for fname in sorted(os.listdir(html_dir)):
-        if not fname.endswith((".html", ".htm")):
-            continue
-        path = os.path.join(html_dir, fname)
-        # Extract manufacturer domain from filename (format: host__page__hash.html)
-        parts = fname.split("__")
-        manufacturer = parts[0] if parts else "unknown"
-        if manufacturer.startswith("www."):
-            manufacturer = manufacturer[4:]
-        files.append({
-            "filename": fname,
-            "path": path,
-            "size_kb": round(os.path.getsize(path) / 1024, 1),
-            "manufacturer": manufacturer,
-        })
-    return files
+def _serialize_record(record: dict) -> dict:
+    """Make a MongoDB document JSON-serializable."""
+    out = {}
+    for k, v in record.items():
+        if isinstance(v, ObjectId):
+            out[k] = str(v)
+        elif isinstance(v, datetime):
+            out[k] = v.isoformat()
+        elif isinstance(v, dict):
+            out[k] = _serialize_record(v)
+        elif isinstance(v, list):
+            out[k] = [_serialize_record(i) if isinstance(i, dict) else i for i in v]
+        else:
+            out[k] = v
+    return out
+
+
+def _get_run_id() -> str:
+    return f"HR-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}-{uuid.uuid4().hex[:6]}"
 
 
 # ---------------------------------------------------------------------------
-# Pipeline batch processing
+# Harvest: scrape + extract + append to DB
 # ---------------------------------------------------------------------------
 
-def run_pipeline_batch(file_paths: list[str] | None = None, overwrite: bool = True) -> dict:
+def run_harvest_single(url: str) -> dict:
+    """Scrape one URL, extract with Ollama, append to devices collection.
+
+    Returns: {"url", "scraped", "devices_extracted", "db_inserted", "run_id", "error"}
+    """
+    from pipeline.runner import scrape_urls, _process_single_ollama, write_record_json
+    from database.db_connection import get_db
+
+    run_id = _get_run_id()
+    result = {
+        "url": url,
+        "scraped": False,
+        "devices_extracted": 0,
+        "db_inserted": 0,
+        "run_id": run_id,
+        "error": None,
+    }
+
+    try:
+        output_dir = os.path.abspath(_DEFAULT_OUTPUT_DIR)
+        os.makedirs(output_dir, exist_ok=True)
+
+        # 1. Scrape
+        saved = scrape_urls([url], _DEFAULT_HTML_DIR)
+        if not saved:
+            result["error"] = f"Failed to scrape {url}"
+            return result
+        result["scraped"] = True
+
+        # 2. Extract via Ollama
+        records = _process_single_ollama(saved[0], source_url=url, harvest_run_id=run_id)
+        result["devices_extracted"] = len(records)
+
+        if not records:
+            result["error"] = "Ollama extraction returned no records"
+            return result
+
+        # 3. Write JSON + append to DB
+        try:
+            db = get_db()
+            for record in records:
+                write_record_json(record, output_dir)
+                db["devices"].insert_one(record)
+                result["db_inserted"] += 1
+        except Exception as e:
+            logger.warning("run_harvest_single: MongoDB error: %s", e)
+            result["error"] = f"DB write error: {e}"
+
+    except Exception as e:
+        logger.error("run_harvest_single: %s", e)
+        result["error"] = str(e)
+
+    return result
+
+
+def run_harvest_batch(urls: list[str], job_store: dict | None = None, job_id: str | None = None) -> dict:
+    """Process a list of URLs one at a time. Updates job progress per URL."""
+    run_id = _get_run_id()
+    result = {
+        "total": len(urls),
+        "succeeded": 0,
+        "failed": 0,
+        "results": [],
+        "run_id": run_id,
+    }
+
+    for i, url in enumerate(urls):
+        # Update progress in job store so frontend can poll
+        if job_store and job_id:
+            job_store[job_id] = {
+                "status": "running",
+                "result": {
+                    "progress": i,
+                    "total": len(urls),
+                    "current_url": url,
+                    "results": result["results"],
+                },
+            }
+
+        single = run_harvest_single(url)
+        result["results"].append(single)
+        if single["devices_extracted"] > 0 and single["error"] is None:
+            result["succeeded"] += 1
+        else:
+            result["failed"] += 1
+
+    return result
+
+
+# ---------------------------------------------------------------------------
+# Legacy pipeline batch (for CLI compatibility)
+# ---------------------------------------------------------------------------
+
+def run_pipeline_batch(file_paths: list[str] | None = None, overwrite: bool = False) -> dict:
     """Run the extraction pipeline on HTML files in out_html/.
-
-    Uses runner.process_batch() with auto-adapter-matching by domain.
-    After pipeline writes JSON files, inserts each record into MongoDB.
 
     Args:
         file_paths: Specific file paths to process, or None for all in out_html/
-        overwrite: If True, drop devices collection before inserting.
+        overwrite: If True, drop devices collection before inserting. Default False.
     """
     from pipeline.runner import process_batch
 
-    run_id = f"HR-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}-{uuid.uuid4().hex[:6]}"
+    run_id = _get_run_id()
 
-    # Determine input directory
     if file_paths:
         input_dir = os.path.dirname(file_paths[0])
     else:
@@ -81,14 +167,12 @@ def run_pipeline_batch(file_paths: list[str] | None = None, overwrite: bool = Tr
     output_dir = os.path.abspath(_DEFAULT_OUTPUT_DIR)
     os.makedirs(output_dir, exist_ok=True)
 
-    # Run the pipeline batch (Ollama extraction for all files)
     summary = process_batch(
         input_dir=input_dir,
         output_dir=output_dir,
         harvest_run_id=run_id,
     )
 
-    # Insert succeeded records into MongoDB
     records = []
     from database.db_connection import get_db
     try:
@@ -116,10 +200,7 @@ def run_pipeline_batch(file_paths: list[str] | None = None, overwrite: bool = Tr
 # ---------------------------------------------------------------------------
 
 def lookup_gudid_device(di: str | None = None, model_number: str | None = None) -> dict:
-    """Query GUDID API for a device.
-
-    Returns: {"success": bool, "record": dict | None, "di": str | None, "error": str | None}
-    """
+    """Query GUDID API for a device."""
     from validators.gudid_client import lookup_by_di, search_gudid_di
 
     result = {"success": False, "record": None, "di": None, "error": None}
@@ -152,11 +233,11 @@ def lookup_gudid_device(di: str | None = None, model_number: str | None = None) 
 
 
 # ---------------------------------------------------------------------------
-# Validation orchestration (with Ollama AI agent)
+# Validation
 # ---------------------------------------------------------------------------
 
-def run_validation(run_id: str | None = None, overwrite: bool = True) -> dict:
-    """Validate harvested devices against GUDID."""
+def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
+    """Validate harvested devices against GUDID. Default: append (no overwrite)."""
     from database.db_connection import get_db
     from validators.gudid_client import fetch_gudid_record
     from validators.comparison_validator import compare_records
@@ -171,7 +252,6 @@ def run_validation(run_id: str | None = None, overwrite: bool = True) -> dict:
         "error": None,
     }
 
-    # Query devices
     db = get_db()
     devices_col = db["devices"]
     validation_col = db["validationResults"]
@@ -216,7 +296,6 @@ def run_validation(run_id: str | None = None, overwrite: bool = True) -> dict:
 
         comparison = compare_records(device, gudid_record)
 
-        # Only count fields that were actually compared (match is True/False, not None)
         compared = {
             k: v for k, v in comparison.items()
             if k != "deviceDescription" and v.get("match") is not None
@@ -256,7 +335,7 @@ def run_validation(run_id: str | None = None, overwrite: bool = True) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# DB query helpers (for UI routes)
+# Dashboard stats & discrepancy queries
 # ---------------------------------------------------------------------------
 
 def get_dashboard_stats() -> dict:
@@ -264,8 +343,9 @@ def get_dashboard_stats() -> dict:
     try:
         db = get_db()
         device_count = db["devices"].count_documents({})
-        validation_count = db["validationResults"].count_documents({})
-        html_count = len(list_html_files())
+        matches = db["validationResults"].count_documents({"status": "matched"})
+        partial_matches = db["validationResults"].count_documents({"status": "partial_match"})
+        mismatches = db["validationResults"].count_documents({"status": "mismatch"})
 
         last_device = db["devices"].find_one(sort=[("_harvest.harvested_at", -1)])
         last_run = "No runs yet"
@@ -274,14 +354,39 @@ def get_dashboard_stats() -> dict:
             last_run = harvest.get("harvested_at", "Unknown")
     except Exception as e:
         logger.warning("get_dashboard_stats: MongoDB unavailable: %s", e)
-        return {"raw_records": 0, "normalized_records": 0, "html_files": 0, "last_run": "DB unavailable"}
+        return {"device_count": 0, "matches": 0, "partial_matches": 0, "mismatches": 0, "last_run": "DB unavailable"}
 
     return {
-        "raw_records": device_count,
-        "normalized_records": validation_count,
-        "html_files": html_count,
+        "device_count": device_count,
+        "matches": matches,
+        "partial_matches": partial_matches,
+        "mismatches": mismatches,
         "last_run": last_run,
     }
+
+
+def get_discrepancies(limit: int = 100) -> list[dict]:
+    """Get validation results that need human review (partial_match or mismatch)."""
+    from database.db_connection import get_db
+    try:
+        db = get_db()
+        cursor = db["validationResults"].find(
+            {"status": {"$in": ["partial_match", "mismatch"]}}
+        ).sort("updated_at", -1).limit(limit)
+
+        results = []
+        for doc in cursor:
+            # Join with device to get identifying info
+            device = db["devices"].find_one({"_id": doc.get("device_id")})
+            serialized = _serialize_record(doc)
+            if device:
+                serialized["companyName"] = device.get("companyName", "N/A")
+                serialized["versionModelNumber"] = device.get("versionModelNumber", "N/A")
+            results.append(serialized)
+        return results
+    except Exception as e:
+        logger.warning("get_discrepancies: %s", e)
+        return []
 
 
 def get_devices(limit: int = 100, skip: int = 0, run_id: str | None = None) -> list[dict]:
@@ -310,21 +415,86 @@ def get_validation_results(limit: int = 100, skip: int = 0) -> list[dict]:
 
 
 # ---------------------------------------------------------------------------
-# Helpers
+# Discrepancy review
 # ---------------------------------------------------------------------------
 
-def _serialize_record(record: dict) -> dict:
-    """Make a MongoDB document JSON-serializable (convert ObjectId, datetime, etc.)."""
-    out = {}
-    for k, v in record.items():
-        if hasattr(v, "__str__") and type(v).__name__ == "ObjectId":
-            out[k] = str(v)
-        elif isinstance(v, datetime):
-            out[k] = v.isoformat()
-        elif isinstance(v, dict):
-            out[k] = _serialize_record(v)
-        elif isinstance(v, list):
-            out[k] = [_serialize_record(i) if isinstance(i, dict) else i for i in v]
-        else:
-            out[k] = v
-    return out
+def get_discrepancy_detail(validation_id: str) -> dict | None:
+    """Fetch a single validation result + linked device for review."""
+    from database.db_connection import get_db
+    try:
+        db = get_db()
+        doc = db["validationResults"].find_one({"_id": ObjectId(validation_id)})
+        if not doc:
+            return None
+
+        device = db["devices"].find_one({"_id": doc.get("device_id")})
+
+        return {
+            "validation": _serialize_record(doc),
+            "device": _serialize_record(device) if device else {},
+        }
+    except Exception as e:
+        logger.warning("get_discrepancy_detail: %s", e)
+        return None
+
+
+def resolve_discrepancy(validation_id: str, field_choices: dict) -> dict:
+    """Apply user's field choices to the devices collection.
+
+    field_choices: {"fieldName": "harvested" | "gudid", ...}
+    For "gudid" choices, update the device with the GUDID value.
+    """
+    from database.db_connection import get_db
+
+    result = {"success": False, "error": None}
+
+    try:
+        db = get_db()
+        doc = db["validationResults"].find_one({"_id": ObjectId(validation_id)})
+        if not doc:
+            result["error"] = "Validation result not found"
+            return result
+
+        comparison = doc.get("comparison_result") or {}
+        gudid_record = doc.get("gudid_record") or {}
+        device_id = doc.get("device_id")
+
+        if not device_id:
+            result["error"] = "No linked device"
+            return result
+
+        # Build update dict for fields where user chose GUDID value
+        update_fields = {}
+        resolved_fields = {}
+        for field, choice in field_choices.items():
+            resolved_fields[field] = choice
+            if choice == "gudid":
+                gudid_val = gudid_record.get(field)
+                if gudid_val is not None:
+                    update_fields[field] = gudid_val
+
+        # Update device
+        if update_fields:
+            db["devices"].update_one(
+                {"_id": device_id},
+                {"$set": update_fields},
+            )
+
+        # Mark validation as resolved
+        db["validationResults"].update_one(
+            {"_id": ObjectId(validation_id)},
+            {"$set": {
+                "status": "resolved",
+                "resolved_at": datetime.now(timezone.utc),
+                "resolved_fields": resolved_fields,
+                "updated_at": datetime.now(timezone.utc),
+            }},
+        )
+
+        result["success"] = True
+
+    except Exception as e:
+        logger.error("resolve_discrepancy: %s", e)
+        result["error"] = str(e)
+
+    return result

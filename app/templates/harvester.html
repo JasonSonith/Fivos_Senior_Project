@@ -6,50 +6,53 @@
         <p class="eyebrow">Data Collection</p>
         <h1 class="page-title">Harvester Console</h1>
         <p class="page-description">
-            Run the extraction pipeline on pre-downloaded HTML files. The pipeline auto-matches each file to the correct site adapter by domain and extracts device data.
+            Scrape manufacturer URLs and extract device data using Ollama. Records are appended to the database.
         </p>
     </div>
 </section>
 
-<section class="content-grid single-wide">
-    <div class="panel">
-        <div class="panel-header">
-            <div>
-                <h3>HTML Files in out_html/ ({{ files | length }})</h3>
-                <p>Select files to process through the extraction pipeline, or run all</p>
-            </div>
+{% if single_result and single_result.error %}
+<div class="alert-error">
+    <strong>Error:</strong> {{ single_result.error }}
+</div>
+{% endif %}
+
+<section class="panel">
+    <div class="panel-header">
+        <div>
+            <h3>Harvest Devices</h3>
+            <p>Enter a single URL or upload a .txt file with one URL per line</p>
         </div>
+    </div>
 
-        <form method="post" action="/harvester/run">
-            <div class="table-wrap">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th><input type="checkbox" id="select-all"></th>
-                            <th>Filename</th>
-                            <th>Manufacturer</th>
-                            <th>Size</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for file in files %}
-                        <tr>
-                            <td><input type="checkbox" name="files" value="{{ file.path }}"></td>
-                            <td>{{ file.filename }}</td>
-                            <td>{{ file.manufacturer }}</td>
-                            <td>{{ file.size_kb }} KB</td>
-                        </tr>
-                        {% endfor %}
-                        {% if not files %}
-                        <tr><td colspan="4" style="text-align: center; opacity: 0.5;">No HTML files found in out_html/</td></tr>
-                        {% endif %}
-                    </tbody>
-                </table>
+    <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('single')">Single URL</button>
+        <button class="tab-btn" onclick="switchTab('batch')">Batch Upload</button>
+    </div>
+
+    <div id="tab-single" class="tab-content active">
+        <form method="post" action="/harvester/run-single" class="form-grid-modern">
+            <div class="field">
+                <label for="url">Manufacturer URL</label>
+                <input id="url" type="url" name="url" placeholder="https://www.medtronic.com/us-en/healthcare-professionals/products/..." required>
             </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="single-btn">Harvest</button>
+            </div>
+        </form>
+    </div>
 
-            <div class="form-actions" style="margin-top: 1rem;">
-                <button type="submit" class="btn btn-primary" id="run-btn">Run Pipeline</button>
-                <a href="/results" class="btn btn-secondary">Go to Results</a>
+    <div id="tab-batch" class="tab-content">
+        <form method="post" action="/harvester/run-batch" enctype="multipart/form-data" class="form-grid-modern">
+            <div class="field">
+                <label for="file">Upload URL List (.txt)</label>
+                <input id="file" type="file" name="file" accept=".txt" required>
+            </div>
+            <p style="color: var(--muted); font-size: 13px; margin: 0;">
+                One URL per line. Lines starting with # are ignored.
+            </p>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="batch-btn">Upload &amp; Harvest</button>
             </div>
         </form>
     </div>
@@ -60,14 +63,22 @@
 <section class="panel" id="processing-panel">
     <div class="panel-header">
         <div>
-            <h3>Processing...</h3>
-            <p>Running the extraction pipeline on selected HTML files. This may take a moment.</p>
+            <h3 id="progress-title">Processing...</h3>
+            <p id="progress-subtitle">Scraping and extracting device data. This may take a moment.</p>
         </div>
     </div>
-    <div class="stats-grid compact">
+    <div class="stats-grid">
         <div class="metric-card small">
             <p class="metric-label">Status</p>
             <h3 class="metric-value" id="job-status">Running</h3>
+        </div>
+        <div class="metric-card small" id="progress-card" style="display: none;">
+            <p class="metric-label">Progress</p>
+            <h3 class="metric-value" id="job-progress">--</h3>
+        </div>
+        <div class="metric-card small" id="current-url-card" style="display: none;">
+            <p class="metric-label">Current URL</p>
+            <h3 class="metric-value" id="job-current-url" style="font-size: 14px; word-break: break-all;">--</h3>
         </div>
     </div>
 </section>
@@ -77,27 +88,44 @@
 <section class="panel" id="results-panel" style="display: none;">
     <div class="panel-header">
         <div>
-            <h3>Pipeline Results</h3>
-            <p>Batch processing summary</p>
+            <h3>Harvest Results</h3>
+            <p>Per-URL extraction summary</p>
         </div>
     </div>
 
-    <div class="stats-grid compact">
+    <div class="stats-grid" id="results-summary" style="display: none;">
         <div class="metric-card small">
-            <p class="metric-label">Processed</p>
-            <h3 class="metric-value" id="res-processed">--</h3>
+            <p class="metric-label">Total URLs</p>
+            <h3 class="metric-value" id="res-total">--</h3>
         </div>
         <div class="metric-card small">
             <p class="metric-label">Succeeded</p>
-            <h3 class="metric-value" id="res-succeeded" style="color: #22c55e;">--</h3>
+            <h3 class="metric-value" id="res-succeeded" style="color: var(--success);">--</h3>
         </div>
         <div class="metric-card small">
             <p class="metric-label">Failed</p>
-            <h3 class="metric-value" id="res-failed" style="color: #ef4444;">--</h3>
+            <h3 class="metric-value" id="res-failed" style="color: var(--danger);">--</h3>
         </div>
         <div class="metric-card small">
-            <p class="metric-label">Skipped</p>
-            <h3 class="metric-value" id="res-skipped">--</h3>
+            <p class="metric-label">Devices Extracted</p>
+            <h3 class="metric-value" id="res-devices" style="color: var(--accent-2);">--</h3>
+        </div>
+    </div>
+
+    <div id="results-table-wrap" style="display: none;">
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>URL</th>
+                        <th>Scraped</th>
+                        <th>Devices</th>
+                        <th>DB Inserted</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="results-body"></tbody>
+            </table>
         </div>
     </div>
 
@@ -105,10 +133,12 @@
 </section>
 
 <script>
-// Select All checkbox
-document.getElementById('select-all')?.addEventListener('change', function() {
-    document.querySelectorAll('input[name="files"]').forEach(cb => cb.checked = this.checked);
-});
+function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    event.target.classList.add('active');
+}
 </script>
 
 {% if job_id %}
@@ -117,9 +147,8 @@ document.getElementById('select-all')?.addEventListener('change', function() {
     const jobId = "{{ job_id }}";
     const processingPanel = document.getElementById("processing-panel");
     const resultsPanel = document.getElementById("results-panel");
-    const runBtn = document.getElementById("run-btn");
 
-    if (runBtn) runBtn.disabled = true;
+    document.querySelectorAll('.btn-primary').forEach(b => b.disabled = true);
 
     const poll = setInterval(async () => {
         try {
@@ -127,29 +156,82 @@ document.getElementById('select-all')?.addEventListener('change', function() {
             if (!resp.ok) return;
             const data = await resp.json();
 
+            // Update progress for batch mode
+            if (data.status === "running" && data.result && data.result.progress !== undefined) {
+                document.getElementById("progress-card").style.display = "block";
+                document.getElementById("job-progress").textContent =
+                    (data.result.progress + 1) + " / " + data.result.total;
+                if (data.result.current_url) {
+                    document.getElementById("current-url-card").style.display = "block";
+                    document.getElementById("job-current-url").textContent = data.result.current_url;
+                }
+            }
+
             if (data.status === "running") return;
 
             clearInterval(poll);
-            if (runBtn) runBtn.disabled = false;
+            document.querySelectorAll('.btn-primary').forEach(b => b.disabled = false);
 
             const result = data.result || {};
             processingPanel.style.display = "none";
             resultsPanel.style.display = "block";
 
-            document.getElementById("res-processed").textContent = result.processed ?? "--";
-            document.getElementById("res-succeeded").textContent = result.succeeded ?? "--";
-            document.getElementById("res-failed").textContent = result.failed ?? "--";
-            document.getElementById("res-skipped").textContent = result.skipped ?? "--";
+            if (result.error && !result.results) {
+                document.getElementById("res-error").style.display = "block";
+                document.getElementById("res-error").innerHTML = "<strong>Error:</strong> " + result.error;
+                return;
+            }
 
-            if (result.error) {
-                const errEl = document.getElementById("res-error");
-                errEl.style.display = "block";
-                errEl.innerHTML = "<strong>Error:</strong> " + result.error;
+            // Single URL result
+            if (result.url && !result.results) {
+                const totalDevices = result.devices_extracted || 0;
+                document.getElementById("results-summary").style.display = "grid";
+                document.getElementById("res-total").textContent = "1";
+                document.getElementById("res-succeeded").textContent = result.error ? "0" : "1";
+                document.getElementById("res-failed").textContent = result.error ? "1" : "0";
+                document.getElementById("res-devices").textContent = totalDevices;
+
+                document.getElementById("results-table-wrap").style.display = "block";
+                document.getElementById("results-body").innerHTML = renderRow(result);
+
+                if (result.error) {
+                    document.getElementById("res-error").style.display = "block";
+                    document.getElementById("res-error").innerHTML = "<strong>Error:</strong> " + result.error;
+                }
+                return;
+            }
+
+            // Batch result
+            if (result.results) {
+                let totalDevices = 0;
+                result.results.forEach(r => totalDevices += (r.devices_extracted || 0));
+
+                document.getElementById("results-summary").style.display = "grid";
+                document.getElementById("res-total").textContent = result.total || 0;
+                document.getElementById("res-succeeded").textContent = result.succeeded || 0;
+                document.getElementById("res-failed").textContent = result.failed || 0;
+                document.getElementById("res-devices").textContent = totalDevices;
+
+                document.getElementById("results-table-wrap").style.display = "block";
+                let rows = "";
+                result.results.forEach(r => rows += renderRow(r));
+                document.getElementById("results-body").innerHTML = rows;
             }
         } catch (e) {
             // Network error, keep polling
         }
     }, 2000);
+
+    function renderRow(r) {
+        const ok = !r.error && r.devices_extracted > 0;
+        return `<tr>
+            <td style="max-width: 400px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${r.url || "N/A"}</td>
+            <td>${r.scraped ? "Yes" : "No"}</td>
+            <td>${r.devices_extracted || 0}</td>
+            <td>${r.db_inserted || 0}</td>
+            <td><span class="badge ${ok ? 'badge-success' : 'badge-danger'}">${ok ? 'OK' : 'Failed'}</span></td>
+        </tr>`;
+    }
 })();
 </script>
 {% endif %}

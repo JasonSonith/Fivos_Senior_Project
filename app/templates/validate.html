@@ -6,14 +6,13 @@
         <p class="eyebrow">Quality Assurance</p>
         <h1 class="page-title">GUDID Validation</h1>
         <p class="page-description">
-            Compare harvested device records against the FDA's GUDID database using AI-powered field extraction.
+            Compare harvested device records against the FDA's GUDID database. View per-field match status and review discrepancies.
         </p>
     </div>
     <div class="hero-actions">
         <form method="post" action="/validate/run" style="display: inline;">
             <button type="submit" class="btn btn-primary" id="validate-btn">Run Validation</button>
         </form>
-        <a href="/results" class="btn btn-secondary">View Results</a>
     </div>
 </section>
 
@@ -23,10 +22,10 @@
     <div class="panel-header">
         <div>
             <h3>Validating...</h3>
-            <p>Comparing harvested records against FDA GUDID. This may take a while depending on the number of devices.</p>
+            <p>Comparing harvested records against FDA GUDID. This may take a while.</p>
         </div>
     </div>
-    <div class="stats-grid compact">
+    <div class="stats-grid">
         <div class="metric-card small">
             <p class="metric-label">Status</p>
             <h3 class="metric-value" id="job-status">Running</h3>
@@ -35,108 +34,155 @@
 </section>
 {% endif %}
 
-<!-- Validation summary (populated by JS after job completes) -->
-<section class="panel" id="summary-panel" style="{% if job_id %}display: none;{% endif %}">
+<!-- Validation summary -->
+{% if run_result and run_result.success %}
+<section class="stats-grid">
+    <div class="metric-card small">
+        <p class="metric-label">Total Devices</p>
+        <h3 class="metric-value">{{ run_result.total or 0 }}</h3>
+    </div>
+    <div class="metric-card small">
+        <p class="metric-label">Full Matches</p>
+        <h3 class="metric-value" style="color: var(--success);">{{ run_result.full_matches or 0 }}</h3>
+    </div>
+    <div class="metric-card small">
+        <p class="metric-label">Partial Matches</p>
+        <h3 class="metric-value" style="color: var(--warning);">{{ run_result.partial_matches or 0 }}</h3>
+    </div>
+    <div class="metric-card small">
+        <p class="metric-label">Mismatches</p>
+        <h3 class="metric-value" style="color: var(--danger);">{{ run_result.mismatches or 0 }}</h3>
+    </div>
+</section>
+{% endif %}
+
+<!-- Results table with per-field discrepancies -->
+<section class="panel">
     <div class="panel-header">
         <div>
-            <h3>Validation Summary</h3>
-            <p>Overview of the most recent validation run</p>
+            <h3>Validation Results ({{ results | length }})</h3>
+            <p>Per-device comparison against GUDID with field-level match status</p>
         </div>
     </div>
 
-    {% if run_result %}
-    <div class="stats-grid compact">
-        <div class="metric-card small">
-            <p class="metric-label">Total Devices</p>
-            <h3 class="metric-value">{{ run_result.total or 0 }}</h3>
-        </div>
-        <div class="metric-card small">
-            <p class="metric-label">Full Matches</p>
-            <h3 class="metric-value" style="color: #22c55e;">{{ run_result.full_matches or 0 }}</h3>
-        </div>
-        <div class="metric-card small">
-            <p class="metric-label">Partial Matches</p>
-            <h3 class="metric-value" style="color: #eab308;">{{ run_result.partial_matches or 0 }}</h3>
-        </div>
-        <div class="metric-card small">
-            <p class="metric-label">Mismatches</p>
-            <h3 class="metric-value" style="color: #ef4444;">{{ run_result.mismatches or 0 }}</h3>
-        </div>
-        <div class="metric-card small">
-            <p class="metric-label">Not Found</p>
-            <h3 class="metric-value">{{ run_result.not_found or 0 }}</h3>
-        </div>
-    </div>
-    {% if run_result.error %}
-    <div class="alert-error">
-        <strong>Note:</strong> {{ run_result.error }}
-    </div>
-    {% endif %}
-    {% endif %}
-</section>
+    {% if results %}
+    <div class="table-wrap">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Brand Name</th>
+                    <th>Status</th>
+                    <th>Model #</th>
+                    <th>Catalog #</th>
+                    <th>Brand</th>
+                    <th>Company</th>
+                    <th>Desc. Sim.</th>
+                    <th>GUDID DI</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for v in results %}
+                {% set cr = v.comparison_result or {} %}
+                <tr>
+                    <td>{{ v.brandName or "N/A" }}</td>
+                    <td>
+                        {% if v.status == "matched" %}
+                        <span class="badge badge-success">Matched</span>
+                        {% elif v.status == "partial_match" %}
+                        <span class="badge badge-warning">Partial</span>
+                        {% elif v.status == "mismatch" %}
+                        <span class="badge badge-danger">Mismatch</span>
+                        {% elif v.status == "gudid_not_found" %}
+                        <span class="badge badge-muted">Not Found</span>
+                        {% elif v.status == "resolved" %}
+                        <span class="badge badge-resolved">Resolved</span>
+                        {% else %}
+                        <span class="badge badge-muted">{{ v.status or "N/A" }}</span>
+                        {% endif %}
+                    </td>
 
-<!-- Recent validation results table -->
-<section class="content-grid single-wide">
-    <div class="panel">
-        <div class="panel-header">
-            <div>
-                <h3>Validation Results ({{ results | length }})</h3>
-                <p>Per-device comparison against GUDID</p>
-            </div>
-        </div>
-
-        <div class="table-wrap">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Brand Name</th>
-                        <th>Status</th>
-                        <th>Match</th>
-                        <th>GUDID DI</th>
-                        <th>Updated</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for v in results %}
-                    <tr>
-                        <td>{{ v.brandName or "N/A" }}</td>
+                    <!-- Per-field match indicators -->
+                    {% if cr %}
+                        {% set vm = cr.get("versionModelNumber", {}) %}
                         <td>
-                            {% if v.status == "matched" %}
-                            <span style="color: #22c55e;">Matched</span>
-                            {% elif v.status == "partial_match" %}
-                            <span style="color: #eab308;">Partial</span>
-                            {% elif v.status == "mismatch" %}
-                            <span style="color: #ef4444;">Mismatch</span>
-                            {% elif v.status == "gudid_not_found" %}
-                            <span style="opacity: 0.5;">GUDID Not Found</span>
-                            {% elif v.status == "ollama_failed" %}
-                            <span style="opacity: 0.5;">Ollama Failed</span>
+                            {% if vm.get("match") is true %}
+                            <span class="match-yes" title="Match">&#10003;</span>
+                            {% elif vm.get("match") is false %}
+                            <span class="match-no" title="Mismatch">&#10007;</span>
                             {% else %}
-                            {{ v.status or "N/A" }}
+                            <span class="match-na" title="N/A">&mdash;</span>
                             {% endif %}
                         </td>
-                        <td>{{ v.matched_fields or 0 }}/{{ v.total_fields or 5 }} ({{ v.match_percent or 0 }}%)</td>
-                        <td>{{ v.gudid_di or "N/A" }}</td>
-                        <td>{{ v.updated_at or "N/A" }}</td>
-                    </tr>
-                    {% endfor %}
-                    {% if not results %}
-                    <tr><td colspan="5" style="text-align: center; opacity: 0.5;">No validation results yet. Click "Run Validation" to start.</td></tr>
+
+                        {% set cn = cr.get("catalogNumber", {}) %}
+                        <td>
+                            {% if cn.get("match") is true %}
+                            <span class="match-yes" title="Match">&#10003;</span>
+                            {% elif cn.get("match") is false %}
+                            <span class="match-no" title="Mismatch">&#10007;</span>
+                            {% else %}
+                            <span class="match-na" title="N/A">&mdash;</span>
+                            {% endif %}
+                        </td>
+
+                        {% set bn = cr.get("brandName", {}) %}
+                        <td>
+                            {% if bn.get("match") is true %}
+                            <span class="match-yes" title="Match">&#10003;</span>
+                            {% elif bn.get("match") is false %}
+                            <span class="match-no" title="Mismatch">&#10007;</span>
+                            {% else %}
+                            <span class="match-na" title="N/A">&mdash;</span>
+                            {% endif %}
+                        </td>
+
+                        {% set co = cr.get("companyName", {}) %}
+                        <td>
+                            {% if co.get("match") is true %}
+                            <span class="match-yes" title="Match">&#10003;</span>
+                            {% elif co.get("match") is false %}
+                            <span class="match-no" title="Mismatch">&#10007;</span>
+                            {% else %}
+                            <span class="match-na" title="N/A">&mdash;</span>
+                            {% endif %}
+                        </td>
+
+                        {% set desc = cr.get("deviceDescription", {}) %}
+                        <td>{{ "%.0f"|format((desc.get("description_similarity", 0) or 0) * 100) }}%</td>
+                    {% else %}
+                        <td><span class="match-na">&mdash;</span></td>
+                        <td><span class="match-na">&mdash;</span></td>
+                        <td><span class="match-na">&mdash;</span></td>
+                        <td><span class="match-na">&mdash;</span></td>
+                        <td>&mdash;</td>
                     {% endif %}
-                </tbody>
-            </table>
-        </div>
+
+                    <td>{{ v.gudid_di or "N/A" }}</td>
+                    <td>
+                        {% if v.status in ["partial_match", "mismatch"] %}
+                        <a href="/review/{{ v._id }}" class="btn btn-primary btn-sm">Review</a>
+                        {% elif v.status == "resolved" %}
+                        <span style="color: var(--accent-3); font-size: 13px;">Resolved</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+    {% else %}
+    <div class="empty-state">
+        <p>No validation results yet. Click "Run Validation" to compare harvested devices against GUDID.</p>
+    </div>
+    {% endif %}
 </section>
 
 {% if job_id %}
 <script>
 (function() {
     const jobId = "{{ job_id }}";
-    const processingPanel = document.getElementById("processing-panel");
-    const summaryPanel = document.getElementById("summary-panel");
     const validateBtn = document.getElementById("validate-btn");
-
     if (validateBtn) validateBtn.disabled = true;
 
     const poll = setInterval(async () => {
@@ -144,17 +190,10 @@
             const resp = await fetch("/api/jobs/" + jobId);
             if (!resp.ok) return;
             const data = await resp.json();
-
             if (data.status === "running") return;
-
             clearInterval(poll);
-            if (validateBtn) validateBtn.disabled = false;
-
-            // Reload to show fresh results from MongoDB
             window.location.href = "/validate/";
-        } catch (e) {
-            // Network error, keep polling
-        }
+        } catch (e) {}
     }, 3000);
 })();
 </script>
