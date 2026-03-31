@@ -1,6 +1,8 @@
 import json
 import logging
 import os
+import re
+import time
 
 import requests
 from dotenv import load_dotenv
@@ -9,13 +11,22 @@ load_dotenv()
 
 logger = logging.getLogger(__name__)
 
-OLLAMA_URL = "http://localhost:11434/api/chat"
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
-GROQ_MODEL = "llama-3.3-70b-versatile"
-OLLAMA_MODEL = "mistral"
+NVIDIA_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
+OLLAMA_URL = "http://localhost:11434/api/chat"
 
-_OLLAMA_WARNED = False
-_GROQ_WARNED = False
+MODEL_CHAIN = [
+    {"provider": "groq",   "model": "llama-3.3-70b-versatile",     "env_key": "GROQ_API_KEY"},
+    {"provider": "groq",   "model": "llama-3.1-8b-instant",        "env_key": "GROQ_API_KEY"},
+    {"provider": "nvidia", "model": "meta/llama-3.3-70b-instruct", "env_key": "NVIDIA_API_KEY"},
+    {"provider": "nvidia", "model": "mistralai/mistral-large",     "env_key": "NVIDIA_API_KEY"},
+    {"provider": "nvidia", "model": "google/gemma-2-27b-it",       "env_key": "NVIDIA_API_KEY"},
+    {"provider": "ollama", "model": "qwen2.5:7b"},
+    {"provider": "ollama", "model": "mistral"},
+]
+
+# Track which models have been confirmed unavailable this session
+_disabled_models: set[str] = set()
 
 # ---------------------------------------------------------------------------
 # Schemas for structured output
@@ -133,37 +144,20 @@ Table/specs text:
 # ---------------------------------------------------------------------------
 
 
-def _get_groq_key() -> str | None:
-    return os.environ.get("GROQ_API_KEY")
-
-
-def _groq_request(messages: list[dict], schema: dict, timeout: int = 60) -> dict | None:
-    global _GROQ_WARNED
-
-    api_key = _get_groq_key()
-    if not api_key:
-        if not _GROQ_WARNED:
-            logger.info("GROQ_API_KEY not set, falling back to Ollama")
-            _GROQ_WARNED = True
-        return None
-
+def _openai_request(url: str, api_key: str, model: str, messages: list[dict],
+                    timeout: int = 60, _retry: bool = False) -> dict | None:
+    """Send a request to an OpenAI-compatible API (Groq, NVIDIA NIM)."""
     payload = {
-        "model": GROQ_MODEL,
+        "model": model,
         "messages": messages,
-        "response_format": {
-            "type": "json_object",
-        },
+        "response_format": {"type": "json_object"},
         "temperature": 0,
     }
 
     try:
         response = requests.post(
-            GROQ_URL,
-            json=payload,
-            headers={
-                "Authorization": f"Bearer {api_key}",
-                "Content-Type": "application/json",
-            },
+            url, json=payload,
+            headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
             timeout=timeout,
         )
         response.raise_for_status()
@@ -172,10 +166,23 @@ def _groq_request(messages: list[dict], schema: dict, timeout: int = 60) -> dict
             detail = exc.response.json().get("error", {}).get("message", str(exc))
         except Exception:
             detail = str(exc)
-        logger.warning("Groq request failed: %s", detail)
+
+        if "rate limit" in detail.lower() and not _retry:
+            match = re.search(r"try again in (\d+\.?\d*)s", detail)
+            if match and float(match.group(1)) < 60:
+                wait = float(match.group(1))
+                logger.info("%s rate limited, retrying in %.1fs", model, wait)
+                time.sleep(wait)
+                return _openai_request(url, api_key, model, messages, timeout, _retry=True)
+            # Daily limit or long wait — skip this model
+            logger.warning("%s rate limited (long wait), moving to next model: %s", model, detail)
+            _disabled_models.add(model)
+            return None
+
+        logger.warning("%s request failed: %s", model, detail)
         return None
     except Exception as exc:
-        logger.warning("Groq request failed: %s", exc)
+        logger.warning("%s request failed: %s", model, exc)
         return None
 
     try:
@@ -185,23 +192,29 @@ def _groq_request(messages: list[dict], schema: dict, timeout: int = 60) -> dict
             return content
         return json.loads(content)
     except Exception as exc:
-        logger.warning("Failed to parse Groq response: %s", exc)
+        logger.warning("Failed to parse %s response: %s", model, exc)
         return None
 
 
-def _ollama_request(payload: dict, timeout: int = 60) -> dict | None:
-    global _OLLAMA_WARNED
+def _ollama_request(model: str, messages: list[dict], schema: dict,
+                    timeout: int = 60) -> dict | None:
+    """Send a request to local Ollama."""
+    payload = {
+        "model": model,
+        "messages": messages,
+        "stream": False,
+        "format": schema,
+    }
 
     try:
         response = requests.post(OLLAMA_URL, json=payload, timeout=timeout)
         response.raise_for_status()
     except requests.ConnectionError:
-        if not _OLLAMA_WARNED:
-            logger.warning("Ollama not available at %s, skipping extraction", OLLAMA_URL)
-            _OLLAMA_WARNED = True
+        logger.warning("Ollama not available at %s", OLLAMA_URL)
+        _disabled_models.add("ollama")
         return None
     except Exception as exc:
-        logger.warning("Ollama request failed: %s", exc)
+        logger.warning("Ollama %s request failed: %s", model, exc)
         return None
 
     try:
@@ -211,30 +224,68 @@ def _ollama_request(payload: dict, timeout: int = 60) -> dict | None:
             return content
         return json.loads(content)
     except Exception as exc:
-        logger.warning("Failed to parse Ollama response: %s", exc)
+        logger.warning("Failed to parse Ollama %s response: %s", model, exc)
         return None
 
 
+# Track which model answered the last request
+_last_model_used: str | None = None
+
+
+def get_last_model() -> str | None:
+    return _last_model_used
+
+
+def get_first_available_model() -> str:
+    """Return the name of the first model in the chain that has credentials configured."""
+    for entry in MODEL_CHAIN:
+        env_key = entry.get("env_key")
+        if env_key and not os.environ.get(env_key):
+            continue
+        return entry["model"]
+    return "none"
+
+
 def _llm_request(system_msg: str, user_msg: str, schema: dict, timeout: int = 60) -> dict | None:
-    """Try Groq first, fall back to Ollama."""
+    """Try each model in MODEL_CHAIN until one succeeds."""
+    global _last_model_used
+
     messages = [
         {"role": "system", "content": system_msg},
         {"role": "user", "content": user_msg},
     ]
 
-    # Try Groq
-    result = _groq_request(messages, schema, timeout=timeout)
-    if result is not None:
-        return result
+    provider_urls = {"groq": GROQ_URL, "nvidia": NVIDIA_URL}
 
-    # Fall back to Ollama
-    payload = {
-        "model": OLLAMA_MODEL,
-        "messages": messages,
-        "stream": False,
-        "format": schema,
-    }
-    return _ollama_request(payload, timeout=timeout)
+    for entry in MODEL_CHAIN:
+        model = entry["model"]
+        provider = entry["provider"]
+
+        if model in _disabled_models:
+            continue
+        if provider == "ollama" and "ollama" in _disabled_models:
+            continue
+
+        env_key = entry.get("env_key")
+        if env_key:
+            api_key = os.environ.get(env_key)
+            if not api_key:
+                continue
+
+        if provider in ("groq", "nvidia"):
+            result = _openai_request(provider_urls[provider], api_key, model, messages, timeout)
+        else:
+            result = _ollama_request(model, messages, schema, timeout)
+
+        if result is not None:
+            _last_model_used = model
+            logger.info("Extraction succeeded with %s (%s)", model, provider)
+            return result
+
+        logger.info("Model %s failed, trying next in chain", model)
+
+    logger.error("All models in chain exhausted, extraction failed")
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -324,7 +375,7 @@ def extract_all_fields(visible_text: str, table_text: str | None = None, model: 
     # Pass 2: product rows from table
     products = extract_product_rows(table_text or visible_text, page_fields.get("device_name", ""))
 
-    source = "groq" if _get_groq_key() else "ollama"
+    source = get_last_model() or "unknown"
 
     if not products:
         page_fields["_description_source"] = source

@@ -14,7 +14,7 @@ Right now, Fivos employees have to manually check thousands of entries by hand. 
 
 The system follows a **Collect, Compare, Correct** workflow:
 
-**The Harvester** crawls manufacturer websites using Playwright, renders JavaScript-heavy pages, and extracts device specs using Ollama (a local LLM). It works on any manufacturer site without per-site configuration. Extracted records are stored in MongoDB.
+**The Harvester** crawls manufacturer websites using Playwright, renders JavaScript-heavy pages, and extracts device specs using a 7-model LLM fallback chain (Groq → NVIDIA NIM → Ollama local). It works on any manufacturer site without per-site configuration. Extracted records are stored in MongoDB.
 
 **The Validator** compares harvested records against the FDA's GUDID API. It checks model numbers, catalog numbers, brand names, company names, and description similarity. Each device gets a match / partial match / mismatch verdict.
 
@@ -26,7 +26,7 @@ The system follows a **Collect, Compare, Correct** workflow:
 |---|---|
 | Language | **Python 3.13.7** |
 | Web Scraping | Playwright (async, headless Chromium) |
-| AI / LLM | Ollama (local, llama3.2) |
+| AI / LLM | Groq + NVIDIA NIM (cloud) → Ollama (local fallback) |
 | Database | MongoDB |
 | Web UI | FastAPI + Jinja2 |
 | HTML Parsing | BeautifulSoup4 + lxml |
@@ -60,7 +60,8 @@ The system follows a **Collect, Compare, Correct** workflow:
 
 - Python 3.13.7
 - MongoDB (running locally or remote URI)
-- Ollama with `llama3.2` model pulled (`ollama pull llama3.2`)
+- Groq API key (free: https://console.groq.com/keys) and/or NVIDIA NIM key (free: https://build.nvidia.com)
+- Ollama with `mistral` model for local fallback (`ollama pull mistral`)
 
 ### Installation
 
@@ -142,7 +143,7 @@ pytest harvester/src/pipeline/tests/  # pipeline tests only
 ## Key Features
 
 - Automated scraping of manufacturer websites with retry logic and rate limiting
-- LLM-powered extraction (Ollama) — works on any site without per-site configuration
+- LLM-powered extraction with 7-model fallback chain (Groq → NVIDIA → Ollama)
 - Two-pass extraction: page-level fields + product table rows (one record per SKU)
 - Comparison against FDA GUDID with per-field match scoring
 - Web dashboard for human review of discrepancies

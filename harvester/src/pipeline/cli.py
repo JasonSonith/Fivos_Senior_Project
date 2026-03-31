@@ -16,6 +16,8 @@ _SRC_DIR = os.path.join(os.path.dirname(__file__), os.pardir)
 if os.path.abspath(_SRC_DIR) not in sys.path:
     sys.path.insert(0, os.path.abspath(_SRC_DIR))
 
+from pathlib import Path
+
 from pipeline.runner import (
     DEFAULT_INPUT_DIR,
     DEFAULT_OUTPUT_DIR,
@@ -25,6 +27,9 @@ from pipeline.runner import (
     write_records_to_db,
     run_gudid_validation,
 )
+from pipeline.llm_extractor import get_first_available_model
+
+LOG_DIR = Path(__file__).resolve().parent.parent.parent / "log-files"
 
 # ANSI color codes
 WHITE = "\033[97m"
@@ -52,65 +57,40 @@ MODES = [
 
 DEFAULT_URLS_FILE = os.path.join(os.path.dirname(__file__), os.pardir, "urls.txt")
 
-BAR_WIDTH = 40
-
-
 # ---------------------------------------------------------------------------
-# Progress bar
+# Animated status line
 # ---------------------------------------------------------------------------
 
-class ProgressBar:
-    """Animated progress bar that runs in a background thread.
-
-    While running: white bar with a cycling animation.
-    On complete:   green filled bar with a checkmark.
-    """
+class StatusLine:
+    """Shows 'Label...' with animated dots, then checkmark or X when done."""
 
     def __init__(self, label: str):
         self.label = label
         self._stop = threading.Event()
         self._thread = None
-        self._success = True
 
     def start(self):
         self._stop.clear()
         self._thread = threading.Thread(target=self._animate, daemon=True)
         self._thread.start()
 
-    def finish(self, success: bool = True):
-        self._success = success
+    def done(self, success: bool = True):
         self._stop.set()
         if self._thread:
             self._thread.join()
-        self._draw_complete()
+        if success:
+            sys.stdout.write(f"\r  {GREEN}{self.label} \u2714{RESET}              \n")
+        else:
+            sys.stdout.write(f"\r  {WHITE}{self.label} \u2718 Failed{RESET}      \n")
+        sys.stdout.flush()
 
     def _animate(self):
-        frames = ["\u2591", "\u2592", "\u2593", "\u2588"]
-        i = 0
+        dots = 0
         while not self._stop.is_set():
-            filled = i % (BAR_WIDTH + 1)
-            bar = ""
-            for j in range(BAR_WIDTH):
-                if j < filled:
-                    bar += "\u2588"
-                elif j == filled:
-                    bar += frames[i % len(frames)]
-                else:
-                    bar += "\u2591"
-            pct = int((filled / BAR_WIDTH) * 100)
-            sys.stdout.write(f"\r  {WHITE}{self.label}  [{bar}] {pct:>3}%{RESET}")
+            dots = (dots % 3) + 1
+            sys.stdout.write(f"\r  {WHITE}{self.label}{'.' * dots}{' ' * (3 - dots)}{RESET}")
             sys.stdout.flush()
-            i += 1
-            time.sleep(0.08)
-
-    def _draw_complete(self):
-        if self._success:
-            bar = "\u2588" * BAR_WIDTH
-            sys.stdout.write(f"\r  {GREEN}{self.label}  [{bar}] 100% \u2714{RESET}\n")
-        else:
-            bar = "\u2591" * BAR_WIDTH
-            sys.stdout.write(f"\r  {WHITE}{self.label}  [{bar}]  \u2718 Failed{RESET}\n")
-        sys.stdout.flush()
+            time.sleep(0.5)
 
 
 # ---------------------------------------------------------------------------
@@ -211,20 +191,34 @@ def print_confirmation(mode: dict, options: dict):
 # Execution
 # ---------------------------------------------------------------------------
 
+def _setup_file_logging() -> tuple[logging.FileHandler, str]:
+    """Redirect all logging to a file. Returns (handler, log_path)."""
+    LOG_DIR.mkdir(parents=True, exist_ok=True)
+    ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+    log_path = LOG_DIR / f"harvest_{ts}.log"
+
+    root = logging.getLogger()
+    root.setLevel(logging.DEBUG)
+
+    # Remove any console handlers
+    for h in root.handlers[:]:
+        root.removeHandler(h)
+
+    fh = logging.FileHandler(str(log_path), encoding="utf-8")
+    fh.setLevel(logging.DEBUG)
+    fh.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(name)s: %(message)s"))
+    root.addHandler(fh)
+    return fh, str(log_path)
+
+
+def _teardown_file_logging(fh: logging.FileHandler):
+    root = logging.getLogger()
+    root.removeHandler(fh)
+    fh.close()
+
+
 def run_mode(mode: dict, options: dict):
-    # Suppress noisy logs during progress bars unless verbose
-    if options["verbose"]:
-        logging.basicConfig(
-            level=logging.DEBUG,
-            format="%(levelname)s %(name)s: %(message)s",
-            force=True,
-        )
-    else:
-        logging.basicConfig(
-            level=logging.WARNING,
-            format="%(levelname)s %(name)s: %(message)s",
-            force=True,
-        )
+    fh, log_path = _setup_file_logging()
 
     run_id = f"HR-LOCAL-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}"
     output_dir = str(DEFAULT_OUTPUT_DIR)
@@ -245,19 +239,20 @@ def run_mode(mode: dict, options: dict):
         return
 
     print()
-    bar = ProgressBar("Scraping")
-    bar.start()
+    status = StatusLine("Scraping")
+    status.start()
     try:
         scrape_urls(urls, str(DEFAULT_INPUT_DIR))
-        bar.finish(success=True)
+        status.done(success=True)
     except Exception as e:
-        bar.finish(success=False)
+        status.done(success=False)
         print(f"  Scrape error: {e}")
         return
 
     # Step 2: Extract
-    bar = ProgressBar("Extracting")
-    bar.start()
+    model = get_first_available_model()
+    status = StatusLine(f"Extracting ({model})")
+    status.start()
     try:
         summary = process_batch(
             input_dir=str(DEFAULT_INPUT_DIR),
@@ -265,33 +260,33 @@ def run_mode(mode: dict, options: dict):
             harvest_run_id=run_id,
         )
         output_files = summary.get("files", [])
-        bar.finish(success=summary["succeeded"] > 0 or summary["processed"] == 0)
+        status.done(success=summary["succeeded"] > 0 or summary["processed"] == 0)
     except Exception as e:
-        bar.finish(success=False)
+        status.done(success=False)
         print(f"  Extraction error: {e}")
         return
 
     # Step 3: DB write
     if mode["db"] and output_files:
-        bar = ProgressBar("Saving to DB")
-        bar.start()
+        status = StatusLine("Saving to DB")
+        status.start()
         try:
             write_records_to_db(output_files, overwrite=options["overwrite"])
-            bar.finish(success=True)
+            status.done(success=True)
         except Exception as e:
-            bar.finish(success=False)
+            status.done(success=False)
             print(f"  DB error: {e}")
 
     # Step 4: Validation
     val = None
     if mode["validate"]:
-        bar = ProgressBar("Validating")
-        bar.start()
+        status = StatusLine("Validating")
+        status.start()
         try:
             val = run_gudid_validation(run_id=run_id, overwrite=options["overwrite"])
-            bar.finish(success=val.get("success", False))
+            status.done(success=val.get("success", False))
         except Exception as e:
-            bar.finish(success=False)
+            status.done(success=False)
             print(f"  Validation error: {e}")
 
     # Results
@@ -304,8 +299,9 @@ def run_mode(mode: dict, options: dict):
         print(f"  \033[91mFailed:           {summary['failed']}{RESET}")
     else:
         print(f"  Failed:           {summary['failed']}")
-    print(f"  Ollama-extracted: {summary['ollama_extracted']}")
+    print(f"  Records written:  {len(output_files)}")
     print(f"  Output:           {summary['output_dir']}")
+    print(f"  Log file:         {log_path}")
 
     if mode["db"]:
         db_mode = "overwrite" if options["overwrite"] else "append"
@@ -330,6 +326,8 @@ def run_mode(mode: dict, options: dict):
 
     print(f"  {'='*50}")
     print(f"\n  {GREEN}\u2714 Done.{RESET}")
+
+    _teardown_file_logging(fh)
 
 
 # ---------------------------------------------------------------------------

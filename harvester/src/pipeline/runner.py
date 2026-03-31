@@ -326,7 +326,7 @@ def _process_single_ollama(
         return []
 
     try:
-        from pipeline.llm_extractor import extract_all_fields
+        from pipeline.llm_extractor import extract_all_fields, get_last_model
 
         sanitized = sanitize_html(raw_html)
         parsed = parse_html(sanitized)
@@ -378,15 +378,16 @@ def _process_single_ollama(
                 logger.warning("_process_single_ollama: record rejected: %s", issues)
                 continue
 
+            last_model = get_last_model() or "unknown"
             record = package_gudid_record(
                 normalized_record=normalized,
                 raw_html=raw_html,
                 source_url=source_url,
-                adapter_version="groq" if os.environ.get("GROQ_API_KEY") else "ollama-mistral",
+                adapter_version=last_model,
                 harvest_run_id=harvest_run_id,
                 validation_issues=issues,
-                extraction_method="groq" if os.environ.get("GROQ_API_KEY") else "ollama",
-                extraction_model="llama-3.3-70b-versatile" if os.environ.get("GROQ_API_KEY") else "mistral",
+                extraction_method="llm",
+                extraction_model=last_model,
             )
             records.append(record)
 
@@ -470,7 +471,7 @@ def scrape_urls(urls: list[str], output_dir: str) -> list[str]:
     urls = [u for u in urls if not is_pdf_url(u)]
     os.makedirs(output_dir, exist_ok=True)
 
-    print(f"Scraping {len(urls)} URL(s)...")
+    logger.info("Scraping %d URL(s)...", len(urls))
 
     async def _run():
         async with BrowserEngine(
@@ -500,8 +501,7 @@ def scrape_urls(urls: list[str], output_dir: str) -> list[str]:
             logger.info("Scraped: %s", r.final_url or r.url)
         else:
             logger.warning("Scrape failed: %s — %s", r.url, r.error)
-
-    print(f"Scraped {len(saved)}/{len(urls)} pages.")
+    logger.info("Scraped %d/%d pages.", len(saved), len(urls))
     return saved
 
 
@@ -513,7 +513,7 @@ def write_records_to_db(json_paths: list[str], overwrite: bool = False) -> int:
         db = get_db()
     except Exception as e:
         logger.warning("MongoDB unavailable — skipping DB write: %s", e)
-        print(f"WARNING: MongoDB unavailable ({e}). Records saved as JSON only.")
+        logger.warning("Records saved as JSON only.")
         return 0
 
     if overwrite:
@@ -530,7 +530,7 @@ def write_records_to_db(json_paths: list[str], overwrite: bool = False) -> int:
         except Exception as e:
             logger.warning("DB insert failed for %s: %s", path, e)
 
-    print(f"Inserted {count}/{len(json_paths)} records into MongoDB (overwrite={overwrite}).")
+    logger.info("Inserted %d/%d records into MongoDB (overwrite=%s).", count, len(json_paths), overwrite)
     return count
 
 
