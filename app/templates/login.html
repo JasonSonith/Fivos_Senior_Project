@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Fivos</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body class="auth-body">
+    <div class="auth-shell">
+        <div class="auth-card">
+            <div class="auth-brand-row">
+                <div class="brand-logo">F</div>
+                <div>
+                    <p class="eyebrow" style="margin-bottom: 6px;">Secure Access</p>
+                    <h1 class="auth-title">Sign in to Fivos</h1>
+                    <p class="auth-subtitle">
+                        Access the dashboard, review queue, validation tools, and admin functions.
+                    </p>
+                </div>
+            </div>
+
+            {% if error %}
+            <div class="alert-error">
+                <strong>Login failed:</strong> {{ error }}
+            </div>
+            {% endif %}
+
+            <form method="post" action="/auth/login" class="form-grid-modern">
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder="reviewer@fivos.local"
+                        value="{{ email }}"
+                        required
+                    >
+                </div>
+
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        placeholder="Enter your password"
+                        required
+                    >
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary auth-submit">Sign In</button>
+                </div>
+            </form>
+
+            <div class="auth-demo-box">
+                <p class="auth-demo-title">Demo accounts</p>
+                <p class="auth-demo-line"><strong>Admin:</strong> admin@fivos.local / admin123</p>
+                <p class="auth-demo-line"><strong>Reviewer:</strong> reviewer@fivos.local / review123</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

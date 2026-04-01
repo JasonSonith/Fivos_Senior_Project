@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <p class="eyebrow">Discrepancy Review</p>
+        <h1 class="page-title">{{ device.brandName or "Device" }} &mdash; {{ device.versionModelNumber or "N/A" }}</h1>
+        <p class="page-description">
+            Compare harvested values against GUDID and pick the correct value for each field.
+            Your choices will update the device record in the database.
+        </p>
+    </div>
+    <div class="hero-actions">
+        <a href="/" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+</section>
+
+<section class="stats-grid">
+    <div class="metric-card small">
+        <p class="metric-label">Status</p>
+        <h3 class="metric-value">
+            {% if validation.status == "partial_match" %}
+            <span style="color: var(--warning);">Partial Match</span>
+            {% elif validation.status == "mismatch" %}
+            <span style="color: var(--danger);">Mismatch</span>
+            {% else %}
+            {{ validation.status }}
+            {% endif %}
+        </h3>
+    </div>
+    <div class="metric-card small">
+        <p class="metric-label">Match</p>
+        <h3 class="metric-value">{{ validation.matched_fields or 0 }}/{{ validation.total_fields or 0 }}</h3>
+    </div>
+    <div class="metric-card small">
+        <p class="metric-label">Match %</p>
+        <h3 class="metric-value">{{ validation.match_percent or 0 }}%</h3>
+    </div>
+    <div class="metric-card small">
+        <p class="metric-label">GUDID DI</p>
+        <h3 class="metric-value" style="font-size: 18px;">{{ validation.gudid_di or "N/A" }}</h3>
+    </div>
+</section>
+
+<form method="post" action="/review/{{ validation_id }}/save">
+    <section class="panel">
+        <div class="panel-header">
+            <div>
+                <h3>Field Comparison</h3>
+                <p>For each mismatched field, choose whether to keep the harvested value or use the GUDID value</p>
+            </div>
+        </div>
+
+        <!-- Column headers -->
+        <div class="review-field-row" style="border-bottom: 2px solid var(--border);">
+            <div class="review-field-name">Field</div>
+            <div style="font-weight: 600; color: var(--accent-2); font-size: 13px;">HARVESTED</div>
+            <div style="font-weight: 600; color: var(--accent-3); font-size: 13px;">GUDID</div>
+            <div style="font-weight: 600; color: var(--muted); font-size: 13px;">PICK</div>
+        </div>
+
+        {% for f in fields %}
+        <div class="review-field-row {% if f.match is true %}matched{% endif %}">
+            <div class="review-field-name">
+                {{ f.label }}
+                {% if f.match is true %}
+                <br><span class="match-yes" style="font-size: 11px;">MATCH</span>
+                {% elif f.match is false %}
+                <br><span class="match-no" style="font-size: 11px;">MISMATCH</span>
+                {% elif f.similarity is not none %}
+                <br><span style="font-size: 11px; color: var(--muted);">{{ "%.0f"|format((f.similarity or 0) * 100) }}% similar</span>
+                {% endif %}
+            </div>
+
+            <div class="review-value harvested">
+                {{ f.harvested or "N/A" }}
+            </div>
+
+            <div class="review-value gudid">
+                {{ f.gudid or "N/A" }}
+            </div>
+
+            <div class="review-pick">
+                {% if f.match is true %}
+                <input type="hidden" name="choice_{{ f.key }}" value="harvested">
+                <span style="color: var(--success); font-size: 13px;">Matched</span>
+                {% else %}
+                <label>
+                    <input type="radio" name="choice_{{ f.key }}" value="harvested" checked>
+                    Keep Harvested
+                </label>
+                <label>
+                    <input type="radio" name="choice_{{ f.key }}" value="gudid">
+                    Use GUDID
+                </label>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+
+    <div class="form-actions" style="margin-bottom: 40px;">
+        <button type="submit" class="btn btn-primary">Save Corrections</button>
+        <a href="/" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+{% endblock %}

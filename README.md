@@ -12,61 +12,56 @@ Right now, Fivos employees have to manually check thousands of entries by hand. 
 
 ## How It Works
 
-The system follows a **Collect, Compare, Correct** workflow using two AI agents and a review dashboard.
+The system follows a **Collect, Compare, Correct** workflow:
 
-**Agent A (The Harvester)** crawls manufacturer websites, handles dynamic/JavaScript-rendered pages, and pulls out device specs. All of that data gets stored in a central data lake.
+**The Harvester** crawls manufacturer websites using Playwright, renders JavaScript-heavy pages, and extracts device specs using a 7-model LLM fallback chain (Groq → NVIDIA NIM → Ollama local). It works on any manufacturer site without per-site configuration. Extracted records are stored in MongoDB.
 
-**Agent B (The Validator)** takes the harvested data and compares it against GUDID records. It flags anything that does not match, assigns a confidence score, and categorizes discrepancies by severity.
+**The Validator** compares harvested records against the FDA's GUDID API. It checks model numbers, catalog numbers, brand names, company names, and description similarity. Each device gets a match / partial match / mismatch verdict.
 
-**The Review Dashboard (HITL)** is a web interface where human reviewers at Fivos can look at what the AI flagged. They see the GUDID value side by side with the manufacturer value and can approve, reject, or correct each item. Their decisions feed back into the system so it gets smarter over time.
+**The Review Dashboard** is a web interface where human reviewers see discrepancies side-by-side — harvested value vs GUDID value — and pick the correct one for each field. Their corrections update the database directly.
 
 ## Tech Stack
 
 | Layer | Tools |
 |---|---|
 | Language | **Python 3.13.7** |
-| Web Scraping | Selenium / Playwright |
-| AI | Ollama (open source, runs locally) |
-| SQL Database | PostgreSQL or SQLite |
-| NoSQL / Data Lake | MongoDB (or similar) |
-| Frontend | React or Next.js |
+| Web Scraping | Playwright (async, headless Chromium) |
+| AI / LLM | Groq + NVIDIA NIM (cloud) → Ollama (local fallback) |
+| Database | MongoDB |
+| Web UI | FastAPI + Jinja2 |
+| HTML Parsing | BeautifulSoup4 + lxml |
 | Version Control | Git / GitHub |
-
-> Python 3.13.7 is the target runtime for all backend and AI agent code in this project. Make sure you have it installed before running anything.
 
 ## Project Structure
 
 ```
-├── harvester/          # Agent A - web scraping and data extraction
-├── validator/          # Agent B - GUDID comparison and discrepancy detection
-├── dashboard/          # HITL review interface (frontend)
-├── api/                # Backend API layer
-├── db/                 # Database schemas and migrations
-├── docs/               # Project documentation
-└── README.md
+├── app/                    # FastAPI web dashboard
+│   ├── main.py             # App entry point
+│   ├── routes/             # dashboard, harvester, validate, gudid, review, api
+│   ├── templates/          # Jinja2 HTML templates
+│   └── static/             # CSS
+├── harvester/
+│   └── src/
+│       ├── pipeline/       # Core: runner, llm_extractor, parser, emitter
+│       ├── web_scraper/    # Playwright browser automation
+│       ├── site_adapters/  # YAML CSS selector configs (optional override)
+│       ├── normalizers/    # Text, model numbers, dates, units, booleans
+│       ├── validators/     # GUDID client, comparison, record validation
+│       ├── database/       # MongoDB connection
+│       └── security/       # Input sanitization, credentials
+├── docs/                   # Project documentation
+├── requirements.txt
+└── .env.example
 ```
-
-## Key Features
-
-- Automated scraping of manufacturer websites with retry logic and timeout handling
-- Comparison of harvested data against FDA GUDID records
-- Normalization layer to handle differences in units, formatting, and naming conventions
-- Confidence scoring for flagged discrepancies
-- Web dashboard for human review with filtering, sorting, and reason codes
-- Feedback loop so reviewer decisions improve future validation runs
-- Role-based access control (Reviewer vs Administrator)
-- Audit logging for all reviewer actions and system events
-- Reports and performance statistics
 
 ## Getting Started
 
 ### Prerequisites
 
 - Python 3.13.7
-- Node.js (for the frontend)
-- PostgreSQL or SQLite
-- MongoDB (optional, for the data lake)
-- Git
+- MongoDB (running locally or remote URI)
+- Groq API key (free: https://console.groq.com/keys) and/or NVIDIA NIM key (free: https://build.nvidia.com)
+- Ollama with `mistral` model for local fallback (`ollama pull mistral`)
 
 ### Installation
 
@@ -79,36 +74,82 @@ cd fivos-project
 python3.13 -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-# Install Python dependencies
+# Install dependencies
 pip install -r requirements.txt
+playwright install
 
-# Set up the frontend
-cd dashboard
-npm install
-```
-
-### Running the Agents
-
-```bash
-# Start the Harvester Agent
-python harvester/main.py --manufacturer medtronic --mode catalog
-
-# Start the Validator Agent
-python validator/main.py --batch HR-10452
+# Configure environment
+cp .env.example .env
+# Edit .env with your MongoDB URI and any other credentials
 ```
 
 ### Running the Dashboard
 
 ```bash
-cd dashboard
-npm run dev
+uvicorn app.main:app --port 8000
+# Open http://localhost:8000
 ```
 
-## User Roles
+The dashboard provides:
+- **Harvester** — Enter a URL or upload a .txt file to scrape and extract device data
+- **Validator** — Compare harvested devices against FDA GUDID
+- **GUDID Lookup** — Search the FDA database directly
+- **Discrepancy Review** — Pick correct values for mismatched fields
 
-**Reviewer** - Can view flagged discrepancies, approve/reject/correct items, and view reports.
+### Running the Pipeline (Interactive Menu)
 
-**Administrator** - Can do everything a reviewer can, plus manage user accounts, import GUDID data, and view advanced system metrics.
+```bash
+python harvester/src/pipeline/cli.py
+```
+
+This launches an interactive menu:
+- **[1] Harvest Only** — Scrape URLs + extract with Ollama, output JSON files
+- **[2] Harvest + Save to DB** — Scrape + extract + save to MongoDB
+- **[3] Harvest + Save + Validate** — Full pipeline: scrape + extract + DB + GUDID validation
+- **[0] Quit**
+
+After selecting a mode, you choose Append or Overwrite for database writes.
+
+### Running the Pipeline (CLI flags)
+
+```bash
+# Harvest only (scrape + extract to JSON, no DB)
+python harvester/src/pipeline/runner.py --urls harvester/src/urls.txt --no-validate
+
+# Harvest + append to DB (default)
+python harvester/src/pipeline/runner.py --urls harvester/src/urls.txt --no-validate
+
+# Harvest + overwrite DB (wipes devices collection first)
+python harvester/src/pipeline/runner.py --urls harvester/src/urls.txt --overwrite --no-validate
+
+# Full pipeline: harvest → append to DB → validate against GUDID
+python harvester/src/pipeline/runner.py --urls harvester/src/urls.txt
+
+# Full pipeline with DB overwrite
+python harvester/src/pipeline/runner.py --urls harvester/src/urls.txt --overwrite
+
+# Extract from existing HTML (no scrape)
+python harvester/src/pipeline/runner.py --db --validate
+```
+
+### Running Tests
+
+```bash
+pytest                    # all tests
+pytest -v                 # verbose
+pytest harvester/src/pipeline/tests/  # pipeline tests only
+```
+
+## Key Features
+
+- Automated scraping of manufacturer websites with retry logic and rate limiting
+- LLM-powered extraction with 7-model fallback chain (Groq → NVIDIA → Ollama)
+- Two-pass extraction: page-level fields + product table rows (one record per SKU)
+- Comparison against FDA GUDID with per-field match scoring
+- Web dashboard for human review of discrepancies
+- Side-by-side field comparison with pick-the-correct-value workflow
+- Append-by-default database writes (overwrite is CLI-only)
+- Normalization for units, model numbers, dates, and text
 
 ## Team
 

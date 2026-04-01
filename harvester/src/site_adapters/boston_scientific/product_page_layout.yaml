@@ -1,0 +1,33 @@
+manufacturer: boston_scientific
+product_type: product_page_layout
+
+base_url: https://www.bostonscientific.com
+
+# No HTML scraped yet — Wyatt needs to scrape these pages
+seed_urls: []
+
+brands:
+  - RANGER
+  - ELUVIA
+  - INNOVA VASCULAR
+  - EXPRESS LD BILIARY
+  - JETSTREAM XC
+  - EPIC VASCULAR
+  - SYNERGY XD
+  - FLEXTOME
+
+extraction:
+  # PLACEHOLDER selectors — update once scraped HTML is available
+  device_name: "h1"
+
+  # Model number selector unknown until HTML is analyzed
+  model_number: ""
+
+  # Generic table selector as placeholder
+  specs_container: "table"
+
+
+# Notes for developers:
+# Boston Scientific pages have NOT been scraped yet. All selectors above
+# are placeholders. Once Wyatt scrapes the pages, analyze the HTML and
+# update these selectors with the correct CSS paths.

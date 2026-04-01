@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <p class="eyebrow">Reference Data</p>
+        <h1 class="page-title">GUDID Lookup</h1>
+        <p class="page-description">
+            Query the FDA's Global Unique Device Identification Database (GUDID) for medical device information.
+        </p>
+    </div>
+</section>
+
+<section class="content-grid single-wide">
+    <div class="panel">
+        <div class="panel-header">
+            <div>
+                <h3>Search GUDID</h3>
+                <p>Look up a device by Device Identifier (DI) or model/catalog number</p>
+            </div>
+        </div>
+
+        <form method="post" action="/gudid/lookup" class="form-grid-modern">
+            <div class="field">
+                <label>Search Type</label>
+                <div style="display: flex; gap: 1.5rem; margin-top: 0.5rem;">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="radio" name="query_type" value="di" checked> Device Identifier (DI)
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="radio" name="query_type" value="model"> Model / Catalog Number
+                    </label>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="query">Search Query</label>
+                <input id="query" type="text" name="query" placeholder="e.g., 08717648200274 or 1145350-28" required>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Look Up Device</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+{% if result %}
+<section class="panel">
+    <div class="panel-header">
+        <div>
+            <h3>Lookup Result</h3>
+            <p>{% if result.success %}Device found{% else %}{{ result.error or "Device not found" }}{% endif %}</p>
+        </div>
+    </div>
+
+    {% if result.success and result.record %}
+    <div class="stats-grid compact">
+        <div class="metric-card small">
+            <p class="metric-label">DI</p>
+            <h3 class="metric-value">{{ result.di or "N/A" }}</h3>
+        </div>
+    </div>
+
+    <div class="table-wrap">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Brand Name</td>
+                    <td>{{ result.record.brandName or "N/A" }}</td>
+                </tr>
+                <tr>
+                    <td>Company Name</td>
+                    <td>{{ result.record.companyName or "N/A" }}</td>
+                </tr>
+                <tr>
+                    <td>Version / Model Number</td>
+                    <td>{{ result.record.versionModelNumber or "N/A" }}</td>
+                </tr>
+                <tr>
+                    <td>Catalog Number</td>
+                    <td>{{ result.record.catalogNumber or "N/A" }}</td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td>{{ result.record.deviceDescription or "N/A" }}</td>
+                </tr>
+                {% if result.record.MRISafetyStatus %}
+                <tr>
+                    <td>MRI Safety</td>
+                    <td>{{ result.record.MRISafetyStatus }}</td>
+                </tr>
+                {% endif %}
+                {% if result.record.deviceClass %}
+                <tr>
+                    <td>Device Class</td>
+                    <td>{{ result.record.deviceClass }}</td>
+                </tr>
+                {% endif %}
+                {% if result.record.singleUse is not none %}
+                <tr>
+                    <td>Single Use</td>
+                    <td>{{ "Yes" if result.record.singleUse else "No" }}</td>
+                </tr>
+                {% endif %}
+                {% if result.record.rx is not none %}
+                <tr>
+                    <td>Prescription (Rx)</td>
+                    <td>{{ "Yes" if result.record.rx else "No" }}</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    {% elif result.error %}
+    <div class="alert-error">
+        <strong>Error:</strong> {{ result.error }}
+    </div>
+    {% endif %}
+</section>
+{% endif %}
+{% endblock %}

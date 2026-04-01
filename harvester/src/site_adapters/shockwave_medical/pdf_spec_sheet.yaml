@@ -1,0 +1,27 @@
+manufacturer: shockwave_medical
+product_type: pdf_spec_sheet
+
+base_url: https://www.shockwavemedical.com
+
+seed_urls:
+  - "https://shockwavemedical.com/wp-content/uploads/2024/11/S4-Tech-Sheet-Global-SPL-66024-Rev.-B.pdf"
+
+# PDF parsing configuration
+pdf_extraction:
+  input_type: "pdf_url"
+  parser: "pdfplumber"
+
+  fields:
+    device_name:
+      method: "first_page_title"
+      pattern: ""
+    model_number:
+      method: "regex"
+      pattern: "(Model|Model No\\.?|REF|Catalog No\\.?|Part No\\.?)[\\s:]+([A-Z0-9\\-]+)"
+    specs_table:
+      method: "table_detect"
+      table_pages: "all"
+
+notes: |
+  Shockwave has at least one PDF in the seed list. Use this adapter for PDF parsing.
+  If you later find HTML specs pages, keep using table_wrapper_layout.yaml for those.

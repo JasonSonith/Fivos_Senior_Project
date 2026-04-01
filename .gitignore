@@ -1,0 +1,7 @@
+docs/*
+.env
+!.env.example
+venv/
+__pycache__/
+*.pyc
+harvester/output/*.json

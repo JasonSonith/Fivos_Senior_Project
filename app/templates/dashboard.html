@@ -4,82 +4,101 @@
 <section class="hero">
     <div>
         <p class="eyebrow">Overview</p>
-        <h1 class="page-title">Operational Dashboard</h1>
+        <h1 class="page-title">Dashboard</h1>
         <p class="page-description">
-            Monitor harvested device records, normalized outputs, and the current readiness of your data pipeline.
+            Monitor harvested device records, validation results, and review discrepancies.
         </p>
-    </div>
-    <div class="hero-actions">
-        <a href="/harvester" class="btn btn-primary">Run Harvester</a>
-        <a href="/results" class="btn btn-secondary">View Results</a>
     </div>
 </section>
 
 <section class="stats-grid">
     <div class="metric-card">
-        <p class="metric-label">Raw Records</p>
-        <h3 class="metric-value">{{ stats.raw_records }}</h3>
-        <p class="metric-foot">Recently captured records from source pages</p>
+        <p class="metric-label">Harvested Devices</p>
+        <h3 class="metric-value">{{ stats.device_count or 0 }}</h3>
+        <p class="metric-foot">Total devices in the database</p>
     </div>
 
     <div class="metric-card">
-        <p class="metric-label">Normalized Records</p>
-        <h3 class="metric-value">{{ stats.normalized_records }}</h3>
-        <p class="metric-foot">Standardized values ready for downstream use</p>
+        <p class="metric-label">Matches</p>
+        <h3 class="metric-value" style="color: var(--success);">{{ stats.matches or 0 }}</h3>
+        <p class="metric-foot">Fully matched against GUDID</p>
     </div>
 
     <div class="metric-card">
-        <p class="metric-label">Last Run</p>
-        <h3 class="metric-value">{{ stats.last_run }}</h3>
-        <p class="metric-foot">Current system execution state</p>
+        <p class="metric-label">Partial Matches</p>
+        <h3 class="metric-value" style="color: var(--warning);">{{ stats.partial_matches or 0 }}</h3>
+        <p class="metric-foot">Some fields differ from GUDID</p>
+    </div>
+
+    <div class="metric-card">
+        <p class="metric-label">Mismatches</p>
+        <h3 class="metric-value" style="color: var(--danger);">{{ stats.mismatches or 0 }}</h3>
+        <p class="metric-foot">No fields matched GUDID</p>
     </div>
 </section>
 
-<section class="content-grid">
-    <div class="panel">
-        <div class="panel-header">
-            <div>
-                <h3>Platform Summary</h3>
-                <p>Core capabilities available in this release</p>
-            </div>
-        </div>
-        <div class="feature-list">
-            <div class="feature-item">
-                <h4>Web Harvesting</h4>
-                <p>Capture manufacturer-facing device data from public web pages using Playwright.</p>
-            </div>
-            <div class="feature-item">
-                <h4>Unit Normalization</h4>
-                <p>Convert mixed measurements into standardized units for comparison and reporting.</p>
-            </div>
-            <div class="feature-item">
-                <h4>Data Review</h4>
-                <p>Inspect raw and normalized records side by side through a single interface.</p>
-            </div>
+<div class="quick-actions">
+    <a href="/harvester" class="action-card">
+        <span class="action-title">Run Harvester</span>
+        <span class="action-text">Scrape manufacturer URLs and extract device data</span>
+    </a>
+    <a href="/validate" class="action-card">
+        <span class="action-title">Run Validation</span>
+        <span class="action-text">Compare harvested devices against FDA GUDID</span>
+    </a>
+    <a href="/gudid" class="action-card">
+        <span class="action-title">GUDID Lookup</span>
+        <span class="action-text">Search the FDA GUDID database directly</span>
+    </a>
+</div>
+
+<section class="panel">
+    <div class="panel-header">
+        <div>
+            <h3>Discrepancy Review Queue</h3>
+            <p>Partial matches and mismatches that need human review</p>
         </div>
     </div>
 
-    <div class="panel">
-        <div class="panel-header">
-            <div>
-                <h3>Quick Actions</h3>
-                <p>Common tasks for a Fivos analyst</p>
-            </div>
-        </div>
-        <div class="quick-actions">
-            <a href="/harvester" class="action-card">
-                <span class="action-title">Launch Harvester</span>
-                <span class="action-text">Run the scraper against a target manufacturer page</span>
-            </a>
-            <a href="/normalize" class="action-card">
-                <span class="action-title">Normalize Records</span>
-                <span class="action-text">Apply unit conversion and standard formatting rules</span>
-            </a>
-            <a href="/results" class="action-card">
-                <span class="action-title">Open Results</span>
-                <span class="action-text">Review raw and normalized records for analysis</span>
-            </a>
-        </div>
+    {% if discrepancies %}
+    <div class="table-wrap">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Brand Name</th>
+                    <th>Company</th>
+                    <th>Model Number</th>
+                    <th>Status</th>
+                    <th>Match</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for d in discrepancies %}
+                <tr>
+                    <td>{{ d.brandName or "N/A" }}</td>
+                    <td>{{ d.companyName or "N/A" }}</td>
+                    <td>{{ d.versionModelNumber or "N/A" }}</td>
+                    <td>
+                        {% if d.status == "partial_match" %}
+                        <span class="badge badge-warning">Partial</span>
+                        {% elif d.status == "mismatch" %}
+                        <span class="badge badge-danger">Mismatch</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ d.matched_fields or 0 }}/{{ d.total_fields or 0 }} ({{ d.match_percent or 0 }}%)</td>
+                    <td>
+                        <a href="/review/{{ d._id }}" class="btn btn-primary btn-sm">Review</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+    {% else %}
+    <div class="empty-state">
+        <p>All devices are fully matched. No discrepancies to review.</p>
+    </div>
+    {% endif %}
 </section>
 {% endblock %}

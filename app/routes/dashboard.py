@@ -1,23 +1,27 @@
 from fastapi import APIRouter, Request
+from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
-
-from app.services.storage_service import load_raw_records, load_normalized_records
 
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
 
+
 @router.get("/")
 def dashboard(request: Request):
-    raw_records = load_raw_records()
-    normalized_records = load_normalized_records()
+    user = request.session.get("user")
+    if not user:
+        return RedirectResponse(url="/auth/login", status_code=302)
 
-    stats = {
-        "raw_records": len(raw_records),
-        "normalized_records": len(normalized_records),
-        "last_run": "Ready" if raw_records else "No runs yet",
-    }
+    from orchestrator import get_dashboard_stats, get_discrepancies
+    stats = get_dashboard_stats()
+    discrepancies = get_discrepancies(limit=100)
 
     return templates.TemplateResponse(
+        request,
         "dashboard.html",
-        {"request": request, "stats": stats}
+        context={
+            "stats": stats,
+            "discrepancies": discrepancies,
+            "current_user": user,
+        },
     )

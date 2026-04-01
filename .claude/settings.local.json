@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(pip install:*)",
+      "Bash(find /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/src/web-scraper/out_html/ -type f -name *.html)",
+      "WebFetch(domain:accessgudid.nlm.nih.gov)",
+      "Bash(find /mnt/c/Users/sonit/Github/Fivos_Senior_Project -name *gudid* -o -name *validator* -type f)",
+      "Bash(grep -r \"device.get\\\\|gudid\" /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/src/validators --include=*.py)",
+      "Bash(find /mnt/c/Users/sonit/Github/Fivos_Senior_Project -name *.json -path *test* -o -name *.json -path *sample*)",
+      "Bash(find /mnt/c/Users/sonit/Github/Fivos_Senior_Project -name *.md -o -name *.txt -o -name *.rst)",
+      "Bash(python3:*)",
+      "Bash(cat:*)",
+      "Read(//tmp/**)",
+      "WebSearch",
+      "WebFetch(domain:www.bostonscientific.com)",
+      "WebFetch(domain:shockwavemedical.com)",
+      "WebFetch(domain:www.goremedical.com)",
+      "WebFetch(domain:www.medtronic.com)",
+      "WebFetch(domain:www.cardiovascular.abbott)",
+      "Bash(curl -s http://localhost:11434/api/version)",
+      "Bash(curl -s http://localhost:11434/)",
+      "Bash(ls harvester/output/*.json)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(git -C /mnt/c/Users/Jason/Github/Fivos_Senior_Project status --short)",
+      "Bash(then echo:*)",
+      "Bash(fi)",
+      "Bash(done)",
+      "Bash(grep -r 'from Interface' /mnt/c/Users/Jason/Github/Fivos_Senior_Project --include=*.py)",
+      "Bash(grep -r 'import Interface' /mnt/c/Users/Jason/Github/Fivos_Senior_Project --include=*.py)",
+      "Bash(ls:*)",
+      "Bash(git -C /mnt/c/Users/Jason/Github/Fivos_Senior_Project log --diff-filter=D --summary)",
+      "Bash(git -C /mnt/c/Users/Jason/Github/Fivos_Senior_Project log --oneline --all)",
+      "Bash(grep -E \"\\\\.py$\")",
+      "Bash(grep -r \"load_adapters\\\\|resolve_adapter\" /mnt/c/Users/Jason/Github/Fivos_Senior_Project --include=*.py)",
+      "Bash(grep -r \"from Interface\\\\|import Interface\" /mnt/c/Users/Jason/Github/Fivos_Senior_Project --include=*.py --exclude-dir=venv)"
+    ]
+  }
+}

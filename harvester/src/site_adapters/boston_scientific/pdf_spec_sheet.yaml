@@ -1,0 +1,34 @@
+manufacturer: boston_scientific
+product_type: pdf_spec_sheet
+
+# Base site (optional, mostly for reference)
+base_url: https://www.bostonscientific.com
+
+# Put the PDF spec-sheet links here (from your spreadsheet)
+seed_urls:
+  - "https://www.bostonscientific.com/content/dam/bostonscientific/pi/product-catalog/PI_Product_Catalog.pdf"
+
+pdf_extraction:
+  # How the pipeline should treat these seed_urls
+  input_type: "pdf_url"
+
+  # Strategy placeholder (depends on what your team implements)
+  # options you can support later: "pymupdf", "pdfplumber", "camelot", "tabula"
+  parser: "pdfplumber"
+
+  # What you want to extract from the PDF
+  fields:
+    device_name:
+      method: "first_page_title"     # placeholder
+      pattern: ""                    # optional regex if needed
+    model_number:
+      method: "regex"
+      pattern: "(Model|Model No\\.?|Catalog No\\.?|REF|Part No\\.?)[\\s:]+([A-Z0-9\\-]+)"
+    specs_table:
+      method: "table_detect"         # placeholder
+      table_pages: "all"             # or "1", "2-3", etc.
+
+notes: |
+  Boston Scientific seed URLs are PDF spec sheets rather than HTML pages.
+  This adapter configuration defines how the pipeline should parse PDF documents.
+  A PDF parsing step (e.g., pdfplumber or pymupdf) will be required to extract tables.
