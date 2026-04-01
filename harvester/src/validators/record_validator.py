@@ -1,4 +1,5 @@
 import logging
+import re
 from urllib.parse import urlparse
 
 logger = logging.getLogger(__name__)
@@ -7,6 +8,23 @@ _VALID_MRI_STATUSES = {
     "MR Safe", "MR Conditional", "MR Unsafe",
     "Labeling does not contain MRI Safety Information",
 }
+
+_KNOWN_JUNK_MODELS = {
+    "testcookiesenabled", "visitor_info1_live", "rxuuid",
+    "suid", "suid_legacy", "tapad_3way_syncs", "tapad_did",
+    "tapad_ts", "uid_syncd", "uid_syncd_secure", "xuid",
+    "w_1_0_sd",
+}
+
+
+def _is_junk_model_number(model: str) -> bool:
+    lower = model.strip().lower()
+    if lower in _KNOWN_JUNK_MODELS:
+        return True
+    stripped = model.strip()
+    if re.fullmatch(r'[A-Z][A-Z_]*_[A-Z_]*[A-Z]', stripped) and not any(c.isdigit() for c in stripped):
+        return True
+    return False
 
 
 def validate_record(record: dict) -> tuple[bool, list[str]]:
@@ -94,6 +112,9 @@ def validate_record(record: dict) -> tuple[bool, list[str]]:
         model_len = len(str(model_number))
         if not (1 <= model_len <= 100):
             issues.append(f"STRING_LENGTH: model_number must be 1-100 chars, got {model_len}")
+        if _is_junk_model_number(str(model_number)):
+            issues.append(f"JUNK_MODEL_NUMBER: '{model_number}' looks like a cookie/tracker name")
+            logger.warning("validate_record: junk model_number rejected: %s", model_number)
 
     # Boolean field validation — non-blocking
     for field in ("singleUse", "deviceSterile", "sterilizationPriorToUse", "rx", "otc"):
@@ -107,7 +128,7 @@ def validate_record(record: dict) -> tuple[bool, list[str]]:
         issues.append(f"INVALID_ENUM: MRISafetyStatus must be one of {_VALID_MRI_STATUSES}, got '{mri_status}'")
 
     is_valid = not any(
-        i.startswith("REQUIRED_MISSING:") or i.startswith("INVALID_URL:")
+        i.startswith("REQUIRED_MISSING:") or i.startswith("INVALID_URL:") or i.startswith("JUNK_MODEL_NUMBER:")
         for i in issues
     )
     return is_valid, issues
