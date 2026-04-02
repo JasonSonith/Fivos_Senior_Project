@@ -1,0 +1,852 @@
+2026-04-02 15:07:58,848 INFO pipeline.runner: Scraping 28 URL(s)...
+2026-04-02 15:07:58,854 DEBUG asyncio: Using selector: EpollSelector
+2026-04-02 15:09:52,091 INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html
+2026-04-02 15:09:52,109 INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-av-drug-coated-balloon.html
+2026-04-02 15:09:52,126 INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-biliary-stents/protege-everflex-self-expanding-biliary-stent-system.html
+2026-04-02 15:09:52,145 INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-biliary-stents/everflex-stent-system-with-entrust.html
+2026-04-02 15:09:52,162 INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-biliary-stents/visi-pro-balloon-expandable-peripheral-stent-system.html
+2026-04-02 15:09:52,180 INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-biliary-stents/protege-gps-self-expanding-peripheral-biliary-stent-system.html
+2026-04-02 15:09:52,198 INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/directional-atherectomy-systems/hawkone-directional-atherectomy-system.html
+2026-04-02 15:09:52,215 INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/directional-atherectomy-systems/silverhawk-peripheral-plaque-excision-system.html
+2026-04-02 15:09:52,233 INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/directional-atherectomy-systems/turbohawk-peripheral-plaque-excision-system.html
+2026-04-02 15:09:52,250 INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/coronary-stents/resolute-onyx-drug-eluting-stent.html
+2026-04-02 15:09:52,256 INFO pipeline.runner: Scraped: https://www.goremedical.com/products/vbx/specifications
+2026-04-02 15:09:52,269 INFO pipeline.runner: Scraped: https://www.goremedical.com/products/viabahn/specifications
+2026-04-02 15:09:52,278 INFO pipeline.runner: Scraped: https://www.cookmedical.com/products/di_ziv_webds/
+2026-04-02 15:09:52,288 INFO pipeline.runner: Scraped: https://www.cookmedical.com/products/esc_zilbs635/
+2026-04-02 15:09:52,302 INFO pipeline.runner: Scraped: https://www.cookmedical.com/products/cf1fddb1-9f10-4002-b9a5-3f4c83c28cbc/
+2026-04-02 15:09:52,313 INFO pipeline.runner: Scraped: https://www.cookmedical.com/products/224e3666-308f-4244-8695-6fd23bbd671c/
+2026-04-02 15:09:52,333 INFO pipeline.runner: Scraped: https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/atherectomy-systems/diamondback-360/ordering-information.html
+2026-04-02 15:09:52,346 INFO pipeline.runner: Scraped: https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/peripheral-stents/omnilink-elite-vascular/ordering-information.html
+2026-04-02 15:09:52,369 INFO pipeline.runner: Scraped: https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/peripheral-stents/absolute-pro-vascular/ordering-information.html
+2026-04-02 15:09:52,386 INFO pipeline.runner: Scraped: https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/supera-stent-system/ordering.html
+2026-04-02 15:09:52,414 INFO pipeline.runner: Scraped: https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/esprit-btk-resorbable-scaffold-system.html
+2026-04-02 15:09:52,435 INFO pipeline.runner: Scraped: https://www.cardiovascular.abbott/us/en/hcp/products/percutaneous-coronary-intervention/xience-family/xience-skypoint/ordering-information-extra-large.html
+2026-04-02 15:09:52,448 INFO pipeline.runner: Scraped: https://cordis.com/na/products/intervene/endovascular/self-expanding-stents/s-m-a-r-t-control-vascular-stent-system
+2026-04-02 15:09:52,466 INFO pipeline.runner: Scraped: https://cordis.com/apac/products/intervene/endovascular/balloon-expandble-stents/palmaz-genesis-peripheral-stent
+2026-04-02 15:09:52,484 INFO pipeline.runner: Scraped: https://shockwavemedical.com/en-eu/products/shockwave-m5-plus/
+2026-04-02 15:09:52,511 INFO pipeline.runner: Scraped: https://shockwavemedical.com/products/shockwave-e8/
+2026-04-02 15:09:52,545 INFO pipeline.runner: Scraped: https://shockwavemedical.com/products/shockwave-l6/
+2026-04-02 15:09:52,575 INFO pipeline.runner: Scraped: https://www.terumois.com/products/stents/r2p-misago2.html
+2026-04-02 15:09:52,577 INFO pipeline.runner: Scraped 28/28 pages.
+2026-04-02 15:09:53,032 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:09:53,927 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:09:53,937 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:09:53,938 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:09:54,599 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:09:54,612 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:09:54,620 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_PALMAZ_GENESIS_20260402200954.json
+2026-04-02 15:09:54,674 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:09:55,244 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:09:55,246 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:09:55,248 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:10:00,220 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:10:00,224 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:10:00,239 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C10060SL_20260402201000.json
+2026-04-02 15:10:00,244 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C10060ML_20260402201000.json
+2026-04-02 15:10:00,250 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C10040SL_20260402201000.json
+2026-04-02 15:10:00,257 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C10040ML_20260402201000.json
+2026-04-02 15:10:00,264 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C10030SL_20260402201000.json
+2026-04-02 15:10:00,270 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C09060SL_20260402201000.json
+2026-04-02 15:10:00,277 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C09060ML_20260402201000.json
+2026-04-02 15:10:00,282 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C09040SL_20260402201000.json
+2026-04-02 15:10:00,290 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C09040ML_20260402201000.json
+2026-04-02 15:10:00,297 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C08100SL_20260402201000.json
+2026-04-02 15:10:00,303 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C08100ML_20260402201000.json
+2026-04-02 15:10:00,309 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C08080SL_20260402201000.json
+2026-04-02 15:10:00,315 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C08080ML_20260402201000.json
+2026-04-02 15:10:00,323 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C08060SL_20260402201000.json
+2026-04-02 15:10:00,329 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C08060ML_20260402201000.json
+2026-04-02 15:10:00,335 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C08040SL_20260402201000.json
+2026-04-02 15:10:00,340 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C08040ML_20260402201000.json
+2026-04-02 15:10:00,345 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C08030SL_20260402201000.json
+2026-04-02 15:10:00,351 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C07100SL_20260402201000.json
+2026-04-02 15:10:00,358 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C07100ML_20260402201000.json
+2026-04-02 15:10:00,364 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C07080SL_20260402201000.json
+2026-04-02 15:10:00,370 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C07080ML_20260402201000.json
+2026-04-02 15:10:00,376 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C07060SL_20260402201000.json
+2026-04-02 15:10:00,381 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C07060ML_20260402201000.json
+2026-04-02 15:10:00,386 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C07040SL_20260402201000.json
+2026-04-02 15:10:00,393 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C07040ML_20260402201000.json
+2026-04-02 15:10:00,398 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C07030ML_20260402201000.json
+2026-04-02 15:10:00,403 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C07020ML_20260402201000.json
+2026-04-02 15:10:00,409 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C06100SL_20260402201000.json
+2026-04-02 15:10:00,414 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C06100ML_20260402201000.json
+2026-04-02 15:10:00,420 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C06080SL_20260402201000.json
+2026-04-02 15:10:00,426 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C06080ML_20260402201000.json
+2026-04-02 15:10:00,433 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C06060SL_20260402201000.json
+2026-04-02 15:10:00,438 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C06060ML_20260402201000.json
+2026-04-02 15:10:00,444 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C06040SL_20260402201000.json
+2026-04-02 15:10:00,449 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C06040ML_20260402201000.json
+2026-04-02 15:10:00,456 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C06030SL_20260402201000.json
+2026-04-02 15:10:00,462 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C06030ML_20260402201000.json
+2026-04-02 15:10:00,468 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Cordis_US_Corp_C06020ML_20260402201000.json
+2026-04-02 15:10:00,512 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:10:00,998 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:10:01,001 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:10:01,002 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:10:01,172 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 382
+2026-04-02 15:10:01,173 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 1.4s
+2026-04-02 15:10:02,547 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:10:03,810 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:10:03,813 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:10:03,822 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Shockwave_Medical__Inc_E8IVL025080_20260402201003.json
+2026-04-02 15:10:03,828 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Shockwave_Medical__Inc_E8IVL030080_20260402201003.json
+2026-04-02 15:10:03,835 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Shockwave_Medical__Inc_E8IVL035080_20260402201003.json
+2026-04-02 15:10:03,841 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Shockwave_Medical__Inc_E8IVL040080_20260402201003.json
+2026-04-02 15:10:03,849 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Shockwave_Medical__Inc_E8IVL050080_20260402201003.json
+2026-04-02 15:10:03,856 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Shockwave_Medical__Inc_E8IVL060080_20260402201003.json
+2026-04-02 15:10:03,902 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:10:04,031 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-02 15:10:04,032 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 8.4s
+2026-04-02 15:10:12,404 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:10:13,376 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:10:13,378 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:10:13,379 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:10:13,539 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 389
+2026-04-02 15:10:13,541 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 1.5s
+2026-04-02 15:10:15,017 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:10:15,157 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 384
+2026-04-02 15:10:15,158 WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11441, Requested 3229. Please try again in 13.35s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-02 15:10:15,160 INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-02 15:10:15,161 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:10:15,640 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:10:15,641 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.1-8b-instant (groq)
+2026-04-02 15:10:15,648 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Shockwave_Medical__Inc_IPU04004013P_20260402201015.json
+2026-04-02 15:10:15,666 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Shockwave_Medical__Inc_IPU04004013P_20260402201015.json
+2026-04-02 15:10:15,682 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Shockwave_Medical__Inc_IPU04004013P_20260402201015.json
+2026-04-02 15:10:15,698 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Shockwave_Medical__Inc_IPU04004013P_20260402201015.json
+2026-04-02 15:10:15,790 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:10:15,927 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-02 15:10:15,929 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 5.3s
+2026-04-02 15:10:21,260 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:10:21,887 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:10:21,890 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:10:21,891 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:10:22,021 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-02 15:10:22,022 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 3.2s
+2026-04-02 15:10:25,249 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:10:26,916 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:10:26,919 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:10:26,939 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Shockwave_Medical__Inc_M5PIVL3560_20260402201026.json
+2026-04-02 15:10:26,946 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Shockwave_Medical__Inc_M5PIVL4060_20260402201026.json
+2026-04-02 15:10:26,951 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Shockwave_Medical__Inc_M5PIVL4560_20260402201026.json
+2026-04-02 15:10:26,956 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Shockwave_Medical__Inc_M5PIVL5060_20260402201026.json
+2026-04-02 15:10:26,963 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Shockwave_Medical__Inc_M5PIVL5560_20260402201026.json
+2026-04-02 15:10:26,969 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Shockwave_Medical__Inc_M5PIVL6060_20260402201026.json
+2026-04-02 15:10:26,976 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Shockwave_Medical__Inc_M5PIVL6560_20260402201026.json
+2026-04-02 15:10:26,981 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Shockwave_Medical__Inc_M5PIVL7060_20260402201026.json
+2026-04-02 15:10:26,988 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Shockwave_Medical__Inc_M5PIVL8060_20260402201026.json
+2026-04-02 15:10:27,089 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:10:27,228 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 384
+2026-04-02 15:10:27,229 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 7.9s
+2026-04-02 15:10:35,167 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:10:35,319 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 384
+2026-04-02 15:10:35,320 WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 10325, Requested 4251. Please try again in 12.88s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-02 15:10:35,323 INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-02 15:10:35,324 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:10:35,928 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:10:35,930 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.1-8b-instant (groq)
+2026-04-02 15:10:35,931 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:10:38,351 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:10:38,581 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:10:38,606 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1212250-18_20260402201038.json
+2026-04-02 15:10:38,613 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1212250-28_20260402201038.json
+2026-04-02 15:10:38,620 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1212250-38_20260402201038.json
+2026-04-02 15:10:38,628 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1212300-18_20260402201038.json
+2026-04-02 15:10:38,636 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1212300-28_20260402201038.json
+2026-04-02 15:10:38,642 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1212300-38_20260402201038.json
+2026-04-02 15:10:38,649 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1212350-18_20260402201038.json
+2026-04-02 15:10:38,656 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1212350-28_20260402201038.json
+2026-04-02 15:10:38,663 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1212350-38_20260402201038.json
+2026-04-02 15:10:38,669 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1212375-18_20260402201038.json
+2026-04-02 15:10:38,675 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1212375-28_20260402201038.json
+2026-04-02 15:10:38,682 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1212375-38_20260402201038.json
+2026-04-02 15:10:38,735 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:10:38,878 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-02 15:10:38,880 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 6.6s
+2026-04-02 15:10:45,511 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:10:46,350 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:10:46,354 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:10:46,355 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:10:47,091 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:10:47,093 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:10:47,094 WARNING validators.record_validator: validate_record: required field missing: model_number
+2026-04-02 15:10:47,095 WARNING pipeline.runner: _process_single_ollama: record rejected: ['REQUIRED_MISSING: model_number']
+2026-04-02 15:10:47,149 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:10:47,281 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 385
+2026-04-02 15:10:47,282 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 10.2s
+2026-04-02 15:10:57,451 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:10:57,606 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 382
+2026-04-02 15:10:57,607 WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 9898, Requested 2185. Please try again in 415ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-02 15:10:57,610 INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-02 15:10:57,611 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:10:58,153 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:10:58,156 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.1-8b-instant (groq)
+2026-04-02 15:10:58,158 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:11:00,006 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:11:00,008 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:11:00,020 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_DBP-150CLASS145_20260402201100.json
+2026-04-02 15:11:00,027 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_DBP-200CLASS145_20260402201100.json
+2026-04-02 15:11:00,033 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_DBP-125SOLID145_20260402201100.json
+2026-04-02 15:11:00,039 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_DBP-125SOLID200_20260402201100.json
+2026-04-02 15:11:00,046 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_DBP-150SOLID145_20260402201100.json
+2026-04-02 15:11:00,053 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_DBP-150SOLID200_20260402201100.json
+2026-04-02 15:11:00,060 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_DBP-175SOLID180_20260402201100.json
+2026-04-02 15:11:00,067 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_DBP-200SOLID145_20260402201100.json
+2026-04-02 15:11:00,073 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_DBP-200MAX145_20260402201100.json
+2026-04-02 15:11:00,079 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_DBP-125MICRO145_20260402201100.json
+2026-04-02 15:11:00,131 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:11:00,279 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-02 15:11:00,280 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 6.8s
+2026-04-02 15:11:07,131 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:11:07,273 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-02 15:11:07,274 WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 9321, Requested 4685. Please try again in 10.03s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-02 15:11:07,276 INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-02 15:11:07,277 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:11:07,948 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:11:07,950 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.1-8b-instant (groq)
+2026-04-02 15:11:07,952 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:11:11,002 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:11:11,005 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:11:11,023 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012622-12_20260402201111.json
+2026-04-02 15:11:11,030 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012622-16_20260402201111.json
+2026-04-02 15:11:11,036 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012622-19_20260402201111.json
+2026-04-02 15:11:11,044 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012622-29_20260402201111.json
+2026-04-02 15:11:11,050 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012622-39_20260402201111.json
+2026-04-02 15:11:11,056 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012622-59_20260402201111.json
+2026-04-02 15:11:11,062 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012623-12_20260402201111.json
+2026-04-02 15:11:11,067 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012623-16_20260402201111.json
+2026-04-02 15:11:11,074 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012623-19_20260402201111.json
+2026-04-02 15:11:11,081 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012623-29_20260402201111.json
+2026-04-02 15:11:11,087 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012623-39_20260402201111.json
+2026-04-02 15:11:11,092 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012623-59_20260402201111.json
+2026-04-02 15:11:11,099 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012624-19_20260402201111.json
+2026-04-02 15:11:11,105 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012624-29_20260402201111.json
+2026-04-02 15:11:11,114 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012624-39_20260402201111.json
+2026-04-02 15:11:11,120 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012624-59_20260402201111.json
+2026-04-02 15:11:11,125 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012625-19_20260402201111.json
+2026-04-02 15:11:11,132 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012625-29_20260402201111.json
+2026-04-02 15:11:11,138 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012625-39_20260402201111.json
+2026-04-02 15:11:11,146 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012625-59_20260402201111.json
+2026-04-02 15:11:11,152 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012626-19_20260402201111.json
+2026-04-02 15:11:11,160 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012626-29_20260402201111.json
+2026-04-02 15:11:11,167 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012626-39_20260402201111.json
+2026-04-02 15:11:11,173 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012626-59_20260402201111.json
+2026-04-02 15:11:11,296 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:11:11,424 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 384
+2026-04-02 15:11:11,425 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 6.7s
+2026-04-02 15:11:18,172 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:11:18,332 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 389
+2026-04-02 15:11:18,333 WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 9953, Requested 2113. Please try again in 329.999999ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-02 15:11:18,335 INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-02 15:11:18,336 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:11:18,873 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:11:18,875 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.1-8b-instant (groq)
+2026-04-02 15:11:18,876 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:11:22,975 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:11:22,978 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:11:22,996 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012528-20_20260402201122.json
+2026-04-02 15:11:23,003 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012528-30_20260402201122.json
+2026-04-02 15:11:23,018 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012528-40_20260402201123.json
+2026-04-02 15:11:23,023 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012528-60_20260402201123.json
+2026-04-02 15:11:23,028 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012528-80_20260402201123.json
+2026-04-02 15:11:23,034 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012528-100_20260402201123.json
+2026-04-02 15:11:23,041 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012529-20_20260402201123.json
+2026-04-02 15:11:23,048 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012529-30_20260402201123.json
+2026-04-02 15:11:23,055 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012529-40_20260402201123.json
+2026-04-02 15:11:23,062 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012529-60_20260402201123.json
+2026-04-02 15:11:23,068 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012529-80_20260402201123.json
+2026-04-02 15:11:23,076 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012529-100_20260402201123.json
+2026-04-02 15:11:23,082 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012530-20_20260402201123.json
+2026-04-02 15:11:23,088 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012530-30_20260402201123.json
+2026-04-02 15:11:23,095 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012530-40_20260402201123.json
+2026-04-02 15:11:23,101 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012530-60_20260402201123.json
+2026-04-02 15:11:23,108 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012530-80_20260402201123.json
+2026-04-02 15:11:23,114 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012530-100_20260402201123.json
+2026-04-02 15:11:23,121 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012531-20_20260402201123.json
+2026-04-02 15:11:23,126 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012531-30_20260402201123.json
+2026-04-02 15:11:23,132 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012531-40_20260402201123.json
+2026-04-02 15:11:23,138 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012531-60_20260402201123.json
+2026-04-02 15:11:23,145 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012531-80_20260402201123.json
+2026-04-02 15:11:23,153 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012531-100_20260402201123.json
+2026-04-02 15:11:23,159 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012532-20_20260402201123.json
+2026-04-02 15:11:23,165 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012532-30_20260402201123.json
+2026-04-02 15:11:23,172 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012532-40_20260402201123.json
+2026-04-02 15:11:23,178 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012532-60_20260402201123.json
+2026-04-02 15:11:23,184 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012532-80_20260402201123.json
+2026-04-02 15:11:23,191 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_1012532-100_20260402201123.json
+2026-04-02 15:11:23,238 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:11:23,372 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-02 15:11:23,374 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 9.7s
+2026-04-02 15:11:33,052 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:11:33,967 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:11:33,970 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:11:33,970 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:11:34,098 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-02 15:11:34,106 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 2.3s
+2026-04-02 15:11:36,424 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:11:36,575 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 385
+2026-04-02 15:11:36,577 WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11403, Requested 2646. Please try again in 10.245s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-02 15:11:36,579 INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-02 15:11:36,580 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:11:37,493 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:11:37,494 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.1-8b-instant (groq)
+2026-04-02 15:11:37,503 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_IPU04004013P_20260402201137.json
+2026-04-02 15:11:37,509 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_IPU04005013P_20260402201137.json
+2026-04-02 15:11:37,523 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_IPU04005513P_20260402201137.json
+2026-04-02 15:11:37,529 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_IPU04006013P_20260402201137.json
+2026-04-02 15:11:37,536 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_IPU04006513P_20260402201137.json
+2026-04-02 15:11:37,541 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_IPU04007013P_20260402201137.json
+2026-04-02 15:11:37,547 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/ABBOTT_VASCULAR_INC_IPU04007513P_20260402201137.json
+2026-04-02 15:11:37,670 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:11:37,841 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 384
+2026-04-02 15:11:37,842 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 6.9s
+2026-04-02 15:11:44,759 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:11:44,908 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 382
+2026-04-02 15:11:44,909 WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 9734, Requested 2384. Please try again in 590ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-02 15:11:44,911 INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-02 15:11:44,912 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:11:45,276 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:11:45,278 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.1-8b-instant (groq)
+2026-04-02 15:11:45,280 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:11:45,449 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 382
+2026-04-02 15:11:45,450 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 1.4s
+2026-04-02 15:11:46,841 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:11:49,940 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:11:49,947 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:11:49,974 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZISV6-35-125-5-40-PTX_20260402201149.json
+2026-04-02 15:11:49,984 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZISV6-35-125-5-60-PTX_20260402201149.json
+2026-04-02 15:11:49,993 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZISV6-35-125-5-80-PTX_20260402201149.json
+2026-04-02 15:11:50,008 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZISV6-35-125-5-100-PTX_20260402201149.json
+2026-04-02 15:11:50,026 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZISV6-35-125-5-120-PTX_20260402201150.json
+2026-04-02 15:11:50,056 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZISV6-35-125-5-140-PTX_20260402201150.json
+2026-04-02 15:11:50,073 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZISV6-35-125-6-40-PTX_20260402201150.json
+2026-04-02 15:11:50,096 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZISV6-35-125-6-60-PTX_20260402201150.json
+2026-04-02 15:11:50,108 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZISV6-35-125-6-80-PTX_20260402201150.json
+2026-04-02 15:11:50,126 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZISV6-35-125-6-100-PTX_20260402201150.json
+2026-04-02 15:11:50,144 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZISV6-35-125-6-120-PTX_20260402201150.json
+2026-04-02 15:11:50,160 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZISV6-35-125-6-140-PTX_20260402201150.json
+2026-04-02 15:11:50,178 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZISV6-35-125-7-40-PTX_20260402201150.json
+2026-04-02 15:11:50,198 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZISV6-35-125-7-60-PTX_20260402201150.json
+2026-04-02 15:11:50,216 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZISV6-35-125-7-80-PTX_20260402201150.json
+2026-04-02 15:11:50,238 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZISV6-35-125-7-100-PTX_20260402201150.json
+2026-04-02 15:11:50,740 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:11:50,906 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 385
+2026-04-02 15:11:50,908 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 16.4s
+2026-04-02 15:12:07,325 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:12:07,486 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-02 15:12:07,487 WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 8313, Requested 4186. Please try again in 2.495s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-02 15:12:07,490 INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-02 15:12:07,492 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:12:07,844 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:12:07,847 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.1-8b-instant (groq)
+2026-04-02 15:12:07,848 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:12:10,118 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:12:10,122 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:12:10,158 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G61183_20260402201210.json
+2026-04-02 15:12:10,166 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G61184_20260402201210.json
+2026-04-02 15:12:10,174 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G61185_20260402201210.json
+2026-04-02 15:12:10,183 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G61186_20260402201210.json
+2026-04-02 15:12:10,193 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G61187_20260402201210.json
+2026-04-02 15:12:10,201 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G61188_20260402201210.json
+2026-04-02 15:12:10,209 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G61189_20260402201210.json
+2026-04-02 15:12:10,217 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G61190_20260402201210.json
+2026-04-02 15:12:10,227 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G61191_20260402201210.json
+2026-04-02 15:12:10,237 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G61192_20260402201210.json
+2026-04-02 15:12:10,247 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G03796_20260402201210.json
+2026-04-02 15:12:10,256 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G03797_20260402201210.json
+2026-04-02 15:12:10,264 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G03799_20260402201210.json
+2026-04-02 15:12:10,274 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G03800_20260402201210.json
+2026-04-02 15:12:10,282 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G03801_20260402201210.json
+2026-04-02 15:12:10,291 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G03802_20260402201210.json
+2026-04-02 15:12:10,299 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G23751_20260402201210.json
+2026-04-02 15:12:10,502 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:12:10,660 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 384
+2026-04-02 15:12:10,662 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 14.0s
+2026-04-02 15:12:24,694 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:12:25,343 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:12:25,347 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:12:25,348 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:12:25,538 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 382
+2026-04-02 15:12:25,539 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 5.4s
+2026-04-02 15:12:31,009 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:12:33,270 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:12:33,275 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:12:33,303 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZIV5-18-125-6-20_20260402201233.json
+2026-04-02 15:12:33,313 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZIV5-18-125-6-30_20260402201233.json
+2026-04-02 15:12:33,321 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZIV5-18-125-6-40_20260402201233.json
+2026-04-02 15:12:33,331 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZIV5-18-125-6-60_20260402201233.json
+2026-04-02 15:12:33,339 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZIV5-18-125-6-80_20260402201233.json
+2026-04-02 15:12:33,347 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZIV5-18-125-7-20_20260402201233.json
+2026-04-02 15:12:33,356 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZIV5-18-125-7-30_20260402201233.json
+2026-04-02 15:12:33,364 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZIV5-18-125-7-40_20260402201233.json
+2026-04-02 15:12:33,372 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZIV5-18-125-7-60_20260402201233.json
+2026-04-02 15:12:33,380 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZIV5-18-125-7-80_20260402201233.json
+2026-04-02 15:12:33,388 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZIV5-18-125-8-20_20260402201233.json
+2026-04-02 15:12:33,397 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZIV5-18-125-8-30_20260402201233.json
+2026-04-02 15:12:33,405 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZIV5-18-125-8-40_20260402201233.json
+2026-04-02 15:12:33,413 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZIV5-18-125-8-60_20260402201233.json
+2026-04-02 15:12:33,421 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZIV5-18-125-8-80_20260402201233.json
+2026-04-02 15:12:33,429 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_ZIV5-18-125-9-20_20260402201233.json
+2026-04-02 15:12:33,744 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:12:33,902 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-02 15:12:33,903 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 6.8s
+2026-04-02 15:12:40,665 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:12:40,823 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 382
+2026-04-02 15:12:40,825 WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 9143, Requested 4187. Please try again in 6.65s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-02 15:12:40,829 INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-02 15:12:40,831 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:12:41,189 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:12:41,193 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.1-8b-instant (groq)
+2026-04-02 15:12:41,195 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:12:41,371 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-02 15:12:41,373 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 4.1s
+2026-04-02 15:12:45,490 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:12:47,190 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:12:47,194 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:12:47,216 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G50616_20260402201247.json
+2026-04-02 15:12:47,224 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G50619_20260402201247.json
+2026-04-02 15:12:47,234 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G50622_20260402201247.json
+2026-04-02 15:12:47,243 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G23811_20260402201247.json
+2026-04-02 15:12:47,251 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G23812_20260402201247.json
+2026-04-02 15:12:47,262 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G50617_20260402201247.json
+2026-04-02 15:12:47,271 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G50620_20260402201247.json
+2026-04-02 15:12:47,279 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G50623_20260402201247.json
+2026-04-02 15:12:47,288 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G23813_20260402201247.json
+2026-04-02 15:12:47,300 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G23814_20260402201247.json
+2026-04-02 15:12:47,309 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G50618_20260402201247.json
+2026-04-02 15:12:47,319 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G50621_20260402201247.json
+2026-04-02 15:12:47,329 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/COOK_IRELAND_LTD_G50624_20260402201247.json
+2026-04-02 15:12:47,452 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:12:47,619 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 385
+2026-04-02 15:12:47,620 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 19.9s
+2026-04-02 15:13:07,584 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:13:07,753 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-02 15:13:07,754 WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 6273, Requested 6222. Please try again in 2.475s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-02 15:13:07,757 INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-02 15:13:07,758 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:13:08,318 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:13:08,321 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.1-8b-instant (groq)
+2026-04-02 15:13:08,322 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:13:13,584 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:13:13,587 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:13:13,623 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR050202A_20260402201313.json
+2026-04-02 15:13:13,631 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR050502A_20260402201313.json
+2026-04-02 15:13:13,641 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR050702A_20260402201313.json
+2026-04-02 15:13:13,649 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR051002A_20260402201313.json
+2026-04-02 15:13:13,658 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR051502A_20260402201313.json
+2026-04-02 15:13:13,667 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR052502A_20260402201313.json
+2026-04-02 15:13:13,674 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR060201A_20260402201313.json
+2026-04-02 15:13:13,682 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR060202A_20260402201313.json
+2026-04-02 15:13:13,691 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR060501A_20260402201313.json
+2026-04-02 15:13:13,699 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR060502A_20260402201313.json
+2026-04-02 15:13:13,706 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR060702A_20260402201313.json
+2026-04-02 15:13:13,715 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR061001A_20260402201313.json
+2026-04-02 15:13:13,723 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR061002A_20260402201313.json
+2026-04-02 15:13:13,732 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR061501A_20260402201313.json
+2026-04-02 15:13:13,740 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR061502A_20260402201313.json
+2026-04-02 15:13:13,747 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR062502A_20260402201313.json
+2026-04-02 15:13:13,755 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR070201A_20260402201313.json
+2026-04-02 15:13:13,763 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR070202A_20260402201313.json
+2026-04-02 15:13:13,770 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR070501A_20260402201313.json
+2026-04-02 15:13:13,779 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR070502A_20260402201313.json
+2026-04-02 15:13:13,789 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR070702A_20260402201313.json
+2026-04-02 15:13:13,796 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR071001A_20260402201313.json
+2026-04-02 15:13:13,802 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR071002A_20260402201313.json
+2026-04-02 15:13:13,810 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR071501A_20260402201313.json
+2026-04-02 15:13:13,818 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR071502A_20260402201313.json
+2026-04-02 15:13:13,826 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR072502A_20260402201313.json
+2026-04-02 15:13:13,836 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR080201A_20260402201313.json
+2026-04-02 15:13:13,843 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR080202A_20260402201313.json
+2026-04-02 15:13:13,851 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR080501A_20260402201313.json
+2026-04-02 15:13:13,860 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR080502A_20260402201313.json
+2026-04-02 15:13:13,869 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR080702A_20260402201313.json
+2026-04-02 15:13:13,877 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR081001A_20260402201313.json
+2026-04-02 15:13:13,888 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR081002A_20260402201313.json
+2026-04-02 15:13:13,896 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR081501A_20260402201313.json
+2026-04-02 15:13:13,905 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR081502A_20260402201313.json
+2026-04-02 15:13:13,913 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR082502A_20260402201313.json
+2026-04-02 15:13:13,922 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR090502A_20260402201313.json
+2026-04-02 15:13:13,930 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR090702A_20260402201313.json
+2026-04-02 15:13:13,938 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR091002A_20260402201313.json
+2026-04-02 15:13:13,947 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR091502A_20260402201313.json
+2026-04-02 15:13:13,956 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR100502A_20260402201313.json
+2026-04-02 15:13:13,964 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR101002A_20260402201313.json
+2026-04-02 15:13:13,973 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR101502A_20260402201313.json
+2026-04-02 15:13:13,981 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR110502A_20260402201313.json
+2026-04-02 15:13:13,990 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR111002A_20260402201313.json
+2026-04-02 15:13:13,999 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR130502A_20260402201313.json
+2026-04-02 15:13:14,007 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_VBHR131002A_20260402201314.json
+2026-04-02 15:13:14,120 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:13:14,321 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 390
+2026-04-02 15:13:14,322 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 8.1s
+2026-04-02 15:13:22,420 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:13:23,478 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:13:23,488 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:13:23,490 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:13:24,704 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 384
+2026-04-02 15:13:24,706 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 10.3s
+2026-04-02 15:13:35,083 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:13:41,867 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:13:41,871 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:13:41,916 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA051501A_20260402201341.json
+2026-04-02 15:13:41,925 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA051901A_20260402201341.json
+2026-04-02 15:13:41,935 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA052901A_20260402201341.json
+2026-04-02 15:13:41,943 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA053901A_20260402201341.json
+2026-04-02 15:13:41,951 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA055901A_20260402201341.json
+2026-04-02 15:13:41,960 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA057901A_20260402201341.json
+2026-04-02 15:13:41,969 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA061501A_20260402201341.json
+2026-04-02 15:13:41,977 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA061901A_20260402201341.json
+2026-04-02 15:13:41,986 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA062901A_20260402201341.json
+2026-04-02 15:13:41,995 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA063901A_20260402201341.json
+2026-04-02 15:13:42,004 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA065901A_20260402201341.json
+2026-04-02 15:13:42,012 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA067901A_20260402201342.json
+2026-04-02 15:13:42,020 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA071501A_20260402201342.json
+2026-04-02 15:13:42,029 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA071901A_20260402201342.json
+2026-04-02 15:13:42,038 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA072901A_20260402201342.json
+2026-04-02 15:13:42,045 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA073901A_20260402201342.json
+2026-04-02 15:13:42,054 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA075901A_20260402201342.json
+2026-04-02 15:13:42,062 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA077901A_20260402201342.json
+2026-04-02 15:13:42,070 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA082901A_20260402201342.json
+2026-04-02 15:13:42,079 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA083901A_20260402201342.json
+2026-04-02 15:13:42,087 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA085901A_20260402201342.json
+2026-04-02 15:13:42,096 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA087901A_20260402201342.json
+2026-04-02 15:13:42,105 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA092901A_20260402201342.json
+2026-04-02 15:13:42,113 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA093901A_20260402201342.json
+2026-04-02 15:13:42,121 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA095901A_20260402201342.json
+2026-04-02 15:13:42,130 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA097901A_20260402201342.json
+2026-04-02 15:13:42,141 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA102901A_20260402201342.json
+2026-04-02 15:13:42,150 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA103901A_20260402201342.json
+2026-04-02 15:13:42,159 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA105901A_20260402201342.json
+2026-04-02 15:13:42,168 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA107901A_20260402201342.json
+2026-04-02 15:13:42,178 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA112901A_20260402201342.json
+2026-04-02 15:13:42,186 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA113901A_20260402201342.json
+2026-04-02 15:13:42,195 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA115901A_20260402201342.json
+2026-04-02 15:13:42,205 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA117901A_20260402201342.json
+2026-04-02 15:13:42,214 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXAL082901A_20260402201342.json
+2026-04-02 15:13:42,226 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXAL083901A_20260402201342.json
+2026-04-02 15:13:42,235 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXAL085901A_20260402201342.json
+2026-04-02 15:13:42,244 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXAL087901A_20260402201342.json
+2026-04-02 15:13:42,251 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA051502A_20260402201342.json
+2026-04-02 15:13:42,260 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA051902A_20260402201342.json
+2026-04-02 15:13:42,272 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA052902A_20260402201342.json
+2026-04-02 15:13:42,281 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA053902A_20260402201342.json
+2026-04-02 15:13:42,287 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA055902A_20260402201342.json
+2026-04-02 15:13:42,296 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA057902A_20260402201342.json
+2026-04-02 15:13:42,304 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA061502A_20260402201342.json
+2026-04-02 15:13:42,314 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA061902A_20260402201342.json
+2026-04-02 15:13:42,323 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA062902A_20260402201342.json
+2026-04-02 15:13:42,331 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA063902A_20260402201342.json
+2026-04-02 15:13:42,339 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA065902A_20260402201342.json
+2026-04-02 15:13:42,347 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA067902A_20260402201342.json
+2026-04-02 15:13:42,355 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA071502A_20260402201342.json
+2026-04-02 15:13:42,364 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA071902A_20260402201342.json
+2026-04-02 15:13:42,372 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA072902A_20260402201342.json
+2026-04-02 15:13:42,380 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA073902A_20260402201342.json
+2026-04-02 15:13:42,389 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/W__L__Gore___Associates__Inc_BXA075902A_20260402201342.json
+2026-04-02 15:13:42,765 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:13:42,936 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 385
+2026-04-02 15:13:42,937 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 13.2s
+2026-04-02 15:13:56,154 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:13:56,315 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 382
+2026-04-02 15:13:56,316 WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 9101, Requested 3301. Please try again in 2.01s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-02 15:13:56,319 INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-02 15:13:56,321 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:13:56,737 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:13:56,739 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.1-8b-instant (groq)
+2026-04-02 15:13:56,741 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:14:03,581 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:14:03,584 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:14:03,731 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-06-020-080_20260402201403.json
+2026-04-02 15:14:03,742 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-06-020-120_20260402201403.json
+2026-04-02 15:14:03,751 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-06-020-150_20260402201403.json
+2026-04-02 15:14:03,760 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-06-040-080_20260402201403.json
+2026-04-02 15:14:03,768 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-06-040-120_20260402201403.json
+2026-04-02 15:14:03,779 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-06-040-150_20260402201403.json
+2026-04-02 15:14:03,789 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-06-060-080_20260402201403.json
+2026-04-02 15:14:03,797 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-06-060-120_20260402201403.json
+2026-04-02 15:14:03,808 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-06-060-150_20260402201403.json
+2026-04-02 15:14:03,817 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-06-080-080_20260402201403.json
+2026-04-02 15:14:03,829 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-06-080-120_20260402201403.json
+2026-04-02 15:14:03,838 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-06-080-150_20260402201403.json
+2026-04-02 15:14:03,845 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-06-100-080_20260402201403.json
+2026-04-02 15:14:03,853 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-06-100-120_20260402201403.json
+2026-04-02 15:14:03,860 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-06-100-150_20260402201403.json
+2026-04-02 15:14:03,870 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-06-120-080_20260402201403.json
+2026-04-02 15:14:03,878 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-06-120-120_20260402201403.json
+2026-04-02 15:14:03,885 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-06-120-150_20260402201403.json
+2026-04-02 15:14:03,891 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-06-150-080_20260402201403.json
+2026-04-02 15:14:03,898 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-06-150-120_20260402201403.json
+2026-04-02 15:14:03,905 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-06-150-150_20260402201403.json
+2026-04-02 15:14:03,912 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-07-020-080_20260402201403.json
+2026-04-02 15:14:03,920 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-07-020-120_20260402201403.json
+2026-04-02 15:14:03,927 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-07-020-150_20260402201403.json
+2026-04-02 15:14:03,935 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-07-040-080_20260402201403.json
+2026-04-02 15:14:03,943 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-07-040-120_20260402201403.json
+2026-04-02 15:14:03,950 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-07-040-150_20260402201403.json
+2026-04-02 15:14:03,958 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-07-060-080_20260402201403.json
+2026-04-02 15:14:03,965 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-07-060-120_20260402201403.json
+2026-04-02 15:14:03,972 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-07-060-150_20260402201403.json
+2026-04-02 15:14:03,980 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-07-080-080_20260402201403.json
+2026-04-02 15:14:03,986 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-07-080-120_20260402201403.json
+2026-04-02 15:14:03,994 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-07-080-150_20260402201403.json
+2026-04-02 15:14:04,001 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-07-100-080_20260402201403.json
+2026-04-02 15:14:04,008 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-07-100-120_20260402201404.json
+2026-04-02 15:14:04,017 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-07-100-150_20260402201404.json
+2026-04-02 15:14:04,024 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-07-120-080_20260402201404.json
+2026-04-02 15:14:04,031 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-07-120-120_20260402201404.json
+2026-04-02 15:14:04,038 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-07-120-150_20260402201404.json
+2026-04-02 15:14:04,045 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-07-150-080_20260402201404.json
+2026-04-02 15:14:04,055 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-07-150-120_20260402201404.json
+2026-04-02 15:14:04,063 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-07-150-150_20260402201404.json
+2026-04-02 15:14:04,070 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-08-020-080_20260402201404.json
+2026-04-02 15:14:04,077 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-08-020-120_20260402201404.json
+2026-04-02 15:14:04,085 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-08-020-150_20260402201404.json
+2026-04-02 15:14:04,092 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-08-040-080_20260402201404.json
+2026-04-02 15:14:04,099 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-08-040-120_20260402201404.json
+2026-04-02 15:14:04,107 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-08-040-150_20260402201404.json
+2026-04-02 15:14:04,115 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-08-060-080_20260402201404.json
+2026-04-02 15:14:04,122 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-08-060-120_20260402201404.json
+2026-04-02 15:14:04,131 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-08-060-150_20260402201404.json
+2026-04-02 15:14:04,139 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-08-080-080_20260402201404.json
+2026-04-02 15:14:04,148 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-08-080-120_20260402201404.json
+2026-04-02 15:14:04,155 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-08-080-150_20260402201404.json
+2026-04-02 15:14:04,163 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_EVD35-08-100-080_20260402201404.json
+2026-04-02 15:14:04,455 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:14:04,629 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 384
+2026-04-02 15:14:04,630 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 11.0s
+2026-04-02 15:14:15,652 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:14:15,810 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-02 15:14:15,811 WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 9552, Requested 3685. Please try again in 6.185s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-02 15:14:15,814 INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-02 15:14:15,816 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:14:16,299 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:14:16,303 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.1-8b-instant (groq)
+2026-04-02 15:14:16,304 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:14:17,173 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:14:17,176 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:14:17,211 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_H1-LS_20260402201417.json
+2026-04-02 15:14:17,220 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_H1-LX_20260402201417.json
+2026-04-02 15:14:17,228 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_H1-M_20260402201417.json
+2026-04-02 15:14:17,238 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_H1-S_20260402201417.json
+2026-04-02 15:14:17,655 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:14:17,807 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-02 15:14:17,808 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 6.8s
+2026-04-02 15:14:24,660 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:14:24,835 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 382
+2026-04-02 15:14:24,837 WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 8636, Requested 4236. Please try again in 4.36s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-02 15:14:24,840 INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-02 15:14:24,842 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:14:25,301 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:14:25,304 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.1-8b-instant (groq)
+2026-04-02 15:14:25,306 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:14:26,353 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:14:26,355 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:14:26,356 WARNING validators.record_validator: validate_record: required field missing: model_number
+2026-04-02 15:14:26,356 WARNING pipeline.runner: _process_single_ollama: record rejected: ['REQUIRED_MISSING: model_number']
+2026-04-02 15:14:26,734 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:14:26,914 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 381
+2026-04-02 15:14:26,916 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 9.3s
+2026-04-02 15:14:36,217 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:14:36,948 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:14:36,952 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:14:36,953 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:14:37,590 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:14:37,593 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:14:37,594 WARNING validators.record_validator: validate_record: required field missing: model_number
+2026-04-02 15:14:37,595 WARNING pipeline.runner: _process_single_ollama: record rejected: ['REQUIRED_MISSING: model_number']
+2026-04-02 15:14:37,875 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:14:38,298 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:14:38,305 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:14:38,309 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:14:38,531 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 391
+2026-04-02 15:14:38,532 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 15.0s
+2026-04-02 15:14:53,550 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:14:55,552 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:14:55,558 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:14:55,597 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PRB35-05-020-080_20260402201455.json
+2026-04-02 15:14:55,605 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PRB35-05-020-120_20260402201455.json
+2026-04-02 15:14:55,621 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PRB35-05-030-080_20260402201455.json
+2026-04-02 15:14:55,631 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PRB35-05-030-120_20260402201455.json
+2026-04-02 15:14:55,637 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PRB35-05-040-080_20260402201455.json
+2026-04-02 15:14:55,645 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PRB35-05-040-120_20260402201455.json
+2026-04-02 15:14:55,656 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PRB35-05-060-080_20260402201455.json
+2026-04-02 15:14:55,664 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PRB35-05-060-120_20260402201455.json
+2026-04-02 15:14:55,672 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PRB35-05-080-080_20260402201455.json
+2026-04-02 15:14:55,680 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PRB35-05-080-120_20260402201455.json
+2026-04-02 15:14:55,690 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PRB35-05-100-080_20260402201455.json
+2026-04-02 15:14:55,697 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PRB35-05-100-120_20260402201455.json
+2026-04-02 15:14:55,704 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PRB35-05-120-080_20260402201455.json
+2026-04-02 15:14:55,712 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PRB35-05-120-120_20260402201455.json
+2026-04-02 15:14:56,053 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:14:56,200 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 381
+2026-04-02 15:14:56,201 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 2.5s
+2026-04-02 15:14:58,739 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:14:58,897 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 382
+2026-04-02 15:14:58,898 WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 8655, Requested 3693. Please try again in 1.74s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-02 15:14:58,901 INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-02 15:14:58,902 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:14:59,350 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:14:59,353 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.1-8b-instant (groq)
+2026-04-02 15:14:59,354 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:14:59,519 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-02 15:14:59,520 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 6.7s
+2026-04-02 15:15:06,217 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:15:06,394 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 382
+2026-04-02 15:15:06,396 WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 7158, Requested 6204. Please try again in 6.81s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-02 15:15:06,408 INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-02 15:15:06,410 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:15:08,739 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:15:08,743 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.1-8b-instant (groq)
+2026-04-02 15:15:08,818 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-9-20-80_20260402201508.json
+2026-04-02 15:15:08,829 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-9-30-80_20260402201508.json
+2026-04-02 15:15:08,839 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-9-40-80_20260402201508.json
+2026-04-02 15:15:08,849 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-9-60-80_20260402201508.json
+2026-04-02 15:15:08,858 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-9-80-80_20260402201508.json
+2026-04-02 15:15:08,867 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-10-20-80_20260402201508.json
+2026-04-02 15:15:08,877 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-10-30-80_20260402201508.json
+2026-04-02 15:15:08,887 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-10-40-80_20260402201508.json
+2026-04-02 15:15:08,894 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-10-60-80_20260402201508.json
+2026-04-02 15:15:08,904 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-10-80-80_20260402201508.json
+2026-04-02 15:15:08,912 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-12-20-80_20260402201508.json
+2026-04-02 15:15:08,924 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-12-30-80_20260402201508.json
+2026-04-02 15:15:08,933 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-12-40-80_20260402201508.json
+2026-04-02 15:15:08,941 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-12-60-80_20260402201508.json
+2026-04-02 15:15:08,949 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-12-80-80_20260402201508.json
+2026-04-02 15:15:08,958 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-9-20-120_20260402201508.json
+2026-04-02 15:15:08,968 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-9-30-120_20260402201508.json
+2026-04-02 15:15:08,976 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-9-40-120_20260402201508.json
+2026-04-02 15:15:08,985 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-9-60-120_20260402201508.json
+2026-04-02 15:15:08,995 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-9-80-120_20260402201508.json
+2026-04-02 15:15:09,003 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-10-20-120_20260402201508.json
+2026-04-02 15:15:09,016 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-10-30-120_20260402201509.json
+2026-04-02 15:15:09,025 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-10-40-120_20260402201509.json
+2026-04-02 15:15:09,033 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-10-60-120_20260402201509.json
+2026-04-02 15:15:09,040 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-10-80-120_20260402201509.json
+2026-04-02 15:15:09,049 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_SERB65-12-20-120_20260402201509.json
+2026-04-02 15:15:09,331 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:15:10,388 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:15:10,390 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:15:10,391 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:15:17,054 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:15:17,056 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:15:17,057 WARNING validators.record_validator: validate_record: required field missing: model_number
+2026-04-02 15:15:17,058 WARNING pipeline.runner: _process_single_ollama: record rejected: ['REQUIRED_MISSING: model_number']
+2026-04-02 15:15:17,377 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:15:17,539 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-02 15:15:17,540 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 17.7s
+2026-04-02 15:15:35,280 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:15:35,865 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:15:35,870 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:15:35,872 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:15:36,016 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-02 15:15:36,018 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 9.6s
+2026-04-02 15:15:45,665 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:15:47,780 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:15:47,785 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:15:47,807 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_P4055_20260402201547.json
+2026-04-02 15:15:47,825 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_P4056_20260402201547.json
+2026-04-02 15:15:47,833 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_P4030_20260402201547.json
+2026-04-02 15:15:47,841 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_P4044_20260402201547.json
+2026-04-02 15:15:47,849 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_P4028_20260402201547.json
+2026-04-02 15:15:48,135 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:15:48,816 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:15:48,820 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:15:48,822 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:15:48,976 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-02 15:15:48,985 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 9.3s
+2026-04-02 15:15:58,282 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:15:59,240 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:15:59,243 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:15:59,260 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_TH-LX-M_20260402201559.json
+2026-04-02 15:15:59,268 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_THS-SX-C_20260402201559.json
+2026-04-02 15:15:59,278 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_THS-SS-CL_20260402201559.json
+2026-04-02 15:15:59,545 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:15:59,711 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 381
+2026-04-02 15:15:59,712 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 7.3s
+2026-04-02 15:16:07,014 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:16:07,865 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:16:07,869 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:16:07,871 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:16:14,961 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:16:14,964 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:16:15,089 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-05-12-080_20260402201615.json
+2026-04-02 15:16:15,098 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-05-17-080_20260402201615.json
+2026-04-02 15:16:15,108 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-05-17-135_20260402201615.json
+2026-04-02 15:16:15,114 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-05-27-080_20260402201615.json
+2026-04-02 15:16:15,131 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-05-27-135_20260402201615.json
+2026-04-02 15:16:15,140 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-05-37-080_20260402201615.json
+2026-04-02 15:16:15,149 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-05-37-135_20260402201615.json
+2026-04-02 15:16:15,156 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-05-57-080_20260402201615.json
+2026-04-02 15:16:15,163 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-05-57-135_20260402201615.json
+2026-04-02 15:16:15,172 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-06-12-080_20260402201615.json
+2026-04-02 15:16:15,180 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-06-17-080_20260402201615.json
+2026-04-02 15:16:15,187 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-06-17-135_20260402201615.json
+2026-04-02 15:16:15,196 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-06-27-080_20260402201615.json
+2026-04-02 15:16:15,205 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-06-27-135_20260402201615.json
+2026-04-02 15:16:15,213 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-06-37-080_20260402201615.json
+2026-04-02 15:16:15,221 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-06-37-135_20260402201615.json
+2026-04-02 15:16:15,228 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-06-57-080_20260402201615.json
+2026-04-02 15:16:15,236 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-06-57-135_20260402201615.json
+2026-04-02 15:16:15,244 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-07-12-080_20260402201615.json
+2026-04-02 15:16:15,251 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-07-17-080_20260402201615.json
+2026-04-02 15:16:15,258 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-07-17-135_20260402201615.json
+2026-04-02 15:16:15,268 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-07-27-080_20260402201615.json
+2026-04-02 15:16:15,277 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-07-27-135_20260402201615.json
+2026-04-02 15:16:15,285 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-07-37-080_20260402201615.json
+2026-04-02 15:16:15,380 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-07-37-135_20260402201615.json
+2026-04-02 15:16:15,387 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-07-57-080_20260402201615.json
+2026-04-02 15:16:15,404 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-07-57-135_20260402201615.json
+2026-04-02 15:16:15,412 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-08-17-080_20260402201615.json
+2026-04-02 15:16:15,419 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-08-17-135_20260402201615.json
+2026-04-02 15:16:15,427 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-08-27-080_20260402201615.json
+2026-04-02 15:16:15,436 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-08-27-135_20260402201615.json
+2026-04-02 15:16:15,444 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-08-37-080_20260402201615.json
+2026-04-02 15:16:15,450 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-08-37-135_20260402201615.json
+2026-04-02 15:16:15,458 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-08-57-080_20260402201615.json
+2026-04-02 15:16:15,467 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-08-57-135_20260402201615.json
+2026-04-02 15:16:15,474 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-09-17-080_20260402201615.json
+2026-04-02 15:16:15,482 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-09-17-135_20260402201615.json
+2026-04-02 15:16:15,491 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-09-27-080_20260402201615.json
+2026-04-02 15:16:15,500 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-09-27-135_20260402201615.json
+2026-04-02 15:16:15,508 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-09-37-080_20260402201615.json
+2026-04-02 15:16:15,517 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-09-37-135_20260402201615.json
+2026-04-02 15:16:15,526 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-09-57-080_20260402201615.json
+2026-04-02 15:16:15,535 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-09-57-135_20260402201615.json
+2026-04-02 15:16:15,543 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-10-17-080_20260402201615.json
+2026-04-02 15:16:15,551 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-10-17-135_20260402201615.json
+2026-04-02 15:16:15,560 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-10-27-080_20260402201615.json
+2026-04-02 15:16:15,567 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-10-27-135_20260402201615.json
+2026-04-02 15:16:15,575 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-10-37-080_20260402201615.json
+2026-04-02 15:16:15,583 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-10-37-135_20260402201615.json
+2026-04-02 15:16:15,590 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-10-57-080_20260402201615.json
+2026-04-02 15:16:15,600 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/MEDTRONIC__INC_PXB35-10-57-135_20260402201615.json
+2026-04-02 15:16:15,751 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:16:15,908 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 384
+2026-04-02 15:16:15,909 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 26.8s
+2026-04-02 15:16:42,780 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:16:43,343 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:16:43,348 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:16:43,349 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:16:43,498 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 382
+2026-04-02 15:16:43,499 INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 3.1s
+2026-04-02 15:16:46,631 DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-02 15:16:48,787 DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-02 15:16:48,793 INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-02 15:16:48,815 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Terumo_Medical_Corporation_SXR06040R_20260402201648.json
+2026-04-02 15:16:48,828 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Terumo_Medical_Corporation_SXR06060R_20260402201648.json
+2026-04-02 15:16:48,836 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Terumo_Medical_Corporation_SXR06080R_20260402201648.json
+2026-04-02 15:16:48,846 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Terumo_Medical_Corporation_SXR06100R_20260402201648.json
+2026-04-02 15:16:48,853 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Terumo_Medical_Corporation_SXR06120R_20260402201648.json
+2026-04-02 15:16:48,864 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Terumo_Medical_Corporation_SXR06150R_20260402201648.json
+2026-04-02 15:16:48,873 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Terumo_Medical_Corporation_SXR07040R_20260402201648.json
+2026-04-02 15:16:48,881 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Terumo_Medical_Corporation_SXR07060R_20260402201648.json
+2026-04-02 15:16:48,889 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Terumo_Medical_Corporation_SXR07080R_20260402201648.json
+2026-04-02 15:16:48,897 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Terumo_Medical_Corporation_SXR07100R_20260402201648.json
+2026-04-02 15:16:48,908 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Terumo_Medical_Corporation_SXR07120R_20260402201648.json
+2026-04-02 15:16:48,915 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Terumo_Medical_Corporation_SXR07150R_20260402201648.json
+2026-04-02 15:16:48,923 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Terumo_Medical_Corporation_SXR08040R_20260402201648.json
+2026-04-02 15:16:48,932 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Terumo_Medical_Corporation_SXR08060R_20260402201648.json
+2026-04-02 15:16:48,941 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Terumo_Medical_Corporation_SXR08080R_20260402201648.json
+2026-04-02 15:16:48,949 INFO pipeline.emitter: Wrote record to /mnt/c/Users/sonit/Github/Fivos_Senior_Project/harvester/output/Terumo_Medical_Corporation_SXR08100R_20260402201648.json
