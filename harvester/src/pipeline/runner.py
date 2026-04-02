@@ -308,6 +308,32 @@ def process_single(
         return None
 
 
+_PRODUCT_TABLE_KEYWORDS = [
+    "catalog", "model", "ref", "sku", "part number",
+    "diameter", "length", "width", "size", "mm", "french",
+    "quantity", "description", "sterile",
+]
+_JUNK_TABLE_KEYWORDS = [
+    "cookie", "consent", "privacy", "analytics",
+    "tracking", "tapad", "visitor", "syncd",
+]
+
+
+def _score_table(table) -> int:
+    text = table.get_text(" ", strip=True).lower()
+    score = sum(1 for kw in _PRODUCT_TABLE_KEYWORDS if kw in text)
+    score -= sum(2 for kw in _JUNK_TABLE_KEYWORDS if kw in text)
+    return score
+
+
+def _select_best_table(tables):
+    scored = [(t, _score_table(t)) for t in tables]
+    best_by_score = max(scored, key=lambda x: x[1])
+    if best_by_score[1] > 0:
+        return best_by_score[0]
+    return max(tables, key=lambda t: len(t.find_all("tr")))
+
+
 def _process_single_ollama(
     html_path: str,
     source_url: str | None = None,
@@ -333,11 +359,11 @@ def _process_single_ollama(
 
         visible_text = parsed.get_text(separator=" ", strip=True)
 
-        # Find the largest table for Pass 2
+        # Find the best product table for Pass 2
         tables = parsed.find_all("table")
         table_text = None
         if tables:
-            best = max(tables, key=lambda t: len(t.find_all("tr")))
+            best = _select_best_table(tables)
             table_text = best.get_text(separator="\t")
 
         raw_fields_list = extract_all_fields(visible_text, table_text)
