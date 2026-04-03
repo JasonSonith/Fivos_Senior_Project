@@ -1,6 +1,6 @@
 docs/*
 .env
-.html
+*.html
 !.env.example
 venv/
 __pycache__/
