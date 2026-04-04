@@ -33,7 +33,7 @@ _DEFAULT_OUTPUT_DIR = os.path.join(_SRC_DIR, "..", "output")
 MERGE_FIELDS = [
     "catalogNumber",
     "labeledContainsNRL", "labeledNoNRL",
-    "sterilizationPriorToUse", "otc",
+    "sterilizationPriorToUse", "deviceSterile", "otc",
     "deviceKit",
     "premarketSubmissions",
     "environmentalConditions",

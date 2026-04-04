@@ -57,8 +57,10 @@ PAGE_FIELDS_SCHEMA = {
         "environmentalConditions": {
             "type": ["object", "null"],
             "properties": {
-                "storageTemperature": {"type": ["string", "null"]},
-                "storageHumidity": {"type": ["string", "null"]},
+                "conditions": {
+                    "type": ["array", "null"],
+                    "items": {"type": "string"},
+                },
             },
         },
     },
@@ -129,8 +131,8 @@ packaged together, false if it is a single standalone device, null if unclear.
 - premarketSubmissions: A JSON array of FDA premarket submission numbers found on the page \
 (e.g. ["K123456", "P210034"]). These start with K (510k) or P (PMA) followed by digits. \
 null if none found.
-- environmentalConditions: An object with storageTemperature and storageHumidity as strings \
-including units (e.g. {{"storageTemperature": "15-30°C", "storageHumidity": "< 85% RH"}}). \
+- environmentalConditions: An object with a "conditions" array of storage/handling condition strings \
+found on the page (e.g. {{"conditions": ["Store between 15-30°C", "Keep away from humidity > 85%"]}}). \
 null if storage conditions are not stated on the page.
 
 Page text:

@@ -58,7 +58,7 @@ TEXT_FIELDS = {"description", "brand_name", "product_type", "specs_container", "
 MODEL_FIELDS = {"model_number", "catalog_number", "sku"}
 DATE_FIELDS = {"approval_date", "clearance_date", "expiration_date"}
 MEASUREMENT_FIELDS = {"length", "width", "height", "diameter", "weight", "volume", "pressure"}
-PASSTHROUGH_FIELDS = {"deviceKit", "premarketSubmissions", "environmentalConditions", "_description_source"}
+PASSTHROUGH_FIELDS = {"deviceKit", "premarketSubmissions", "environmentalConditions", "_description_source", "MRISafetyStatus"}
 
 
 def load_adapter(yaml_path: str) -> dict:

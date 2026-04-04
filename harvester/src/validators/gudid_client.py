@@ -89,6 +89,7 @@ def fetch_gudid_record(catalog_number=None, version_model_number=None):
         "labeledContainsNRL": device.get("labeledContainsNRL"),
         "labeledNoNRL": device.get("labeledNoNRL"),
         "sterilizationPriorToUse": sterilization.get("sterilizationPriorToUse"),
+        "deviceSterile": sterilization.get("deviceSterile"),
         "deviceKit": device.get("deviceKit"),
         "premarketSubmissions": submission_numbers or None,
         "environmentalConditions": _extract_storage_conditions(device),
