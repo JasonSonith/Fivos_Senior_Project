@@ -112,6 +112,10 @@ class TestLabeledNoNRL:
         result = parse_regulatory_from_text("Not made with natural rubber latex.")
         assert result["labeledNoNRL"] is True
 
+    def test_no_latex_text_does_not_set_field(self):
+        result = parse_regulatory_from_text("Single use only. Rx only.")
+        assert "labeledNoNRL" not in result
+
 
 class TestSterilizationPriorToUse:
     def test_sterilize_before_use(self):
