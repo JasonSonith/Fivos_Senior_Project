@@ -58,6 +58,7 @@ TEXT_FIELDS = {"description", "brand_name", "product_type", "specs_container", "
 MODEL_FIELDS = {"model_number", "catalog_number", "sku"}
 DATE_FIELDS = {"approval_date", "clearance_date", "expiration_date"}
 MEASUREMENT_FIELDS = {"length", "width", "height", "diameter", "weight", "volume", "pressure"}
+PASSTHROUGH_FIELDS = {"deviceKit", "premarketSubmissions", "environmentalConditions", "_description_source"}
 
 
 def load_adapter(yaml_path: str) -> dict:
@@ -171,6 +172,9 @@ def normalize_record(raw_fields: dict, adapter: dict) -> dict:
 
             elif field in TEXT_FIELDS:
                 normalized[field] = normalize_text(value)
+
+            elif field in PASSTHROUGH_FIELDS:
+                normalized[field] = value
 
             else:
                 normalized[field] = normalize_text(value)
