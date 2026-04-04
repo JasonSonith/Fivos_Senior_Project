@@ -30,6 +30,37 @@ _DEFAULT_OUTPUT_DIR = os.path.join(_SRC_DIR, "..", "output")
 # Helpers
 # ---------------------------------------------------------------------------
 
+MERGE_FIELDS = [
+    "catalogNumber",
+    "labeledContainsNRL", "labeledNoNRL",
+    "sterilizationPriorToUse", "otc",
+    "deviceKit",
+    "premarketSubmissions",
+    "environmentalConditions",
+    "brandName", "versionModelNumber", "companyName", "deviceDescription",
+    "MRISafetyStatus", "singleUse", "rx",
+]
+
+
+def _merge_gudid_into_device(db, device: dict, gudid_record: dict) -> list[str]:
+    """Fill null device fields with GUDID values. Returns list of fields filled."""
+    updates = {}
+    filled = []
+    for field in MERGE_FIELDS:
+        if device.get(field) is None and gudid_record.get(field) is not None:
+            updates[field] = gudid_record[field]
+            filled.append(field)
+
+    if updates:
+        updates["gudid_sourced_fields"] = filled
+        db["devices"].update_one(
+            {"_id": device["_id"]},
+            {"$set": updates},
+        )
+
+    return filled
+
+
 def _serialize_record(record: dict) -> dict:
     """Make a MongoDB document JSON-serializable."""
     out = {}
@@ -329,6 +360,8 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
             "created_at": datetime.now(timezone.utc),
             "updated_at": datetime.now(timezone.utc),
         })
+        # Fill null device fields from GUDID (runs after comparison to preserve original diff)
+        _merge_gudid_into_device(db, device, gudid_record)
 
     result["success"] = True
     return result
