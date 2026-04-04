@@ -31,33 +31,34 @@ python harvester/src/pipeline/runner.py --input <html> --adapter <yaml>         
 ```
 
 ## Environment
-Copy `.env.example` → `.env`. Required: `FIVOS_MONGO_URI`, `GROQ_API_KEY`, `NVIDIA_API_KEY`.
+Copy `.env.example` → `.env`. Required: `FIVOS_MONGO_URI`, `GROQ_API_KEY`, `NVIDIA_API_KEY`, `AUTH_SECRET_KEY`.
 
 ## Architecture
 
 ```
 Manufacturing Website → Playwright scraper → Raw HTML (web-scraper/out_html/)
-  → LLM extraction (7-model fallback chain) → normalize → validate → GUDID JSON (harvester/output/)
+  → LLM extraction (8-model fallback chain) → normalize → validate → GUDID JSON (harvester/output/)
   → MongoDB (devices) → GUDID API validation → Review Dashboard (FastAPI)
 ```
 
 ### LLM Fallback Chain (`pipeline/llm_extractor.py`)
 
 ```
-1. Groq   llama-3.3-70b-versatile       (fastest, 100k TPD limit)
-2. Groq   llama-3.1-8b-instant          (separate Groq limits)
-3. NVIDIA meta/llama-3.3-70b-instruct   (40 RPM, generous limits)
-4. NVIDIA mistralai/mistral-large       (40 RPM)
-5. NVIDIA google/gemma-2-27b-it         (40 RPM)
-6. Ollama qwen2.5:7b                    (local fallback)
-7. Ollama mistral                       (local fallback)
+1. Ollama gemma4                        (local primary, 9.6GB)
+2. Groq   llama-3.3-70b-versatile       (fastest cloud, 100k TPD limit)
+3. Groq   llama-3.1-8b-instant          (separate Groq limits)
+4. NVIDIA meta/llama-3.3-70b-instruct   (40 RPM, generous limits)
+5. NVIDIA mistralai/mistral-large       (40 RPM)
+6. NVIDIA google/gemma-2-27b-it         (40 RPM)
+7. Ollama qwen2.5:7b                    (local fallback)
+8. Ollama mistral                       (local fallback)
 ```
 
 Tries top-to-bottom. On rate limit < 60s: retries once. On daily limit or long wait: disables model for session, moves to next. Groq/NVIDIA use same OpenAI-compatible `_openai_request()`. Ollama uses `/api/chat`.
 
 ### Extraction (Two-Pass)
 
-1. **Pass 1 (page-level):** device_name, manufacturer, description, warning_text, MRISafetyStatus
+1. **Pass 1 (page-level):** device_name, manufacturer, description, warning_text, MRISafetyStatus, deviceKit, premarketSubmissions, environmentalConditions. Regulatory text also yields: singleUse, rx, deviceSterile, labeledContainsNRL, labeledNoNRL, sterilizationPriorToUse, otc.
 2. **Pass 2 (product rows):** model_number, catalog_number, dimensions from largest table. One GUDID record per SKU.
 
 ### Web Dashboard Pages
@@ -69,6 +70,8 @@ Tries top-to-bottom. On rate limit < 60s: retries once. On daily limit or long w
 | Validator | `/validate` | GUDID validation, per-field match/mismatch table |
 | GUDID Lookup | `/gudid` | Direct FDA API query |
 | Review | `/review/<id>` | Side-by-side field comparison, pick correct value |
+| User Management | `/admin/users` | Admin only — create accounts, set roles, disable/enable |
+| Change Password | `/auth/change-password` | Forced on first login; blocks all other routes until done |
 
 ### Module Map
 
@@ -79,7 +82,9 @@ Tries top-to-bottom. On rate limit < 60s: retries once. On daily limit or long w
 - `database/` — MongoDB connection (`db_connection.py`)
 - `web_scraper/` — Playwright browser automation
 - `site_adapters/` — YAML CSS selector configs (optional `--adapter` override)
-- `app/` — FastAPI dashboard (routes, templates, static)
+- `app/routes/` — dashboard, harvester, validate, gudid, review, auth, admin
+- `app/services/` — auth_service, auth_guard, user_service (bcrypt + HIBP)
+- `app/static/js/password.js` — client-side HIBP k-anonymity + strength meter
 
 ### Key Components
 
@@ -98,6 +103,10 @@ All pipeline logs go to `harvester/log-files/harvest_<timestamp>.log`. No consol
 
 `comparison_validator.py` compares on 4 boolean fields (`versionModelNumber`, `catalogNumber`, `brandName`, `companyName`) + `description_similarity` Jaccard score. `None` fields are skipped (not counted as mismatches).
 
+### GUDID Fallback Merge
+
+After validation, `_merge_gudid_into_device()` in `orchestrator.py` fills null device fields from GUDID values (16 tracked fields). Harvested wins if present. GUDID-sourced fields recorded in `gudid_sourced_fields` on each device document.
+
 ## Error Handling: "Never crash the run"
 
 - Parsing failure → log + skip record
@@ -113,7 +122,8 @@ All pipeline logs go to `harvester/log-files/harvest_<timestamp>.log`. No consol
 | HTML parsing | BeautifulSoup4 + lxml |
 | Database | MongoDB |
 | Validation | FDA GUDID API v3 |
-| Web UI | FastAPI + Jinja2 |
+| Web UI | FastAPI + Jinja2 (light mode, Fira Sans/Fira Code) |
+| Auth | bcrypt (work factor 12) + HIBP k-anonymity breach check |
 | AI | Groq + NVIDIA NIM (cloud) → Ollama (local fallback) |
 
 ## Docs
