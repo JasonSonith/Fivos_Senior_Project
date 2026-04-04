@@ -4,7 +4,7 @@
 <section class="hero">
     <div>
         <p class="eyebrow">Discrepancy Review</p>
-        <h1 class="page-title">{{ device.brandName or "Device" }} &mdash; {{ device.versionModelNumber or "N/A" }}</h1>
+        <h1 class="page-title">{{ device.brandName or "Device" }} &mdash; <span class="mono">{{ device.versionModelNumber or "N/A" }}</span></h1>
         <p class="page-description">
             Compare harvested values against GUDID and pick the correct value for each field.
             Your choices will update the device record in the database.
@@ -38,7 +38,7 @@
     </div>
     <div class="metric-card small">
         <p class="metric-label">GUDID DI</p>
-        <h3 class="metric-value" style="font-size: 18px;">{{ validation.gudid_di or "N/A" }}</h3>
+        <h3 class="metric-value mono" style="font-size: 17px;">{{ validation.gudid_di or "N/A" }}</h3>
     </div>
 </section>
 
@@ -52,11 +52,11 @@
         </div>
 
         <!-- Column headers -->
-        <div class="review-field-row" style="border-bottom: 2px solid var(--border);">
-            <div class="review-field-name">Field</div>
-            <div style="font-weight: 600; color: var(--accent-2); font-size: 13px;">HARVESTED</div>
-            <div style="font-weight: 600; color: var(--accent-3); font-size: 13px;">GUDID</div>
-            <div style="font-weight: 600; color: var(--muted); font-size: 13px;">PICK</div>
+        <div class="review-field-row" style="border-bottom: 2px solid var(--border); padding-bottom: 10px;">
+            <div class="review-field-name" style="padding-top:0;">Field</div>
+            <div style="font-weight: 700; color: var(--accent-2); font-size: 11px; text-transform: uppercase; letter-spacing: .07em;">Harvested Value</div>
+            <div style="font-weight: 700; color: var(--accent-3); font-size: 11px; text-transform: uppercase; letter-spacing: .07em;">GUDID Value</div>
+            <div style="font-weight: 700; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .07em;">Pick</div>
         </div>
 
         {% for f in fields %}
