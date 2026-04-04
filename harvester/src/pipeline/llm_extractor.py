@@ -16,6 +16,7 @@ NVIDIA_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
 OLLAMA_URL = "http://localhost:11434/api/chat"
 
 MODEL_CHAIN = [
+    {"provider": "ollama", "model": "gemma4"},
     {"provider": "groq",   "model": "llama-3.3-70b-versatile",     "env_key": "GROQ_API_KEY"},
     {"provider": "groq",   "model": "llama-3.1-8b-instant",        "env_key": "GROQ_API_KEY"},
     {"provider": "nvidia", "model": "meta/llama-3.3-70b-instruct", "env_key": "NVIDIA_API_KEY"},
@@ -48,6 +49,18 @@ PAGE_FIELDS_SCHEMA = {
         "description": {"type": ["string", "null"]},
         "warning_text": {"type": ["string", "null"]},
         "MRISafetyStatus": {"type": ["string", "null"]},
+        "deviceKit": {"type": ["boolean", "null"]},
+        "premarketSubmissions": {
+            "type": ["array", "null"],
+            "items": {"type": "string"},
+        },
+        "environmentalConditions": {
+            "type": ["object", "null"],
+            "properties": {
+                "storageTemperature": {"type": ["string", "null"]},
+                "storageHumidity": {"type": ["string", "null"]},
+            },
+        },
     },
     "required": ["device_name", "manufacturer", "description"],
 }
@@ -111,6 +124,14 @@ Ignore: marketing claims, clinical trial results, testimonials.
 - warning_text: Copy any warning, caution, or regulatory text verbatim from the page. \
 Include text about single-use, Rx only, sterility, contraindications. null if none found.
 - MRISafetyStatus: One of "MR Safe", "MR Conditional", "MR Unsafe", or null if not stated on the page.
+- deviceKit: true if this product is sold as a kit or system containing multiple distinct components \
+packaged together, false if it is a single standalone device, null if unclear.
+- premarketSubmissions: A JSON array of FDA premarket submission numbers found on the page \
+(e.g. ["K123456", "P210034"]). These start with K (510k) or P (PMA) followed by digits. \
+null if none found.
+- environmentalConditions: An object with storageTemperature and storageHumidity as strings \
+including units (e.g. {{"storageTemperature": "15-30°C", "storageHumidity": "< 85% RH"}}). \
+null if storage conditions are not stated on the page.
 
 Page text:
 {visible_text}"""
@@ -366,6 +387,12 @@ def extract_product_rows(table_text: str, device_name: str = "", model: str | No
     return [p for p in products if p.get("model_number")]
 
 
+_PAGE_LEVEL_FIELDS = (
+    "device_name", "manufacturer", "description", "warning_text",
+    "MRISafetyStatus", "deviceKit", "premarketSubmissions", "environmentalConditions",
+)
+
+
 def extract_all_fields(visible_text: str, table_text: str | None = None, model: str | None = None) -> list[dict]:
     # Pass 1: page-level fields
     page_fields = extract_page_fields(visible_text)
@@ -383,14 +410,8 @@ def extract_all_fields(visible_text: str, table_text: str | None = None, model: 
 
     records = []
     for product in products:
-        merged = {
-            "device_name": page_fields.get("device_name"),
-            "manufacturer": page_fields.get("manufacturer"),
-            "description": page_fields.get("description"),
-            "warning_text": page_fields.get("warning_text"),
-            "MRISafetyStatus": page_fields.get("MRISafetyStatus"),
-            "_description_source": source,
-        }
+        merged = {field: page_fields.get(field) for field in _PAGE_LEVEL_FIELDS}
+        merged["_description_source"] = source
         merged["model_number"] = product.get("model_number")
         merged["catalog_number"] = product.get("catalog_number")
         for dim in ("diameter", "length", "width", "height", "weight", "volume", "pressure"):
