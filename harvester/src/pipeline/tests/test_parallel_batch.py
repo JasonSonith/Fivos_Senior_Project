@@ -134,11 +134,9 @@ def test_progress_callback_thread_safe():
 
 def test_worker_receives_harvest_run_id():
     received_ids = []
-    lock = threading.Lock()
 
     def fake_worker(path, source_url=None, harvest_run_id=None):
-        with lock:
-            received_ids.append(harvest_run_id)
+        received_ids.append(harvest_run_id)
         return [{"device_name": "X"}]
 
     with patch("pipeline.runner._process_single_ollama", side_effect=fake_worker):

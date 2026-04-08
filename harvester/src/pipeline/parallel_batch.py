@@ -40,8 +40,8 @@ def process_html_files_parallel(
     Returns:
         One FileExtractionResult per input path, regardless of success.
     """
-    # Imported inside the function to avoid a circular import with runner.py,
-    # which imports parallel_batch from inside process_batch().
+    # Lazy imports: Task 6 will have runner.process_batch import from this
+    # module, which would create a circular import at module load time.
     from pipeline.llm_extractor import EXTRACT_WORKERS
     from pipeline.runner import _process_single_ollama
 
