@@ -40,7 +40,7 @@ This project automates most of that verification work.
 │   ├── templates/          # Jinja2 HTML templates
 │   └── static/             # CSS + JS (password.js)
 ├── harvester/src/
-│   ├── pipeline/           # runner, llm_extractor, parser, emitter, cli
+│   ├── pipeline/           # runner, llm_extractor, parallel_batch, parser, emitter, cli
 │   ├── web_scraper/        # Playwright browser automation
 │   ├── normalizers/        # text, model numbers, dates, units, booleans
 │   ├── validators/         # GUDID client, comparison, record validation
@@ -105,6 +105,7 @@ pytest -v     # verbose
 ## Key Features
 
 - LLM-powered extraction with 8-model fallback chain (gemma4 → Groq → NVIDIA → Ollama)
+- Parallel batch extraction (4 workers) with per-provider concurrency caps and non-blocking fall-through — ~6× faster than sequential on 28-URL runs
 - Two-pass extraction: page-level fields + product table rows (one record per SKU)
 - 15 fields extracted per device including regulatory compliance (NRL, OTC, sterilization, deviceKit, 510k numbers)
 - GUDID fallback merge: null harvested fields auto-filled from GUDID post-validation
