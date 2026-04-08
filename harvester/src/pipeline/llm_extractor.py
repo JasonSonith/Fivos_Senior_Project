@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import re
+import threading
 import time
 
 import requests
@@ -251,12 +252,16 @@ def _ollama_request(model: str, messages: list[dict], schema: dict,
         return None
 
 
-# Track which model answered the last request
-_last_model_used: str | None = None
+# Per-thread last-model tracking (thread-safe under concurrent workers)
+_thread_state = threading.local()
+
+
+def _set_last_model(model: str) -> None:
+    _thread_state.last_model = model
 
 
 def get_last_model() -> str | None:
-    return _last_model_used
+    return getattr(_thread_state, "last_model", None)
 
 
 def get_first_available_model() -> str:
@@ -271,7 +276,6 @@ def get_first_available_model() -> str:
 
 def _llm_request(system_msg: str, user_msg: str, schema: dict, timeout: int = 60) -> dict | None:
     """Try each model in MODEL_CHAIN until one succeeds."""
-    global _last_model_used
 
     messages = [
         {"role": "system", "content": system_msg},
@@ -301,7 +305,7 @@ def _llm_request(system_msg: str, user_msg: str, schema: dict, timeout: int = 60
             result = _ollama_request(model, messages, schema, timeout)
 
         if result is not None:
-            _last_model_used = model
+            _set_last_model(model)
             logger.info("Extraction succeeded with %s (%s)", model, provider)
             return result
 
