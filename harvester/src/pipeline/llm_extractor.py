@@ -27,8 +27,16 @@ MODEL_CHAIN = [
     {"provider": "ollama", "model": "mistral"},
 ]
 
-# Track which models have been confirmed unavailable this session
+# Track which models have been confirmed unavailable this session.
+# Writes go through _disable_model() which holds _disabled_lock;
+# reads are lockless and tolerate brief staleness.
 _disabled_models: set[str] = set()
+_disabled_lock = threading.Lock()
+
+
+def _disable_model(model: str) -> None:
+    with _disabled_lock:
+        _disabled_models.add(model)
 
 # ---------------------------------------------------------------------------
 # Schemas for structured output
@@ -200,7 +208,7 @@ def _openai_request(url: str, api_key: str, model: str, messages: list[dict],
                 return _openai_request(url, api_key, model, messages, timeout, _retry=True)
             # Daily limit or long wait — skip this model
             logger.warning("%s rate limited (long wait), moving to next model: %s", model, detail)
-            _disabled_models.add(model)
+            _disable_model(model)
             return None
 
         logger.warning("%s request failed: %s", model, detail)
@@ -235,7 +243,7 @@ def _ollama_request(model: str, messages: list[dict], schema: dict,
         response.raise_for_status()
     except requests.ConnectionError:
         logger.warning("Ollama not available at %s", OLLAMA_URL)
-        _disabled_models.add("ollama")
+        _disable_model("ollama")
         return None
     except Exception as exc:
         logger.warning("Ollama %s request failed: %s", model, exc)
