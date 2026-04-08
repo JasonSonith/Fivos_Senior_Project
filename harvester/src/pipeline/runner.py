@@ -438,6 +438,8 @@ def process_batch(
     Returns a summary dict with keys: processed, succeeded, failed,
     ollama_extracted, output_dir, files.
     """
+    # Lazy import: parallel_batch lazy-imports _process_single_ollama
+    # from this module, so the two-way dependency is kept at call time only.
     from pipeline.parallel_batch import process_html_files_parallel
 
     html_files = sorted(
