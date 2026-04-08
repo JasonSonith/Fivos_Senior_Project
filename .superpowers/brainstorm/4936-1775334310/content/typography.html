@@ -1,0 +1,64 @@
+<h2>Typography: which feels right for a medical data tool?</h2>
+<p class="subtitle">Same layout, different font personality. Both are free Google Fonts.</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="inter-mono" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:16px;background:#f8fafc;border-radius:8px 8px 0 0;">
+      <div style="font-family:'Inter',system-ui,sans-serif;">
+        <div style="font-size:10px;color:#64748b;letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px;">Device Records</div>
+        <div style="font-size:20px;font-weight:700;color:#1e293b;line-height:1.2;margin-bottom:8px;">Abbott Vascular Inc.</div>
+        <div style="font-size:11px;color:#475569;line-height:1.6;margin-bottom:10px;">Vascular intervention device — model number mismatch flagged by GUDID validator on catalog field.</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="font-family:'Fira Code',monospace;font-size:9px;background:#f1f5f9;border:1px solid #e2e8f0;padding:2px 6px;border-radius:3px;color:#334155;">MDN: 1012528-100</span>
+          <span style="font-family:'Fira Code',monospace;font-size:9px;background:#f1f5f9;border:1px solid #e2e8f0;padding:2px 6px;border-radius:3px;color:#334155;">CAT: 1012528-100</span>
+        </div>
+        <div style="margin-top:10px;font-size:9px;color:#94a3b8;">Status: <span style="color:#f59e0b;font-weight:600;">PARTIAL MATCH</span> · Similarity: <span style="color:#1e293b;font-weight:600;">0.74</span></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Inter (UI) + Fira Code (data)</h3>
+      <p>Inter for all prose and labels. Fira Code monospace for model numbers, catalog IDs, and technical values. Clean, neutral, very readable — used by Linear, Vercel, Notion.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="fira-sans" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:16px;background:#f8fafc;border-radius:8px 8px 0 0;">
+      <div style="font-family:'Fira Sans',system-ui,sans-serif;">
+        <div style="font-size:10px;color:#64748b;letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-bottom:4px;">Device Records</div>
+        <div style="font-size:20px;font-weight:700;color:#1e293b;line-height:1.2;margin-bottom:8px;">Abbott Vascular Inc.</div>
+        <div style="font-size:11px;color:#475569;line-height:1.6;margin-bottom:10px;">Vascular intervention device — model number mismatch flagged by GUDID validator on catalog field.</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="font-family:'Fira Code',monospace;font-size:9px;background:#f1f5f9;border:1px solid #e2e8f0;padding:2px 6px;border-radius:3px;color:#334155;">MDN: 1012528-100</span>
+          <span style="font-family:'Fira Code',monospace;font-size:9px;background:#f1f5f9;border:1px solid #e2e8f0;padding:2px 6px;border-radius:3px;color:#334155;">CAT: 1012528-100</span>
+        </div>
+        <div style="margin-top:10px;font-size:9px;color:#94a3b8;">Status: <span style="color:#f59e0b;font-weight:600;">PARTIAL MATCH</span> · Similarity: <span style="color:#1e293b;font-weight:600;">0.74</span></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Fira Sans (UI) + Fira Code (data)</h3>
+      <p>Fira Sans for all prose — slightly more technical/analytical personality than Inter. Same Fira Code for data values. Recommended by ui-ux-pro-max for dashboards and admin panels.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="system" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:16px;background:#f8fafc;border-radius:8px 8px 0 0;">
+      <div style="font-family:system-ui,-apple-system,sans-serif;">
+        <div style="font-size:10px;color:#64748b;letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px;">Device Records</div>
+        <div style="font-size:20px;font-weight:700;color:#1e293b;line-height:1.2;margin-bottom:8px;">Abbott Vascular Inc.</div>
+        <div style="font-size:11px;color:#475569;line-height:1.6;margin-bottom:10px;">Vascular intervention device — model number mismatch flagged by GUDID validator on catalog field.</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="font-family:monospace;font-size:9px;background:#f1f5f9;border:1px solid #e2e8f0;padding:2px 6px;border-radius:3px;color:#334155;">MDN: 1012528-100</span>
+          <span style="font-family:monospace;font-size:9px;background:#f1f5f9;border:1px solid #e2e8f0;padding:2px 6px;border-radius:3px;color:#334155;">CAT: 1012528-100</span>
+        </div>
+        <div style="margin-top:10px;font-size:9px;color:#94a3b8;">Status: <span style="color:#f59e0b;font-weight:600;">PARTIAL MATCH</span> · Similarity: <span style="color:#1e293b;font-weight:600;">0.74</span></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — System fonts (no import)</h3>
+      <p>SF Pro on Mac, Segoe UI on Windows. Fastest load (zero font requests), looks native to the OS. Less personality but perfectly readable. No Google Fonts dependency.</p>
+    </div>
+  </div>
+
+</div>
+<p class="subtitle" style="margin-top:16px;">Click a card or tell me in the terminal.</p>
