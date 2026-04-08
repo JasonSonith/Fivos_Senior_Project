@@ -625,7 +625,7 @@ def main():
 
     logging.basicConfig(
         level=logging.DEBUG if args.verbose else logging.INFO,
-        format="%(levelname)s %(name)s: %(message)s",
+        format="%(asctime)s [%(threadName)s] %(levelname)s %(name)s: %(message)s",
     )
 
     # Determine effective modes

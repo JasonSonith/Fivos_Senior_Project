@@ -206,7 +206,7 @@ def _setup_file_logging() -> tuple[logging.FileHandler, str]:
 
     fh = logging.FileHandler(str(log_path), encoding="utf-8")
     fh.setLevel(logging.DEBUG)
-    fh.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(name)s: %(message)s"))
+    fh.setFormatter(logging.Formatter("%(asctime)s [%(threadName)s] %(levelname)s %(name)s: %(message)s"))
     root.addHandler(fh)
     return fh, str(log_path)
 
