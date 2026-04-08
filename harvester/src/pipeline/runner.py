@@ -491,8 +491,13 @@ def _parse_urls(urls_arg: str) -> list[str]:
     return [u.strip() for u in urls_arg.split(",") if u.strip()]
 
 
-def scrape_urls(urls: list[str], output_dir: str) -> list[str]:
-    """Scrape URLs via Playwright and save HTML files. Returns list of saved paths."""
+def _scrape_urls_with_meta(urls: list[str], output_dir: str) -> list[dict]:
+    """Scrape URLs, return per-URL metadata (preserves input order and failures).
+
+    Each entry is a dict: {url, final_url, path, error}. For successful
+    URLs, final_url and path are set and error is None. For failed URLs,
+    final_url and path are None and error contains the failure reason.
+    """
     from web_scraper.scraper import (
         BrowserEngine, safe_filename_from_url, is_pdf_url, dedupe_keep_order,
     )
@@ -520,19 +525,42 @@ def scrape_urls(urls: list[str], output_dir: str) -> list[str]:
             return await asyncio.gather(*(engine.fetch(u) for u in urls))
 
     results = asyncio.run(_run())
-    saved = []
-    for r in results:
+    meta: list[dict] = []
+    saved_count = 0
+    for url, r in zip(urls, results):
         if r.ok and r.html:
             fname = safe_filename_from_url(r.final_url or r.url)
             path = os.path.join(output_dir, fname)
             with open(path, "w", encoding="utf-8") as f:
                 f.write(r.html)
-            saved.append(path)
+            saved_count += 1
             logger.info("Scraped: %s", r.final_url or r.url)
+            meta.append({
+                "url": url,
+                "final_url": r.final_url or r.url,
+                "path": path,
+                "error": None,
+            })
         else:
             logger.warning("Scrape failed: %s — %s", r.url, r.error)
-    logger.info("Scraped %d/%d pages.", len(saved), len(urls))
-    return saved
+            meta.append({
+                "url": url,
+                "final_url": None,
+                "path": None,
+                "error": r.error,
+            })
+    logger.info("Scraped %d/%d pages.", saved_count, len(urls))
+    return meta
+
+
+def scrape_urls(urls: list[str], output_dir: str) -> list[str]:
+    """Scrape URLs via Playwright and save HTML files. Returns list of saved paths.
+
+    Backward-compatible wrapper around _scrape_urls_with_meta() for callers
+    that only need successful paths.
+    """
+    meta = _scrape_urls_with_meta(urls, output_dir)
+    return [m["path"] for m in meta if m["path"]]
 
 
 def write_records_to_db(json_paths: list[str], overwrite: bool = False) -> int:
