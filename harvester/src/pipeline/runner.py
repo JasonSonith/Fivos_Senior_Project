@@ -433,21 +433,20 @@ def process_batch(
     output_dir: str = "harvester/output",
     harvest_run_id: str | None = None,
 ) -> dict:
-    """Process all HTML files in a directory using Ollama extraction.
-
-    Every file is extracted via Ollama (two-pass: page fields + product rows).
-    Files are processed sequentially (Ollama handles one inference at a time).
+    """Process all HTML files in a directory using parallel LLM extraction.
 
     Returns a summary dict with keys: processed, succeeded, failed,
     ollama_extracted, output_dir, files.
     """
+    from pipeline.parallel_batch import process_html_files_parallel
+
     html_files = sorted(
         glob.glob(os.path.join(input_dir, "*.html"))
         + glob.glob(os.path.join(input_dir, "*.htm"))
     )
 
     summary = {
-        "processed": 0,
+        "processed": len(html_files),
         "succeeded": 0,
         "failed": 0,
         "ollama_extracted": 0,
@@ -458,20 +457,18 @@ def process_batch(
     if not html_files:
         return summary
 
-    for html_path in html_files:
-        summary["processed"] += 1
-        try:
-            records = _process_single_ollama(html_path, harvest_run_id=harvest_run_id)
-            if records:
-                for record in records:
-                    path = write_record_json(record, output_dir)
-                    summary["files"].append(path)
-                summary["succeeded"] += len(records)
-                summary["ollama_extracted"] += len(records)
-            else:
-                summary["failed"] += 1
-        except Exception as exc:
-            logger.error("process_batch: error for %s: %s", html_path, exc)
+    results = process_html_files_parallel(
+        html_files,
+        harvest_run_id=harvest_run_id or "",
+    )
+
+    for r in results:
+        if r.records:
+            for record in r.records:
+                summary["files"].append(write_record_json(record, output_dir))
+            summary["succeeded"] += len(r.records)
+            summary["ollama_extracted"] += len(r.records)
+        else:
             summary["failed"] += 1
 
     return summary
