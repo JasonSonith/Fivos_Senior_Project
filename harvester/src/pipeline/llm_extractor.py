@@ -27,6 +27,20 @@ MODEL_CHAIN = [
     {"provider": "ollama", "model": "mistral"},
 ]
 
+# Concurrency knobs — tuned for RTX 4070 (gemma4 fits in 12GB VRAM)
+# and Groq/NVIDIA free-tier rate limits. See design doc
+# docs/superpowers/specs/2026-04-08-llm-extractor-parallelization-design.md
+EXTRACT_WORKERS = 4
+OLLAMA_CONCURRENCY = 1   # single GPU slot
+GROQ_CONCURRENCY = 3     # ~30 RPM free tier
+NVIDIA_CONCURRENCY = 4   # 40 RPM free tier
+
+_provider_sems: dict[str, threading.Semaphore] = {
+    "ollama": threading.Semaphore(OLLAMA_CONCURRENCY),
+    "groq":   threading.Semaphore(GROQ_CONCURRENCY),
+    "nvidia": threading.Semaphore(NVIDIA_CONCURRENCY),
+}
+
 # Track which models have been confirmed unavailable this session.
 # Writes go through _disable_model() which holds _disabled_lock;
 # reads are lockless and tolerate brief staleness.
@@ -302,15 +316,27 @@ def _llm_request(system_msg: str, user_msg: str, schema: dict, timeout: int = 60
             continue
 
         env_key = entry.get("env_key")
+        api_key = None
         if env_key:
             api_key = os.environ.get(env_key)
             if not api_key:
                 continue
 
-        if provider in ("groq", "nvidia"):
-            result = _openai_request(provider_urls[provider], api_key, model, messages, timeout)
-        else:
-            result = _ollama_request(model, messages, schema, timeout)
+        # Non-blocking acquire: if the provider pool is saturated, fall
+        # through to the next model instead of queueing. Preserves
+        # quality-first fallback ordering.
+        sem = _provider_sems[provider]
+        if not sem.acquire(blocking=False):
+            logger.debug("%s provider saturated, falling through", provider)
+            continue
+
+        try:
+            if provider in ("groq", "nvidia"):
+                result = _openai_request(provider_urls[provider], api_key, model, messages, timeout)
+            else:
+                result = _ollama_request(model, messages, schema, timeout)
+        finally:
+            sem.release()
 
         if result is not None:
             _set_last_model(model)
