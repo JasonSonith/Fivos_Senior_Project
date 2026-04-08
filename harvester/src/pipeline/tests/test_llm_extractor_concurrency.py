@@ -1,8 +1,6 @@
 """Concurrency and thread-safety tests for llm_extractor."""
 import threading
-from unittest.mock import patch
 
-from pipeline import llm_extractor
 from pipeline.llm_extractor import _set_last_model, get_last_model
 
 
