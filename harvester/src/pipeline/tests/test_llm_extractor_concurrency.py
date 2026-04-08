@@ -42,9 +42,12 @@ def test_non_blocking_sem_falls_through_when_saturated():
                     timeout=5,
                 )
         assert result == {"device_name": "FALLBACK"}
-        # The last-model should be a Groq model (not gemma4)
-        assert "groq" not in (get_last_model() or "").lower() or get_last_model() != "gemma4"
-        assert get_last_model() != "gemma4"
+        # The chain must have fallen through gemma4 to a Groq model
+        chosen = get_last_model()
+        chosen_provider = next(
+            e["provider"] for e in llm_extractor.MODEL_CHAIN if e["model"] == chosen
+        )
+        assert chosen_provider == "groq"
     finally:
         llm_extractor._provider_sems["ollama"].release()
 
