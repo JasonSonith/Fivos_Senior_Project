@@ -36,7 +36,8 @@ def _extract_storage_conditions(device: dict) -> dict | None:
 
     Returns {"conditions": [...text strings...]} or None if empty.
     """
-    handling = device.get("environmentalConditions", {}).get("storageHandling") or []
+    env = device.get("environmentalConditions") or {}
+    handling = env.get("storageHandling") or []
     texts = [
         item.get("specialConditionText", "").strip()
         for item in handling
@@ -69,9 +70,8 @@ def fetch_gudid_record(catalog_number=None, version_model_number=None):
         return di, None
 
     sterilization = device.get("sterilization") or {}
-    submissions = (
-        device.get("premarketSubmissions", {}).get("premarketSubmission") or []
-    )
+    pmk = device.get("premarketSubmissions") or {}
+    submissions = pmk.get("premarketSubmission") or []
     submission_numbers = [
         s["submissionNumber"] for s in submissions if s.get("submissionNumber")
     ]
