@@ -45,7 +45,10 @@
       "Bash(pytest harvester/src/pipeline/tests/test_regulatory_parser.py -v)",
       "Bash(venv/bin/python3 -m pytest harvester/src/pipeline/tests/test_emitter.py::TestPackageGudidRecord::test_labeled_contains_nrl_passed_through harvester/src/pipeline/tests/test_emitter.py::TestPackageGudidRecord::test_device_kit_passed_through -v --tb=short)",
       "Bash(PYTHONPATH=/mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src venv/bin/python3 -m pytest harvester/src/pipeline/tests/test_emitter.py::TestPackageGudidRecord::test_labeled_contains_nrl_passed_through harvester/src/pipeline/tests/test_emitter.py::TestPackageGudidRecord::test_device_kit_passed_through -v)",
-      "Bash(PYTHONPATH=/mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src venv/bin/python3 -m pytest harvester/src/pipeline/tests/test_emitter.py -v)"
+      "Bash(PYTHONPATH=/mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src venv/bin/python3 -m pytest harvester/src/pipeline/tests/test_emitter.py -v)",
+      "mcp__MCP_DOCKER__obsidian_list_files_in_dir",
+      "mcp__MCP_DOCKER__obsidian_get_file_contents",
+      "mcp__MCP_DOCKER__obsidian_batch_get_file_contents"
     ]
   }
 }
