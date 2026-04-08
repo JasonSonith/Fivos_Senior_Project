@@ -101,8 +101,14 @@ def lookup_by_di(di):
     if not di:
         return None
 
-    response = requests.get(LOOKUP_URL, params={"di": di}, timeout=15)
-    response.raise_for_status()
-
-    data = response.json()
-    return data.get("gudid", {}).get("device")
+    try:
+        response = requests.get(LOOKUP_URL, params={"di": di}, timeout=15)
+        response.raise_for_status()
+        data = response.json()
+        return data.get("gudid", {}).get("device")
+    except requests.RequestException as e:
+        print(f"GUDID lookup_by_di failed: {e}")
+        return None
+    except ValueError as e:
+        print(f"GUDID lookup_by_di JSON parse failed: {e}")
+        return None
