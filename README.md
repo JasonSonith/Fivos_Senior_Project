@@ -95,6 +95,83 @@ pip install -r requirements.txt && playwright install
 cp .env.example .env   # add FIVOS_MONGO_URI, GROQ_API_KEY, NVIDIA_API_KEY, AUTH_SECRET_KEY
 ```
 
+### Docker Setup (Recommended for Handoff)
+
+Run the entire stack — FastAPI app, MongoDB, and GPU-accelerated Ollama with all three models — with one command.
+
+#### Prerequisites
+
+1. **Docker Engine 19.03+** with Docker Compose v2
+2. **NVIDIA GPU** (tested on RTX 4070) + NVIDIA drivers installed on the host
+3. **NVIDIA Container Toolkit** — required for GPU passthrough:
+
+   ```bash
+   curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | \
+     sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+   curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+     sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+     sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+   sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
+   sudo nvidia-ctk runtime configure --runtime=docker
+   sudo systemctl restart docker
+   ```
+
+   Verify: `docker run --rm --gpus all nvidia/cuda:12.2.0-base-ubuntu22.04 nvidia-smi`
+
+#### First-Time Setup
+
+```bash
+cp .env.example .env
+# Edit .env: set GROQ_API_KEY, NVIDIA_API_KEY, AUTH_SECRET_KEY
+# FIVOS_MONGO_URI in .env is ignored — compose overrides to mongodb://mongo:27017/fivos
+docker compose up
+```
+
+**First run takes 15-25 minutes** — the `ollama-init` sidecar downloads three models totaling ~17 GB (`gemma4:latest`, `qwen2.5:7b`, `mistral`). Watch the `ollama-init-1` logs for progress. Models are saved to a named volume, so subsequent runs take under 30 seconds.
+
+When you see `Server running at http://localhost:8000` in the `app-1` logs, open the dashboard in your browser.
+
+#### Common Commands
+
+| Command | Purpose |
+|---|---|
+| `docker compose up` | Start everything (foreground) |
+| `docker compose up -d` | Start in background |
+| `docker compose logs -f app` | Tail the FastAPI logs |
+| `docker compose logs -f ollama-init` | Watch the model download on first run |
+| `docker compose down` | Stop everything (keeps volumes) |
+| `docker compose down -v` | Stop and wipe all volumes (re-downloads models on next up) |
+| `docker compose exec app bash` | Shell into the app container |
+| `docker compose build --no-cache` | Force full rebuild of the app image |
+
+#### Architecture
+
+- **`app`** — FastAPI dashboard + harvester pipeline, port 8000
+- **`mongo`** — MongoDB 7, port 27017, persisted to `mongo_data` volume
+- **`ollama`** — Ollama server with GPU passthrough, port 11434, models in `ollama_models` volume
+- **`ollama-init`** — one-shot container that pulls the three required models on first run
+
+#### Environment Variables
+
+- `UVICORN_RELOAD` — set to `true` (case-insensitive) to enable Uvicorn auto-reload for local dev. Defaults to `false` (disabled) so containers run stable without filesystem-watch restart loops. Only the literal string `true` enables it — `1`, `yes`, and `on` do NOT.
+
+#### Troubleshooting
+
+**`docker compose up` fails with "could not select device driver ... nvidia"**
+→ NVIDIA Container Toolkit not installed. See Prerequisites above.
+
+**`nvidia-container-cli: initialization error: WSL environment detected but no adapters were found`**
+→ On WSL2, ensure NVIDIA drivers are installed on the Windows host (not inside WSL) and Docker Desktop WSL2 integration is enabled for your distro. Verify with `nvidia-smi` from Windows PowerShell first.
+
+**`ollama-init` hangs or errors during `ollama pull`**
+→ Check internet connectivity and disk space (need ~20 GB free for models). Re-run `docker compose up ollama-init` to resume the download.
+
+**`app` crashes with "connection refused" to mongo**
+→ Mongo healthcheck hasn't passed yet. The `depends_on: condition: service_healthy` should prevent this; if it persists, check `docker compose logs mongo` for errors.
+
+**Port conflict on 8000 / 27017 / 11434**
+→ Something on the host is already using that port. Either stop the conflicting process or edit the `ports:` mappings in `docker-compose.yml`.
+
 ### Running the Dashboard
 
 ```bash
