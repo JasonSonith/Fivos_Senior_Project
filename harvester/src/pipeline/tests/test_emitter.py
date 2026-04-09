@@ -198,6 +198,48 @@ class TestPackageGudidRecord:
         )
         assert result["_harvest"]["validation_issues"] == []
 
+    def test_labeled_contains_nrl_passed_through(self):
+        record = {**SAMPLE_RECORD, "labeledContainsNRL": True}
+        result = package_gudid_record(
+            record, SAMPLE_HTML, SAMPLE_URL, SAMPLE_ADAPTER_VERSION, SAMPLE_RUN_ID,
+        )
+        assert result["labeledContainsNRL"] is True
+
+    def test_labeled_no_nrl_passed_through(self):
+        record = {**SAMPLE_RECORD, "labeledNoNRL": True}
+        result = package_gudid_record(
+            record, SAMPLE_HTML, SAMPLE_URL, SAMPLE_ADAPTER_VERSION, SAMPLE_RUN_ID,
+        )
+        assert result["labeledNoNRL"] is True
+
+    def test_sterilization_prior_to_use_passed_through(self):
+        record = {**SAMPLE_RECORD, "sterilizationPriorToUse": True}
+        result = package_gudid_record(
+            record, SAMPLE_HTML, SAMPLE_URL, SAMPLE_ADAPTER_VERSION, SAMPLE_RUN_ID,
+        )
+        assert result["sterilizationPriorToUse"] is True
+
+    def test_device_kit_passed_through(self):
+        record = {**SAMPLE_RECORD, "deviceKit": True}
+        result = package_gudid_record(
+            record, SAMPLE_HTML, SAMPLE_URL, SAMPLE_ADAPTER_VERSION, SAMPLE_RUN_ID,
+        )
+        assert result["deviceKit"] is True
+
+    def test_premarket_submissions_passed_through(self):
+        record = {**SAMPLE_RECORD, "premarketSubmissions": ["K123456", "P210034"]}
+        result = package_gudid_record(
+            record, SAMPLE_HTML, SAMPLE_URL, SAMPLE_ADAPTER_VERSION, SAMPLE_RUN_ID,
+        )
+        assert result["premarketSubmissions"] == ["K123456", "P210034"]
+
+    def test_environmental_conditions_passed_through(self):
+        record = {**SAMPLE_RECORD, "environmentalConditions": {"storageTemperature": "15-30°C"}}
+        result = package_gudid_record(
+            record, SAMPLE_HTML, SAMPLE_URL, SAMPLE_ADAPTER_VERSION, SAMPLE_RUN_ID,
+        )
+        assert result["environmentalConditions"] == {"storageTemperature": "15-30°C"}
+
 
 class TestWriteRecordJson:
     def _make_packaged_record(self, **overrides):

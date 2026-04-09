@@ -206,7 +206,7 @@ def _setup_file_logging() -> tuple[logging.FileHandler, str]:
 
     fh = logging.FileHandler(str(log_path), encoding="utf-8")
     fh.setLevel(logging.DEBUG)
-    fh.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(name)s: %(message)s"))
+    fh.setFormatter(logging.Formatter("%(asctime)s [%(threadName)s] %(levelname)s %(name)s: %(message)s"))
     root.addHandler(fh)
     return fh, str(log_path)
 
@@ -283,7 +283,7 @@ def run_mode(mode: dict, options: dict):
         status = StatusLine("Validating")
         status.start()
         try:
-            val = run_gudid_validation(run_id=run_id, overwrite=options["overwrite"])
+            val = run_gudid_validation(run_id=None, overwrite=options["overwrite"])
             status.done(success=val.get("success", False))
         except Exception as e:
             status.done(success=False)

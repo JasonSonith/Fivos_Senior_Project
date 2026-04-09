@@ -1,0 +1,365 @@
+2026-04-01 23:51:18,149 INFO pipeline.runner: Scraping 28 URL(s)...
+2026-04-01 23:51:18,150 DEBUG asyncio: Using selector: EpollSelector
+2026-04-01 23:53:12,206 INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html
+2026-04-01 23:53:12,216 INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-av-drug-coated-balloon.html
+2026-04-01 23:53:12,227 INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-biliary-stents/protege-everflex-self-expanding-biliary-stent-system.html
+2026-04-01 23:53:12,239 INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-biliary-stents/everflex-stent-system-with-entrust.html
+2026-04-01 23:53:12,249 INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-biliary-stents/visi-pro-balloon-expandable-peripheral-stent-system.html
+2026-04-01 23:53:12,261 INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-biliary-stents/protege-gps-self-expanding-peripheral-biliary-stent-system.html
+2026-04-01 23:53:12,274 INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/directional-atherectomy-systems/hawkone-directional-atherectomy-system.html
+2026-04-01 23:53:12,284 INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/directional-atherectomy-systems/silverhawk-peripheral-plaque-excision-system.html
+2026-04-01 23:53:12,299 INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/directional-atherectomy-systems/turbohawk-peripheral-plaque-excision-system.html
+2026-04-01 23:53:12,310 INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/coronary-stents/resolute-onyx-drug-eluting-stent.html
+2026-04-01 23:53:12,315 INFO pipeline.runner: Scraped: https://www.goremedical.com/products/vbx/specifications
+2026-04-01 23:53:12,335 INFO pipeline.runner: Scraped: https://www.goremedical.com/products/viabahn/specifications
+2026-04-01 23:53:12,345 INFO pipeline.runner: Scraped: https://www.cookmedical.com/products/di_ziv_webds/
+2026-04-01 23:53:12,356 INFO pipeline.runner: Scraped: https://www.cookmedical.com/products/esc_zilbs635/
+2026-04-01 23:53:12,446 INFO pipeline.runner: Scraped: https://www.cookmedical.com/products/cf1fddb1-9f10-4002-b9a5-3f4c83c28cbc/
+2026-04-01 23:54:34,279 INFO pipeline.runner: Scraped: https://www.cookmedical.com/products/224e3666-308f-4244-8695-6fd23bbd671c/
+2026-04-01 23:53:12,796 INFO pipeline.runner: Scraped: https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/atherectomy-systems/diamondback-360/ordering-information.html
+2026-04-01 23:53:12,978 INFO pipeline.runner: Scraped: https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/peripheral-stents/omnilink-elite-vascular/ordering-information.html
+2026-04-01 23:53:12,988 INFO pipeline.runner: Scraped: https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/peripheral-stents/absolute-pro-vascular/ordering-information.html
+2026-04-01 23:53:12,997 INFO pipeline.runner: Scraped: https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/supera-stent-system/ordering.html
+2026-04-01 23:53:13,008 INFO pipeline.runner: Scraped: https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/esprit-btk-resorbable-scaffold-system.html
+2026-04-01 23:53:13,051 INFO pipeline.runner: Scraped: https://www.cardiovascular.abbott/us/en/hcp/products/percutaneous-coronary-intervention/xience-family/xience-skypoint/ordering-information-extra-large.html
+2026-04-01 23:53:13,083 INFO pipeline.runner: Scraped: https://cordis.com/na/products/intervene/endovascular/self-expanding-stents/s-m-a-r-t-control-vascular-stent-system
+2026-04-01 23:53:13,095 INFO pipeline.runner: Scraped: https://cordis.com/apac/products/intervene/endovascular/balloon-expandble-stents/palmaz-genesis-peripheral-stent
+2026-04-01 23:53:13,142 INFO pipeline.runner: Scraped: https://shockwavemedical.com/en-eu/products/shockwave-m5-plus/
+2026-04-01 23:53:13,152 INFO pipeline.runner: Scraped: https://shockwavemedical.com/products/shockwave-e8/
+2026-04-01 23:53:13,158 INFO pipeline.runner: Scraped: https://shockwavemedical.com/products/shockwave-l6/
+2026-04-01 23:53:13,181 INFO pipeline.runner: Scraped: https://www.terumois.com/products/stents/r2p-misago2.html
+2026-04-01 23:53:13,182 INFO pipeline.runner: Scraped 28/28 pages.
+2026-04-01 23:54:35,219 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:54:35,225 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:54:35,225 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:54:35,225 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:54:35,226 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:54:35,227 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:54:35,227 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:54:35,227 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:54:35,227 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:54:35,228 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/cordis.com__palmaz-genesis-peripheral-stent__e90726ddef.html
+2026-04-01 23:53:13,672 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:13,674 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:13,674 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:13,674 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:13,675 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:13,676 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:13,676 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:13,676 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:13,676 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:13,677 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/cordis.com__s-m-a-r-t-control-vascular-stent-system__a69fa13f3a.html
+2026-04-01 23:53:13,718 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:13,719 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:13,719 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:13,720 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:13,720 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:13,721 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:13,722 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:13,722 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:13,722 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:13,722 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/shockwavemedical.com__shockwave-e8__99f76cd840.html
+2026-04-01 23:53:13,766 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:13,767 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:13,767 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:13,767 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:13,768 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:13,769 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:13,769 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:13,769 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:13,769 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:13,770 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/shockwavemedical.com__shockwave-l6__b9043c3fc8.html
+2026-04-01 23:53:13,839 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:13,840 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:13,841 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:13,841 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:13,842 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:13,842 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:13,843 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:13,843 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:13,843 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:13,843 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/shockwavemedical.com__shockwave-m5-plus__795572b0c3.html
+2026-04-01 23:53:13,927 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:13,928 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:13,928 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:13,928 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:13,929 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:13,930 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:13,930 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:13,930 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:13,931 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:13,931 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/www.cardiovascular.abbott__esprit-btk-resorbable-scaffold-system.ht__a4cc7be76b.html
+2026-04-01 23:53:13,973 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:13,975 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:13,975 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:13,976 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:13,976 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:13,977 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:13,978 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:13,978 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:13,978 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:13,978 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/www.cardiovascular.abbott__ordering-information-extra-large__0237aa87d9.html
+2026-04-01 23:53:14,028 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:14,029 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:14,030 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:14,030 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:14,030 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:14,031 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:14,031 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:14,032 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:14,032 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:14,032 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/www.cardiovascular.abbott__ordering-information__5f35ef0fac.html
+2026-04-01 23:53:14,072 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:14,073 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:14,074 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:14,074 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:14,074 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:14,076 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:14,076 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:14,077 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:14,077 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:14,077 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/www.cardiovascular.abbott__ordering-information__670b67b970.html
+2026-04-01 23:53:14,151 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:14,152 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:14,153 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:14,153 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:14,154 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:14,155 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:14,155 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:14,155 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:14,155 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:14,155 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/www.cardiovascular.abbott__ordering-information__a8a19eb9a0.html
+2026-04-01 23:53:14,199 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:14,200 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:14,201 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:14,201 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:14,201 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:14,202 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:14,202 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:14,203 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:14,203 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:14,203 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/www.cardiovascular.abbott__ordering__38372bfa1f.html
+2026-04-01 23:53:14,311 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:14,312 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:14,312 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:14,312 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:14,313 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:14,314 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:14,314 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:14,314 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:14,314 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:14,314 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/www.cookmedical.com__224e3666-308f-4244-8695-6fd23bbd671c__5f5003bf9a.html
+2026-04-01 23:53:14,558 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:14,560 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:14,560 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:14,561 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:14,562 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:14,565 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:14,566 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:14,566 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:14,566 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:14,566 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/www.cookmedical.com__cf1fddb1-9f10-4002-b9a5-3f4c83c28cbc__9a8ab38dfd.html
+2026-04-01 23:53:14,711 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:14,712 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:14,712 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:14,712 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:14,713 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:14,714 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:14,714 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:14,714 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:14,714 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:14,714 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/www.cookmedical.com__di_ziv_webds__2168364d41.html
+2026-04-01 23:53:14,864 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:14,865 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:14,866 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:14,866 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:14,866 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:14,867 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:14,868 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:14,868 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:14,868 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:14,868 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/www.cookmedical.com__esc_zilbs635__5fc2ce705e.html
+2026-04-01 23:53:14,924 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:14,925 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:14,925 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:14,925 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:14,926 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:14,927 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:14,927 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:14,927 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:14,927 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:14,927 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/www.goremedical.com__specifications__0dec137061.html
+2026-04-01 23:53:14,981 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:14,982 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:14,982 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:14,983 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:14,983 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:14,984 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:14,984 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:14,984 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:14,984 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:14,984 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/www.goremedical.com__specifications__7f61a7fa54.html
+2026-04-01 23:53:15,163 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:15,164 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:15,165 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:15,165 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:15,165 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:15,166 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:15,167 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:15,167 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:15,167 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:15,167 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/www.medtronic.com__everflex-stent-system-with-entrust__b42523020c.html
+2026-04-01 23:53:15,301 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:15,303 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:15,303 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:15,303 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:15,303 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:15,304 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:15,305 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:15,305 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:15,305 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:15,305 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/www.medtronic.com__hawkone-directional-atherectomy-system.h__073c95a54d.html
+2026-04-01 23:53:15,501 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:15,502 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:15,503 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:15,503 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:15,503 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:15,505 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:15,505 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:15,505 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:15,506 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:15,506 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/www.medtronic.com__inpact-admiral-drug-coated-balloon__9b6f14d330.html
+2026-04-01 23:53:15,662 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:15,663 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:15,663 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:15,663 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:15,664 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:15,665 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:15,665 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:15,666 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:15,666 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:15,666 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/www.medtronic.com__inpact-av-drug-coated-balloon__ef62a23145.html
+2026-04-01 23:53:15,842 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:15,844 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:15,844 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:15,844 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:15,845 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:15,846 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:15,846 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:15,846 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:15,847 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:15,847 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/www.medtronic.com__protege-everflex-self-expanding-biliary-__dafc29e53c.html
+2026-04-01 23:53:15,979 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:15,980 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:15,980 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:15,981 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:15,981 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:15,982 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:15,982 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:15,982 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:15,983 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:15,983 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/www.medtronic.com__protege-gps-self-expanding-peripheral-bi__25838f5acb.html
+2026-04-01 23:53:16,156 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:16,157 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:16,157 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:16,158 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:16,158 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:16,159 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:16,159 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:16,159 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:16,159 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:16,160 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/www.medtronic.com__resolute-onyx-drug-eluting-stent__0f1630087e.html
+2026-04-01 23:53:16,274 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:16,275 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:16,276 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:16,276 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:16,277 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:16,277 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:16,278 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:16,278 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:16,278 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:16,278 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/www.medtronic.com__silverhawk-peripheral-plaque-excision-sy__94af1c5867.html
+2026-04-01 23:53:16,429 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:16,430 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:16,431 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:16,431 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:16,432 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:16,432 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:16,433 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:16,433 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:16,433 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:16,433 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/www.medtronic.com__turbohawk-peripheral-plaque-excision-sys__27fc09d1a3.html
+2026-04-01 23:53:16,559 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:16,560 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:16,560 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:16,560 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:16,561 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:16,562 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:16,562 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:16,562 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:16,562 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:16,562 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/www.medtronic.com__visi-pro-balloon-expandable-peripheral-s__d083f28766.html
+2026-04-01 23:53:16,668 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:16,669 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 40
+2026-04-01 23:53:16,670 WARNING pipeline.llm_extractor: Ollama qwen2.5:7b request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:16,670 INFO pipeline.llm_extractor: Model qwen2.5:7b failed, trying next in chain
+2026-04-01 23:53:16,670 DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-01 23:53:16,671 DEBUG urllib3.connectionpool: http://localhost:11434 "POST /api/chat HTTP/1.1" 404 37
+2026-04-01 23:53:16,671 WARNING pipeline.llm_extractor: Ollama mistral request failed: 404 Client Error: Not Found for url: http://localhost:11434/api/chat
+2026-04-01 23:53:16,672 INFO pipeline.llm_extractor: Model mistral failed, trying next in chain
+2026-04-01 23:53:16,672 ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-01 23:53:16,672 WARNING pipeline.runner: _process_single_ollama: Ollama returned no fields for /mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src/web-scraper/out_html/www.terumois.com__r2p-misago2__9cbe2b0ff0.html
+2026-04-01 23:53:17,764 DEBUG pymongo.topology: {"message": "Starting topology monitoring", "topologyId": {"$oid": "69cdf63dd38c9b12ba11f295"}}
+2026-04-01 23:53:17,764 DEBUG pymongo.topology: {"message": "Topology description changed", "topologyId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "previousDescription": "<TopologyDescription id: 69cdf63dd38c9b12ba11f295, topology_type: Unknown, servers: []>", "newDescription": "<TopologyDescription id: 69cdf63dd38c9b12ba11f295, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-nhq7cr8-shard-00-00.1bnjrns.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-nhq7cr8-shard-00-01.1bnjrns.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net', 27017) server_type: Unknown, rtt: None>]>"}
+2026-04-01 23:53:17,764 DEBUG pymongo.topology: {"message": "Starting server monitoring", "topologyId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "serverHost": "ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net", "serverPort": 27017}
+2026-04-01 23:53:17,765 DEBUG pymongo.topology: {"message": "Starting server monitoring", "topologyId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "serverHost": "ac-nhq7cr8-shard-00-00.1bnjrns.mongodb.net", "serverPort": 27017}
+2026-04-01 23:53:17,765 DEBUG pymongo.topology: {"message": "Starting server monitoring", "topologyId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "serverHost": "ac-nhq7cr8-shard-00-01.1bnjrns.mongodb.net", "serverPort": 27017}
+2026-04-01 23:53:17,765 DEBUG pymongo.connection: {"message": "Connection pool created", "clientId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "serverHost": "ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net", "serverPort": 27017}
+2026-04-01 23:53:17,766 DEBUG pymongo.connection: {"message": "Connection pool created", "clientId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "serverHost": "ac-nhq7cr8-shard-00-00.1bnjrns.mongodb.net", "serverPort": 27017}
+2026-04-01 23:53:17,766 DEBUG pymongo.connection: {"message": "Connection pool created", "clientId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "serverHost": "ac-nhq7cr8-shard-00-01.1bnjrns.mongodb.net", "serverPort": 27017}
+2026-04-01 23:53:17,767 DEBUG pymongo.serverSelection: {"message": "Server selection started", "selector": "<function writable_server_selector at 0x76673e2582c0>", "operation": "drop", "topologyDescription": "<TopologyDescription id: 69cdf63dd38c9b12ba11f295, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-nhq7cr8-shard-00-00.1bnjrns.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-nhq7cr8-shard-00-01.1bnjrns.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net', 27017) server_type: Unknown, rtt: None>]>", "clientId": {"$oid": "69cdf63dd38c9b12ba11f295"}}
+2026-04-01 23:53:17,767 DEBUG pymongo.serverSelection: {"message": "Waiting for suitable server to become available", "selector": "<function writable_server_selector at 0x76673e2582c0>", "operation": "drop", "topologyDescription": "<TopologyDescription id: 69cdf63dd38c9b12ba11f295, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-nhq7cr8-shard-00-00.1bnjrns.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-nhq7cr8-shard-00-01.1bnjrns.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net', 27017) server_type: Unknown, rtt: None>]>", "clientId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "remainingTimeMS": 29999}
+2026-04-01 23:53:18,104 DEBUG pymongo.ocsp_support: Peer did not staple an OCSP response
+2026-04-01 23:53:18,105 DEBUG pymongo.ocsp_support: Peer did not staple an OCSP response
+2026-04-01 23:53:18,105 DEBUG pymongo.ocsp_support: No OCSP URI, soft fail
+2026-04-01 23:53:18,105 DEBUG pymongo.ocsp_support: No OCSP URI, soft fail
+2026-04-01 23:53:18,106 DEBUG pymongo.ocsp_support: Peer did not staple an OCSP response
+2026-04-01 23:53:18,107 DEBUG pymongo.ocsp_support: No OCSP URI, soft fail
+2026-04-01 23:53:18,109 DEBUG pymongo.topology: {"message": "Server heartbeat started", "topologyId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "driverConnectionId": 1, "serverHost": "ac-nhq7cr8-shard-00-00.1bnjrns.mongodb.net", "serverPort": 27017, "awaited": false}
+2026-04-01 23:53:18,109 DEBUG pymongo.topology: {"message": "Server heartbeat started", "topologyId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "driverConnectionId": 1, "serverHost": "ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net", "serverPort": 27017, "awaited": false}
+2026-04-01 23:53:18,110 DEBUG pymongo.topology: {"message": "Server heartbeat started", "topologyId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "driverConnectionId": 1, "serverHost": "ac-nhq7cr8-shard-00-01.1bnjrns.mongodb.net", "serverPort": 27017, "awaited": false}
+2026-04-01 23:53:18,163 DEBUG pymongo.topology: {"message": "Server heartbeat succeeded", "topologyId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "driverConnectionId": 1, "serverConnectionId": 903954, "serverHost": "ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net", "serverPort": 27017, "awaited": false, "durationMS": 53.533756001343136, "reply": "{\"helloOk\": true, \"topologyVersion\": {\"processId\": {\"$oid\": \"69b82d87b60c83935555dc44\"}, \"counter\": 6}, \"hosts\": [\"ac-nhq7cr8-shard-00-00.1bnjrns.mongodb.net:27017\", \"ac-nhq7cr8-shard-00-01.1bnjrns.mongodb.net:27017\", \"ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net:27017\"], \"setName\": \"atlas-tnitf9-shard-0\", \"setVersion\": 13, \"ismaster\": true, \"primary\": \"ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net:27017\", \"tags\": {\"availabilityZone\": \"use1-az5\", \"diskState\": \"READY\", \"nodeType\": \"ELECTABLE\", \"workloadType\": \"OPERATIONAL\", \"region\": \"US_EAST_1\", \"provider\": \"AWS\"}, \"me\": \"ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net:27017\", \"electionId\": {\"$oid\": \"7fffffff0000000000000017\"}, \"lastWrite\": {\"opTime\": {\"ts\": {\"$timestamp\": {\"t\": 1775105597, \"i\": 28}}, \"t\": 23}, \"lastWriteDate\": {\"$date\": \"2026-04-02T04:53:17Z\"}, \"majorityOpTime\": {\"ts\": {\"$timestamp\": {\"t\": 1775105597, \"i\": 28}}, \"t\": 23}, \"majorityWriteDate\": {\"$date\": \"2026-04-02T04:53:17Z\"}}, \"maxBsonObjectSize\": 16777216, \"maxMessageSizeByte..."}
+2026-04-01 23:53:18,164 DEBUG pymongo.topology: {"message": "Server heartbeat succeeded", "topologyId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "driverConnectionId": 1, "serverConnectionId": 848490, "serverHost": "ac-nhq7cr8-shard-00-01.1bnjrns.mongodb.net", "serverPort": 27017, "awaited": false, "durationMS": 53.9586410013726, "reply": "{\"helloOk\": true, \"topologyVersion\": {\"processId\": {\"$oid\": \"69b82fb962e1c90dc45f82ec\"}, \"counter\": 3}, \"hosts\": [\"ac-nhq7cr8-shard-00-00.1bnjrns.mongodb.net:27017\", \"ac-nhq7cr8-shard-00-01.1bnjrns.mongodb.net:27017\", \"ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net:27017\"], \"setName\": \"atlas-tnitf9-shard-0\", \"setVersion\": 13, \"secondary\": true, \"primary\": \"ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net:27017\", \"tags\": {\"nodeType\": \"ELECTABLE\", \"diskState\": \"READY\", \"availabilityZone\": \"use1-az4\", \"region\": \"US_EAST_1\", \"workloadType\": \"OPERATIONAL\", \"provider\": \"AWS\"}, \"me\": \"ac-nhq7cr8-shard-00-01.1bnjrns.mongodb.net:27017\", \"lastWrite\": {\"opTime\": {\"ts\": {\"$timestamp\": {\"t\": 1775105597, \"i\": 28}}, \"t\": 23}, \"lastWriteDate\": {\"$date\": \"2026-04-02T04:53:17Z\"}, \"majorityOpTime\": {\"ts\": {\"$timestamp\": {\"t\": 1775105597, \"i\": 28}}, \"t\": 23}, \"majorityWriteDate\": {\"$date\": \"2026-04-02T04:53:17Z\"}}, \"maxBsonObjectSize\": 16777216, \"maxMessageSizeBytes\": 48000000, \"maxWriteBatchSize\": 100000, \"localTi..."}
+2026-04-01 23:53:18,164 DEBUG pymongo.topology: {"message": "Server heartbeat succeeded", "topologyId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "driverConnectionId": 1, "serverConnectionId": 855474, "serverHost": "ac-nhq7cr8-shard-00-00.1bnjrns.mongodb.net", "serverPort": 27017, "awaited": false, "durationMS": 55.004411999107106, "reply": "{\"helloOk\": true, \"topologyVersion\": {\"processId\": {\"$oid\": \"69b82b25848e2e1569b7a7e5\"}, \"counter\": 4}, \"hosts\": [\"ac-nhq7cr8-shard-00-00.1bnjrns.mongodb.net:27017\", \"ac-nhq7cr8-shard-00-01.1bnjrns.mongodb.net:27017\", \"ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net:27017\"], \"setName\": \"atlas-tnitf9-shard-0\", \"setVersion\": 13, \"secondary\": true, \"primary\": \"ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net:27017\", \"tags\": {\"diskState\": \"READY\", \"provider\": \"AWS\", \"nodeType\": \"ELECTABLE\", \"region\": \"US_EAST_1\", \"availabilityZone\": \"use1-az2\", \"workloadType\": \"OPERATIONAL\"}, \"me\": \"ac-nhq7cr8-shard-00-00.1bnjrns.mongodb.net:27017\", \"lastWrite\": {\"opTime\": {\"ts\": {\"$timestamp\": {\"t\": 1775105597, \"i\": 28}}, \"t\": 23}, \"lastWriteDate\": {\"$date\": \"2026-04-02T04:53:17Z\"}, \"majorityOpTime\": {\"ts\": {\"$timestamp\": {\"t\": 1775105597, \"i\": 28}}, \"t\": 23}, \"majorityWriteDate\": {\"$date\": \"2026-04-02T04:53:17Z\"}}, \"maxBsonObjectSize\": 16777216, \"maxMessageSizeBytes\": 48000000, \"maxWriteBatchSize\": 100000, \"localTi..."}
+2026-04-01 23:53:18,165 DEBUG pymongo.connection: {"message": "Connection pool ready", "clientId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "serverHost": "ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net", "serverPort": 27017}
+2026-04-01 23:53:18,166 DEBUG pymongo.topology: {"message": "Topology description changed", "topologyId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "previousDescription": "<TopologyDescription id: 69cdf63dd38c9b12ba11f295, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-nhq7cr8-shard-00-00.1bnjrns.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-nhq7cr8-shard-00-01.1bnjrns.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net', 27017) server_type: Unknown, rtt: None>]>", "newDescription": "<TopologyDescription id: 69cdf63dd38c9b12ba11f295, topology_type: ReplicaSetWithPrimary, servers: [<ServerDescription ('ac-nhq7cr8-shard-00-00.1bnjrns.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-nhq7cr8-shard-00-01.1bnjrns.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net', 27017) server_type: RSPrimary, rtt: 0.053533756001343136>]>"}
+2026-04-01 23:53:18,167 DEBUG pymongo.connection: {"message": "Connection pool ready", "clientId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "serverHost": "ac-nhq7cr8-shard-00-01.1bnjrns.mongodb.net", "serverPort": 27017}
+2026-04-01 23:53:18,167 DEBUG pymongo.topology: {"message": "Server heartbeat started", "topologyId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "driverConnectionId": 1, "serverConnectionId": 903954, "serverHost": "ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net", "serverPort": 27017, "awaited": true}
+2026-04-01 23:53:18,167 DEBUG pymongo.topology: {"message": "Topology description changed", "topologyId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "previousDescription": "<TopologyDescription id: 69cdf63dd38c9b12ba11f295, topology_type: ReplicaSetWithPrimary, servers: [<ServerDescription ('ac-nhq7cr8-shard-00-00.1bnjrns.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-nhq7cr8-shard-00-01.1bnjrns.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net', 27017) server_type: RSPrimary, rtt: 0.053533756001343136>]>", "newDescription": "<TopologyDescription id: 69cdf63dd38c9b12ba11f295, topology_type: ReplicaSetWithPrimary, servers: [<ServerDescription ('ac-nhq7cr8-shard-00-00.1bnjrns.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-nhq7cr8-shard-00-01.1bnjrns.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.0539586410013726>, <ServerDescription ('ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net', 27017) server_type: RSPrimary, rtt: 0.053533756001343136>]>"}
+2026-04-01 23:53:18,168 DEBUG pymongo.connection: {"message": "Connection pool ready", "clientId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "serverHost": "ac-nhq7cr8-shard-00-00.1bnjrns.mongodb.net", "serverPort": 27017}
+2026-04-01 23:53:18,168 DEBUG pymongo.topology: {"message": "Server heartbeat started", "topologyId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "driverConnectionId": 1, "serverConnectionId": 848490, "serverHost": "ac-nhq7cr8-shard-00-01.1bnjrns.mongodb.net", "serverPort": 27017, "awaited": true}
+2026-04-01 23:53:18,169 DEBUG pymongo.topology: {"message": "Topology description changed", "topologyId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "previousDescription": "<TopologyDescription id: 69cdf63dd38c9b12ba11f295, topology_type: ReplicaSetWithPrimary, servers: [<ServerDescription ('ac-nhq7cr8-shard-00-00.1bnjrns.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-nhq7cr8-shard-00-01.1bnjrns.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.0539586410013726>, <ServerDescription ('ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net', 27017) server_type: RSPrimary, rtt: 0.053533756001343136>]>", "newDescription": "<TopologyDescription id: 69cdf63dd38c9b12ba11f295, topology_type: ReplicaSetWithPrimary, servers: [<ServerDescription ('ac-nhq7cr8-shard-00-00.1bnjrns.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.055004411999107106>, <ServerDescription ('ac-nhq7cr8-shard-00-01.1bnjrns.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.0539586410013726>, <ServerDescription ('ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net', 27017) server_type: RSPrimary, rtt: 0.053533756001343136>]>"}
+2026-04-01 23:53:18,169 DEBUG pymongo.serverSelection: {"message": "Server selection succeeded", "selector": "<function writable_server_selector at 0x76673e2582c0>", "operation": "drop", "topologyDescription": "<TopologyDescription id: 69cdf63dd38c9b12ba11f295, topology_type: ReplicaSetWithPrimary, servers: [<ServerDescription ('ac-nhq7cr8-shard-00-00.1bnjrns.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.055004411999107106>, <ServerDescription ('ac-nhq7cr8-shard-00-01.1bnjrns.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.0539586410013726>, <ServerDescription ('ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net', 27017) server_type: RSPrimary, rtt: 0.053533756001343136>]>", "clientId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "serverHost": "ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net", "serverPort": 27017}
+2026-04-01 23:53:18,170 DEBUG pymongo.connection: {"message": "Connection checkout started", "clientId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "serverHost": "ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net", "serverPort": 27017}
+2026-04-01 23:53:18,170 DEBUG pymongo.topology: {"message": "Server heartbeat started", "topologyId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "driverConnectionId": 1, "serverConnectionId": 855474, "serverHost": "ac-nhq7cr8-shard-00-00.1bnjrns.mongodb.net", "serverPort": 27017, "awaited": true}
+2026-04-01 23:53:18,170 DEBUG pymongo.connection: {"message": "Connection created", "clientId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "serverHost": "ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net", "serverPort": 27017, "driverConnectionId": 1}
+2026-04-01 23:53:18,519 DEBUG pymongo.ocsp_support: Peer did not staple an OCSP response
+2026-04-01 23:53:18,520 DEBUG pymongo.ocsp_support: No OCSP URI, soft fail
+2026-04-01 23:53:18,520 DEBUG pymongo.ocsp_support: Peer did not staple an OCSP response
+2026-04-01 23:53:18,520 DEBUG pymongo.ocsp_support: No OCSP URI, soft fail
+2026-04-01 23:54:40,178 DEBUG pymongo.ocsp_support: Peer did not staple an OCSP response
+2026-04-01 23:54:40,178 DEBUG pymongo.ocsp_support: No OCSP URI, soft fail
+2026-04-01 23:54:40,180 DEBUG pymongo.ocsp_support: Peer did not staple an OCSP response
+2026-04-01 23:54:40,180 DEBUG pymongo.ocsp_support: No OCSP URI, soft fail
+2026-04-01 23:53:18,704 DEBUG pymongo.connection: {"message": "Connection ready", "clientId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "serverHost": "ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net", "serverPort": 27017, "driverConnectionId": 1, "durationMS": 0.19118398299906403}
+2026-04-01 23:53:18,705 DEBUG pymongo.connection: {"message": "Connection checked out", "clientId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "serverHost": "ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net", "serverPort": 27017, "driverConnectionId": 1, "durationMS": 0.5420701729999564}
+2026-04-01 23:53:18,705 DEBUG pymongo.command: {"message": "Command started", "clientId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "command": "{\"drop\": \"validationResults\", \"lsid\": {\"id\": {\"$binary\": {\"base64\": \"Mp2vjD8eRdCJx4WQmGdSPA==\", \"subType\": \"04\"}}}, \"$clusterTime\": {\"clusterTime\": {\"$timestamp\": {\"t\": 1775105598, \"i\": 3}}, \"signature\": {\"hash\": {\"$binary\": {\"base64\": \"2+JF66v2iAEvdfVoNc8bPQJt9aM=\", \"subType\": \"00\"}}, \"keyId\": 7566725175656316935}}, \"$db\": \"fivos-shared\"}", "commandName": "drop", "databaseName": "fivos-shared", "requestId": 783368690, "operationId": 783368690, "driverConnectionId": 1, "serverConnectionId": 903956, "serverHost": "ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net", "serverPort": 27017}
+2026-04-01 23:53:18,773 DEBUG pymongo.command: {"message": "Command succeeded", "clientId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "durationMS": 67.94600000000001, "reply": "{\"nIndexesWas\": 1, \"ns\": \"fivos-shared.validationResults\", \"ok\": 1.0, \"$clusterTime\": {\"clusterTime\": {\"$timestamp\": {\"t\": 1775105598, \"i\": 6}}, \"signature\": {\"hash\": {\"$binary\": {\"base64\": \"2+JF66v2iAEvdfVoNc8bPQJt9aM=\", \"subType\": \"00\"}}, \"keyId\": 7566725175656316935}}, \"operationTime\": {\"$timestamp\": {\"t\": 1775105598, \"i\": 6}}}", "commandName": "drop", "databaseName": "fivos-shared", "requestId": 783368690, "operationId": 783368690, "driverConnectionId": 1, "serverConnectionId": 903956, "serverHost": "ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net", "serverPort": 27017}
+2026-04-01 23:53:18,773 DEBUG pymongo.connection: {"message": "Connection checked in", "clientId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "serverHost": "ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net", "serverPort": 27017, "driverConnectionId": 1}
+2026-04-01 23:53:18,774 DEBUG pymongo.serverSelection: {"message": "Server selection started", "selector": "Primary()", "operation": "find", "topologyDescription": "<TopologyDescription id: 69cdf63dd38c9b12ba11f295, topology_type: ReplicaSetWithPrimary, servers: [<ServerDescription ('ac-nhq7cr8-shard-00-00.1bnjrns.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.055004411999107106>, <ServerDescription ('ac-nhq7cr8-shard-00-01.1bnjrns.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.0539586410013726>, <ServerDescription ('ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net', 27017) server_type: RSPrimary, rtt: 0.053533756001343136>]>", "clientId": {"$oid": "69cdf63dd38c9b12ba11f295"}}
+2026-04-01 23:53:18,774 DEBUG pymongo.serverSelection: {"message": "Server selection succeeded", "selector": "Primary()", "operation": "find", "topologyDescription": "<TopologyDescription id: 69cdf63dd38c9b12ba11f295, topology_type: ReplicaSetWithPrimary, servers: [<ServerDescription ('ac-nhq7cr8-shard-00-00.1bnjrns.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.055004411999107106>, <ServerDescription ('ac-nhq7cr8-shard-00-01.1bnjrns.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.0539586410013726>, <ServerDescription ('ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net', 27017) server_type: RSPrimary, rtt: 0.053533756001343136>]>", "clientId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "serverHost": "ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net", "serverPort": 27017}
+2026-04-01 23:53:18,774 DEBUG pymongo.connection: {"message": "Connection checkout started", "clientId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "serverHost": "ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net", "serverPort": 27017}
+2026-04-01 23:53:18,774 DEBUG pymongo.connection: {"message": "Connection checked out", "clientId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "serverHost": "ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net", "serverPort": 27017, "driverConnectionId": 1, "durationMS": 0.0001730599997245008}
+2026-04-01 23:53:18,774 DEBUG pymongo.command: {"message": "Command started", "clientId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "command": "{\"find\": \"devices\", \"filter\": {\"_harvest.harvest_run_id\": \"HR-LOCAL-20260402045118\"}, \"lsid\": {\"id\": {\"$binary\": {\"base64\": \"Mp2vjD8eRdCJx4WQmGdSPA==\", \"subType\": \"04\"}}}, \"$clusterTime\": {\"clusterTime\": {\"$timestamp\": {\"t\": 1775105598, \"i\": 6}}, \"signature\": {\"hash\": {\"$binary\": {\"base64\": \"2+JF66v2iAEvdfVoNc8bPQJt9aM=\", \"subType\": \"00\"}}, \"keyId\": 7566725175656316935}}, \"$db\": \"fivos-shared\"}", "commandName": "find", "databaseName": "fivos-shared", "requestId": 1102520059, "operationId": 1102520059, "driverConnectionId": 1, "serverConnectionId": 903956, "serverHost": "ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net", "serverPort": 27017}
+2026-04-01 23:53:18,840 DEBUG pymongo.command: {"message": "Command succeeded", "clientId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "durationMS": 65.79400000000001, "reply": "{\"cursor\": {\"ns\": \"fivos-shared.devices\"}, \"ok\": 1.0, \"$clusterTime\": {\"clusterTime\": {\"$timestamp\": {\"t\": 1775105598, \"i\": 6}}, \"signature\": {\"hash\": {\"$binary\": {\"base64\": \"2+JF66v2iAEvdfVoNc8bPQJt9aM=\", \"subType\": \"00\"}}, \"keyId\": 7566725175656316935}}, \"operationTime\": {\"$timestamp\": {\"t\": 1775105598, \"i\": 6}}}", "commandName": "find", "databaseName": "fivos-shared", "requestId": 1102520059, "operationId": 1102520059, "driverConnectionId": 1, "serverConnectionId": 903956, "serverHost": "ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net", "serverPort": 27017}
+2026-04-01 23:53:18,841 DEBUG pymongo.connection: {"message": "Connection checked in", "clientId": {"$oid": "69cdf63dd38c9b12ba11f295"}, "serverHost": "ac-nhq7cr8-shard-00-02.1bnjrns.mongodb.net", "serverPort": 27017, "driverConnectionId": 1}

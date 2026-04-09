@@ -1,8 +1,7 @@
 """Parse regulatory boolean fields from warning/precaution text.
 
-Extracts GUDID-compatible fields (singleUse, rx, deviceSterile) from
-free-text warnings and precautions found on manufacturer pages.
-Only produces results when patterns are actually matched.
+Extracts GUDID-compatible fields from free-text warnings and precautions
+found on manufacturer pages. Only produces results when patterns are matched.
 """
 
 import re
@@ -28,11 +27,35 @@ _STERILE_PATTERNS = [
     re.compile(r"provided\s+sterile", re.IGNORECASE),
 ]
 
+_NRL_PRESENT_PATTERNS = [
+    re.compile(r"contains\s+natural\s+rubber\s+latex", re.IGNORECASE),
+    re.compile(r"made\s+with\s+natural\s+rubber\s+latex", re.IGNORECASE),
+    re.compile(r"contains\s+latex", re.IGNORECASE),
+]
+
+_NRL_ABSENT_PATTERNS = [
+    re.compile(r"latex[\s-]free", re.IGNORECASE),
+    re.compile(r"does\s+not\s+contain\s+natural\s+rubber\s+latex", re.IGNORECASE),
+    re.compile(r"not\s+made\s+with\s+natural\s+rubber\s+latex", re.IGNORECASE),
+]
+
+_STERILE_BEFORE_USE_PATTERNS = [
+    re.compile(r"sterilize\s+before\s+use", re.IGNORECASE),
+    re.compile(r"must\s+be\s+sterilized", re.IGNORECASE),
+    re.compile(r"requires?\s+sterilization", re.IGNORECASE),
+]
+
+_OTC_PATTERNS = [
+    re.compile(r"over[\s-]the[\s-]counter", re.IGNORECASE),
+    re.compile(r"\bOTC\b"),
+    re.compile(r"without\s+a\s+prescription", re.IGNORECASE),
+]
+
 
 def parse_regulatory_from_text(warning_text: str | None) -> dict:
     """Extract boolean GUDID fields from warning/precaution text.
 
-    Returns dict like {"singleUse": True, "rx": True, "deviceSterile": True}.
+    Returns dict like {"singleUse": True, "rx": True, ...}.
     Only includes fields actually found. Returns {} if nothing found.
     """
     if not warning_text or not warning_text.strip():
@@ -53,6 +76,26 @@ def parse_regulatory_from_text(warning_text: str | None) -> dict:
     for pattern in _STERILE_PATTERNS:
         if pattern.search(warning_text):
             result["deviceSterile"] = True
+            break
+
+    for pattern in _NRL_PRESENT_PATTERNS:
+        if pattern.search(warning_text):
+            result["labeledContainsNRL"] = True
+            break
+
+    for pattern in _NRL_ABSENT_PATTERNS:
+        if pattern.search(warning_text):
+            result["labeledNoNRL"] = True
+            break
+
+    for pattern in _STERILE_BEFORE_USE_PATTERNS:
+        if pattern.search(warning_text):
+            result["sterilizationPriorToUse"] = True
+            break
+
+    for pattern in _OTC_PATTERNS:
+        if pattern.search(warning_text):
+            result["otc"] = True
             break
 
     return result

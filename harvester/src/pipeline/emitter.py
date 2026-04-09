@@ -111,7 +111,11 @@ def package_gudid_record(
         record["deviceSizes"] = _build_device_sizes(normalized_record)
 
         # Regulatory boolean fields
-        for field in ("singleUse", "deviceSterile", "sterilizationPriorToUse", "rx", "otc"):
+        for field in (
+            "singleUse", "deviceSterile", "sterilizationPriorToUse", "rx", "otc",
+            "labeledContainsNRL", "labeledNoNRL", "deviceKit",
+            "premarketSubmissions", "environmentalConditions",
+        ):
             if field in normalized_record:
                 record[field] = normalized_record[field]
 

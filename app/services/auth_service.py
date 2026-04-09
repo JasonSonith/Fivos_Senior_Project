@@ -1,36 +1,19 @@
-from typing import Optional
-
-DEMO_USERS = {
-    "admin@fivos.local": {
-        "password": "admin123",
-        "name": "System Admin",
-        "role": "admin",
-    },
-    "reviewer@fivos.local": {
-        "password": "review123",
-        "name": "Review Analyst",
-        "role": "reviewer",
-    },
-}
+from app.services import user_service
 
 
-def authenticate_user(email: str, password: str) -> Optional[dict]:
+def authenticate_user(email: str, password: str) -> dict | None:
     if not email or not password:
         return None
-
-    user = DEMO_USERS.get(email.strip().lower())
+    user = user_service.get_user_by_email(email)
     if not user:
         return None
-
-    if user["password"] != password:
+    if not user.get("active", True):
         return None
-
-    return {
-        "email": email.strip().lower(),
-        "name": user["name"],
-        "role": user["role"],
-    }
+    if not user_service.verify_password(password, user["password_hash"]):
+        return None
+    user_service.update_last_login(user["_id"])
+    return user
 
 
-def get_current_user(request):
+def get_current_user(request) -> dict | None:
     return request.session.get("user")

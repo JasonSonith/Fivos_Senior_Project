@@ -2,6 +2,8 @@ from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 
+from app.services.auth_guard import require_roles
+
 router = APIRouter(prefix="/review", tags=["Review"])
 templates = Jinja2Templates(directory="app/templates")
 
@@ -16,6 +18,10 @@ COMPARED_FIELDS = [
 
 @router.get("/{validation_id}")
 def review_page(request: Request, validation_id: str):
+    user, redirect = require_roles(request, ["admin", "reviewer"])
+    if redirect:
+        return redirect
+
     from orchestrator import get_discrepancy_detail
     detail = get_discrepancy_detail(validation_id)
 
@@ -50,18 +56,24 @@ def review_page(request: Request, validation_id: str):
         })
 
     return templates.TemplateResponse(
-        request, "review.html",
+        request,
+        "review.html",
         context={
             "validation_id": validation_id,
             "validation": validation,
             "device": device,
             "fields": fields,
+            "current_user": user,
         },
     )
 
 
 @router.post("/{validation_id}/save")
 async def save_review(request: Request, validation_id: str):
+    user, redirect = require_roles(request, ["admin", "reviewer"])
+    if redirect:
+        return redirect
+
     from orchestrator import resolve_discrepancy
 
     form = await request.form()

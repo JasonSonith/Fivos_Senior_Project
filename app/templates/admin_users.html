@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <p class="eyebrow">Administration</p>
+        <h1 class="page-title">User Accounts</h1>
+        <p class="page-description">
+            Create and manage user accounts. All new accounts require a password change on first login.
+        </p>
+    </div>
+</section>
+
+<!-- Error alert -->
+{% if error %}
+<div class="alert-error">{{ error }}</div>
+{% endif %}
+
+<!-- New account temp password (shown once after creation) -->
+{% if new_account %}
+<div class="alert-success" style="display: flex; gap: 12px; align-items: flex-start;">
+    <div style="flex: 1;">
+        <strong>Account created for {{ new_account.name }} ({{ new_account.email }}).</strong>
+        Share this temporary password — it is shown once and cannot be recovered:
+        <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+            <code class="mono" id="temp-pwd-code" style="
+                background: var(--surface);
+                border: 1px solid #bbf7d0;
+                padding: 8px 14px;
+                border-radius: var(--radius);
+                font-size: 15px;
+                color: var(--text);
+                flex: 1;
+            ">{{ new_account.temp_password }}</code>
+            <button
+                onclick="navigator.clipboard.writeText('{{ new_account.temp_password }}').then(() => { this.textContent = 'Copied!'; setTimeout(() => this.textContent = 'Copy', 1500); })"
+                class="btn btn-sm btn-secondary"
+            >Copy</button>
+        </div>
+        <p style="font-size: 12px; color: #166534; margin: 8px 0 0;">
+            The user must change this on first login.
+        </p>
+    </div>
+</div>
+{% endif %}
+
+<!-- Create account form -->
+<section class="panel">
+    <div class="panel-header">
+        <div>
+            <h3>Create New Account</h3>
+            <p>A temporary password will be generated and shown once after creation.</p>
+        </div>
+    </div>
+    <form method="post" action="/admin/users/create">
+        <div style="display: grid; grid-template-columns: 1fr 1fr 160px auto; gap: 14px; align-items: end;">
+            <div class="field" style="margin: 0;">
+                <label for="new-name">Full Name</label>
+                <input id="new-name" type="text" name="name" placeholder="Jane Smith" required>
+            </div>
+            <div class="field" style="margin: 0;">
+                <label for="new-email">Email</label>
+                <input id="new-email" type="email" name="email" placeholder="jane@fivos.local" required>
+            </div>
+            <div class="field" style="margin: 0;">
+                <label for="new-role">Role</label>
+                <select id="new-role" name="role">
+                    <option value="reviewer">Reviewer</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary" style="white-space: nowrap;">
+                Create Account
+            </button>
+        </div>
+    </form>
+</section>
+
+<!-- Users table -->
+<section class="panel">
+    <div class="panel-header">
+        <div>
+            <h3>All Accounts ({{ users | length }})</h3>
+            <p>Disable an account to block login without deleting it.</p>
+        </div>
+    </div>
+
+    {% if users %}
+    <div class="table-wrap">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Last Login</th>
+                    <th>Created By</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in users %}
+                <tr {% if not u.active %}style="opacity: 0.55;"{% endif %}>
+                    <td style="font-weight: 600; color: var(--text);">
+                        {{ u.name }}
+                        {% if u.email == current_user.email %}
+                        <span style="font-size: 11px; font-weight: 500; color: var(--teal);">(you)</span>
+                        {% endif %}
+                    </td>
+                    <td class="mono" style="font-size: 13px;">{{ u.email }}</td>
+                    <td>
+                        {% if u.role == "admin" %}
+                        <span class="badge badge-danger">Admin</span>
+                        {% else %}
+                        <span class="badge badge-resolved">Reviewer</span>
+                        {% endif %}
+                    </td>
+                    <td style="font-size: 13px; color: var(--muted);">
+                        {% if u.last_login %}
+                            {{ u.last_login.strftime('%b %d, %Y') }}
+                        {% else %}
+                            Never
+                        {% endif %}
+                    </td>
+                    <td class="mono" style="font-size: 12px; color: var(--muted);">{{ u.created_by }}</td>
+                    <td>
+                        {% if not u.active %}
+                        <span class="badge badge-muted">Disabled</span>
+                        {% elif u.force_password_change %}
+                        <span class="badge badge-warning" title="Awaiting first-login password change">Pwd Reset ⚠</span>
+                        {% else %}
+                        <span class="badge badge-success">Active</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if u.email != current_user.email %}
+                        <form method="post" action="/admin/users/{{ u._id }}/toggle" style="display: inline;">
+                            {% if u.active %}
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Disable</button>
+                            {% else %}
+                            <button type="submit" class="btn btn-sm btn-outline-success">Enable</button>
+                            {% endif %}
+                        </form>
+                        {% else %}
+                        <span style="font-size: 12px; color: var(--muted);">&mdash;</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>No user accounts found. Create one above.</p>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
