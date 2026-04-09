@@ -1,6 +1,6 @@
 import os
 import sys
-# lol
+from contextlib import asynccontextmanager
 
 from dotenv import load_dotenv
 
@@ -21,8 +21,17 @@ from app.routes import gudid as gudid_routes
 from app.routes import validate as validate_routes
 from app.routes import review as review_routes
 from app.routes import auth as auth_routes
+from app.routes import admin as admin_routes
 
-app = FastAPI(title="Fivos Device Data Interface")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    from app.services.user_service import seed_demo_users
+    seed_demo_users()
+    yield
+
+
+app = FastAPI(title="Fivos Device Data Interface", lifespan=lifespan)
 
 app.add_middleware(
     SessionMiddleware,
@@ -31,7 +40,6 @@ app.add_middleware(
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
-# In-memory job store for background task polling
 app.state.jobs = {}
 
 app.include_router(dashboard.router)
@@ -41,3 +49,4 @@ app.include_router(gudid_routes.router)
 app.include_router(validate_routes.router)
 app.include_router(review_routes.router)
 app.include_router(auth_routes.router)
+app.include_router(admin_routes.router)

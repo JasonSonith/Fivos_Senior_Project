@@ -1,5 +1,5 @@
-docs/*
 .env
+harvester/src/web-scraper/out_html/*.html
 !.env.example
 venv/
 __pycache__/

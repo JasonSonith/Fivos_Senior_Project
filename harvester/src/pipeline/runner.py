@@ -58,6 +58,7 @@ TEXT_FIELDS = {"description", "brand_name", "product_type", "specs_container", "
 MODEL_FIELDS = {"model_number", "catalog_number", "sku"}
 DATE_FIELDS = {"approval_date", "clearance_date", "expiration_date"}
 MEASUREMENT_FIELDS = {"length", "width", "height", "diameter", "weight", "volume", "pressure"}
+PASSTHROUGH_FIELDS = {"deviceKit", "premarketSubmissions", "environmentalConditions", "_description_source", "MRISafetyStatus"}
 
 
 def load_adapter(yaml_path: str) -> dict:
@@ -171,6 +172,9 @@ def normalize_record(raw_fields: dict, adapter: dict) -> dict:
 
             elif field in TEXT_FIELDS:
                 normalized[field] = normalize_text(value)
+
+            elif field in PASSTHROUGH_FIELDS:
+                normalized[field] = value
 
             else:
                 normalized[field] = normalize_text(value)
@@ -429,21 +433,22 @@ def process_batch(
     output_dir: str = "harvester/output",
     harvest_run_id: str | None = None,
 ) -> dict:
-    """Process all HTML files in a directory using Ollama extraction.
-
-    Every file is extracted via Ollama (two-pass: page fields + product rows).
-    Files are processed sequentially (Ollama handles one inference at a time).
+    """Process all HTML files in a directory using parallel LLM extraction.
 
     Returns a summary dict with keys: processed, succeeded, failed,
     ollama_extracted, output_dir, files.
     """
+    # Lazy import: parallel_batch lazy-imports _process_single_ollama
+    # from this module, so the two-way dependency is kept at call time only.
+    from pipeline.parallel_batch import process_html_files_parallel
+
     html_files = sorted(
         glob.glob(os.path.join(input_dir, "*.html"))
         + glob.glob(os.path.join(input_dir, "*.htm"))
     )
 
     summary = {
-        "processed": 0,
+        "processed": len(html_files),
         "succeeded": 0,
         "failed": 0,
         "ollama_extracted": 0,
@@ -454,20 +459,18 @@ def process_batch(
     if not html_files:
         return summary
 
-    for html_path in html_files:
-        summary["processed"] += 1
-        try:
-            records = _process_single_ollama(html_path, harvest_run_id=harvest_run_id)
-            if records:
-                for record in records:
-                    path = write_record_json(record, output_dir)
-                    summary["files"].append(path)
-                summary["succeeded"] += len(records)
-                summary["ollama_extracted"] += len(records)
-            else:
-                summary["failed"] += 1
-        except Exception as exc:
-            logger.error("process_batch: error for %s: %s", html_path, exc)
+    results = process_html_files_parallel(
+        html_files,
+        harvest_run_id=harvest_run_id or "",
+    )
+
+    for r in results:
+        if r.records:
+            for record in r.records:
+                summary["files"].append(write_record_json(record, output_dir))
+            summary["succeeded"] += len(r.records)
+            summary["ollama_extracted"] += len(r.records)
+        else:
             summary["failed"] += 1
 
     return summary
@@ -487,8 +490,13 @@ def _parse_urls(urls_arg: str) -> list[str]:
     return [u.strip() for u in urls_arg.split(",") if u.strip()]
 
 
-def scrape_urls(urls: list[str], output_dir: str) -> list[str]:
-    """Scrape URLs via Playwright and save HTML files. Returns list of saved paths."""
+def _scrape_urls_with_meta(urls: list[str], output_dir: str) -> list[dict]:
+    """Scrape URLs, return per-URL metadata (preserves input order and failures).
+
+    Each entry is a dict: {url, final_url, path, error}. For successful
+    URLs, final_url and path are set and error is None. For failed URLs,
+    final_url and path are None and error contains the failure reason.
+    """
     from web_scraper.scraper import (
         BrowserEngine, safe_filename_from_url, is_pdf_url, dedupe_keep_order,
     )
@@ -516,19 +524,42 @@ def scrape_urls(urls: list[str], output_dir: str) -> list[str]:
             return await asyncio.gather(*(engine.fetch(u) for u in urls))
 
     results = asyncio.run(_run())
-    saved = []
-    for r in results:
+    meta: list[dict] = []
+    saved_count = 0
+    for url, r in zip(urls, results):
         if r.ok and r.html:
             fname = safe_filename_from_url(r.final_url or r.url)
             path = os.path.join(output_dir, fname)
             with open(path, "w", encoding="utf-8") as f:
                 f.write(r.html)
-            saved.append(path)
+            saved_count += 1
             logger.info("Scraped: %s", r.final_url or r.url)
+            meta.append({
+                "url": url,
+                "final_url": r.final_url or r.url,
+                "path": path,
+                "error": None,
+            })
         else:
             logger.warning("Scrape failed: %s — %s", r.url, r.error)
-    logger.info("Scraped %d/%d pages.", len(saved), len(urls))
-    return saved
+            meta.append({
+                "url": url,
+                "final_url": None,
+                "path": None,
+                "error": r.error,
+            })
+    logger.info("Scraped %d/%d pages.", saved_count, len(urls))
+    return meta
+
+
+def scrape_urls(urls: list[str], output_dir: str) -> list[str]:
+    """Scrape URLs via Playwright and save HTML files. Returns list of saved paths.
+
+    Backward-compatible wrapper around _scrape_urls_with_meta() for callers
+    that only need successful paths.
+    """
+    meta = _scrape_urls_with_meta(urls, output_dir)
+    return [m["path"] for m in meta if m["path"]]
 
 
 def write_records_to_db(json_paths: list[str], overwrite: bool = False) -> int:
@@ -594,7 +625,7 @@ def main():
 
     logging.basicConfig(
         level=logging.DEBUG if args.verbose else logging.INFO,
-        format="%(levelname)s %(name)s: %(message)s",
+        format="%(asctime)s [%(threadName)s] %(levelname)s %(name)s: %(message)s",
     )
 
     # Determine effective modes

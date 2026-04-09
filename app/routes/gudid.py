@@ -23,7 +23,6 @@ def gudid_page(request: Request):
         },
     )
 
-
 @router.post("/lookup")
 def gudid_lookup(
     request: Request,
@@ -36,10 +35,18 @@ def gudid_lookup(
 
     from orchestrator import lookup_gudid_device
 
-    if query_type == "di":
-        result = lookup_gudid_device(di=query)
-    else:
-        result = lookup_gudid_device(model_number=query)
+    try:
+        if query_type == "di":
+            result = lookup_gudid_device(di=query)
+        else:
+            result = lookup_gudid_device(model_number=query)
+    except Exception as e:
+        result = {
+            "success": False,
+            "record": None,
+            "di": None,
+            "error": f"GUDID lookup failed: {str(e)}"
+        }
 
     return templates.TemplateResponse(
         request,

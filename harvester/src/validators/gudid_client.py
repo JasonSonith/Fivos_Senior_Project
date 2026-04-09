@@ -31,10 +31,25 @@ def search_gudid_di(catalog_number=None, version_model_number=None):
     return None
 
 
+def _extract_storage_conditions(device: dict) -> dict | None:
+    """Extract storage/handling conditions from GUDID device dict.
+
+    Returns {"conditions": [...text strings...]} or None if empty.
+    """
+    env = device.get("environmentalConditions") or {}
+    handling = env.get("storageHandling") or []
+    texts = [
+        item.get("specialConditionText", "").strip()
+        for item in handling
+        if item.get("specialConditionText", "").strip()
+    ]
+    return {"conditions": texts} if texts else None
+
+
 def fetch_gudid_record(catalog_number=None, version_model_number=None):
     """Search for DI, then fetch structured device record from GUDID API.
 
-    Returns (di, record_dict) where record_dict has the 5 comparison fields,
+    Returns (di, record_dict) where record_dict contains all MERGE_FIELDS,
     or (di, None) if device not found, or (None, None) if search fails.
     """
     di = search_gudid_di(
@@ -54,12 +69,30 @@ def fetch_gudid_record(catalog_number=None, version_model_number=None):
     if not device:
         return di, None
 
+    sterilization = device.get("sterilization") or {}
+    pmk = device.get("premarketSubmissions") or {}
+    submissions = pmk.get("premarketSubmission") or []
+    submission_numbers = [
+        s["submissionNumber"] for s in submissions if s.get("submissionNumber")
+    ]
+
     return di, {
         "brandName": device.get("brandName"),
         "versionModelNumber": device.get("versionModelNumber"),
         "catalogNumber": device.get("catalogNumber"),
         "companyName": device.get("companyName"),
         "deviceDescription": device.get("deviceDescription"),
+        "MRISafetyStatus": device.get("MRISafetyStatus"),
+        "singleUse": device.get("singleUse"),
+        "rx": device.get("rx"),
+        "otc": device.get("otc"),
+        "labeledContainsNRL": device.get("labeledContainsNRL"),
+        "labeledNoNRL": device.get("labeledNoNRL"),
+        "sterilizationPriorToUse": sterilization.get("sterilizationPriorToUse"),
+        "deviceSterile": sterilization.get("deviceSterile"),
+        "deviceKit": device.get("deviceKit"),
+        "premarketSubmissions": submission_numbers or None,
+        "environmentalConditions": _extract_storage_conditions(device),
     }
 
 
@@ -68,8 +101,14 @@ def lookup_by_di(di):
     if not di:
         return None
 
-    response = requests.get(LOOKUP_URL, params={"di": di}, timeout=15)
-    response.raise_for_status()
-
-    data = response.json()
-    return data.get("gudid", {}).get("device")
+    try:
+        response = requests.get(LOOKUP_URL, params={"di": di}, timeout=15)
+        response.raise_for_status()
+        data = response.json()
+        return data.get("gudid", {}).get("device")
+    except requests.RequestException as e:
+        print(f"GUDID lookup_by_di failed: {e}")
+        return None
+    except ValueError as e:
+        print(f"GUDID lookup_by_di JSON parse failed: {e}")
+        return None

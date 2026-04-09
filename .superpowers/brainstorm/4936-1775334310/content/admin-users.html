@@ -1,0 +1,106 @@
+<h2>Admin — User Management page <code style="font-size:13px;background:rgba(255,255,255,.1);padding:2px 8px;border-radius:4px;">/admin/users</code></h2>
+<p class="subtitle">Admin-only page. Accessible from the nav when logged in as admin role.</p>
+
+<div class="mockup" style="max-width:860px;margin:0 auto;">
+  <div class="mockup-header">Page layout — /admin/users</div>
+  <div class="mockup-body" style="background:#f8fafc;padding:0;">
+
+    <!-- Nav -->
+    <div style="background:#1e293b;padding:0 24px;height:50px;display:flex;align-items:center;gap:20px;">
+      <span style="color:#2dd4bf;font-weight:700;font-size:14px;letter-spacing:1px;">FIVOS</span>
+      <span style="color:#64748b;font-size:13px;">Dashboard</span>
+      <span style="color:#64748b;font-size:13px;">Harvester</span>
+      <span style="color:#64748b;font-size:13px;">Validator</span>
+      <span style="color:#64748b;font-size:13px;">GUDID</span>
+      <span style="color:#2dd4bf;font-size:13px;border-bottom:2px solid #2dd4bf;padding-bottom:1px;">Users</span>
+      <span style="margin-left:auto;font-size:12px;color:#94a3b8;">admin@fivos.local · Admin</span>
+    </div>
+
+    <div style="padding:24px;">
+      <!-- Page header -->
+      <div style="border-bottom:1px solid #e2e8f0;padding-bottom:16px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:flex-end;">
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#0d9488;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;">Administration</div>
+          <div style="font-size:22px;font-weight:700;color:#0f172a;">User Accounts</div>
+          <div style="font-size:13px;color:#64748b;margin-top:4px;">Create and manage accounts. All new accounts require a password change on first login.</div>
+        </div>
+        <button style="background:#0d9488;color:#fff;border:none;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;">+ Create Account</button>
+      </div>
+
+      <!-- Create account form (inline, expanded) -->
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:18px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,.07);">
+        <div style="font-size:13px;font-weight:700;color:#0f172a;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #e2e8f0;">Create New Account</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 160px auto;gap:12px;align-items:end;">
+          <div>
+            <label style="display:block;font-size:12px;font-weight:600;color:#475569;margin-bottom:5px;">Full Name</label>
+            <input type="text" placeholder="Jane Smith" style="width:100%;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;color:#0f172a;outline:none;background:#f8fafc;">
+          </div>
+          <div>
+            <label style="display:block;font-size:12px;font-weight:600;color:#475569;margin-bottom:5px;">Email</label>
+            <input type="email" placeholder="jane@fivos.local" style="width:100%;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;color:#0f172a;outline:none;background:#f8fafc;">
+          </div>
+          <div>
+            <label style="display:block;font-size:12px;font-weight:600;color:#475569;margin-bottom:5px;">Role</label>
+            <select style="width:100%;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;color:#0f172a;background:#f8fafc;outline:none;">
+              <option>reviewer</option>
+              <option>admin</option>
+            </select>
+          </div>
+          <button style="background:#0d9488;color:#fff;border:none;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;">Create</button>
+        </div>
+
+        <!-- Temp password reveal (shown after creation) -->
+        <div style="margin-top:14px;padding:12px 14px;background:#f0fdfa;border:1px solid #99f6e4;border-radius:8px;">
+          <div style="font-size:12px;font-weight:700;color:#0d9488;margin-bottom:6px;">Account created. Share this temporary password with the user:</div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <code style="font-family:monospace;font-size:14px;color:#0f172a;background:#fff;padding:6px 12px;border-radius:6px;border:1px solid #ccfbf1;flex:1;">Fv!9kR#mX2pQ</code>
+            <button style="background:#fff;border:1px solid #99f6e4;color:#0d9488;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;">Copy</button>
+          </div>
+          <div style="font-size:11px;color:#64748b;margin-top:6px;">This is shown once. The user must change it on first login.</div>
+        </div>
+      </div>
+
+      <!-- Users table -->
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07);">
+        <!-- Table header -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 100px 120px 120px 80px;gap:0;background:#f1f5f9;border-bottom:1px solid #e2e8f0;">
+          <div style="padding:10px 14px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;">Name</div>
+          <div style="padding:10px 14px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;">Email</div>
+          <div style="padding:10px 14px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;">Role</div>
+          <div style="padding:10px 14px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;">Last Login</div>
+          <div style="padding:10px 14px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;">Status</div>
+          <div style="padding:10px 14px;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;">Action</div>
+        </div>
+        <!-- Row 1 — current admin (you) -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 100px 120px 120px 80px;border-bottom:1px solid #f1f5f9;background:#f0fdfa08;">
+          <div style="padding:12px 14px;font-size:13px;font-weight:600;color:#0f172a;">Admin <span style="font-size:11px;font-weight:500;color:#0d9488;">(you)</span></div>
+          <div style="padding:12px 14px;font-size:12px;font-family:monospace;color:#475569;">admin@fivos.local</div>
+          <div style="padding:12px 14px;"><span style="background:#fee2e2;color:#991b1b;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;text-transform:uppercase;">admin</span></div>
+          <div style="padding:12px 14px;font-size:12px;color:#94a3b8;">Just now</div>
+          <div style="padding:12px 14px;"><span style="background:#d1fae5;color:#065f46;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;text-transform:uppercase;">Active</span></div>
+          <div style="padding:12px 14px;font-size:12px;color:#e2e8f0;">—</div>
+        </div>
+        <!-- Row 2 — reviewer, force change pending -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 100px 120px 120px 80px;border-bottom:1px solid #f1f5f9;">
+          <div style="padding:12px 14px;font-size:13px;font-weight:600;color:#0f172a;">Reviewer</div>
+          <div style="padding:12px 14px;font-size:12px;font-family:monospace;color:#475569;">reviewer@fivos.local</div>
+          <div style="padding:12px 14px;"><span style="background:#ede9fe;color:#5b21b6;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;text-transform:uppercase;">reviewer</span></div>
+          <div style="padding:12px 14px;font-size:12px;color:#94a3b8;">Never</div>
+          <div style="padding:12px 14px;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;text-transform:uppercase;">Pwd Reset ⚠</span></div>
+          <div style="padding:12px 14px;"><button style="background:none;border:1px solid #fecaca;color:#dc2626;padding:4px 10px;border-radius:5px;font-size:11px;font-weight:600;cursor:pointer;">Disable</button></div>
+        </div>
+        <!-- Row 3 — inactive -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 100px 120px 120px 80px;opacity:.55;">
+          <div style="padding:12px 14px;font-size:13px;font-weight:600;color:#94a3b8;">Jane Smith</div>
+          <div style="padding:12px 14px;font-size:12px;font-family:monospace;color:#94a3b8;">jane@fivos.local</div>
+          <div style="padding:12px 14px;"><span style="background:#f1f5f9;color:#94a3b8;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;text-transform:uppercase;">reviewer</span></div>
+          <div style="padding:12px 14px;font-size:12px;color:#94a3b8;">Mar 28</div>
+          <div style="padding:12px 14px;"><span style="background:#f1f5f9;color:#94a3b8;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;text-transform:uppercase;">Disabled</span></div>
+          <div style="padding:12px 14px;"><button style="background:none;border:1px solid #bbf7d0;color:#059669;padding:4px 10px;border-radius:5px;font-size:11px;font-weight:600;cursor:pointer;">Enable</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p class="subtitle" style="margin-top:16px;text-align:center;">Tell me in the terminal if anything needs adjusting.</p>

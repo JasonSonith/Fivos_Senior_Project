@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import re
+import threading
 import time
 
 import requests
@@ -16,6 +17,7 @@ NVIDIA_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
 OLLAMA_URL = "http://localhost:11434/api/chat"
 
 MODEL_CHAIN = [
+    {"provider": "ollama", "model": "gemma4"},
     {"provider": "groq",   "model": "llama-3.3-70b-versatile",     "env_key": "GROQ_API_KEY"},
     {"provider": "groq",   "model": "llama-3.1-8b-instant",        "env_key": "GROQ_API_KEY"},
     {"provider": "nvidia", "model": "meta/llama-3.3-70b-instruct", "env_key": "NVIDIA_API_KEY"},
@@ -25,8 +27,30 @@ MODEL_CHAIN = [
     {"provider": "ollama", "model": "mistral"},
 ]
 
-# Track which models have been confirmed unavailable this session
+# Concurrency knobs — tuned for RTX 4070 (gemma4 fits in 12GB VRAM)
+# and Groq/NVIDIA free-tier rate limits. See design doc
+# docs/superpowers/specs/2026-04-08-llm-extractor-parallelization-design.md
+EXTRACT_WORKERS = 4
+OLLAMA_CONCURRENCY = 1   # single GPU slot
+GROQ_CONCURRENCY = 3     # ~30 RPM free tier
+NVIDIA_CONCURRENCY = 4   # 40 RPM free tier
+
+_provider_sems: dict[str, threading.Semaphore] = {
+    "ollama": threading.Semaphore(OLLAMA_CONCURRENCY),
+    "groq":   threading.Semaphore(GROQ_CONCURRENCY),
+    "nvidia": threading.Semaphore(NVIDIA_CONCURRENCY),
+}
+
+# Track which models have been confirmed unavailable this session.
+# Writes go through _disable_model() which holds _disabled_lock;
+# reads are lockless and tolerate brief staleness.
 _disabled_models: set[str] = set()
+_disabled_lock = threading.Lock()
+
+
+def _disable_model(model: str) -> None:
+    with _disabled_lock:
+        _disabled_models.add(model)
 
 # ---------------------------------------------------------------------------
 # Schemas for structured output
@@ -48,6 +72,20 @@ PAGE_FIELDS_SCHEMA = {
         "description": {"type": ["string", "null"]},
         "warning_text": {"type": ["string", "null"]},
         "MRISafetyStatus": {"type": ["string", "null"]},
+        "deviceKit": {"type": ["boolean", "null"]},
+        "premarketSubmissions": {
+            "type": ["array", "null"],
+            "items": {"type": "string"},
+        },
+        "environmentalConditions": {
+            "type": ["object", "null"],
+            "properties": {
+                "conditions": {
+                    "type": ["array", "null"],
+                    "items": {"type": "string"},
+                },
+            },
+        },
     },
     "required": ["device_name", "manufacturer", "description"],
 }
@@ -111,6 +149,14 @@ Ignore: marketing claims, clinical trial results, testimonials.
 - warning_text: Copy any warning, caution, or regulatory text verbatim from the page. \
 Include text about single-use, Rx only, sterility, contraindications. null if none found.
 - MRISafetyStatus: One of "MR Safe", "MR Conditional", "MR Unsafe", or null if not stated on the page.
+- deviceKit: true if this product is sold as a kit or system containing multiple distinct components \
+packaged together, false if it is a single standalone device, null if unclear.
+- premarketSubmissions: A JSON array of FDA premarket submission numbers found on the page \
+(e.g. ["K123456", "P210034"]). These start with K (510k) or P (PMA) followed by digits. \
+null if none found.
+- environmentalConditions: An object with a "conditions" array of storage/handling condition strings \
+found on the page (e.g. {{"conditions": ["Store between 15-30°C", "Keep away from humidity > 85%"]}}). \
+null if storage conditions are not stated on the page.
 
 Page text:
 {visible_text}"""
@@ -176,7 +222,7 @@ def _openai_request(url: str, api_key: str, model: str, messages: list[dict],
                 return _openai_request(url, api_key, model, messages, timeout, _retry=True)
             # Daily limit or long wait — skip this model
             logger.warning("%s rate limited (long wait), moving to next model: %s", model, detail)
-            _disabled_models.add(model)
+            _disable_model(model)
             return None
 
         logger.warning("%s request failed: %s", model, detail)
@@ -211,7 +257,7 @@ def _ollama_request(model: str, messages: list[dict], schema: dict,
         response.raise_for_status()
     except requests.ConnectionError:
         logger.warning("Ollama not available at %s", OLLAMA_URL)
-        _disabled_models.add("ollama")
+        _disable_model("ollama")
         return None
     except Exception as exc:
         logger.warning("Ollama %s request failed: %s", model, exc)
@@ -228,12 +274,16 @@ def _ollama_request(model: str, messages: list[dict], schema: dict,
         return None
 
 
-# Track which model answered the last request
-_last_model_used: str | None = None
+# Per-thread last-model tracking (thread-safe under concurrent workers)
+_thread_state = threading.local()
+
+
+def _set_last_model(model: str) -> None:
+    _thread_state.last_model = model
 
 
 def get_last_model() -> str | None:
-    return _last_model_used
+    return getattr(_thread_state, "last_model", None)
 
 
 def get_first_available_model() -> str:
@@ -248,7 +298,6 @@ def get_first_available_model() -> str:
 
 def _llm_request(system_msg: str, user_msg: str, schema: dict, timeout: int = 60) -> dict | None:
     """Try each model in MODEL_CHAIN until one succeeds."""
-    global _last_model_used
 
     messages = [
         {"role": "system", "content": system_msg},
@@ -267,18 +316,30 @@ def _llm_request(system_msg: str, user_msg: str, schema: dict, timeout: int = 60
             continue
 
         env_key = entry.get("env_key")
+        api_key = None
         if env_key:
             api_key = os.environ.get(env_key)
             if not api_key:
                 continue
 
-        if provider in ("groq", "nvidia"):
-            result = _openai_request(provider_urls[provider], api_key, model, messages, timeout)
-        else:
-            result = _ollama_request(model, messages, schema, timeout)
+        # Non-blocking acquire: if the provider pool is saturated, fall
+        # through to the next model instead of queueing. Preserves
+        # quality-first fallback ordering.
+        sem = _provider_sems[provider]
+        if not sem.acquire(blocking=False):
+            logger.debug("%s provider saturated, falling through", provider)
+            continue
+
+        try:
+            if provider in ("groq", "nvidia"):
+                result = _openai_request(provider_urls[provider], api_key, model, messages, timeout)
+            else:
+                result = _ollama_request(model, messages, schema, timeout)
+        finally:
+            sem.release()
 
         if result is not None:
-            _last_model_used = model
+            _set_last_model(model)
             logger.info("Extraction succeeded with %s (%s)", model, provider)
             return result
 
@@ -366,6 +427,12 @@ def extract_product_rows(table_text: str, device_name: str = "", model: str | No
     return [p for p in products if p.get("model_number")]
 
 
+_PAGE_LEVEL_FIELDS = (
+    "device_name", "manufacturer", "description", "warning_text",
+    "MRISafetyStatus", "deviceKit", "premarketSubmissions", "environmentalConditions",
+)
+
+
 def extract_all_fields(visible_text: str, table_text: str | None = None, model: str | None = None) -> list[dict]:
     # Pass 1: page-level fields
     page_fields = extract_page_fields(visible_text)
@@ -383,14 +450,8 @@ def extract_all_fields(visible_text: str, table_text: str | None = None, model: 
 
     records = []
     for product in products:
-        merged = {
-            "device_name": page_fields.get("device_name"),
-            "manufacturer": page_fields.get("manufacturer"),
-            "description": page_fields.get("description"),
-            "warning_text": page_fields.get("warning_text"),
-            "MRISafetyStatus": page_fields.get("MRISafetyStatus"),
-            "_description_source": source,
-        }
+        merged = {field: page_fields.get(field) for field in _PAGE_LEVEL_FIELDS}
+        merged["_description_source"] = source
         merged["model_number"] = product.get("model_number")
         merged["catalog_number"] = product.get("catalog_number")
         for dim in ("diameter", "length", "width", "height", "weight", "volume", "pressure"):

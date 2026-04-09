@@ -158,7 +158,7 @@
                         <td>&mdash;</td>
                     {% endif %}
 
-                    <td>{{ v.gudid_di or "N/A" }}</td>
+                    <td class="mono">{{ v.gudid_di or "N/A" }}</td>
                     <td>
                         {% if v.status in ["partial_match", "mismatch"] %}
                         <a href="/review/{{ v._id }}" class="btn btn-primary btn-sm">Review</a>

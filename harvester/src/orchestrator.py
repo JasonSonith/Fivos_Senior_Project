@@ -30,6 +30,37 @@ _DEFAULT_OUTPUT_DIR = os.path.join(_SRC_DIR, "..", "output")
 # Helpers
 # ---------------------------------------------------------------------------
 
+MERGE_FIELDS = [
+    "catalogNumber",
+    "labeledContainsNRL", "labeledNoNRL",
+    "sterilizationPriorToUse", "deviceSterile", "otc",
+    "deviceKit",
+    "premarketSubmissions",
+    "environmentalConditions",
+    "brandName", "versionModelNumber", "companyName", "deviceDescription",
+    "MRISafetyStatus", "singleUse", "rx",
+]
+
+
+def _merge_gudid_into_device(db, device: dict, gudid_record: dict) -> list[str]:
+    """Fill null device fields with GUDID values. Returns list of fields filled."""
+    updates = {}
+    filled = []
+    for field in MERGE_FIELDS:
+        if device.get(field) is None and gudid_record.get(field) is not None:
+            updates[field] = gudid_record[field]
+            filled.append(field)
+
+    if updates:
+        updates["gudid_sourced_fields"] = filled
+        db["devices"].update_one(
+            {"_id": device["_id"]},
+            {"$set": updates},
+        )
+
+    return filled
+
+
 def _serialize_record(record: dict) -> dict:
     """Make a MongoDB document JSON-serializable."""
     out = {}
@@ -111,37 +142,89 @@ def run_harvest_single(url: str) -> dict:
 
 
 def run_harvest_batch(urls: list[str], job_store: dict | None = None, job_id: str | None = None) -> dict:
-    """Process a list of URLs one at a time. Updates job progress per URL."""
-    run_id = _get_run_id()
-    result = {
-        "total": len(urls),
-        "succeeded": 0,
-        "failed": 0,
-        "results": [],
-        "run_id": run_id,
-    }
+    """Scrape + parallel-extract + DB insert, in three phases.
 
-    for i, url in enumerate(urls):
-        # Update progress in job store so frontend can poll
-        if job_store and job_id:
+    Phase 1: sequential scrape (Playwright is already internally batched).
+    Phase 2: parallel LLM extraction via ThreadPoolExecutor.
+    Phase 3: sequential JSON writes + MongoDB inserts on the main thread.
+
+    Returns the shape expected by app/templates/harvester.html:
+        {total, succeeded, failed, results: [...], run_id}
+    Each results entry: {url, scraped, devices_extracted, db_inserted, error}
+    """
+    from pipeline.runner import _scrape_urls_with_meta, write_record_json
+    from pipeline.parallel_batch import process_html_files_parallel
+    from database.db_connection import get_db
+
+    run_id = _get_run_id()
+    output_dir = os.path.abspath(_DEFAULT_OUTPUT_DIR)
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Phase 1: scrape (per-URL metadata preserves failures)
+    meta = _scrape_urls_with_meta(urls, _DEFAULT_HTML_DIR)
+    scraped = [m for m in meta if m["path"]]
+    source_urls = {m["path"]: m["url"] for m in scraped}
+
+    # Phase 2: parallel extraction
+    def _progress(completed: int, total: int) -> None:
+        if job_store is not None and job_id is not None:
             job_store[job_id] = {
                 "status": "running",
-                "result": {
-                    "progress": i,
-                    "total": len(urls),
-                    "current_url": url,
-                    "results": result["results"],
-                },
+                "result": {"progress": completed, "total": total},
             }
 
-        single = run_harvest_single(url)
-        result["results"].append(single)
-        if single["devices_extracted"] > 0 and single["error"] is None:
-            result["succeeded"] += 1
-        else:
-            result["failed"] += 1
+    file_results = process_html_files_parallel(
+        [m["path"] for m in scraped],
+        harvest_run_id=run_id,
+        source_urls=source_urls,
+        progress_callback=_progress,
+    )
+    file_results_by_path = {r.path: r for r in file_results}
 
-    return result
+    # Phase 3: JSON write + DB insert sequentially
+    try:
+        db = get_db()
+    except Exception as e:
+        logger.warning("run_harvest_batch: MongoDB unavailable: %s", e)
+        db = None
+
+    results: list[dict] = []
+    for m in meta:
+        entry = {
+            "url": m["url"],
+            "scraped": m["path"] is not None,
+            "devices_extracted": 0,
+            "db_inserted": 0,
+            "error": m["error"],
+        }
+        fr = file_results_by_path.get(m["path"]) if m["path"] else None
+        if fr is not None:
+            entry["devices_extracted"] = len(fr.records)
+            if fr.error:
+                entry["error"] = fr.error
+            for record in fr.records:
+                write_record_json(record, output_dir)
+                if db is not None:
+                    try:
+                        db["devices"].insert_one(record)
+                        entry["db_inserted"] += 1
+                    except Exception as e:
+                        entry["error"] = f"DB error: {e}"
+        results.append(entry)
+
+    return {
+        "total": len(urls),
+        "succeeded": sum(
+            1 for r in results
+            if r["devices_extracted"] > 0 and not r["error"]
+        ),
+        "failed": sum(
+            1 for r in results
+            if r["devices_extracted"] == 0 or r["error"]
+        ),
+        "results": results,
+        "run_id": run_id,
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -329,6 +412,8 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
             "created_at": datetime.now(timezone.utc),
             "updated_at": datetime.now(timezone.utc),
         })
+        # Fill null device fields from GUDID (runs after comparison to preserve original diff)
+        _merge_gudid_into_device(db, device, gudid_record)
 
     result["success"] = True
     return result

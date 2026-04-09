@@ -117,7 +117,7 @@ def validate_record(record: dict) -> tuple[bool, list[str]]:
             logger.warning("validate_record: junk model_number rejected: %s", model_number)
 
     # Boolean field validation — non-blocking
-    for field in ("singleUse", "deviceSterile", "sterilizationPriorToUse", "rx", "otc"):
+    for field in ("singleUse", "deviceSterile", "sterilizationPriorToUse", "rx", "otc", "labeledContainsNRL", "labeledNoNRL"):
         value = record.get(field)
         if value is not None and not isinstance(value, bool):
             issues.append(f"INVALID_TYPE: {field} must be bool or None, got {type(value).__name__}")

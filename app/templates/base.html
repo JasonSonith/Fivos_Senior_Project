@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fivos Device Data Console</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
@@ -18,6 +20,9 @@
             <a href="/harvester" class="nav-link">Harvester</a>
             <a href="/validate" class="nav-link">Validator</a>
             <a href="/gudid" class="nav-link">GUDID Lookup</a>
+            {% if current_user and current_user.role == "admin" %}
+            <a href="/admin/users" class="nav-link">Users</a>
+            {% endif %}
         </div>
 
         {% if current_user %}
