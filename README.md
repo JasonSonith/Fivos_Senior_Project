@@ -20,6 +20,35 @@ This project automates most of that verification work.
 
 **The Review Dashboard** shows discrepancies side-by-side so human reviewers can pick the correct value for each mismatched field.
 
+### Flow Diagram
+
+```mermaid
+flowchart LR
+    USER([Admin / Reviewer]) -->|URLs| WEB[FastAPI Dashboard]
+    WEB --> ORCH[Orchestrator]
+
+    ORCH -->|scrape| PW[Playwright Scraper]
+    MFG[/Manufacturer Sites/] -->|HTML| PW
+    PW --> HTML[(out_html/)]
+
+    HTML --> PARALLEL[parallel_batch<br/>ThreadPool × 4]
+    PARALLEL --> LLM[LLM Chain<br/>gemma4 → Groq → NVIDIA<br/>per-provider semaphores]
+    OLLAMA[/Ollama/] <--> LLM
+    CLOUD[/Groq + NVIDIA/] <--> LLM
+    LLM --> NORM[Normalize + Regulatory<br/>+ Record Validate]
+    NORM --> DEVICES[(MongoDB<br/>devices)]
+
+    DEVICES --> COMP[Comparison Validator]
+    GUDID[/FDA GUDID API/] <--> COMP
+    COMP --> VR[(MongoDB<br/>validationResults)]
+    COMP -->|null-field merge| DEVICES
+
+    VR --> WEB
+    WEB -->|review + resolve| USER
+```
+
+See [`docs/Fivos - Data Flow Diagram.md`](docs/Fivos%20-%20Data%20Flow%20Diagram.md) for the full end-to-end DFD with auth, logging, and phase boundaries.
+
 ## Tech Stack
 
 | Layer | Tools |
