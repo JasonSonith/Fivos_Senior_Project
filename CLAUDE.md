@@ -20,6 +20,19 @@ python harvester/src/pipeline/cli.py                     # Interactive CLI menu
 uvicorn app.main:app --port 8000                         # Web dashboard
 ```
 
+### Docker (full stack)
+
+```bash
+docker compose up                    # Start app + mongo + ollama + model download
+docker compose up -d                 # Same, detached
+docker compose down                  # Stop (keeps volumes)
+docker compose down -v               # Stop + wipe volumes (forces model re-download)
+docker compose logs -f app           # Tail FastAPI logs
+docker compose exec app bash         # Shell into app container
+```
+
+First run downloads ~17GB of Ollama models (`gemma4:latest`, `qwen2.5:7b`, `mistral`) into the `ollama_models` named volume via the `ollama-init` sidecar. Subsequent runs are instant. Requires NVIDIA Container Toolkit on the host — see `README.md` Docker Setup section.
+
 ### Pipeline CLI (`harvester/src/pipeline/runner.py`)
 
 ```bash
@@ -31,7 +44,9 @@ python harvester/src/pipeline/runner.py --input <html> --adapter <yaml>         
 ```
 
 ## Environment
-Copy `.env.example` → `.env`. Required: `FIVOS_MONGO_URI`, `GROQ_API_KEY`, `NVIDIA_API_KEY`, `AUTH_SECRET_KEY`.
+Copy `.env.example` → `.env`. Required: `FIVOS_MONGO_URI`, `GROQ_API_KEY`, `NVIDIA_API_KEY`, `AUTH_SECRET_KEY`. Optional: `OLLAMA_URL` (defaults to `http://localhost:11434/api/chat`; compose overrides to `http://ollama:11434/api/chat`), `UVICORN_RELOAD` (default `false`; set to the literal string `true`, case-insensitive, for local dev auto-reload — `1`, `yes`, `on` do not work).
+
+In Docker, compose overrides `FIVOS_MONGO_URI` → `mongodb://mongo:27017/fivos` and `OLLAMA_URL` → `http://ollama:11434/api/chat`. The rest of `.env` is injected via `env_file`.
 
 ## Architecture
 
