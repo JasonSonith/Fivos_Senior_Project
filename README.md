@@ -151,6 +151,76 @@ When you see `Server running at http://localhost:8000` in the `app-1` logs, open
 - **`ollama`** — Ollama server with GPU passthrough, port 11434, models in `ollama_models` volume
 - **`ollama-init`** — one-shot container that pulls the three required models on first run
 
+#### Handoff Verification
+
+Run these checks on the deployment host (e.g., the Oracle Cloud GPU VM) after `docker compose up` reports `Server running at http://localhost:8000`. This confirms the full stack is healthy end-to-end.
+
+**1. GPU passthrough is working**
+
+```bash
+docker run --rm --gpus all nvidia/cuda:12.2.0-base-ubuntu22.04 nvidia-smi
+```
+
+Expected: prints the `nvidia-smi` table showing the provisioned GPU. If it fails with `nvidia-container-cli: initialization error`, the NVIDIA Container Toolkit isn't installed or the host has no GPU drivers — see Prerequisites above.
+
+**2. All three Ollama models downloaded**
+
+```bash
+docker compose exec app python -c "
+import os, requests
+url = os.getenv('OLLAMA_URL', '').replace('/api/chat', '/api/tags')
+r = requests.get(url)
+print([m['name'] for m in r.json().get('models', [])])
+"
+```
+
+Expected: `['gemma4:latest', 'qwen2.5:7b', 'mistral:latest']` (the suffix on `mistral` may vary). If any model is missing, the `ollama-init` sidecar didn't finish — check `docker compose logs ollama-init`.
+
+**3. App container can reach MongoDB**
+
+```bash
+docker compose exec app python -c "
+from harvester.src.database.db_connection import get_db
+db = get_db()
+print('collections:', db.list_collection_names())
+print('mongo ok')
+"
+```
+
+Expected: prints `collections: ['users']` (seeded by the FastAPI lifespan on startup) and `mongo ok`.
+
+**4. Web dashboard responds**
+
+```bash
+curl -sI http://localhost:8000/auth/login
+```
+
+Expected: `HTTP/1.1 200 OK` with `content-type: text/html`.
+
+**5. End-to-end harvest works**
+
+In a browser, open `http://<host>:8000/auth/login`. Log in as `admin@fivos.local` / `admin123` — you'll be forced to set a new password on first login (the seeded password is in HIBP). Once logged in, go to `/harvester`, submit a single test manufacturer URL, and wait for the progress to complete. Then verify a device was written:
+
+```bash
+docker compose exec app python -c "
+from harvester.src.database.db_connection import get_db
+print('device count:', get_db().devices.count_documents({}))
+"
+```
+
+Expected: `device count` is ≥ 1.
+
+**6. Warm-start performance**
+
+```bash
+docker compose down   # keeps volumes
+docker compose up
+```
+
+Expected: `ollama-init` completes in <5 seconds (models already cached in the `ollama_models` volume), total startup from `docker compose up` to `Server running at http://localhost:8000` is under 30 seconds. If it re-downloads models, the volume isn't persisting — check `docker volume ls` for `fivos_senior_project_ollama_models`.
+
+If all six checks pass, the stack is healthy and ready for use.
+
 #### Environment Variables
 
 - `UVICORN_RELOAD` — set to `true` (case-insensitive) to enable Uvicorn auto-reload for local dev. Defaults to `false` (disabled) so containers run stable without filesystem-watch restart loops. Only the literal string `true` enables it — `1`, `yes`, and `on` do NOT.
