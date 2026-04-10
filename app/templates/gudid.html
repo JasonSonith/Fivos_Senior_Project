@@ -21,6 +21,7 @@
         </div>
 
         <form method="post" action="/gudid/lookup" class="form-grid-modern">
+            <input type="hidden" name="csrf_token" value="{{ request.session.csrf_token }}">
             <div class="field">
                 <label>Search Type</label>
                 <div style="display: flex; gap: 1.5rem; margin-top: 0.5rem;">

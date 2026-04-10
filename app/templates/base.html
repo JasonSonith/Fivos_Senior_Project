@@ -33,6 +33,7 @@
             </div>
 
             <form method="post" action="/auth/logout" style="margin: 0;">
+                <input type="hidden" name="csrf_token" value="{{ request.session.csrf_token }}">
                 <button type="submit" class="btn btn-secondary btn-sm">Logout</button>
             </form>
         </div>

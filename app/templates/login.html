@@ -29,6 +29,7 @@
             {% endif %}
 
             <form method="post" action="/auth/login" class="form-grid-modern">
+                <input type="hidden" name="csrf_token" value="{{ request.session.csrf_token }}">
                 <div class="field">
                     <label for="email">Email</label>
                     <input
@@ -56,14 +57,6 @@
                     <button type="submit" class="btn btn-primary auth-submit">Sign In</button>
                 </div>
             </form>
-        
-            <!--
-            <div class="auth-demo-box">
-                <p class="auth-demo-title">Demo accounts</p>
-                <p class="auth-demo-line"><strong>Admin:</strong> admin@fivos.local / admin123</p>
-                <p class="auth-demo-line"><strong>Reviewer:</strong> reviewer@fivos.local / review123</p>
-            </div>
-        -->
         </div>
     </div>
 </body>

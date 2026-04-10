@@ -43,6 +43,7 @@
 </section>
 
 <form method="post" action="/review/{{ validation_id }}/save">
+    <input type="hidden" name="csrf_token" value="{{ request.session.csrf_token }}">
     <section class="panel">
         <div class="panel-header">
             <div>

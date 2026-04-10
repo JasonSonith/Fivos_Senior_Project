@@ -11,6 +11,7 @@
     </div>
     <div class="hero-actions">
         <form method="post" action="/validate/run" style="display: inline;">
+            <input type="hidden" name="csrf_token" value="{{ request.session.csrf_token }}">
             <button type="submit" class="btn btn-primary" id="validate-btn">Run Validation</button>
         </form>
     </div>

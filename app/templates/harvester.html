@@ -32,6 +32,7 @@
 
     <div id="tab-single" class="tab-content active">
         <form method="post" action="/harvester/run-single" class="form-grid-modern">
+            <input type="hidden" name="csrf_token" value="{{ request.session.csrf_token }}">
             <div class="field">
                 <label for="url">Manufacturer URL</label>
                 <input id="url" type="url" name="url" placeholder="https://www.medtronic.com/us-en/healthcare-professionals/products/..." required>
@@ -44,6 +45,7 @@
 
     <div id="tab-batch" class="tab-content">
         <form method="post" action="/harvester/run-batch" enctype="multipart/form-data" class="form-grid-modern">
+            <input type="hidden" name="csrf_token" value="{{ request.session.csrf_token }}">
             <div class="field">
                 <label for="file">Upload URL List (.txt)</label>
                 <input id="file" type="file" name="file" accept=".txt" required>

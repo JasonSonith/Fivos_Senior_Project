@@ -53,6 +53,7 @@
         </div>
     </div>
     <form method="post" action="/admin/users/create">
+        <input type="hidden" name="csrf_token" value="{{ request.session.csrf_token }}">
         <div style="display: grid; grid-template-columns: 1fr 1fr 160px auto; gap: 14px; align-items: end;">
             <div class="field" style="margin: 0;">
                 <label for="new-name">Full Name</label>
@@ -136,6 +137,7 @@
                     <td>
                         {% if u.email != current_user.email %}
                         <form method="post" action="/admin/users/{{ u._id }}/toggle" style="display: inline;">
+                            <input type="hidden" name="csrf_token" value="{{ request.session.csrf_token }}">
                             {% if u.active %}
                             <button type="submit" class="btn btn-sm btn-outline-danger">Disable</button>
                             {% else %}
