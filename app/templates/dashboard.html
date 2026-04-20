@@ -18,19 +18,19 @@
         <p class="metric-foot">Total devices in the database</p>
     </div>
 
-    <div class="metric-card">
+    <div class="metric-card filterable" data-filter="matched" data-color="success">
         <p class="metric-label">Matches</p>
         <h3 class="metric-value" style="color: var(--success);">{{ stats.matches or 0 }}</h3>
         <p class="metric-foot">Fully matched against GUDID</p>
     </div>
 
-    <div class="metric-card">
+    <div class="metric-card filterable" data-filter="partial_match" data-color="warning">
         <p class="metric-label">Partial Matches</p>
         <h3 class="metric-value" style="color: var(--warning);">{{ stats.partial_matches or 0 }}</h3>
         <p class="metric-foot">Some fields differ from GUDID</p>
     </div>
 
-    <div class="metric-card">
+    <div class="metric-card filterable" data-filter="mismatch" data-color="danger">
         <p class="metric-label">Mismatches</p>
         <h3 class="metric-value" style="color: var(--danger);">{{ stats.mismatches or 0 }}</h3>
         <p class="metric-foot">No fields matched GUDID</p>
@@ -55,12 +55,17 @@
 <section class="panel">
     <div class="panel-header">
         <div>
-            <h3>Discrepancy Review Queue</h3>
-            <p>Partial matches and mismatches that need human review</p>
+            <h3>Validation Results</h3>
+            <p>All validated devices — click a metric card above to filter</p>
         </div>
     </div>
 
-    {% if discrepancies %}
+    <div class="filter-indicator" id="filter-indicator">
+        <span id="filter-indicator-text"></span>
+        <a onclick="clearFilter()">Show All</a>
+    </div>
+
+    {% if all_results %}
     <div class="table-wrap">
         <table class="data-table">
             <thead>
@@ -73,22 +78,32 @@
                     <th>Action</th>
                 </tr>
             </thead>
-            <tbody>
-                {% for d in discrepancies %}
-                <tr>
+            <tbody id="results-tbody">
+                {% for d in all_results %}
+                <tr data-status="{{ d.status }}">
                     <td>{{ d.brandName or "N/A" }}</td>
                     <td>{{ d.companyName or "N/A" }}</td>
                     <td class="mono">{{ d.versionModelNumber or "N/A" }}</td>
                     <td>
-                        {% if d.status == "partial_match" %}
+                        {% if d.status == "matched" %}
+                        <span class="badge badge-success">Matched</span>
+                        {% elif d.status == "partial_match" %}
                         <span class="badge badge-warning">Partial</span>
                         {% elif d.status == "mismatch" %}
                         <span class="badge badge-danger">Mismatch</span>
+                        {% elif d.status == "resolved" %}
+                        <span class="badge badge-resolved">Resolved</span>
+                        {% else %}
+                        <span class="badge badge-muted">{{ d.status or "N/A" }}</span>
                         {% endif %}
                     </td>
                     <td>{{ d.matched_fields or 0 }}/{{ d.total_fields or 0 }} ({{ d.match_percent or 0 }}%)</td>
                     <td>
+                        {% if d.status in ["partial_match", "mismatch"] %}
                         <a href="/review/{{ d._id }}" class="btn btn-primary btn-sm">Review</a>
+                        {% elif d.status == "resolved" %}
+                        <span style="color: var(--accent-3); font-size: 13px;">Resolved</span>
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}
@@ -97,8 +112,65 @@
     </div>
     {% else %}
     <div class="empty-state">
-        <p>All devices are fully matched. No discrepancies to review.</p>
+        <p>No validation results yet. Run the harvester and validator to see results here.</p>
     </div>
     {% endif %}
 </section>
+
+<script>
+(function() {
+    let activeFilter = null;
+    const cards = document.querySelectorAll('.metric-card.filterable');
+    const rows = document.querySelectorAll('#results-tbody tr');
+    const indicator = document.getElementById('filter-indicator');
+    const indicatorText = document.getElementById('filter-indicator-text');
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            const status = card.dataset.filter;
+            if (activeFilter === status) {
+                clearFilter();
+            } else {
+                applyFilter(status, card.dataset.color);
+            }
+        });
+    });
+
+    function applyFilter(status, color) {
+        activeFilter = status;
+        let count = 0;
+
+        rows.forEach(row => {
+            if (row.dataset.status === status) {
+                row.style.display = '';
+                count++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        cards.forEach(c => {
+            c.classList.remove('active-filter--success', 'active-filter--warning', 'active-filter--danger', 'dimmed');
+            if (c.dataset.filter === status) {
+                c.classList.add('active-filter--' + color);
+            } else if (c.classList.contains('filterable')) {
+                c.classList.add('dimmed');
+            }
+        });
+
+        const label = status === 'partial_match' ? 'partial match' : status;
+        indicatorText.textContent = 'Showing ' + count + ' ' + label + ' result' + (count !== 1 ? 's' : '');
+        indicator.classList.add('visible');
+    }
+
+    window.clearFilter = function() {
+        activeFilter = null;
+        rows.forEach(row => row.style.display = '');
+        cards.forEach(c => {
+            c.classList.remove('active-filter--success', 'active-filter--warning', 'active-filter--danger', 'dimmed');
+        });
+        indicator.classList.remove('visible');
+    };
+})();
+</script>
 {% endblock %}
