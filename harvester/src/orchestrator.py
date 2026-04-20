@@ -577,12 +577,18 @@ def get_all_dashboard_records() -> list[dict]:
             results.append(serialized)
 
         # Partial match and mismatch from validation results
-        discrepancy_cursor = db["validationResults"].find(
+        discrepancy_docs = list(db["validationResults"].find(
             {"status": {"$in": ["partial_match", "mismatch"]}}
-        ).sort("updated_at", -1)
+        ).sort("updated_at", -1))
 
-        for doc in discrepancy_cursor:
-            device = db["devices"].find_one({"_id": doc.get("device_id")})
+        device_ids = [d["device_id"] for d in discrepancy_docs if d.get("device_id") is not None]
+        devices_by_id = {
+            dev["_id"]: dev
+            for dev in db["devices"].find({"_id": {"$in": device_ids}})
+        }
+
+        for doc in discrepancy_docs:
+            device = devices_by_id.get(doc.get("device_id"))
             serialized = _serialize_record(doc)
             if device:
                 serialized["companyName"] = device.get("companyName", "N/A")
