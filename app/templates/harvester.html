@@ -114,6 +114,13 @@
         </div>
     </div>
 
+    <div class="domain-filter" id="domain-filter">
+        <label for="domain-select">Filter by domain:</label>
+        <select id="domain-select">
+            <option value="all">All</option>
+        </select>
+    </div>
+
     <div id="results-table-wrap" style="display: none;">
         <div class="table-wrap">
             <table class="data-table">
@@ -195,6 +202,7 @@ function switchTab(tab) {
 
                 document.getElementById("results-table-wrap").style.display = "block";
                 document.getElementById("results-body").innerHTML = renderRow(result);
+                populateDomainFilter();
 
                 if (result.error) {
                     document.getElementById("res-error").style.display = "block";
@@ -218,6 +226,7 @@ function switchTab(tab) {
                 let rows = "";
                 result.results.forEach(r => rows += renderRow(r));
                 document.getElementById("results-body").innerHTML = rows;
+                populateDomainFilter();
             }
         } catch (e) {
             // Network error, keep polling
@@ -226,13 +235,41 @@ function switchTab(tab) {
 
     function renderRow(r) {
         const ok = !r.error && r.devices_extracted > 0;
-        return `<tr>
+        let domain = '';
+        try { domain = new URL(r.url).hostname; } catch(e) {}
+        return `<tr data-domain="${domain}">
             <td style="max-width: 400px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${r.url || "N/A"}</td>
             <td>${r.scraped ? "Yes" : "No"}</td>
             <td>${r.devices_extracted || 0}</td>
             <td>${r.db_inserted || 0}</td>
             <td><span class="badge ${ok ? 'badge-success' : 'badge-danger'}">${ok ? 'OK' : 'Failed'}</span></td>
         </tr>`;
+    }
+
+    function populateDomainFilter() {
+        const tableRows = document.querySelectorAll('#results-body tr');
+        const domains = new Set();
+        tableRows.forEach(row => {
+            const d = row.dataset.domain;
+            if (d) domains.add(d);
+        });
+
+        if (domains.size < 2) return;
+
+        const select = document.getElementById('domain-select');
+        select.innerHTML = '<option value="all">All</option>';
+        [...domains].sort().forEach(d => {
+            select.innerHTML += `<option value="${d}">${d}</option>`;
+        });
+
+        document.getElementById('domain-filter').classList.add('visible');
+
+        select.addEventListener('change', () => {
+            const val = select.value;
+            tableRows.forEach(row => {
+                row.style.display = (val === 'all' || row.dataset.domain === val) ? '' : 'none';
+            });
+        });
     }
 })();
 </script>
