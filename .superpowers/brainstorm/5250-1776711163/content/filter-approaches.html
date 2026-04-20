@@ -1,0 +1,98 @@
+<h2>Filter UI Approaches</h2>
+<p class="subtitle">How should clickable metric cards look and behave on the Dashboard?</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Active Card Highlight</h3>
+      <p>Cards get a colored left border + subtle background tint when active. An "All" pill button appears above the table when a filter is active. Clicking the same card again deselects it (returns to All). Minimal visual change — stays true to current design.</p>
+      <div style="margin-top: 12px; padding: 16px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+          <div style="background: white; padding: 12px; border-radius: 6px; border-left: 3px solid #94a3b8; opacity: 0.6;">
+            <small style="color: #64748b;">Devices</small>
+            <div style="font-size: 18px; font-weight: 600;">502</div>
+          </div>
+          <div style="background: #f0fdf4; padding: 12px; border-radius: 6px; border-left: 3px solid #059669; box-shadow: 0 2px 8px rgba(5,150,105,.15);">
+            <small style="color: #059669;">Matches ✓</small>
+            <div style="font-size: 18px; font-weight: 600; color: #059669;">78</div>
+          </div>
+          <div style="background: white; padding: 12px; border-radius: 6px; border-left: 3px solid #94a3b8; opacity: 0.6;">
+            <small style="color: #64748b;">Partial</small>
+            <div style="font-size: 18px; font-weight: 600;">393</div>
+          </div>
+          <div style="background: white; padding: 12px; border-radius: 6px; border-left: 3px solid #94a3b8; opacity: 0.6;">
+            <small style="color: #64748b;">Mismatches</small>
+            <div style="font-size: 18px; font-weight: 600;">2</div>
+          </div>
+        </div>
+        <div style="margin-top: 12px; font-size: 12px; color: #64748b; text-align: center;">↑ "Matches" is selected — others dim. Click again or click "Show All" to reset.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Card as Toggle Button</h3>
+      <p>Cards gain a hover cursor and ring effect on hover. Active card gets a bold teal ring + "FILTERING" micro-label. Non-active cards stay normal (no dimming). A floating "Clear filter" link appears next to the table header. More explicit affordance that cards are clickable.</p>
+      <div style="margin-top: 12px; padding: 16px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+          <div style="background: white; padding: 12px; border-radius: 6px; border: 1px solid #e2e8f0; cursor: pointer;">
+            <small style="color: #64748b;">Devices</small>
+            <div style="font-size: 18px; font-weight: 600;">502</div>
+          </div>
+          <div style="background: white; padding: 12px; border-radius: 6px; border: 2px solid #0d9488; box-shadow: 0 0 0 3px rgba(13,148,136,.12); cursor: pointer; position: relative;">
+            <small style="color: #059669;">Matches</small>
+            <div style="font-size: 18px; font-weight: 600; color: #059669;">78</div>
+            <span style="position: absolute; top: 4px; right: 6px; font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; color: #0d9488; font-weight: 600;">filtering</span>
+          </div>
+          <div style="background: white; padding: 12px; border-radius: 6px; border: 1px solid #e2e8f0; cursor: pointer;">
+            <small style="color: #d97706;">Partial</small>
+            <div style="font-size: 18px; font-weight: 600; color: #d97706;">393</div>
+          </div>
+          <div style="background: white; padding: 12px; border-radius: 6px; border: 1px solid #e2e8f0; cursor: pointer;">
+            <small style="color: #dc2626;">Mismatches</small>
+            <div style="font-size: 18px; font-weight: 600; color: #dc2626;">2</div>
+          </div>
+        </div>
+        <div style="margin-top: 12px; font-size: 12px; color: #64748b; text-align: center;">↑ Teal ring marks active filter. "Clear filter ×" link appears by table heading.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Separate Filter Bar</h3>
+      <p>Cards stay as pure display (no click behavior). Instead, add a pill/tab filter bar between the cards and the table: <code>All | Matched | Partial | Mismatch</code>. Cleanest separation of concerns — stats above, filter below, table at bottom. Most conventional pattern.</p>
+      <div style="margin-top: 12px; padding: 16px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px;">
+          <div style="background: white; padding: 12px; border-radius: 6px; border: 1px solid #e2e8f0;">
+            <small style="color: #64748b;">Devices</small>
+            <div style="font-size: 18px; font-weight: 600;">502</div>
+          </div>
+          <div style="background: white; padding: 12px; border-radius: 6px; border: 1px solid #e2e8f0;">
+            <small style="color: #059669;">Matches</small>
+            <div style="font-size: 18px; font-weight: 600; color: #059669;">78</div>
+          </div>
+          <div style="background: white; padding: 12px; border-radius: 6px; border: 1px solid #e2e8f0;">
+            <small style="color: #d97706;">Partial</small>
+            <div style="font-size: 18px; font-weight: 600; color: #d97706;">393</div>
+          </div>
+          <div style="background: white; padding: 12px; border-radius: 6px; border: 1px solid #e2e8f0;">
+            <small style="color: #dc2626;">Mismatches</small>
+            <div style="font-size: 18px; font-weight: 600; color: #dc2626;">2</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 8px; justify-content: center;">
+          <span style="padding: 4px 14px; border-radius: 20px; font-size: 13px; background: #e2e8f0; color: #475569;">All</span>
+          <span style="padding: 4px 14px; border-radius: 20px; font-size: 13px; background: #0d9488; color: white;">Matched</span>
+          <span style="padding: 4px 14px; border-radius: 20px; font-size: 13px; background: #e2e8f0; color: #475569;">Partial</span>
+          <span style="padding: 4px 14px; border-radius: 20px; font-size: 13px; background: #e2e8f0; color: #475569;">Mismatch</span>
+        </div>
+        <div style="margin-top: 12px; font-size: 12px; color: #64748b; text-align: center;">↑ Pill bar sits between stats and table. Active pill is teal.</div>
+      </div>
+    </div>
+  </div>
+</div>

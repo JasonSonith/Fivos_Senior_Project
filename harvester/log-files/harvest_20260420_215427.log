@@ -1,0 +1,8 @@
+2026-04-20 16:54:27,495 [MainThread] INFO pipeline.runner: Scraping 28 URL(s)...
+2026-04-20 16:54:27,495 [MainThread] DEBUG asyncio: Using selector: EpollSelector
+2026-04-20 16:54:42,174 [MainThread] ERROR asyncio: Future exception was never retrieved
+future: <Future finished exception=Error('net::ERR_ABORTED at https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/directional-atherectomy-systems/silverhawk-peripheral-plaque-excision-system.html\nCall log:\n  - navigating to "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/directional-atherectomy-systems/silverhawk-peripheral-plaque-excision-system.html", waiting until "domcontentloaded"\n')>
+playwright._impl._errors.Error: net::ERR_ABORTED at https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/directional-atherectomy-systems/silverhawk-peripheral-plaque-excision-system.html
+Call log:
+  - navigating to "https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/directional-atherectomy-systems/silverhawk-peripheral-plaque-excision-system.html", waiting until "domcontentloaded"
+

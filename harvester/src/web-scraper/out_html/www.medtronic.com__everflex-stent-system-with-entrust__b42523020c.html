@@ -1,383 +1,4 @@
-<!DOCTYPE html><html lang="en-US" dir="ltr" class="hydrated" style=""><head><style type="text/css" media="screen" data-description="Scene7DefaultCSS" data-component="AudioCaptions" data-namespace="s7classic">[data-namespace='s7classic'].s7audiocaptions {
-	position:absolute;
-	width:28px;
-	height:28px;
-	top:4px;
-	-webkit-touch-callout:none;
-	-webkit-user-select:none;
-	-moz-user-select:none;
-	-ms-user-select:none;
-	user-select:none;
-	-webkit-tap-highlight-color:rgba(0,0,0,0);
-	touch-action:;
- }
-[data-namespace='s7classic'].s7audiocaptions .s7audiocaptionsbutton {
-	position:absolute;
-	width:100%;
-	height:100%;
-	display:block;
- }
-[data-namespace='s7classic'].s7audiocaptions .s7audiocaptionsmenu {
-	position:absolute;
-	bottom:30px;
-	right:0;
- }
-</style><style type="text/css" media="screen" data-description="Scene7DefaultCSS" data-component="AudioCaptionsMenu" data-namespace="s7classic">[data-namespace='s7classic'].s7audiocaptionsmenu {
-	margin:0;
-	padding:10px;
-	box-sizing:border-box;
-	display:none;
-	flex-direction:column;
-	z-index:10000;
-	font-family:Arial, Helvetica, sans-serif;
-	font-size:14px;
-	color:rgba(255, 255, 255, 0.65);
-	background-color:#333333;
-	border-radius:8px;
- }
-[data-namespace='s7classic'].s7audiocaptionsmenu.is-shown {
-	display:flex;
- }
-[data-namespace='s7classic'].s7audiocaptionsmenu .header {
-	display:none;
-	justify-content:end;
-	align-items:center;
- }
-[data-namespace='s7classic'].s7audiocaptionsmenu .wrapper {
-	display:flex;
-	justify-content:center;
-	box-sizing:inherit;
- }
-[data-namespace='s7classic'].s7audiocaptionsmenu .section {
-	display:flex;
-	align-items:center;
-	justify-content:center;
-	flex-direction:column;
-	box-sizing:inherit;
- }
-[data-namespace='s7classic'].s7audiocaptionsmenu .section + .section {
-	margin-left:10px;
- }
-[data-namespace='s7classic'].s7audiocaptionsmenu .title {
-	box-sizing:inherit;
-	width:100%;
-	color:#FFFFFF;
-	padding-left:15px;
- }
-[data-namespace='s7classic'].s7audiocaptionsmenu .list {
-	box-sizing:inherit;
-	margin:10px 0 0 0;
-	padding:0 10px 0 0;
-	list-style-type:none;
-	height:100%;
-	width:150px;
-	max-height:250px;
-	overflow-y:auto;
-	overscroll-behavior:contain;
-	scroll-behavior:smooth;
- }
-[data-namespace='s7classic'].s7audiocaptionsmenu .list::-webkit-scrollbar-track {
-	-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3);
-	background-color:#737373;
- }
-[data-namespace='s7classic'].s7audiocaptionsmenu .list::-webkit-scrollbar {
-	width:5px;
-	background-color:#737373;
- }
-[data-namespace='s7classic'].s7audiocaptionsmenu .list::-webkit-scrollbar-thumb {
-	-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3);
-	background-color:#F5F5F5;
- }
-[data-namespace='s7classic'].s7audiocaptionsmenu li {
-	position:relative;
-	display:block;
-	box-sizing:border-box;
-	width:100%;
-	max-width:150px;
-	cursor:pointer;
-	white-space:nowrap;
-	overflow:hidden;
-	text-overflow:ellipsis;
-	padding:5px 5px 5px 15px;
- }
-[data-namespace='s7classic'].s7audiocaptionsmenu li::before {
-	display:none;
-	position:absolute;
-	content:"\2713";
-	height:100%;
-	width:100%;
-	left:0;
-	color:#FFFFFF;
- }
-[data-namespace='s7classic'].s7audiocaptionsmenu li.active::before {
-	display:inline-block;
- }
-[data-namespace='s7classic'].s7audiocaptionsmenu li.active, .s7audiocaptionsmenu li:hover {
-	color:#FFFFFF;
- }
-</style><style type="text/css" media="screen" data-description="Scene7DefaultCSS" data-component="MutableVolume" data-namespace="s7classic">[data-namespace='s7classic'].s7mutablevolume {
-	position:absolute;
-	width:25px;
-	height:25px;
-	-webkit-touch-callout:none;
-	-webkit-user-select:none;
-	-moz-user-select:none;
-	-ms-user-select:none;
-	user-select:none;
-	-webkit-tap-highlight-color:rgba(0,0,0,0);
-	touch-action:;
- }
-[data-namespace='s7classic'].s7mutablevolume .s7mutebutton {
-	position:absolute;
-	width:25px;
-	height:25px;
-	background-size:contain;
-	background-repeat:no-repeat;
-	background-position:center;
- }
-[data-namespace='s7classic'].s7mutablevolume .s7mutebutton[selected='true'][state='up'] {
-	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/muteon_up.png);
- }
-[data-namespace='s7classic'].s7mutablevolume .s7mutebutton[selected='true'][state='over'] {
-	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/muteon_over.png);
- }
-[data-namespace='s7classic'].s7mutablevolume .s7mutebutton[selected='true'][state='down'] {
-	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/muteon_down.png);
- }
-[data-namespace='s7classic'].s7mutablevolume .s7mutebutton[selected='true'][state='disabled'] {
-	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/muteon_disabled.png);
- }
-[data-namespace='s7classic'].s7mutablevolume .s7mutebutton[selected='false'][state='up'] {
-	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/muteoff_up.png);
- }
-[data-namespace='s7classic'].s7mutablevolume .s7mutebutton[selected='false'][state='over'] {
-	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/muteoff_over.png);
- }
-[data-namespace='s7classic'].s7mutablevolume .s7mutebutton[selected='false'][state='down'] {
-	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/muteoff_down.png);
- }
-[data-namespace='s7classic'].s7mutablevolume .s7mutebutton[selected='false'][state='disabled'] {
-	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/muteoff_disabled.png);
- }
-[data-namespace='s7classic'].s7mutablevolume .s7verticalvolume {
-	position:absolute;
-	width:25px;
-	height:80px;
-	left:0px;
-	background-color:#ccc;
- }
-[data-namespace='s7classic'].s7mutablevolume .s7verticalvolume .s7track {
-	position:absolute;
-	top:12px;
-	left:10px;
-	width:5px;
-	height:55px;
-	background-color:#737373;
- }
-[data-namespace='s7classic'].s7mutablevolume .s7verticalvolume .s7filledtrack {
-	position:absolute;
-	left:0px;
-	width:5px;
-	background-color:#ffffff;
- }
-[data-namespace='s7classic'].s7mutablevolume .s7verticalvolume .s7knob {
-	position:absolute;
-	width:13px;
-	height:13px;
-	top:6px;
-	left:6px;
-	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/volume_knob.png);
- }
-</style><style type="text/css" media="screen" data-description="Scene7DefaultCSS" data-component="VerticalVolume" data-namespace="s7classic">[data-namespace='s7classic'].s7verticalvolume {
-	position:absolute;
-	-webkit-user-select:none;
-	-moz-user-select:none;
-	-ms-user-select:none;
-	user-select:none;
-	-webkit-tap-highlight-color:rgba(0,0,0,0);
-	touch-action:;
-	width:25px;
-	height:80px;
-	background-color:#ccc;
- }
-[data-namespace='s7classic'].s7verticalvolume .s7track {
-	position:absolute;
-	top:12px;
-	left:10px;
-	width:5px;
-	height:55px;
-	background-color:#737373;
- }
-[data-namespace='s7classic'].s7verticalvolume .s7filledtrack {
-	position:absolute;
-	left:0px;
-	width:5px;
-	background-color:#ffffff;
- }
-[data-namespace='s7classic'].s7verticalvolume .s7knob {
-	position:absolute;
-	width:13px;
-	height:13px;
-	top:6px;
-	left:6px;
-	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/volume_knob.png);
- }
-</style><style type="text/css" media="screen" data-description="Scene7DefaultCSS" data-component="VideoScrubber" data-namespace="s7classic">[data-namespace='s7classic'].s7videoscrubber {
-	position:absolute;
-	-webkit-user-select:none;
-	-moz-user-select:none;
-	-ms-user-select:none;
-	user-select:none;
-	-webkit-tap-highlight-color:rgba(0,0,0,0);
-	touch-action:;
-	width:235px;
-	height:26px;
- }
-[data-namespace='s7classic'].s7videoscrubber .s7videotime {
-	position:absolute;
-	font-family:Arial, Helvetica, sans-serif;
-	font-size:12px;
-	left:4px;
-	width:46px;
-	height:24px;
-	padding:8px;
-	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/scrub_time.png);
-	align:center;
-	text-align:center;
-	vertical-align:middle;
-	color:#000000;
- }
-[data-namespace='s7classic'].s7videoscrubber .s7track, .s7trackloaded, .s7trackplayed {
-	position:absolute;
-	left:8px;
-	right:8px;
-	top:35%;
-	height:31%;
- }
-[data-namespace='s7classic'].s7videoscrubber .s7track {
-	background-color:#555555;
- }
-[data-namespace='s7classic'].s7videoscrubber .s7trackloaded {
-	z-index:100;
-	background-color:#666666;
- }
-[data-namespace='s7classic'].s7videoscrubber .s7trackplayed {
-	z-index:200;
-	background-color:#999999;
- }
-[data-namespace='s7classic'].s7videoscrubber .s7knob {
-	position:absolute;
-	width:9px;
-	top:23%;
-	height:54%;
-	background-image:none;
-	background-color:#ffffff;
-	z-index:1000;
- }
-[data-namespace='s7classic'].s7videoscrubber .s7navigation {
-	position:absolute;
-	width:5px;
-	top:35%;
-	height:31%;
-	background-color:transparent;
-	background-repeat:no-repeat;
-	z-index:990;
- }
-[data-namespace='s7classic'].s7videoscrubber .s7navigation[state='default'] {
-	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/scrub_diamond.png);
- }
-[data-namespace='s7classic'].s7videoscrubber .s7navigation[state='over'] {
-	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/scrub_diamond_over.png);
- }
-[data-namespace='s7classic'].s7videoscrubber .s7chapter {
-	position:absolute;
-	white-space:nowrap;
-	max-width:235px;
-	padding:0px;
-	height:auto;
-	bottom:18px;
-	visibility:hidden;
-	background-color:transparent;
-	z-index:10100;
- }
-[data-namespace='s7classic'].s7videoscrubber .s7chapter .s7header {
-	position:relative;
-	visibility:inherit;
-	width:auto;
-	height:22px;
-	line-height:22px;
-	background-color:rgba(51,51,51,0.8);
-	padding:0 12px 0 12px;
-	vertical-align:middle;
-	z-index:10101;
- }
-[data-namespace='s7classic'].s7videoscrubber .s7chapter .s7header .s7starttime {
-	position:relative;
-	width:auto;
-	visibility:inherit;
-	display:inline;
-	font-family:Arial, Helvetica, sans-serif;
-	font-size:10px;
-	color:#dddddd;
-	background-color:transparent;
-	padding-right:10px;
-	z-index:10102;
- }
-[data-namespace='s7classic'].s7videoscrubber .s7chapter .s7header .s7title {
-	position:relative;
-	width:auto;
-	visibility:inherit;
-	display:inline;
-	text-align:left;
-	font-family:Arial, Helvetica, sans-serif;
-	font-size:10px;
-	font-weight:bold;
-	color:#ffffff;
-	background-color:transparent;
-	z-index:10102;
- }
-[data-namespace='s7classic'].s7videoscrubber .s7chapter .s7description {
-	position:relative;
-	width:auto;
-	height:auto;
-	visibility:inherit;
-	padding:12px 12px 9px 12px;
-	line-height:100%;
-	text-align:left;
-	word-wrap:normal;
-	white-space:normal;
-	background-color:rgba(221,221,221,0.9);
-	color:#333333;
-	font-family:Arial, Helvetica, sans-serif;
-	font-size:11px;
-	z-index:10103;
- }
-[data-namespace='s7classic'].s7videoscrubber .s7chapter .s7tail {
-	position:relative;
-	content:;
-	border-style:solid;
-	border-color:rgba(221,221,221,0.9) transparent transparent transparent;
-	border-width:6px 6px 0px 6px;
-	margin:0px 0px 0px -6px;
-	display:block;
-	width:0px;
-	z-index:10103;
- }
-</style><style type="text/css" media="screen" data-description="Scene7DefaultCSS" data-component="VideoTime" data-namespace="s7classic">[data-namespace='s7classic'].s7videotime {
-	position:absolute;
-	width:57px;
-	height:15px;
-	white-space:nowrap;
-	-webkit-user-select:none;
-	-moz-user-select:none;
-	-ms-user-select:none;
-	user-select:none;
-	-webkit-tap-highlight-color:rgba(0,0,0,0);
-	font-family:Arial, Helvetica, sans-serif;
-	font-size:12px;
-	padding:4px;
- }
-</style><style type="text/css" media="screen" data-description="Scene7DefaultCSS" data-component="ScrollBar" data-namespace="s7classic">[data-namespace='s7classic'].s7scrollbar {
+<!DOCTYPE html><html lang="en-US" dir="ltr" class="hydrated" style=""><head><style type="text/css" media="screen" data-description="Scene7DefaultCSS" data-component="ScrollBar" data-namespace="s7classic">[data-namespace='s7classic'].s7scrollbar {
 	background-color:rgba(102, 102, 102, 0);
 	top:8px;
 	bottom:8px;
@@ -443,63 +64,6 @@
  }
 [data-namespace='s7classic'].s7scrollbar .s7scrolldownbutton[state='disabled'] {
 	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/scroll_down_up.png);
- }
-</style><style type="text/css" media="screen" data-description="Scene7DefaultCSS" data-component="VideoPlayer" data-namespace="s7classic">[data-namespace='s7classic'].s7videoplayer {
-	position:absolute;
-	width:400px;
-	height:300px;
-	background-color:#000000;
-	-webkit-touch-callout:none;
-	-webkit-user-select:none;
-	-moz-user-select:none;
-	-ms-user-select:none;
-	user-select:none;
-	-webkit-tap-highlight-color:rgba(0,0,0,0);
-	touch-action:;
- }
-[data-namespace='s7classic'].s7videoplayer div[role='button'] {
-	position:relative;
-	z-index:1;
- }
-[data-namespace='s7classic'].s7videoplayer .s7iconeffect {
-	width:120px;
-	height:120px;
-	-webkit-transform:translateZ(0px);
-	background-repeat:no-repeat;
-	background-position:center;
- }
-[data-namespace='s7classic'].s7videoplayer .s7iconeffect[state='play'] {
-	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/videoplayicon.png);
- }
-[data-namespace='s7classic'].s7videoplayer .s7iconeffect[state='replay'] {
-	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/videoreplayicon.png);
- }
-[data-namespace='s7classic'].s7videoplayer .s7videoposter {
-	top:0px;
-	left:0px;
-	position:absolute;
-	background-repeat:no-repeat;
-	background-position:center center;
-	background-size:contain;
- }
-[data-namespace='s7classic'].s7videoplayer .s7caption {
-	font-family:sans-serif;
-	font-size:large;
-	color:#ffffff;
-	-webkit-transform:translateZ(0px);
-	margin:0 auto;
- }
-[data-namespace='s7classic'].s7videoplayer .s7waiticon {
-	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/busyicon.gif);
-	background-repeat:no-repeat;
-	background-position:center;
-	position:absolute;
-	width:101px;
-	height:29px;
-	left:50%;
-	top:50%;
-	margin-left:-50px;
-	margin-top:-15px;
  }
 </style><style type="text/css" media="screen" data-description="Scene7DefaultCSS" data-component="ControlBar" data-namespace="s7classic">[data-namespace='s7classic'].s7controlbar {
 	background-color:#a6a6a6;
@@ -1962,6 +1526,442 @@
 [data-namespace='s7classic'].s7emailshare[state='disabled'] {
 	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/emailbtn_up.png);
  }
+</style><style type="text/css" media="screen" data-description="Scene7DefaultCSS" data-component="VideoPlayer" data-namespace="s7classic">[data-namespace='s7classic'].s7videoplayer {
+	position:absolute;
+	width:400px;
+	height:300px;
+	background-color:#000000;
+	-webkit-touch-callout:none;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
+	touch-action:;
+ }
+[data-namespace='s7classic'].s7videoplayer div[role='button'] {
+	position:relative;
+	z-index:1;
+ }
+[data-namespace='s7classic'].s7videoplayer .s7iconeffect {
+	width:120px;
+	height:120px;
+	-webkit-transform:translateZ(0px);
+	background-repeat:no-repeat;
+	background-position:center;
+ }
+[data-namespace='s7classic'].s7videoplayer .s7iconeffect[state='play'] {
+	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/videoplayicon.png);
+ }
+[data-namespace='s7classic'].s7videoplayer .s7iconeffect[state='replay'] {
+	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/videoreplayicon.png);
+ }
+[data-namespace='s7classic'].s7videoplayer .s7videoposter {
+	top:0px;
+	left:0px;
+	position:absolute;
+	background-repeat:no-repeat;
+	background-position:center center;
+	background-size:contain;
+ }
+[data-namespace='s7classic'].s7videoplayer .s7caption {
+	font-family:sans-serif;
+	font-size:large;
+	color:#ffffff;
+	-webkit-transform:translateZ(0px);
+	margin:0 auto;
+ }
+[data-namespace='s7classic'].s7videoplayer .s7waiticon {
+	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/busyicon.gif);
+	background-repeat:no-repeat;
+	background-position:center;
+	position:absolute;
+	width:101px;
+	height:29px;
+	left:50%;
+	top:50%;
+	margin-left:-50px;
+	margin-top:-15px;
+ }
+</style><style type="text/css" media="screen" data-description="Scene7DefaultCSS" data-component="AudioCaptions" data-namespace="s7classic">[data-namespace='s7classic'].s7audiocaptions {
+	position:absolute;
+	width:28px;
+	height:28px;
+	top:4px;
+	-webkit-touch-callout:none;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
+	touch-action:;
+ }
+[data-namespace='s7classic'].s7audiocaptions .s7audiocaptionsbutton {
+	position:absolute;
+	width:100%;
+	height:100%;
+	display:block;
+ }
+[data-namespace='s7classic'].s7audiocaptions .s7audiocaptionsmenu {
+	position:absolute;
+	bottom:30px;
+	right:0;
+ }
+</style><style type="text/css" media="screen" data-description="Scene7DefaultCSS" data-component="AudioCaptionsMenu" data-namespace="s7classic">[data-namespace='s7classic'].s7audiocaptionsmenu {
+	margin:0;
+	padding:10px;
+	box-sizing:border-box;
+	display:none;
+	flex-direction:column;
+	z-index:10000;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:14px;
+	color:rgba(255, 255, 255, 0.65);
+	background-color:#333333;
+	border-radius:8px;
+ }
+[data-namespace='s7classic'].s7audiocaptionsmenu.is-shown {
+	display:flex;
+ }
+[data-namespace='s7classic'].s7audiocaptionsmenu .header {
+	display:none;
+	justify-content:end;
+	align-items:center;
+ }
+[data-namespace='s7classic'].s7audiocaptionsmenu .wrapper {
+	display:flex;
+	justify-content:center;
+	box-sizing:inherit;
+ }
+[data-namespace='s7classic'].s7audiocaptionsmenu .section {
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	flex-direction:column;
+	box-sizing:inherit;
+ }
+[data-namespace='s7classic'].s7audiocaptionsmenu .section + .section {
+	margin-left:10px;
+ }
+[data-namespace='s7classic'].s7audiocaptionsmenu .title {
+	box-sizing:inherit;
+	width:100%;
+	color:#FFFFFF;
+	padding-left:15px;
+ }
+[data-namespace='s7classic'].s7audiocaptionsmenu .list {
+	box-sizing:inherit;
+	margin:10px 0 0 0;
+	padding:0 10px 0 0;
+	list-style-type:none;
+	height:100%;
+	width:150px;
+	max-height:250px;
+	overflow-y:auto;
+	overscroll-behavior:contain;
+	scroll-behavior:smooth;
+ }
+[data-namespace='s7classic'].s7audiocaptionsmenu .list::-webkit-scrollbar-track {
+	-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3);
+	background-color:#737373;
+ }
+[data-namespace='s7classic'].s7audiocaptionsmenu .list::-webkit-scrollbar {
+	width:5px;
+	background-color:#737373;
+ }
+[data-namespace='s7classic'].s7audiocaptionsmenu .list::-webkit-scrollbar-thumb {
+	-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3);
+	background-color:#F5F5F5;
+ }
+[data-namespace='s7classic'].s7audiocaptionsmenu li {
+	position:relative;
+	display:block;
+	box-sizing:border-box;
+	width:100%;
+	max-width:150px;
+	cursor:pointer;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	padding:5px 5px 5px 15px;
+ }
+[data-namespace='s7classic'].s7audiocaptionsmenu li::before {
+	display:none;
+	position:absolute;
+	content:"\2713";
+	height:100%;
+	width:100%;
+	left:0;
+	color:#FFFFFF;
+ }
+[data-namespace='s7classic'].s7audiocaptionsmenu li.active::before {
+	display:inline-block;
+ }
+[data-namespace='s7classic'].s7audiocaptionsmenu li.active, .s7audiocaptionsmenu li:hover {
+	color:#FFFFFF;
+ }
+</style><style type="text/css" media="screen" data-description="Scene7DefaultCSS" data-component="MutableVolume" data-namespace="s7classic">[data-namespace='s7classic'].s7mutablevolume {
+	position:absolute;
+	width:25px;
+	height:25px;
+	-webkit-touch-callout:none;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
+	touch-action:;
+ }
+[data-namespace='s7classic'].s7mutablevolume .s7mutebutton {
+	position:absolute;
+	width:25px;
+	height:25px;
+	background-size:contain;
+	background-repeat:no-repeat;
+	background-position:center;
+ }
+[data-namespace='s7classic'].s7mutablevolume .s7mutebutton[selected='true'][state='up'] {
+	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/muteon_up.png);
+ }
+[data-namespace='s7classic'].s7mutablevolume .s7mutebutton[selected='true'][state='over'] {
+	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/muteon_over.png);
+ }
+[data-namespace='s7classic'].s7mutablevolume .s7mutebutton[selected='true'][state='down'] {
+	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/muteon_down.png);
+ }
+[data-namespace='s7classic'].s7mutablevolume .s7mutebutton[selected='true'][state='disabled'] {
+	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/muteon_disabled.png);
+ }
+[data-namespace='s7classic'].s7mutablevolume .s7mutebutton[selected='false'][state='up'] {
+	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/muteoff_up.png);
+ }
+[data-namespace='s7classic'].s7mutablevolume .s7mutebutton[selected='false'][state='over'] {
+	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/muteoff_over.png);
+ }
+[data-namespace='s7classic'].s7mutablevolume .s7mutebutton[selected='false'][state='down'] {
+	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/muteoff_down.png);
+ }
+[data-namespace='s7classic'].s7mutablevolume .s7mutebutton[selected='false'][state='disabled'] {
+	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/muteoff_disabled.png);
+ }
+[data-namespace='s7classic'].s7mutablevolume .s7verticalvolume {
+	position:absolute;
+	width:25px;
+	height:80px;
+	left:0px;
+	background-color:#ccc;
+ }
+[data-namespace='s7classic'].s7mutablevolume .s7verticalvolume .s7track {
+	position:absolute;
+	top:12px;
+	left:10px;
+	width:5px;
+	height:55px;
+	background-color:#737373;
+ }
+[data-namespace='s7classic'].s7mutablevolume .s7verticalvolume .s7filledtrack {
+	position:absolute;
+	left:0px;
+	width:5px;
+	background-color:#ffffff;
+ }
+[data-namespace='s7classic'].s7mutablevolume .s7verticalvolume .s7knob {
+	position:absolute;
+	width:13px;
+	height:13px;
+	top:6px;
+	left:6px;
+	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/volume_knob.png);
+ }
+</style><style type="text/css" media="screen" data-description="Scene7DefaultCSS" data-component="VerticalVolume" data-namespace="s7classic">[data-namespace='s7classic'].s7verticalvolume {
+	position:absolute;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
+	touch-action:;
+	width:25px;
+	height:80px;
+	background-color:#ccc;
+ }
+[data-namespace='s7classic'].s7verticalvolume .s7track {
+	position:absolute;
+	top:12px;
+	left:10px;
+	width:5px;
+	height:55px;
+	background-color:#737373;
+ }
+[data-namespace='s7classic'].s7verticalvolume .s7filledtrack {
+	position:absolute;
+	left:0px;
+	width:5px;
+	background-color:#ffffff;
+ }
+[data-namespace='s7classic'].s7verticalvolume .s7knob {
+	position:absolute;
+	width:13px;
+	height:13px;
+	top:6px;
+	left:6px;
+	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/volume_knob.png);
+ }
+</style><style type="text/css" media="screen" data-description="Scene7DefaultCSS" data-component="VideoScrubber" data-namespace="s7classic">[data-namespace='s7classic'].s7videoscrubber {
+	position:absolute;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
+	touch-action:;
+	width:235px;
+	height:26px;
+ }
+[data-namespace='s7classic'].s7videoscrubber .s7videotime {
+	position:absolute;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	left:4px;
+	width:46px;
+	height:24px;
+	padding:8px;
+	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/scrub_time.png);
+	align:center;
+	text-align:center;
+	vertical-align:middle;
+	color:#000000;
+ }
+[data-namespace='s7classic'].s7videoscrubber .s7track, .s7trackloaded, .s7trackplayed {
+	position:absolute;
+	left:8px;
+	right:8px;
+	top:35%;
+	height:31%;
+ }
+[data-namespace='s7classic'].s7videoscrubber .s7track {
+	background-color:#555555;
+ }
+[data-namespace='s7classic'].s7videoscrubber .s7trackloaded {
+	z-index:100;
+	background-color:#666666;
+ }
+[data-namespace='s7classic'].s7videoscrubber .s7trackplayed {
+	z-index:200;
+	background-color:#999999;
+ }
+[data-namespace='s7classic'].s7videoscrubber .s7knob {
+	position:absolute;
+	width:9px;
+	top:23%;
+	height:54%;
+	background-image:none;
+	background-color:#ffffff;
+	z-index:1000;
+ }
+[data-namespace='s7classic'].s7videoscrubber .s7navigation {
+	position:absolute;
+	width:5px;
+	top:35%;
+	height:31%;
+	background-color:transparent;
+	background-repeat:no-repeat;
+	z-index:990;
+ }
+[data-namespace='s7classic'].s7videoscrubber .s7navigation[state='default'] {
+	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/scrub_diamond.png);
+ }
+[data-namespace='s7classic'].s7videoscrubber .s7navigation[state='over'] {
+	background-image:url(https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/images/sdk/scrub_diamond_over.png);
+ }
+[data-namespace='s7classic'].s7videoscrubber .s7chapter {
+	position:absolute;
+	white-space:nowrap;
+	max-width:235px;
+	padding:0px;
+	height:auto;
+	bottom:18px;
+	visibility:hidden;
+	background-color:transparent;
+	z-index:10100;
+ }
+[data-namespace='s7classic'].s7videoscrubber .s7chapter .s7header {
+	position:relative;
+	visibility:inherit;
+	width:auto;
+	height:22px;
+	line-height:22px;
+	background-color:rgba(51,51,51,0.8);
+	padding:0 12px 0 12px;
+	vertical-align:middle;
+	z-index:10101;
+ }
+[data-namespace='s7classic'].s7videoscrubber .s7chapter .s7header .s7starttime {
+	position:relative;
+	width:auto;
+	visibility:inherit;
+	display:inline;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:10px;
+	color:#dddddd;
+	background-color:transparent;
+	padding-right:10px;
+	z-index:10102;
+ }
+[data-namespace='s7classic'].s7videoscrubber .s7chapter .s7header .s7title {
+	position:relative;
+	width:auto;
+	visibility:inherit;
+	display:inline;
+	text-align:left;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:10px;
+	font-weight:bold;
+	color:#ffffff;
+	background-color:transparent;
+	z-index:10102;
+ }
+[data-namespace='s7classic'].s7videoscrubber .s7chapter .s7description {
+	position:relative;
+	width:auto;
+	height:auto;
+	visibility:inherit;
+	padding:12px 12px 9px 12px;
+	line-height:100%;
+	text-align:left;
+	word-wrap:normal;
+	white-space:normal;
+	background-color:rgba(221,221,221,0.9);
+	color:#333333;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	z-index:10103;
+ }
+[data-namespace='s7classic'].s7videoscrubber .s7chapter .s7tail {
+	position:relative;
+	content:;
+	border-style:solid;
+	border-color:rgba(221,221,221,0.9) transparent transparent transparent;
+	border-width:6px 6px 0px 6px;
+	margin:0px 0px 0px -6px;
+	display:block;
+	width:0px;
+	z-index:10103;
+ }
+</style><style type="text/css" media="screen" data-description="Scene7DefaultCSS" data-component="VideoTime" data-namespace="s7classic">[data-namespace='s7classic'].s7videotime {
+	position:absolute;
+	width:57px;
+	height:15px;
+	white-space:nowrap;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	padding:4px;
+ }
 </style><style type="text/css" media="screen" data-description="Scene7DefaultCSS" data-component="Container" data-namespace="s7classic">[data-namespace='s7classic'].s7container {
 	width:100%;
 	height:100%;
@@ -3241,7 +3241,7 @@
     
     
     <link rel="stylesheet" href="/etc.clientlibs/medtronic/clientlibs/clientlib-dependencies.min.d41d8cd98f00b204e9800998ecf8427e.css" type="text/css">
-<link rel="stylesheet" href="/etc.clientlibs/medtronic/clientlibs/clientlib-site.min.fd441ba9e447f92276038b25e9bdfd63.css" type="text/css">
+<link rel="stylesheet" href="/etc.clientlibs/medtronic/clientlibs/clientlib-site.min.cc2abb61303d6484e2751bf562c93ffb.css" type="text/css">
 
 
     
@@ -3254,8 +3254,8 @@
       <script data-ot-ignore="" type="text/javascript" src="/etc.clientlibs/medtronic/clientlibs/clientlib-dependencies.d41d8cd98f00b204e9800998ecf8427e.js"></script>
   
 
-<script>(window.BOOMR_mq=window.BOOMR_mq||[]).push(["addVar",{"rua.upush":"false","rua.cpush":"true","rua.upre":"false","rua.cpre":"false","rua.uprl":"false","rua.cprl":"false","rua.cprf":"false","rua.trans":"SJ-51113a76-46a7-420e-a694-ea762dfdd6db","rua.cook":"false","rua.ims":"false","rua.ufprl":"false","rua.cfprl":"false","rua.isuxp":"false","rua.texp":"norulematch","rua.ceh":"false","rua.ueh":"false","rua.ieh.st":"0"}]);</script>
-                              <script>!function(e){var n="https://s.go-mpulse.net/boomerang/";if("True"=="True")e.BOOMR_config=e.BOOMR_config||{},e.BOOMR_config.PageParams=e.BOOMR_config.PageParams||{},e.BOOMR_config.PageParams.pci=!0,n="https://s2.go-mpulse.net/boomerang/";if(window.BOOMR_API_key="PRR2U-SSFLH-BKFNL-6P7A8-E4MTG",function(){function e(){if(!o){var e=document.createElement("script");e.id="boomr-scr-as",e.src=window.BOOMR.url,e.async=!0,i.parentNode.appendChild(e),o=!0}}function t(e){o=!0;var n,t,a,r,d=document,O=window;if(window.BOOMR.snippetMethod=e?"if":"i",t=function(e,n){var t=d.createElement("script");t.id=n||"boomr-if-as",t.src=window.BOOMR.url,BOOMR_lstart=(new Date).getTime(),e=e||d.body,e.appendChild(t)},!window.addEventListener&&window.attachEvent&&navigator.userAgent.match(/MSIE [67]\./))return window.BOOMR.snippetMethod="s",void t(i.parentNode,"boomr-async");a=document.createElement("IFRAME"),a.src="about:blank",a.title="",a.role="presentation",a.loading="eager",r=(a.frameElement||a).style,r.width=0,r.height=0,r.border=0,r.display="none",i.parentNode.appendChild(a);try{O=a.contentWindow,d=O.document.open()}catch(_){n=document.domain,a.src="javascript:var d=document.open();d.domain='"+n+"';void(0);",O=a.contentWindow,d=O.document.open()}if(n)d._boomrl=function(){this.domain=n,t()},d.write("<bo"+"dy onload='document._boomrl();'>");else if(O._boomrl=function(){t()},O.addEventListener)O.addEventListener("load",O._boomrl,!1);else if(O.attachEvent)O.attachEvent("onload",O._boomrl);d.close()}function a(e){window.BOOMR_onload=e&&e.timeStamp||(new Date).getTime()}if(!window.BOOMR||!window.BOOMR.version&&!window.BOOMR.snippetExecuted){window.BOOMR=window.BOOMR||{},window.BOOMR.snippetStart=(new Date).getTime(),window.BOOMR.snippetExecuted=!0,window.BOOMR.snippetVersion=12,window.BOOMR.url=n+"PRR2U-SSFLH-BKFNL-6P7A8-E4MTG";var i=document.currentScript||document.getElementsByTagName("script")[0],o=!1,r=document.createElement("link");if(r.relList&&"function"==typeof r.relList.supports&&r.relList.supports("preload")&&"as"in r)window.BOOMR.snippetMethod="p",r.href=window.BOOMR.url,r.rel="preload",r.as="script",r.addEventListener("load",e),r.addEventListener("error",function(){t(!0)}),setTimeout(function(){if(!o)t(!0)},3e3),BOOMR_lstart=(new Date).getTime(),i.parentNode.appendChild(r);else t(!1);if(window.addEventListener)window.addEventListener("load",a,!1);else if(window.attachEvent)window.attachEvent("onload",a)}}(),"".length>0)if(e&&"performance"in e&&e.performance&&"function"==typeof e.performance.setResourceTimingBufferSize)e.performance.setResourceTimingBufferSize();!function(){if(BOOMR=e.BOOMR||{},BOOMR.plugins=BOOMR.plugins||{},!BOOMR.plugins.AK){var n="true"=="true"?1:0,t="",a="ix7ksunydz4tq2owzmsq-f-d587a4465-clientnsv4-s.akamaihd.net",i="false"=="true"?2:1,o={"ak.v":"39","ak.cp":"1494355","ak.ai":parseInt("218082",10),"ak.ol":"0","ak.cr":29,"ak.ipv":4,"ak.proto":"h2","ak.rid":"71abe7d0","ak.r":47408,"ak.a2":n,"ak.m":"b","ak.n":"essl","ak.bpcip":"69.254.169.0","ak.cport":13714,"ak.gh":"23.1.104.228","ak.quicv":"","ak.tlsv":"tls1.3","ak.0rtt":"","ak.0rtt.ed":"","ak.csrc":"-","ak.acc":"","ak.t":"1775684389","ak.ak":"hOBiQwZUYzCg5VSAfCLimQ==tb0R5OZPPCfhontOuwwQzDmsvH+HIS0D0DwN8KoKJQVFNk5+qeDL+f3tYKHCHm/2qs1pHQsOP2F5ohDL3lAf+FjoubxjbxPmQUzej5RqPRNR2ZVcv2dZPgoeY214tvUoVjo6KTpl0+GJX8B89VaKdX0R7EniEQCv1FuCmlxp0zInLI2b3Sn+fWoCjOa9ZkpQYDMD8muoBc21oN59/6H6o/3nP6iJb3QP28baW96FRj3GMKD7V9YlAtZbiz1wanWtvrXTv5Va27RbhfgqHYtZZSpIYr6lcMaBgdv3/6lQhJaq3G5UHg7Hm5BZj+ce4lJT9I5YTB3RU+1zo4QcCO+QijifKGojfX65vQsNlylWA4X0ka0MIME8s14VkPO367D2P1hPRG9p86B2UfvJSynyH1cxY9eBWu6gGclPD2c4hH8=","ak.pv":"519","ak.dpoabenc":"","ak.tf":i};if(""!==t)o["ak.ruds"]=t;var r={i:!1,av:function(n){var t="http.initiator";if(n&&(!n[t]||"spa_hard"===n[t]))o["ak.feo"]=void 0!==e.aFeoApplied?1:0,BOOMR.addVar(o)},rv:function(){var e=["ak.bpcip","ak.cport","ak.cr","ak.csrc","ak.gh","ak.ipv","ak.m","ak.n","ak.ol","ak.proto","ak.quicv","ak.tlsv","ak.0rtt","ak.0rtt.ed","ak.r","ak.acc","ak.t","ak.tf"];BOOMR.removeVar(e)}};BOOMR.plugins.AK={akVars:o,akDNSPreFetchDomain:a,init:function(){if(!r.i){var e=BOOMR.subscribe;e("before_beacon",r.av,null,null),e("onbeacon",r.rv,null,null),r.i=!0}return this},is_complete:function(){return!0}}}}()}(window);</script><link href="https://s2.go-mpulse.net/boomerang/PRR2U-SSFLH-BKFNL-6P7A8-E4MTG" rel="preload" as="script"><script language="javascript" type="text/javascript" src="?namespace=s7classic" data-src="https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/Utils.js?namespace=s7classic"></script><script src="https://cdn.cookielaw.org/scripttemplates/202510.2.0/otBannerSdk.js" async="" type="text/javascript"></script><style type="text/css">/* CSS variables. */
+<script>(window.BOOMR_mq=window.BOOMR_mq||[]).push(["addVar",{"rua.upush":"false","rua.cpush":"true","rua.upre":"false","rua.cpre":"false","rua.uprl":"false","rua.cprl":"false","rua.cprf":"false","rua.trans":"SJ-f66d9ea3-bd3e-42f8-949f-9723a17e6c84","rua.cook":"false","rua.ims":"false","rua.ufprl":"false","rua.cfprl":"false","rua.isuxp":"false","rua.texp":"norulematch","rua.ceh":"false","rua.ueh":"false","rua.ieh.st":"0"}]);</script>
+                              <script>!function(e){var n="https://s.go-mpulse.net/boomerang/";if("True"=="True")e.BOOMR_config=e.BOOMR_config||{},e.BOOMR_config.PageParams=e.BOOMR_config.PageParams||{},e.BOOMR_config.PageParams.pci=!0,n="https://s2.go-mpulse.net/boomerang/";if(window.BOOMR_API_key="PRR2U-SSFLH-BKFNL-6P7A8-E4MTG",function(){function e(){if(!o){var e=document.createElement("script");e.id="boomr-scr-as",e.src=window.BOOMR.url,e.async=!0,i.parentNode.appendChild(e),o=!0}}function t(e){o=!0;var n,t,a,r,d=document,O=window;if(window.BOOMR.snippetMethod=e?"if":"i",t=function(e,n){var t=d.createElement("script");t.id=n||"boomr-if-as",t.src=window.BOOMR.url,BOOMR_lstart=(new Date).getTime(),e=e||d.body,e.appendChild(t)},!window.addEventListener&&window.attachEvent&&navigator.userAgent.match(/MSIE [67]\./))return window.BOOMR.snippetMethod="s",void t(i.parentNode,"boomr-async");a=document.createElement("IFRAME"),a.src="about:blank",a.title="",a.role="presentation",a.loading="eager",r=(a.frameElement||a).style,r.width=0,r.height=0,r.border=0,r.display="none",i.parentNode.appendChild(a);try{O=a.contentWindow,d=O.document.open()}catch(_){n=document.domain,a.src="javascript:var d=document.open();d.domain='"+n+"';void(0);",O=a.contentWindow,d=O.document.open()}if(n)d._boomrl=function(){this.domain=n,t()},d.write("<bo"+"dy onload='document._boomrl();'>");else if(O._boomrl=function(){t()},O.addEventListener)O.addEventListener("load",O._boomrl,!1);else if(O.attachEvent)O.attachEvent("onload",O._boomrl);d.close()}function a(e){window.BOOMR_onload=e&&e.timeStamp||(new Date).getTime()}if(!window.BOOMR||!window.BOOMR.version&&!window.BOOMR.snippetExecuted){window.BOOMR=window.BOOMR||{},window.BOOMR.snippetStart=(new Date).getTime(),window.BOOMR.snippetExecuted=!0,window.BOOMR.snippetVersion=12,window.BOOMR.url=n+"PRR2U-SSFLH-BKFNL-6P7A8-E4MTG";var i=document.currentScript||document.getElementsByTagName("script")[0],o=!1,r=document.createElement("link");if(r.relList&&"function"==typeof r.relList.supports&&r.relList.supports("preload")&&"as"in r)window.BOOMR.snippetMethod="p",r.href=window.BOOMR.url,r.rel="preload",r.as="script",r.addEventListener("load",e),r.addEventListener("error",function(){t(!0)}),setTimeout(function(){if(!o)t(!0)},3e3),BOOMR_lstart=(new Date).getTime(),i.parentNode.appendChild(r);else t(!1);if(window.addEventListener)window.addEventListener("load",a,!1);else if(window.attachEvent)window.attachEvent("onload",a)}}(),"".length>0)if(e&&"performance"in e&&e.performance&&"function"==typeof e.performance.setResourceTimingBufferSize)e.performance.setResourceTimingBufferSize();!function(){if(BOOMR=e.BOOMR||{},BOOMR.plugins=BOOMR.plugins||{},!BOOMR.plugins.AK){var n="true"=="true"?1:0,t="",a="ix7ksunydz4tq2pgudaq-f-7f08fcf89-clientnsv4-s.akamaihd.net",i="false"=="true"?2:1,o={"ak.v":"39","ak.cp":"1494355","ak.ai":parseInt("218082",10),"ak.ol":"0","ak.cr":29,"ak.ipv":4,"ak.proto":"h2","ak.rid":"90299436","ak.r":47408,"ak.a2":n,"ak.m":"b","ak.n":"essl","ak.bpcip":"69.254.169.0","ak.cport":55458,"ak.gh":"23.1.104.228","ak.quicv":"","ak.tlsv":"tls1.3","ak.0rtt":"","ak.0rtt.ed":"","ak.csrc":"-","ak.acc":"","ak.t":"1776722113","ak.ak":"hOBiQwZUYzCg5VSAfCLimQ==Y2D0kkTVrfTesLkRuOmM9X9Yxy7hVTEx8AV6aEw9qn4aiPhvjrNtcCDzpoQGOoe/Fkz78Wn7mkjVckz4JwZ4gWwF1K3QJwP90UpMUIj5moaUUhFmew8ffhlcwlOqRXxoIkuRghRGOzpI9is3EfUsWTg2XLTANT9Lk82yD+UFU44VVKByo1jRQQRmVMldcEZeYZdkbrpLZLlXbX5MKKxs04OJPbxp2AKyp3pagam53Bsj+5xZIpPuDhVYzBRdQ0nylW+K+E6Occclc/dMPYxxvpw6nF/TIgfCd9a7BWyeCsw539Mvjpm5fj8TRBOcCKpRcOJMNt0UxyAtTA8BYo2sQP6OK3KxnvIGuNbjnarL2lH43W5RouPw2WpLlCOc9uBouqZSjoqtPIm5np9/+N+cAEFUpwODg28i2llqva112QI=","ak.pv":"519","ak.dpoabenc":"","ak.tf":i};if(""!==t)o["ak.ruds"]=t;var r={i:!1,av:function(n){var t="http.initiator";if(n&&(!n[t]||"spa_hard"===n[t]))o["ak.feo"]=void 0!==e.aFeoApplied?1:0,BOOMR.addVar(o)},rv:function(){var e=["ak.bpcip","ak.cport","ak.cr","ak.csrc","ak.gh","ak.ipv","ak.m","ak.n","ak.ol","ak.proto","ak.quicv","ak.tlsv","ak.0rtt","ak.0rtt.ed","ak.r","ak.acc","ak.t","ak.tf"];BOOMR.removeVar(e)}};BOOMR.plugins.AK={akVars:o,akDNSPreFetchDomain:a,init:function(){if(!r.i){var e=BOOMR.subscribe;e("before_beacon",r.av,null,null),e("onbeacon",r.rv,null,null),r.i=!0}return this},is_complete:function(){return!0}}}}()}(window);</script><link href="https://s2.go-mpulse.net/boomerang/PRR2U-SSFLH-BKFNL-6P7A8-E4MTG" rel="preload" as="script"><script language="javascript" type="text/javascript" src="?namespace=s7classic" data-src="https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/Utils.js?namespace=s7classic"></script><style type="text/css">/* CSS variables. */
 :root {
 	--PhoneInput-color--focus: #03b2cb;
 	--PhoneInputInternationalIconPhone-opacity: 0.8;
@@ -4143,7 +4143,7 @@ h2.react-datepicker__current-month {
   height: 1em;
   vertical-align: -0.125em;
 }
-</style><script id="boomr-scr-as" src="https://s2.go-mpulse.net/boomerang/PRR2U-SSFLH-BKFNL-6P7A8-E4MTG" async=""></script><script src="https://assets.adobedtm.com/extensions/EP31dbb9c60e404ba1aa6e746d49be6f29/AppMeasurement.min.js" async=""></script><script src="https://assets.adobedtm.com/extensions/EP31dbb9c60e404ba1aa6e746d49be6f29/AppMeasurement_Module_ActivityMap.min.js" async=""></script><style>
+</style><script id="boomr-scr-as" src="https://s2.go-mpulse.net/boomerang/PRR2U-SSFLH-BKFNL-6P7A8-E4MTG" async=""></script><script src="https://cdn.cookielaw.org/scripttemplates/202510.2.0/otBannerSdk.js" async="" type="text/javascript"></script><script src="https://assets.adobedtm.com/extensions/EP31dbb9c60e404ba1aa6e746d49be6f29/AppMeasurement.min.js" async=""></script><script src="https://assets.adobedtm.com/extensions/EP31dbb9c60e404ba1aa6e746d49be6f29/AppMeasurement_Module_ActivityMap.min.js" async=""></script><style>
       .extra-rows {
         display: none;
       }
@@ -4707,13 +4707,13 @@ h2.react-datepicker__current-month {
           #onetrust-policy-text a#read-more-toggle.expanded .chevron {
             transform: rotate(180deg);
           }
-        </style><script language="javascript" type="text/javascript" src="https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/js/s7sdk/video/VideoControls.js?namespace=s7classic" id="s7sdk.video.VideoControls"></script><script language="javascript" type="text/javascript" src="https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/js/s7sdk/video/VideoPlayer.js?namespace=s7classic" id="s7sdk.video.VideoPlayer"></script><script language="javascript" type="text/javascript" src="https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/js/s7sdk/common/ControlBar.js?namespace=s7classic" id="s7sdk.common.ControlBar"></script><script language="javascript" type="text/javascript" src="https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/js/s7sdk/share/Share.js?namespace=s7classic" id="s7sdk.share.Share"></script><script src="https://assets.adobedtm.com/e5d3245550c3/dba6c2f59088/28fa6e8e27a7/RCf54b61fe648541d293a3b62cbb596f59-source.min.js" async=""></script><script language="javascript" type="text/javascript" src="https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/js/s7sdk/common/ScrollBar.js?namespace=s7classic" id="s7sdk.common.ScrollBar"></script><script language="javascript" type="text/javascript" src="https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/js/s7sdk/common/IconEffect.js?namespace=s7classic" id="s7sdk.common.IconEffect"></script><script language="javascript" type="text/javascript" src="https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/js/s7sdk/common/WebVtt.js?namespace=s7classic" id="s7sdk.common.WebVtt"></script><script language="javascript" type="text/javascript" src="https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/js/s7sdk/video/VideoProxies.js?namespace=s7classic" id="s7sdk.video.VideoProxies"></script><script language="javascript" type="text/javascript" src="https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/js/s7sdk/video/qosMetric.js?namespace=s7classic" id="s7sdk.video.qosMetric"></script><link media="all" href="https://s7d1.scene7.com/s7viewers/html5/VideoViewer.css" rel="stylesheet" type="text/css" pmid="s7classic_5"><style type="text/css" media="screen" data-description=".s7swatches" data-component=".s7swatches" data-instance="s7flyout_div_swatches">#s7flyout_div_swatches.s7swatches{
+        </style><script language="javascript" type="text/javascript" src="https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/js/s7sdk/video/VideoControls.js?namespace=s7classic" id="s7sdk.video.VideoControls"></script><script language="javascript" type="text/javascript" src="https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/js/s7sdk/video/VideoPlayer.js?namespace=s7classic" id="s7sdk.video.VideoPlayer"></script><script language="javascript" type="text/javascript" src="https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/js/s7sdk/common/ControlBar.js?namespace=s7classic" id="s7sdk.common.ControlBar"></script><script language="javascript" type="text/javascript" src="https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/js/s7sdk/share/Share.js?namespace=s7classic" id="s7sdk.share.Share"></script><script src="https://assets.adobedtm.com/e5d3245550c3/dba6c2f59088/d7e8a7f9af16/RCf54b61fe648541d293a3b62cbb596f59-source.min.js" async=""></script><script language="javascript" type="text/javascript" src="https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/js/s7sdk/common/IconEffect.js?namespace=s7classic" id="s7sdk.common.IconEffect"></script><script language="javascript" type="text/javascript" src="https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/js/s7sdk/common/WebVtt.js?namespace=s7classic" id="s7sdk.common.WebVtt"></script><script language="javascript" type="text/javascript" src="https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/js/s7sdk/video/VideoProxies.js?namespace=s7classic" id="s7sdk.video.VideoProxies"></script><script language="javascript" type="text/javascript" src="https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/js/s7sdk/video/qosMetric.js?namespace=s7classic" id="s7sdk.video.qosMetric"></script><script language="javascript" type="text/javascript" src="https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/js/s7sdk/common/ScrollBar.js?namespace=s7classic" id="s7sdk.common.ScrollBar"></script><style type="text/css" media="screen" data-description=".s7swatches" data-component=".s7swatches" data-instance="s7flyout_div_swatches">#s7flyout_div_swatches.s7swatches{
 	visibility:hidden;
 }</style><style type="text/css" media="screen" data-description=".s7flyoutzoomview" data-component=".s7flyoutzoomview" data-instance="s7flyout_div_flyout">#s7flyout_div_flyout.s7flyoutzoomview{
 	visibility:inherit;
-}</style><script language="javascript" type="text/javascript" src="https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/js/s7sdk/libs/videojs/video.js?namespace=s7classic" id="s7sdk.libs.videojs.video"></script><style type="text/css" media="screen" data-description=".s7controlbar" data-component=".s7controlbar" data-instance="dynamicmedia_133615568_controls">#dynamicmedia_133615568_controls.s7controlbar{
+}</style><link media="all" href="https://s7d1.scene7.com/s7viewers/html5/VideoViewer.css" rel="stylesheet" type="text/css" pmid="s7classic_5"><script language="javascript" type="text/javascript" src="https://s7d1.scene7.com/s7viewers/html5/../../s7viewersdk/2025.9/FlyoutViewer/js/s7sdk/utils/../../../../../../../../s7sdk/2025.9/js/s7sdk/libs/videojs/video.js?namespace=s7classic" id="s7sdk.libs.videojs.video"></script><style type="text/css" media="screen" data-description=".s7controlbar" data-component=".s7controlbar" data-instance="dynamicmedia_133615568_controls">#dynamicmedia_133615568_controls.s7controlbar{
 	visibility:inherit;
-}</style><script src="https://assets.adobedtm.com/e5d3245550c3/dba6c2f59088/28fa6e8e27a7/RCe89c7334c52f476ab19407d2bd250e05-source.min.js" async=""></script><script src="https://assets.adobedtm.com/e5d3245550c3/dba6c2f59088/28fa6e8e27a7/RCefd0db2637c0460d8ddd4440d870a8c1-source.min.js" async=""></script><script src="https://assets.adobedtm.com/e5d3245550c3/dba6c2f59088/28fa6e8e27a7/RCa01641d1447a4a3bab6c105bd4044804-source.min.js" async=""></script><script src="https://assets.adobedtm.com/e5d3245550c3/dba6c2f59088/28fa6e8e27a7/RC5f6c338157ef4dad959b80643d732270-source.min.js" async=""></script><style type="text/css" media="screen" data-description=".s7fullscreenbutton" data-component=".s7fullscreenbutton" data-instance="dynamicmedia_133615568_fullScreenButton">#dynamicmedia_133615568_fullScreenButton.s7fullscreenbutton{
+}</style><script src="https://assets.adobedtm.com/e5d3245550c3/dba6c2f59088/d7e8a7f9af16/RCe89c7334c52f476ab19407d2bd250e05-source.min.js" async=""></script><script src="https://assets.adobedtm.com/e5d3245550c3/dba6c2f59088/d7e8a7f9af16/RCefd0db2637c0460d8ddd4440d870a8c1-source.min.js" async=""></script><script src="https://assets.adobedtm.com/e5d3245550c3/dba6c2f59088/d7e8a7f9af16/RCa01641d1447a4a3bab6c105bd4044804-source.min.js" async=""></script><script src="https://assets.adobedtm.com/e5d3245550c3/dba6c2f59088/d7e8a7f9af16/RC5f6c338157ef4dad959b80643d732270-source.min.js" async=""></script><style type="text/css" media="screen" data-description=".s7fullscreenbutton" data-component=".s7fullscreenbutton" data-instance="dynamicmedia_133615568_fullScreenButton">#dynamicmedia_133615568_fullScreenButton.s7fullscreenbutton{
 	right:5px;
 	display:block;
 }</style><style type="text/css" media="screen" data-description=".s7mutablevolume" data-component=".s7mutablevolume" data-instance="dynamicmedia_133615568_mutableVolume">#dynamicmedia_133615568_mutableVolume.s7mutablevolume{
@@ -4803,7 +4803,10 @@ h2.react-datepicker__current-month {
                         
 
 	<style> 
-            [lang="en-US"] .mdt-header-search-form .search-form-section {
+             .search-prefilters {
+               display:none;
+            }
+             .mdt-header-search-form  .search-form-section .prefilter-enabled {
                 position: relative;
                 display: grid;
                 grid-template-columns: 1fr;
@@ -4811,17 +4814,14 @@ h2.react-datepicker__current-month {
                 align-items: center;
                 justify-content: start;
             }
-            [lang="en-US"] .mdt-header-search-form .mdt-coveo-atomic.global-search atomic-search-box::part(wrapper) {
+            .mdt-header-search-form .prefilter-enabled  .mdt-coveo-atomic.global-search atomic-search-box::part(wrapper) {
                 z-index: 10;
             }
-            [lang="en-US"] .hda .mdt-header-search-form .search-form-section, [lang="en-US"] .hero-banner-search-form .search-form-section, [lang="en-US"] .page-not-found .search-form-section {
+            .hda .prefilter-enabled .mdt-header-search-form .search-form-section, .prefilter-enabled .hero-banner-search-form .search-form-section, .prefilter-enabled .page-not-found .search-form-section {
                 grid-template-columns: 100%;
             }
-            [lang="en-US"] .page-not-found .search-form-section {
+            .prefilter-enabled .page-not-found .search-form-section {
                 width:100%;
-            }
-            .search-prefilters {
-               display:none;
             }
             .mdt-header-search-form .mdt-coveo-atomic.global-search atomic-search-box::part(input)  {
                 height:40px;
@@ -4840,6 +4840,9 @@ h2.react-datepicker__current-month {
                 background-repeat: no-repeat, repeat;
                 background-position: right .9rem top 50%;
                 background-size: .65em auto;
+                min-width: 8rem;
+                max-width: 24rem;
+                transition: width 0.15s ease;
             }
             .audience-filter option {
                 color:#1010eb;
@@ -4854,39 +4857,26 @@ h2.react-datepicker__current-month {
                 background: #1010eb !important;
             }
             @media (min-width:768px) {
-                [lang="en-US"] .mdt-coveo-atomic {
+                .prefilter-enabled .mdt-coveo-atomic {
                     padding-left:0;
                 }
-                [lang="en-US"] .mdt-header-search-form .mdt-coveo-atomic.global-search atomic-search-box::part(wrapper) {
+                .mdt-header-search-form .prefilter-enabled  .mdt-coveo-atomic.global-search atomic-search-box::part(wrapper) {
                     border-radius: 0 75pt 75pt 0;
                 }
-				[lang="en-US"] .hda .mdt-header-search-form .mdt-coveo-atomic.global-search atomic-search-box::part(wrapper) {
+				.hda .prefilter-enabled .mdt-header-search-form .mdt-coveo-atomic.global-search atomic-search-box::part(wrapper) {
                     border-radius: 75pt;
                 }
-                [lang="en-US"] .mdt-header-search-form  .search-form-section {
+                .mdt-header-search-form  .search-form-section .prefilter-enabled{
                     grid-template-columns: max-content 1fr;
                 }
-                [lang="en-US"] .search-prefilters {
-                    display:block;
+                .prefilter-enabled .search-prefilters {
+                    display: block;
                     z-index: 10;
                     border: 1px solid #1010eb;
                     border-right: none;
                     border-radius: 75pt 0 0 75pt;
-                    width:14rem
+                    width: fit-content;
                 }
-                
-                .search-prefilters.hcp-width  {
-                    width: 22rem;
-                }
-                .search-prefilters.patients-width {
-                    width:11rem;
-                }
-                .search-prefilters.careers-width {
-                    width:16rem;
-                }
-            }
-            [lang="en-US"] .hda .search-prefilters, .hero-banner-search-form .search-prefilters, [lang="en-US"] .page-not-found .search-prefilters, .hda.search-prefilters{
-                display: none !important;
             }
         </style>
 	
@@ -4909,14 +4899,12 @@ h2.react-datepicker__current-month {
                 "searchInputTitle": "Minimum 1 character is required to search",
                 "searchBtnTitle": "Minimum 1 character is required to search"
 			};
-			// Function to check if the class exists and update the search value
 			function updateSearchValueIfHDA() {
 				var headerSection = document.querySelector('.mdt-header-section');
 				if (headerSection && headerSection.classList.contains('hda')) {
 					globalLangTrans[language].search = "Search keyword, phrase, or question";
 				}
 			}
-			// Call the function to update the value
 			updateSearchValueIfHDA();
 			var globalSearchObject = {
 				template: "globalSearch",
@@ -4932,174 +4920,149 @@ h2.react-datepicker__current-month {
 				audience: "",
 				translation: globalLangTrans
 			};
-    		document.addEventListener("DOMContentLoaded", function() {
-            // Prevent any other code from executing until this logic is done
-            (function() {
-                const audienceDropdown = document.getElementById('audience-dropdown');
-                const atomicSearchBox = document.querySelector('.header-search-bar');
 
-                // Function to get the value of the "q" parameter from the URL
-                function getQueryParam(param) {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    return urlParams.get(param);
-                }
+			document.addEventListener("DOMContentLoaded", function() {
+                (function() {
+                    var audienceDropdown = document.getElementById('audience-dropdown');
+                    var atomicSearchBox = document.querySelector('.header-search-bar');
 
-                // Handle the dropdown change event
-                audienceDropdown.addEventListener("change", function() {
-                    
-                    // Get the selected option's data-url
-                    const selectedOption = audienceDropdown.options[audienceDropdown.selectedIndex];
-                    const selectedUrl = selectedOption.getAttribute("data-url");
-
-                    // Get the "q" value from the URL query parameters
-                    const qValue = getQueryParam('q');
-
-                    // Get the current redirection URL from the atomic-search-box
-                    const redirectionUrl = atomicSearchBox.getAttribute('redirection-url');
-                    const origRedirectionUrl = redirectionUrl.split('#')[0]; // Strip out any fragments
-
-                    // Build the new redirection URL
-                    const newRedirectionUrl = origRedirectionUrl + selectedUrl + (qValue ? "&q=" + qValue : "");
-
-                    console.log("Updated Redirection URL:", newRedirectionUrl);
-
-                    // Update the atomic-search-box redirection-url attribute
-                    if (atomicSearchBox) {
-                        atomicSearchBox.setAttribute("redirection-url", newRedirectionUrl);
+                    function getQueryParam(param) {
+                        var urlParams = new URLSearchParams(window.location.search);
+                        return urlParams.get(param);
                     }
 
-                });
-            })(); // Immediately invoke the function
-        });
-        // Function to handle the class toggling based on selected option
-        function updateClassBasedOnSelection() {
-            const dropdown = document.getElementById('audience-dropdown');
-            const selectedValue = dropdown.value;
+                    function resizeDropdown(select) {
+                        var tempSpan = document.createElement('span');
+                        var styles = getComputedStyle(select);
+                        tempSpan.style.visibility = 'hidden';
+                        tempSpan.style.position = 'absolute';
+                        tempSpan.style.fontSize = styles.fontSize;
+                        tempSpan.style.fontFamily = styles.fontFamily;
+                        tempSpan.style.fontWeight = styles.fontWeight;
+                        tempSpan.style.whiteSpace = 'nowrap';
+                        tempSpan.style.padding = '0 2.5rem';
+                        tempSpan.textContent = select.options[select.selectedIndex].text;
+                        document.body.appendChild(tempSpan);
+                        var width = tempSpan.offsetWidth;
+                        document.body.removeChild(tempSpan);
+                        select.style.width = width + 'px';
+                    }
 
-            // Get the element containing the search-prefilters
-            const searchPrefilters = document.querySelector('.search-prefilters');
+                    function resetDropdown() {
+                        if (audienceDropdown) {
+                            audienceDropdown.selectedIndex = 0;
+                            resizeDropdown(audienceDropdown);
 
-            // Remove both classes first to reset the state
-            searchPrefilters.classList.remove('hcp-width', 'patients-width','careers-width');
+                            // Reset the redirection URL back to its original base value
+                            var baseRedirectionUrl = atomicSearchBox.getAttribute('redirection-url').split('#')[0];
+                            var originalUrl = baseRedirectionUrl.split('?')[0];
+                            atomicSearchBox.setAttribute('redirection-url', originalUrl);
+                        }
+                    }
 
-            // Add the appropriate class based on the selected value
-            if (selectedValue === 'hcp') {
-                searchPrefilters.classList.add('hcp-width');
-            } else if (selectedValue === 'patient') {
-                searchPrefilters.classList.add('patients-width');
-            } else if (selectedValue === 'careers') {
-                searchPrefilters.classList.add('careers-width');
-            }
-        }
-        // Wait until the DOM is fully loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Attach the event listener for the change event after the DOM is ready
-            document.getElementById('audience-dropdown').addEventListener('change', updateClassBasedOnSelection);
-        });
-        // Wait for the page to fully load
-        window.onload = function() {
-            // Delay the actions for 1.2 seconds
-            setTimeout(function() {
-                removeHiddenClass('.search-prefilters');
-                setDropdownToAllOption('audience-dropdown', 'all-option');
-            }, 1200); // 1200ms = 1.2 seconds
-            };
+                    if (audienceDropdown) {
+                        // Reset on initial load
+                        resetDropdown();
 
-            // Function to remove 'hidden' class from an element
-            function removeHiddenClass(selector) {
-            var element = document.querySelector(selector);
-            if (element) {
-                element.classList.remove('hidden');
-            }
-            }
+                        audienceDropdown.addEventListener("change", function() {
+                            resizeDropdown(audienceDropdown);
 
-            // Function to set dropdown value to the option with the given id
-            function setDropdownToAllOption(dropdownId, optionId) {
-            var dropdown = document.getElementById(dropdownId);
-            var option = document.getElementById(optionId);
-            
-            if (dropdown && option) {
-                dropdown.value = option.value;
-            }
-            }
-        </script>
-       <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const propLang = "en_us";
-    const language = propLang.split("_")[0];
-    const translations = globalLangTrans?.[language] || {};
+                            var selectedOption = audienceDropdown.options[audienceDropdown.selectedIndex];
+                            var selectedUrl = selectedOption.getAttribute("data-url");
+                            var qValue = getQueryParam('q');
+                            var redirectionUrl = atomicSearchBox.getAttribute('redirection-url');
+                            var origRedirectionUrl = redirectionUrl.split('#')[0];
+                            var newRedirectionUrl = origRedirectionUrl + selectedUrl + (qValue ? "&q=" + qValue : "");
 
-    const desiredInputTitle = translations.searchInputTitle || "Search Medtronic";
-    const desiredButtonTitle = translations.searchBtnTitle || "Click to search Medtronic";
+                            console.log("Updated Redirection URL:", newRedirectionUrl);
 
-    function enforceTitleAttribute(element, desiredTitle) {
-      if (!element) return;
+                            if (atomicSearchBox) {
+                                atomicSearchBox.setAttribute("redirection-url", newRedirectionUrl);
+                            }
+                        });
+                    }
 
-      // Set it once initially
-      element.setAttribute('title', desiredTitle);
+                    // Handle back/forward navigation (bfcache restores don't re-fire DOMContentLoaded)
+                    window.addEventListener("pageshow", function(event) {
+                        if (event.persisted) {
+                            resetDropdown();
+                        }
+                    });
 
-      // Observe changes to the title and force reapply if needed
-      const observer = new MutationObserver((mutationsList) => {
-        for (const mutation of mutationsList) {
-          if (mutation.type === 'attributes' && mutation.attributeName === 'title') {
-            if (element.getAttribute('title') !== desiredTitle) {
-              element.setAttribute('title', desiredTitle);
-            }
-          }
-        }
-      });
+                })();
+});
+		</script>
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+				var propLang = "en_us";
+				var language = propLang.split("_")[0];
+				var translations = (globalLangTrans && globalLangTrans[language]) ? globalLangTrans[language] : {};
 
-      observer.observe(element, {
-        attributes: true,
-        attributeFilter: ['title']
-      });
-    }
+				var desiredInputTitle = translations.searchInputTitle || "Search Medtronic";
+				var desiredButtonTitle = translations.searchBtnTitle || "Click to search Medtronic";
 
-    function overrideAtomicTitles() {
-      const searchBox = document.querySelector('atomic-search-box');
-      if (!searchBox || !searchBox.shadowRoot) return;
+				function enforceTitleAttribute(element, desiredTitle) {
+					if (!element) return;
+					element.setAttribute('title', desiredTitle);
+					var observer = new MutationObserver(function(mutationsList) {
+						for (var i = 0; i < mutationsList.length; i++) {
+							if (mutationsList[i].type === 'attributes' && mutationsList[i].attributeName === 'title') {
+								if (element.getAttribute('title') !== desiredTitle) {
+									element.setAttribute('title', desiredTitle);
+								}
+							}
+						}
+					});
+					observer.observe(element, { attributes: true, attributeFilter: ['title'] });
+				}
 
-      const input = searchBox.shadowRoot.querySelector('input[part="input"]');
-      const button = searchBox.shadowRoot.querySelector('button[part="submit-button"]');
+				function overrideAtomicTitles() {
+					var searchBox = document.querySelector('atomic-search-box');
+					if (!searchBox || !searchBox.shadowRoot) return;
+					var input = searchBox.shadowRoot.querySelector('input[part="input"]');
+					var button = searchBox.shadowRoot.querySelector('button[part="submit-button"]');
+					enforceTitleAttribute(input, desiredInputTitle);
+					enforceTitleAttribute(button, desiredButtonTitle);
+				}
 
-      enforceTitleAttribute(input, desiredInputTitle);
-      enforceTitleAttribute(button, desiredButtonTitle);
-    }
-
-    // Wait for atomic-search-box and its shadow DOM to be ready
-    const interval = setInterval(() => {
-      const searchBox = document.querySelector('atomic-search-box');
-      const shadowReady = searchBox && searchBox.shadowRoot && searchBox.shadowRoot.querySelector('input[part="input"]');
-      if (shadowReady) {
-        clearInterval(interval);
-        overrideAtomicTitles();
-      }
-    }, 100);
-  });
-</script>
-
-
-
-
-
-        
-		<div class="search-prefilters">
-			<div class="search-prefilters-buttons">
-				<select id="audience-dropdown" class="audience-filter">
-					<option id="all-option" selected="" value="all" data-url="">Search within</option>
-					<option id="hcp-option" value="hcp" data-url="#f-audience=Healthcare%20professionals">Healthcare
-						professionals</option>
-					<option id="patient-option" value="patient" data-url="#f-audience=Patients%20and%20caregivers">Patients</option>
-                    <option id="careers-option" value="careers" data-url="#f-pagetypetranslated=Job%20Posting">Career seekers</option>
-				</select>
-			</div>
-		</div>
-		
-        <atomic-search-interface id="globalSearch" scroll-container="#globalSearch" reflect-state-in-url="false" class="search-ui mdt-coveo-atomic global-search searchResultPageSearchBar hydrated" search-hub="medtronic" pipeline="medtronic-pipeline" analytics="" language="en-us" language-assets-path="./lang" icon-assets-path="./assets" enable-relevance-inspector=""><atomic-aria-live class="hydrated" style="position: absolute; display: block; height: 0px; overflow: hidden; margin: 0px;"><div id="aria-live-5n90v-search-box" aria-live="polite" role="status"></div><div id="aria-live-5n90v-search-suggestions" aria-live="assertive" role="status"></div></atomic-aria-live>
-            <atomic-search-box number-of-queries="8" suggestion-timeout="600" redirection-url="/en-us/search-results.html" minimum-query-length="1" class="header-search-bar hydrated" data-atomic-rendered="true" data-atomic-loaded="true" clear-filters="">
-            </atomic-search-box>
-        </atomic-search-interface>
-    
+				var interval = setInterval(function() {
+					var searchBox = document.querySelector('atomic-search-box');
+					var shadowReady = searchBox && searchBox.shadowRoot && searchBox.shadowRoot.querySelector('input[part="input"]');
+					if (shadowReady) {
+						clearInterval(interval);
+						overrideAtomicTitles();
+					}
+				}, 100);
+			});
+		</script>
+		<div class="prefilter-enabled">
+            <div class="search-prefilters">
+                <div class="search-prefilters-buttons">
+                    <select id="audience-dropdown" class="audience-filter" style="width: 144px;">
+                        <option id="all-option" selected="" value="all" data-url="">
+                            Search within
+                        </option>
+                        
+                            <option value="audience=Healthcare%20professionals" data-url="#f-audience=Healthcare%20professionals" id="option-">
+                                Healthcare professionals
+                            </option>
+                        
+                            <option value="audience=Patients%20and%20caregivers" data-url="#f-audience=Patients%20and%20caregivers" id="option-">
+                                Patients
+                            </option>
+                        
+                            <option value="pagetypetranslated=Job%20Posting" data-url="#f-pagetypetranslated=Job%20Posting" id="option-">
+                                Career seekers
+                            </option>
+                        
+                    </select>
+                </div>
+            </div>
+            <atomic-search-interface id="globalSearch" scroll-container="#globalSearch" reflect-state-in-url="false" class="search-ui mdt-coveo-atomic global-search searchResultPageSearchBar hydrated" search-hub="medtronic" pipeline="medtronic-pipeline" analytics="" language="en-us" language-assets-path="./lang" icon-assets-path="./assets" enable-relevance-inspector=""><atomic-aria-live class="hydrated" style="position: absolute; display: block; height: 0px; overflow: hidden; margin: 0px;"><div id="aria-live-d5k0z-search-box" aria-live="polite" role="status"></div><div id="aria-live-d5k0z-search-suggestions" aria-live="assertive" role="status"></div></atomic-aria-live>
+                <atomic-search-box number-of-queries="8" suggestion-timeout="600" redirection-url="/en-us/search-results.html" minimum-query-length="1" class="header-search-bar hydrated" data-atomic-rendered="true" data-atomic-loaded="true" clear-filters="">
+                </atomic-search-box>
+            </atomic-search-interface>
+        </div>
 	
 
                     </div>
@@ -5119,6 +5082,8 @@ h2.react-datepicker__current-month {
                         <a tabindex="0" role="button" class="language-dropdown" languagenavigation-header-text="Country/Language" aria-label="United States of America" data-cmp-clickable="" data-cmp-data-layer="{&quot;countryDropdown&quot;:{&quot;dc:description&quot;:&quot;Country Selector&quot;}}" data-action="Country-Selector"> <span class="icon-location"></span> <span class="text-preset-5  selected-lang" lang="en">United States of America</span></a>
                         <nav class="cmp-languagenavigation" aria-label="Country Navigation">
                             <ul class="cmp-languagenavigation__group">
+                                
+                                
                                 
                                 
                                 
@@ -5320,6 +5285,9 @@ h2.react-datepicker__current-month {
                                 </li>
                                 
                                 <li class="cmp-languagenavigation__item"><a class="item-link" href="https://www.medtronic.com/hu-hu/index.html" lang="hu" rel="alternate" title="Magyarország (Hungary)" data-cmp-clickable="" data-cmp-data-layer="{&quot;countryDropdown&quot;:{&quot;dc:description&quot;:&quot;Country Selector&quot;}}" data-action="Country-Selector">Magyarország (Hungary)</a>
+                                </li>
+                                
+                                <li class="cmp-languagenavigation__item"><a class="item-link" href="https://www.medtronic.com/en-ae/index.html" lang="en" rel="alternate" title="Middle East" data-cmp-clickable="" data-cmp-data-layer="{&quot;countryDropdown&quot;:{&quot;dc:description&quot;:&quot;Country Selector&quot;}}" data-action="Country-Selector">Middle East</a>
                                 </li>
                                 
                                 <li class="cmp-languagenavigation__item"><a class="item-link" href="https://www.medtronic.com/mx-es/index.html" lang="es" rel="alternate" title="México (Mexico)" data-cmp-clickable="" data-cmp-data-layer="{&quot;countryDropdown&quot;:{&quot;dc:description&quot;:&quot;Country Selector&quot;}}" data-action="Country-Selector">México (Mexico)</a>
@@ -5542,6 +5510,8 @@ h2.react-datepicker__current-month {
                                         
                                         
                                         
+                                        
+                                        
                                         <li class="cmp-languagenavigation__item tick"><a class="item-link" href="https://www.medtronic.com/en-us/index.html" lang="en" rel="alternate" title="United States of America" data-cmp-clickable="" data-cmp-data-layer="{&quot;countryDropdown&quot;:{&quot;dc:description&quot;:&quot;Country Selector&quot;}}" data-action="Country-Selector">United States of America</a>
                                         </li>
                                         
@@ -5648,6 +5618,9 @@ h2.react-datepicker__current-month {
                                         </li>
                                         
                                         <li class="cmp-languagenavigation__item"><a class="item-link" href="https://www.medtronic.com/hu-hu/index.html" lang="hu" rel="alternate" title="Magyarország (Hungary)" data-cmp-clickable="" data-cmp-data-layer="{&quot;countryDropdown&quot;:{&quot;dc:description&quot;:&quot;Country Selector&quot;}}" data-action="Country-Selector">Magyarország (Hungary)</a>
+                                        </li>
+                                        
+                                        <li class="cmp-languagenavigation__item"><a class="item-link" href="https://www.medtronic.com/en-ae/index.html" lang="en" rel="alternate" title="Middle East" data-cmp-clickable="" data-cmp-data-layer="{&quot;countryDropdown&quot;:{&quot;dc:description&quot;:&quot;Country Selector&quot;}}" data-action="Country-Selector">Middle East</a>
                                         </li>
                                         
                                         <li class="cmp-languagenavigation__item"><a class="item-link" href="https://www.medtronic.com/mx-es/index.html" lang="es" rel="alternate" title="México (Mexico)" data-cmp-clickable="" data-cmp-data-layer="{&quot;countryDropdown&quot;:{&quot;dc:description&quot;:&quot;Country Selector&quot;}}" data-action="Country-Selector">México (Mexico)</a>
@@ -7628,7 +7601,7 @@ h2.react-datepicker__current-month {
                 </li>
             
                 
-                <li class="cmp-breadcrumb__item" data-cmp-data-layer="{&quot;breadcrumb-10c23deae3-item-8020434a39&quot;:{&quot;@type&quot;:&quot;medtronic/components/breadcrumb/item&quot;,&quot;repo:modifyDate&quot;:&quot;2026-03-26T15:44:30Z&quot;,&quot;dc:title&quot;:&quot;Products&quot;,&quot;xdm:linkURL&quot;:&quot;/en-us/healthcare-professionals/products.html&quot;}}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                <li class="cmp-breadcrumb__item" data-cmp-data-layer="{&quot;breadcrumb-10c23deae3-item-8020434a39&quot;:{&quot;@type&quot;:&quot;medtronic/components/breadcrumb/item&quot;,&quot;repo:modifyDate&quot;:&quot;2026-04-07T16:27:24Z&quot;,&quot;dc:title&quot;:&quot;Products&quot;,&quot;xdm:linkURL&quot;:&quot;/en-us/healthcare-professionals/products.html&quot;}}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
                     <a href="/en-us/healthcare-professionals/products.html" class="cmp-breadcrumb__item-link" itemprop="item" data-cmp-clickable="" data-cmp-data-layer="{&quot;breadcrumb-10c23deae3&quot;:{&quot;@type&quot;:&quot;medtronic/components/breadcrumb&quot;,&quot;repo:modifyDate&quot;:&quot;2021-06-08T09:10:48Z&quot;}}" data-action="Breadcrumb-Clicks">
                         <span itemprop="name">Products</span>
                     </a>
@@ -8065,7 +8038,7 @@ h2.react-datepicker__current-month {
 		 <script data-ot-ignore="" type="text/javascript" src="/libs/dam/components/scene7/common/clientlibs/viewer.78cc99cb08222001ca2bdf214cc2727b.js"></script><script data-ot-ignore="" type="text/javascript" src="/etc.clientlibs/clientlibs/granite/utils.899004cc02c33efc1f6694b1aee587fd.js"></script><script data-ot-ignore="" type="text/javascript" src="/libs/dam/components/scene7/dynamicmedia/clientlibs/dynamicmedia.e2b0f51383fb1e3c8201cf865e03b07b.js"></script><script data-ot-ignore="" type="text/javascript" src="/libs/dam/components/scene7/common/clientlibs/i18n.729cff467445a61264e4f0ffb2261059.js"></script>
 		<!-- /* Viewer container when there is an asset */ -->
 		<div class="cq-dd-image ">
-			<div id="dynamicmedia_133615568" data-current-page="/content/mdt/Regions/Americas/Sites/en-us/healthcare-professionals/products/cardiovascular/peripheral-biliary-stents/everflex-stent-system-with-entrust" data-page-locale="en_us" data-asset-path="Medtronic/entrust-delivery-system-thumbnail-animation-AVS" data-asset-name="entrust-delivery-system-thumbnail-animation.mp4" data-asset-type="videoavs" data-viewer-type="VideoViewer" data-viewer-path="https://medtronic.scene7.com/s7viewers/" data-imageserver="https://medtronic.scene7.com/is/image/" data-videoserver="https://medtronic.scene7.com/is/content/" data-contenturl="https://preview1.assetsadobe.com/is/content/" data-wcmdisabled="" data-dms7="" data-video-alt="Entrust delivery system demonstration" data-filereference="/content/dam/medtronic-com/products/cardiovascular/peripheral-stent-systems/everflex-entrust/videos/entrust-delivery-system-thumbnail-animation.mp4" class="mdtdynamic-video s7dm-dynamic-media s7responsiveViewer s7videoviewer s7mouseinput s7size_small s7device_landscape" style="height: auto;"><div id="dynamicmedia_133615568_container" class="s7container" data-description="Scene7ComponentHolder" data-component="Container" data-namespace="s7classic" lang="en_us" mode="normal" role="region" aria-label="Video viewer" style="position: relative; height: 361px;"><div mode="normal" class="s7container s7innercontainer" id="dynamicmedia_133615568_container_inner"><div id="dynamicmedia_133615568_videoPlayer" class="s7videoplayer" data-description="Scene7ComponentHolder" data-component="VideoPlayer" data-namespace="s7classic" lang="en_us" style="width: 722px; height: 361px;" aria-live="polite"><div style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;" id="vjs_video_3" poster="https://medtronic.scene7.com/is/image/Medtronic/entrust-delivery-system-thumbnail-animation-AVS?fit=constrain,1&amp;wid=722&amp;hei=361" class="s7videoelement video-js vjs-paused vjs-controls-disabled vjs-workinghover vjs-v7 vjs-user-active vjs-layout-tiny" preload="auto" tabindex="-1" role="region" lang="en_us" translate="no" aria-label="Video Player"><video tabindex="-1" preload="auto" class="vjs-tech" poster="https://medtronic.scene7.com/is/image/Medtronic/entrust-delivery-system-thumbnail-animation-AVS?fit=constrain,1&amp;wid=722&amp;hei=361" id="vjs_video_3_html5_api" style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%;" role="application" src="blob:https://www.medtronic.com/a61905f1-7bf8-4cff-b9b6-c682630dceac" width="722" height="361"></video></div><div style="width: 722px; height: 361px; position: absolute; top: 0px; left: 0px;"></div><div class="s7waiticon" style="visibility: hidden;"></div><div id="IconEffect_s7classic_20" class="s7iconeffect" data-description="Scene7ComponentHolder" data-component="IconEffect" data-namespace="s7classic" media-type="standard" tabindex="-1" role="button" aria-label="Play or Pause Video" state="play" style="pointer-events: auto; position: absolute; left: 321px; top: 140.5px; opacity: 1;"></div></div><div id="dynamicmedia_133615568_socialShare" class="s7socialshare" data-description="Scene7ComponentHolder" data-component="SocialShare" data-namespace="s7classic" lang="en_us" aria-hidden="false" style="width: 28px; height: 28px;"><div id="dynamicmedia_133615568_socialShare_socBtn" class="s7button s7socialbutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up" style="position: absolute; height: 28px; width: 28px;" aria-haspopup="true" aria-controls="dynamicmedia_133615568_socialShare_socCtnr"></div><div style="overflow: hidden; position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none; font-size: 0px; letter-spacing: 0px; word-spacing: 0px; width: auto;"><div id="dynamicmedia_133615568_socialShare_socCtnr" class="s7socialsharepanel" role="menu" aria-orientation="vertical" aria-hidden="true" aria-live="polite" aria-atomic="true" style="position: relative; display: inline-block; left: 0px; top: 0px;"><div id="dynamicmedia_133615568_emailShare" class="s7button s7emailshare" data-description="Scene7ComponentHolder" data-component="EmailShare" data-namespace="s7classic" lang="en_us" tabindex="-1" role="menuitem" aria-label="Email" state="up"></div><div id="dynamicmedia_133615568_embedShare" class="s7button s7embedshare" data-description="Scene7ComponentHolder" data-component="EmbedShare" data-namespace="s7classic" lang="en_us" tabindex="-1" role="menuitem" aria-label="Embed" state="up"></div><div id="dynamicmedia_133615568_linkShare" class="s7button s7linkshare" data-description="Scene7ComponentHolder" data-component="LinkShare" data-namespace="s7classic" lang="en_us" tabindex="-1" role="menuitem" aria-label="Link" state="up"></div><div id="dynamicmedia_133615568_twitterShare" class="s7button s7twittershare" data-description="Scene7ComponentHolder" data-component="TwitterShare" data-namespace="s7classic" lang="en_us" tabindex="-1" role="menuitem" aria-label="Twitter" state="up"></div><div id="dynamicmedia_133615568_facebookShare" class="s7button s7facebookshare" data-description="Scene7ComponentHolder" data-component="FacebookShare" data-namespace="s7classic" lang="en_us" tabindex="-1" role="menuitem" aria-label="Facebook" state="up"></div></div></div></div><div id="dynamicmedia_133615568_controls" class="s7controlbar" data-description="Scene7ComponentHolder" data-component="ControlBar" data-namespace="s7classic" lang="en_us" role="group" aria-hidden="false" style="display: block; width: 722px; height: 36px;"><div class="s7innercontrolbarcontainer" id="dynamicmedia_133615568_controls_inner" protectednode="true" style="left: 0px;"><div id="dynamicmedia_133615568_playPauseButton" class="s7button s7playpausebutton" data-description="Scene7ComponentHolder" data-component="PlayPauseButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up" selected="true" aria-label="Play"></div><div id="dynamicmedia_133615568_videoScrubber" class="s7videoscrubber" data-description="Scene7ComponentHolder" data-component="VideoScrubber" data-namespace="s7classic" lang="en_us" style="width: 553px; height: 1px;"><div class="s7track"></div><div class="s7trackloaded" style="width: 242.222px;"></div><div class="s7trackplayed" style="width: 0px;"></div><div class="s7knob" tabindex="0" role="slider" aria-valuenow="0" aria-valuetext="Playback position 0:00" aria-valuemin="0" aria-valuemax="18" aria-label="Seek Video" style="left: -7px;"></div><div id="dynamicmedia_133615568_videoScrubberTime" class="s7videotime" data-description="Scene7ComponentHolder" data-component="VideoTime" data-namespace="s7classic" style="width: 58px; height: 35px; visibility: hidden; left: -25px; top: -35px;"><div>0:00</div></div><div class="s7chapter"><div class="s7header"><div class="s7starttime"></div><div class="s7title"></div></div><div class="s7description"></div><div class="s7tail"></div></div></div><div id="dynamicmedia_133615568_videoTime" class="s7videotime" data-description="Scene7ComponentHolder" data-component="VideoTime" data-namespace="s7classic" lang="en_us" style="width: 60px; height: 32px;"><div>0:00 / 0:18</div></div><div id="dynamicmedia_133615568_closedCaptionButton" class="s7button s7closedcaptionbutton" data-description="Scene7ComponentHolder" data-component="ClosedCaptionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" aria-label="Enable Closed Captioning" state="up" selected="false"></div><div id="dynamicmedia_133615568_audioCaptionsSelector" class="s7audiocaptions" data-description="Scene7ComponentHolder" data-component="AudioCaptions" data-namespace="s7classic" lang="en_us" style="display: none;"><div id="dynamicmedia_133615568_audioCaptionsSelector_button" class="s7button s7audiocaptionsbutton" data-description="Scene7ComponentHolder" data-component="AudioCaptionsButton" data-namespace="s7classic" lang="en_us" role="button" aria-label="Select audio" state="up" aria-expanded="false" aria-controls="dynamicmedia_133615568_audioCaptionsSelector_menu" aria-haspopup="true" tabindex="0"></div><div id="dynamicmedia_133615568_audioCaptionsSelector_menu" class="s7audiocaptionsmenu" data-description="Scene7ComponentHolder" data-component="AudioCaptionsMenu" data-namespace="s7classic" lang="en_us" aria-hidden="true" role="menu"><div id="audiocaptions_header8481" class="header"><div id="dynamicmedia_133615568_audioCaptionsSelector_menu_closebutton" class="s7button s7audiocaptionsclosebutton" data-description="Scene7ComponentHolder" data-component="AudioCaptionsCloseButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" aria-label="Close" state="up"></div></div><div class="wrapper"><div class="section" aria-label="AUDIO" role="menuitem"><div class="title">AUDIO</div><ul class="list" role="menu" aria-label="AUDIO"><li id="default" role="menuitem" aria-label="default main audio" data-type="audio" data-kind="main" class="active" aria-selected="true" tabindex="0">default</li></ul></div></div></div></div><div id="dynamicmedia_133615568_mutableVolume" class="s7mutablevolume" data-description="Scene7ComponentHolder" data-component="MutableVolume" data-namespace="s7classic" lang="en_us"><div id="mute_s7classic_1E" class="s7button s7mutebutton" data-description="Scene7ComponentHolder" data-component="undefined" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" aria-label="Mute" state="up" selected="false" style="width: 30px; height: 28px;"></div><div id="VerticalVolume_s7classic_1F" class="s7verticalvolume" data-description="Scene7ComponentHolder" data-component="VerticalVolume" data-namespace="s7classic" lang="en_us" tabindex="-1" style="top: -83px; opacity: 0; pointer-events: none;"><div class="s7track"><div class="s7filledtrack" style="top: 0px; height: 61px;"></div></div><div class="s7knob" role="slider" aria-orientation="vertical" aria-valuemin="0" aria-valuemax="100" aria-label="Video Volume" aria-valuenow="100" aria-valuetext="100%" style="top: 7px;"></div></div></div><div id="dynamicmedia_133615568_fullScreenButton" class="s7button s7fullscreenbutton" data-description="Scene7ComponentHolder" data-component="FullScreenButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" aria-label="Full Screen" state="up" selected="false"></div></div><div id="dynamicmedia_133615568_controls_scrollBtnCntr" class="s7scrollbuttoncontainer" protectednode="true" style="display: none;"></div></div></div><div id="dynamicmedia_133615568_emailShare_dialog" class="s7emaildialog" data-description="Scene7ComponentHolder" data-component="EmailDialog" data-namespace="s7classic" lang="en_us" style="position: absolute; width: 100%; height: 100%; display: none;"><div class="s7backoverlay"></div><div class="s7dialog" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="dynamicmedia_133615568_emailShare_dialog_header" style="left: 135px; top: -214px;"><div style="top: 0px; left: 0px; position: absolute; z-index: 9999;"><span style="position: relative;"></span></div><div id="dynamicmedia_133615568_emailShare_dialog_header" class="s7dialogheader"><span class="s7dialogline"><span class="s7dialogheadericon"></span><span class="s7dialogheadertext">Email this to a Friend</span></span><span id="DlgActionButton_s7classic_A" class="s7button s7closebutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up" aria-label="Close"></span></div><div id="dynamicmedia_133615568_emailShare_dialog_viewArea" tabindex="0" class="s7dialogviewarea" state="" style="height: 300px;"><span class="s7dialogbody" style="top: 0px;"><span class="s7dialogline s7dialogerror" error="false" role="alert" aria-hidden="true" id="dynamicmedia_133615568_emailShare_dialog_dialogerrorto"><span class="s7dialogerrormessage" state="verifyerror">Wrong email address</span></span><span class="s7dialogline s7dialoglineto"><span id="dynamicmedia_133615568_emailShare_dialog_lbl_s7classic_B" class="s7dialoglabel s7dialoginputlabel">Primary Email Address*</span><span class="s7dialoginputcontainer" data-children-count="1"><input aria-labelledby="dynamicmedia_133615568_emailShare_dialog_lbl_s7classic_B dynamicmedia_133615568_emailShare_dialog_input_s7classic_C" id="dynamicmedia_133615568_emailShare_dialog_input_s7classic_C" class="s7dialoginputshort" aria-multiline="false" aria-required="true" aria-invalid="false"></span></span><span class="s7dialoglinefeed"></span><span id="dynamicmedia_133615568_emailShare_dialog_lnctnr_s7classic_D" class="s7dialogline"><span id="DlgActionButton_s7classic_E" class="s7button s7dialogaddemailbutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up" aria-label="Add Another Email Address">Add Another Email Address</span></span><span class="s7dialoglinefeed"></span><span class="s7dialogline s7dialogerror" error="false" role="alert" aria-hidden="true" id="dynamicmedia_133615568_emailShare_dialog_dialogerrorfrom"><span class="s7dialogerrormessage" state="verifyerror">Wrong email address</span></span><span class="s7dialogline s7dialoglinefrom"><span id="dynamicmedia_133615568_emailShare_dialog_lbl_s7classic_F" class="s7dialoglabel s7dialoginputlabel">From*</span><span class="s7dialoginputcontainer"><input aria-labelledby="dynamicmedia_133615568_emailShare_dialog_lbl_s7classic_F" id="dynamicmedia_133615568_emailShare_dialog_input_s7classic_10" class="s7dialoginputwide" aria-multiline="false" aria-required="true" aria-invalid="false"></span></span><span class="s7dialoglinefeed"></span><span class="s7dialogline"><span id="dynamicmedia_133615568_emailShare_dialog_lbl_s7classic_11" class="s7dialoglabel s7dialoginputlabel">Message</span><span class="s7dialoginputcontainer"><textarea aria-labelledby="dynamicmedia_133615568_emailShare_dialog_lbl_s7classic_11" id="dynamicmedia_133615568_emailShare_dialog_textarea_s7classic_12" class="s7dialogmessage s7dialoginputwide" aria-multiline="true"></textarea></span></span><span class="s7dialoglinefeed"></span><span class="s7dialogline s7dialogcontent"><span class="s7dialogthumbnail"></span><span class="s7dialoginfopanel"><span class="s7dialogtitle"></span><span class="s7dialogorigin"></span><span class="s7dialogdescription"></span></span></span><span class="s7dialoglinefeed"></span></span></div><div class="s7dialogfooter"><div><span class="s7dialogbuttoncontainer" id="dynamicmedia_133615568_emailShare_dialog_footerPanel"><span id="DlgActionButton_s7classic_13" class="s7button s7dialogcancelbutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up">Cancel</span><span id="DlgActionButton_s7classic_14" class="s7button s7dialogactionbutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up">Send Email</span></span></div></div></div></div><div id="dynamicmedia_133615568_embedShare_dialog" class="s7embeddialog" data-description="Scene7ComponentHolder" data-component="EmbedDialog" data-namespace="s7classic" lang="en_us" style="position: absolute; width: 100%; height: 100%; display: none;"><div class="s7backoverlay"></div><div class="s7dialog" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="dynamicmedia_133615568_embedShare_dialog_header" style="left: 115px; top: -214px;"><div style="top: 0px; left: 0px; position: absolute; z-index: 9999;"><span style="position: relative;"><span class="s7comboboxdropdown" role="listbox" style="display: none;"><span class="s7dropdownitem" aria-label="320x240"><a class="s7dropdownitemanchor" role="option" aria-selected="false" id="dynamicmedia_133615568_embedShare_dialog_selectorContainer_combobox_dropdownitem_0"><span class="s7checkmark" style="visibility: hidden;"></span>320x240</a></span><span class="s7dropdownitem" aria-label="640x480"><a class="s7dropdownitemanchor" role="option" aria-selected="true" id="dynamicmedia_133615568_embedShare_dialog_selectorContainer_combobox_dropdownitem_1"><span class="s7checkmark" style="visibility: inherit;"></span>640x480</a></span><span class="s7dropdownitem" aria-label="1280x960"><a class="s7dropdownitemanchor" role="option" aria-selected="false" id="dynamicmedia_133615568_embedShare_dialog_selectorContainer_combobox_dropdownitem_2"><span class="s7checkmark" style="visibility: hidden;"></span>1280x960</a></span><span class="s7dropdownitem" aria-label="Custom Size"><a class="s7dropdownitemanchor" role="option" aria-selected="false" id="dynamicmedia_133615568_embedShare_dialog_selectorContainer_combobox_dropdownitem_3"><span class="s7checkmark" style="visibility: hidden;"></span>Custom Size</a></span></span></span></div><div id="dynamicmedia_133615568_embedShare_dialog_header" class="s7dialogheader"><span class="s7dialogline"><span class="s7dialogheadericon"></span><span class="s7dialogheadertext">Embed Link</span></span><span id="DlgActionButton_s7classic_15" class="s7button s7closebutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up"></span></div><div id="dynamicmedia_133615568_embedShare_dialog_viewArea" tabindex="0" class="s7dialogviewarea" style="height: 300px;"><span class="s7dialogbody" style="top: 77px;"><span class="s7dialogline s7dialoglabel s7dialoginputwide" id="embeddialoguelabel_8521">To share this content with others, copy and past this code:</span><span class="s7dialoglinefeed"></span><span class="s7dialogline s7dialoginputcontainer"><span class="s7dialogmessage" role="textbox" contenteditable="false" aria-readonly="true" tabindex="0" aria-labelledby="embeddialoguelabel_8521"></span></span><span class="s7dialoglinefeed"></span><span class="s7dialogline s7dialogembedsizepanel" id="dynamicmedia_133615568_embedShare_dialog_selectorContainer"><span class="s7dialoglabel s7dialogembedsizelabel" id="dynamicmedia_133615568_embedShare_dialog_lbl_s7classic_16">Embed Size</span><span id="dynamicmedia_133615568_embedShare_dialog_selectorContainer_combobox_cbxbutton" class="s7combobox" data-description="Scene7ComponentHolder" data-component="CustomComboBox" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" aria-expanded="true" aria-haspopup="listbox" expanded="true" style="display: inline-block;"><span class="s7comboboxtext" style="width: 0px; vertical-align: middle;"></span>640x480<span id="DlgActionButton_s7classic_17" class="s7button s7comboboxbutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="-1" role="button" state="up"></span></span><span class="s7dialogcustomsizepanel"><span class="s7dialogcustomsize" style="display: none;"><span class="s7comboboxtext" style="width: 0px; vertical-align: middle;"></span><span class="s7dialogcustomsizeinput"><input class="s7dialogcustomsizeinput" aria-label="width"></span></span><span class="s7dialogcustomsize" style="display: none;"><span class="s7comboboxtext" style="width: 0px; vertical-align: middle;"></span><span class="s7dialogcustomsizeinput"><input class="s7dialogcustomsizeinput" aria-label="height"></span></span></span></span><span class="s7dialoglinefeed"></span><span class="s7dialoglinefeed"></span></span></div><div class="s7dialogfooter"><div><span class="s7dialogbuttoncontainer" id="dynamicmedia_133615568_embedShare_dialog_footerPanel"><span id="DlgActionButton_s7classic_18" class="s7button s7dialogcancelbutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up">Cancel</span><span id="DlgActionButton_s7classic_19" class="s7button s7dialogactionbutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up">Select All</span></span></div></div></div></div><div id="dynamicmedia_133615568_linkShare_dialog" class="s7linkdialog" data-description="Scene7ComponentHolder" data-component="LinkDialog" data-namespace="s7classic" lang="en_us" style="position: absolute; width: 100%; height: 100%; display: none;"><div class="s7backoverlay"></div><div class="s7dialog" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="dynamicmedia_133615568_linkShare_dialog_header" style="left: 104px; top: -114px;"><div style="top: 0px; left: 0px; position: absolute; z-index: 9999;"><span style="position: relative;"></span></div><div id="dynamicmedia_133615568_linkShare_dialog_header" class="s7dialogheader"><span class="s7dialogline"><span class="s7dialogheadericon"></span><span class="s7dialogheadertext">Share Link</span></span><span id="DlgActionButton_s7classic_1A" class="s7button s7closebutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up"></span></div><div id="dynamicmedia_133615568_linkShare_dialog_viewArea" tabindex="0" class="s7dialogviewarea" style="height: 100px;"><span class="s7dialogbody" style="top: 0px;"><span class="s7dialogline s7dialoglabel s7dialoginputwide" id="sharelinklabel_9161">To share this content with others, copy and past this link:</span><span class="s7dialoglinefeed"></span><span class="s7dialogline s7dialoginputcontainer"><input class="s7dialoglink" aria-labelledby="sharelinklabel_9161" readonly="" aria-readonly="true"></span><span class="s7dialoglinefeed"></span></span></div><div class="s7dialogfooter"><div><span class="s7dialogbuttoncontainer" id="dynamicmedia_133615568_linkShare_dialog_footerPanel"><span id="DlgActionButton_s7classic_1B" class="s7button s7dialogcancelbutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up">Cancel</span><span id="DlgActionButton_s7classic_1C" class="s7button s7dialogactionbutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up">Select All</span></span></div></div></div></div></div></div>
+			<div id="dynamicmedia_133615568" data-current-page="/content/mdt/Regions/Americas/Sites/en-us/healthcare-professionals/products/cardiovascular/peripheral-biliary-stents/everflex-stent-system-with-entrust" data-page-locale="en_us" data-asset-path="Medtronic/entrust-delivery-system-thumbnail-animation-AVS" data-asset-name="entrust-delivery-system-thumbnail-animation.mp4" data-asset-type="videoavs" data-viewer-type="VideoViewer" data-viewer-path="https://medtronic.scene7.com/s7viewers/" data-imageserver="https://medtronic.scene7.com/is/image/" data-videoserver="https://medtronic.scene7.com/is/content/" data-contenturl="https://preview1.assetsadobe.com/is/content/" data-wcmdisabled="" data-dms7="" data-video-alt="Entrust delivery system demonstration" data-filereference="/content/dam/medtronic-com/products/cardiovascular/peripheral-stent-systems/everflex-entrust/videos/entrust-delivery-system-thumbnail-animation.mp4" class="mdtdynamic-video s7dm-dynamic-media s7responsiveViewer s7videoviewer s7mouseinput s7size_small s7device_landscape" style="height: auto;"><div id="dynamicmedia_133615568_container" class="s7container" data-description="Scene7ComponentHolder" data-component="Container" data-namespace="s7classic" lang="en_us" mode="normal" role="region" aria-label="Video viewer" style="position: relative; height: 361px;"><div mode="normal" class="s7container s7innercontainer" id="dynamicmedia_133615568_container_inner"><div id="dynamicmedia_133615568_videoPlayer" class="s7videoplayer" data-description="Scene7ComponentHolder" data-component="VideoPlayer" data-namespace="s7classic" lang="en_us" style="width: 722px; height: 361px;" aria-live="polite"><div style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;" id="vjs_video_3" poster="https://medtronic.scene7.com/is/image/Medtronic/entrust-delivery-system-thumbnail-animation-AVS?fit=constrain,1&amp;wid=722&amp;hei=361" class="s7videoelement video-js vjs-paused vjs-controls-disabled vjs-workinghover vjs-v7 vjs-user-active vjs-layout-tiny" preload="auto" tabindex="-1" role="region" lang="en_us" translate="no" aria-label="Video Player"><video tabindex="-1" preload="auto" class="vjs-tech" poster="https://medtronic.scene7.com/is/image/Medtronic/entrust-delivery-system-thumbnail-animation-AVS?fit=constrain,1&amp;wid=722&amp;hei=361" id="vjs_video_3_html5_api" style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%;" role="application" src="blob:https://www.medtronic.com/dee5b6bd-6844-4422-b674-a21f8769b044" width="722" height="361"></video></div><div style="width: 722px; height: 361px; position: absolute; top: 0px; left: 0px;"></div><div class="s7waiticon" style="visibility: hidden;"></div><div id="IconEffect_s7classic_20" class="s7iconeffect" data-description="Scene7ComponentHolder" data-component="IconEffect" data-namespace="s7classic" media-type="standard" tabindex="-1" role="button" aria-label="Play or Pause Video" state="play" style="pointer-events: auto; position: absolute; left: 321px; top: 140.5px; opacity: 1;"></div></div><div id="dynamicmedia_133615568_socialShare" class="s7socialshare" data-description="Scene7ComponentHolder" data-component="SocialShare" data-namespace="s7classic" lang="en_us" aria-hidden="false" style="width: 28px; height: 28px;"><div id="dynamicmedia_133615568_socialShare_socBtn" class="s7button s7socialbutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up" style="position: absolute; height: 28px; width: 28px;" aria-haspopup="true" aria-controls="dynamicmedia_133615568_socialShare_socCtnr"></div><div style="overflow: hidden; position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none; font-size: 0px; letter-spacing: 0px; word-spacing: 0px; width: auto;"><div id="dynamicmedia_133615568_socialShare_socCtnr" class="s7socialsharepanel" role="menu" aria-orientation="vertical" aria-hidden="true" aria-live="polite" aria-atomic="true" style="position: relative; display: inline-block; left: 0px; top: 0px;"><div id="dynamicmedia_133615568_emailShare" class="s7button s7emailshare" data-description="Scene7ComponentHolder" data-component="EmailShare" data-namespace="s7classic" lang="en_us" tabindex="-1" role="menuitem" aria-label="Email" state="up"></div><div id="dynamicmedia_133615568_embedShare" class="s7button s7embedshare" data-description="Scene7ComponentHolder" data-component="EmbedShare" data-namespace="s7classic" lang="en_us" tabindex="-1" role="menuitem" aria-label="Embed" state="up"></div><div id="dynamicmedia_133615568_linkShare" class="s7button s7linkshare" data-description="Scene7ComponentHolder" data-component="LinkShare" data-namespace="s7classic" lang="en_us" tabindex="-1" role="menuitem" aria-label="Link" state="up"></div><div id="dynamicmedia_133615568_twitterShare" class="s7button s7twittershare" data-description="Scene7ComponentHolder" data-component="TwitterShare" data-namespace="s7classic" lang="en_us" tabindex="-1" role="menuitem" aria-label="Twitter" state="up"></div><div id="dynamicmedia_133615568_facebookShare" class="s7button s7facebookshare" data-description="Scene7ComponentHolder" data-component="FacebookShare" data-namespace="s7classic" lang="en_us" tabindex="-1" role="menuitem" aria-label="Facebook" state="up"></div></div></div></div><div id="dynamicmedia_133615568_controls" class="s7controlbar" data-description="Scene7ComponentHolder" data-component="ControlBar" data-namespace="s7classic" lang="en_us" role="group" aria-hidden="false" style="display: block; width: 722px; height: 36px;"><div class="s7innercontrolbarcontainer" id="dynamicmedia_133615568_controls_inner" protectednode="true" style="left: 0px;"><div id="dynamicmedia_133615568_playPauseButton" class="s7button s7playpausebutton" data-description="Scene7ComponentHolder" data-component="PlayPauseButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up" selected="true" aria-label="Play"></div><div id="dynamicmedia_133615568_videoScrubber" class="s7videoscrubber" data-description="Scene7ComponentHolder" data-component="VideoScrubber" data-namespace="s7classic" lang="en_us" style="width: 553px; height: 1px;"><div class="s7track"></div><div class="s7trackloaded" style="width: 242.222px;"></div><div class="s7trackplayed" style="width: 0px;"></div><div class="s7knob" tabindex="0" role="slider" aria-valuenow="0" aria-valuetext="Playback position 0:00" aria-valuemin="0" aria-valuemax="18" aria-label="Seek Video" style="left: -7px;"></div><div id="dynamicmedia_133615568_videoScrubberTime" class="s7videotime" data-description="Scene7ComponentHolder" data-component="VideoTime" data-namespace="s7classic" style="width: 58px; height: 35px; visibility: hidden; left: -25px; top: -35px;"><div>0:00</div></div><div class="s7chapter"><div class="s7header"><div class="s7starttime"></div><div class="s7title"></div></div><div class="s7description"></div><div class="s7tail"></div></div></div><div id="dynamicmedia_133615568_videoTime" class="s7videotime" data-description="Scene7ComponentHolder" data-component="VideoTime" data-namespace="s7classic" lang="en_us" style="width: 60px; height: 32px;"><div>0:00 / 0:18</div></div><div id="dynamicmedia_133615568_closedCaptionButton" class="s7button s7closedcaptionbutton" data-description="Scene7ComponentHolder" data-component="ClosedCaptionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" aria-label="Enable Closed Captioning" state="up" selected="false"></div><div id="dynamicmedia_133615568_audioCaptionsSelector" class="s7audiocaptions" data-description="Scene7ComponentHolder" data-component="AudioCaptions" data-namespace="s7classic" lang="en_us" style="display: none;"><div id="dynamicmedia_133615568_audioCaptionsSelector_button" class="s7button s7audiocaptionsbutton" data-description="Scene7ComponentHolder" data-component="AudioCaptionsButton" data-namespace="s7classic" lang="en_us" role="button" aria-label="Select audio" state="up" aria-expanded="false" aria-controls="dynamicmedia_133615568_audioCaptionsSelector_menu" aria-haspopup="true" tabindex="0"></div><div id="dynamicmedia_133615568_audioCaptionsSelector_menu" class="s7audiocaptionsmenu" data-description="Scene7ComponentHolder" data-component="AudioCaptionsMenu" data-namespace="s7classic" lang="en_us" aria-hidden="true" role="menu"><div id="audiocaptions_header6331" class="header"><div id="dynamicmedia_133615568_audioCaptionsSelector_menu_closebutton" class="s7button s7audiocaptionsclosebutton" data-description="Scene7ComponentHolder" data-component="AudioCaptionsCloseButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" aria-label="Close" state="up"></div></div><div class="wrapper"><div class="section" aria-label="AUDIO" role="menuitem"><div class="title">AUDIO</div><ul class="list" role="menu" aria-label="AUDIO"><li id="default" role="menuitem" aria-label="default main audio" data-type="audio" data-kind="main" class="active" aria-selected="true" tabindex="0">default</li></ul></div></div></div></div><div id="dynamicmedia_133615568_mutableVolume" class="s7mutablevolume" data-description="Scene7ComponentHolder" data-component="MutableVolume" data-namespace="s7classic" lang="en_us"><div id="mute_s7classic_1E" class="s7button s7mutebutton" data-description="Scene7ComponentHolder" data-component="undefined" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" aria-label="Mute" state="up" selected="false" style="width: 30px; height: 28px;"></div><div id="VerticalVolume_s7classic_1F" class="s7verticalvolume" data-description="Scene7ComponentHolder" data-component="VerticalVolume" data-namespace="s7classic" lang="en_us" tabindex="-1" style="top: -83px; opacity: 0; pointer-events: none;"><div class="s7track"><div class="s7filledtrack" style="top: 0px; height: 61px;"></div></div><div class="s7knob" role="slider" aria-orientation="vertical" aria-valuemin="0" aria-valuemax="100" aria-label="Video Volume" aria-valuenow="100" aria-valuetext="100%" style="top: 7px;"></div></div></div><div id="dynamicmedia_133615568_fullScreenButton" class="s7button s7fullscreenbutton" data-description="Scene7ComponentHolder" data-component="FullScreenButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" aria-label="Full Screen" state="up" selected="false"></div></div><div id="dynamicmedia_133615568_controls_scrollBtnCntr" class="s7scrollbuttoncontainer" protectednode="true" style="display: none;"></div></div></div><div id="dynamicmedia_133615568_emailShare_dialog" class="s7emaildialog" data-description="Scene7ComponentHolder" data-component="EmailDialog" data-namespace="s7classic" lang="en_us" style="position: absolute; width: 100%; height: 100%; display: none;"><div class="s7backoverlay"></div><div class="s7dialog" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="dynamicmedia_133615568_emailShare_dialog_header" style="left: 135px; top: -214px;"><div style="top: 0px; left: 0px; position: absolute; z-index: 9999;"><span style="position: relative;"></span></div><div id="dynamicmedia_133615568_emailShare_dialog_header" class="s7dialogheader"><span class="s7dialogline"><span class="s7dialogheadericon"></span><span class="s7dialogheadertext">Email this to a Friend</span></span><span id="DlgActionButton_s7classic_A" class="s7button s7closebutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up" aria-label="Close"></span></div><div id="dynamicmedia_133615568_emailShare_dialog_viewArea" tabindex="0" class="s7dialogviewarea" state="" style="height: 300px;"><span class="s7dialogbody" style="top: 0px;"><span class="s7dialogline s7dialogerror" error="false" role="alert" aria-hidden="true" id="dynamicmedia_133615568_emailShare_dialog_dialogerrorto"><span class="s7dialogerrormessage" state="verifyerror">Wrong email address</span></span><span class="s7dialogline s7dialoglineto"><span id="dynamicmedia_133615568_emailShare_dialog_lbl_s7classic_B" class="s7dialoglabel s7dialoginputlabel">Primary Email Address*</span><span class="s7dialoginputcontainer" data-children-count="1"><input aria-labelledby="dynamicmedia_133615568_emailShare_dialog_lbl_s7classic_B dynamicmedia_133615568_emailShare_dialog_input_s7classic_C" id="dynamicmedia_133615568_emailShare_dialog_input_s7classic_C" class="s7dialoginputshort" aria-multiline="false" aria-required="true" aria-invalid="false"></span></span><span class="s7dialoglinefeed"></span><span id="dynamicmedia_133615568_emailShare_dialog_lnctnr_s7classic_D" class="s7dialogline"><span id="DlgActionButton_s7classic_E" class="s7button s7dialogaddemailbutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up" aria-label="Add Another Email Address">Add Another Email Address</span></span><span class="s7dialoglinefeed"></span><span class="s7dialogline s7dialogerror" error="false" role="alert" aria-hidden="true" id="dynamicmedia_133615568_emailShare_dialog_dialogerrorfrom"><span class="s7dialogerrormessage" state="verifyerror">Wrong email address</span></span><span class="s7dialogline s7dialoglinefrom"><span id="dynamicmedia_133615568_emailShare_dialog_lbl_s7classic_F" class="s7dialoglabel s7dialoginputlabel">From*</span><span class="s7dialoginputcontainer"><input aria-labelledby="dynamicmedia_133615568_emailShare_dialog_lbl_s7classic_F" id="dynamicmedia_133615568_emailShare_dialog_input_s7classic_10" class="s7dialoginputwide" aria-multiline="false" aria-required="true" aria-invalid="false"></span></span><span class="s7dialoglinefeed"></span><span class="s7dialogline"><span id="dynamicmedia_133615568_emailShare_dialog_lbl_s7classic_11" class="s7dialoglabel s7dialoginputlabel">Message</span><span class="s7dialoginputcontainer"><textarea aria-labelledby="dynamicmedia_133615568_emailShare_dialog_lbl_s7classic_11" id="dynamicmedia_133615568_emailShare_dialog_textarea_s7classic_12" class="s7dialogmessage s7dialoginputwide" aria-multiline="true"></textarea></span></span><span class="s7dialoglinefeed"></span><span class="s7dialogline s7dialogcontent"><span class="s7dialogthumbnail"></span><span class="s7dialoginfopanel"><span class="s7dialogtitle"></span><span class="s7dialogorigin"></span><span class="s7dialogdescription"></span></span></span><span class="s7dialoglinefeed"></span></span></div><div class="s7dialogfooter"><div><span class="s7dialogbuttoncontainer" id="dynamicmedia_133615568_emailShare_dialog_footerPanel"><span id="DlgActionButton_s7classic_13" class="s7button s7dialogcancelbutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up">Cancel</span><span id="DlgActionButton_s7classic_14" class="s7button s7dialogactionbutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up">Send Email</span></span></div></div></div></div><div id="dynamicmedia_133615568_embedShare_dialog" class="s7embeddialog" data-description="Scene7ComponentHolder" data-component="EmbedDialog" data-namespace="s7classic" lang="en_us" style="position: absolute; width: 100%; height: 100%; display: none;"><div class="s7backoverlay"></div><div class="s7dialog" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="dynamicmedia_133615568_embedShare_dialog_header" style="left: 115px; top: -214px;"><div style="top: 0px; left: 0px; position: absolute; z-index: 9999;"><span style="position: relative;"><span class="s7comboboxdropdown" role="listbox" style="display: none;"><span class="s7dropdownitem" aria-label="320x240"><a class="s7dropdownitemanchor" role="option" aria-selected="false" id="dynamicmedia_133615568_embedShare_dialog_selectorContainer_combobox_dropdownitem_0"><span class="s7checkmark" style="visibility: hidden;"></span>320x240</a></span><span class="s7dropdownitem" aria-label="640x480"><a class="s7dropdownitemanchor" role="option" aria-selected="true" id="dynamicmedia_133615568_embedShare_dialog_selectorContainer_combobox_dropdownitem_1"><span class="s7checkmark" style="visibility: inherit;"></span>640x480</a></span><span class="s7dropdownitem" aria-label="1280x960"><a class="s7dropdownitemanchor" role="option" aria-selected="false" id="dynamicmedia_133615568_embedShare_dialog_selectorContainer_combobox_dropdownitem_2"><span class="s7checkmark" style="visibility: hidden;"></span>1280x960</a></span><span class="s7dropdownitem" aria-label="Custom Size"><a class="s7dropdownitemanchor" role="option" aria-selected="false" id="dynamicmedia_133615568_embedShare_dialog_selectorContainer_combobox_dropdownitem_3"><span class="s7checkmark" style="visibility: hidden;"></span>Custom Size</a></span></span></span></div><div id="dynamicmedia_133615568_embedShare_dialog_header" class="s7dialogheader"><span class="s7dialogline"><span class="s7dialogheadericon"></span><span class="s7dialogheadertext">Embed Link</span></span><span id="DlgActionButton_s7classic_15" class="s7button s7closebutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up"></span></div><div id="dynamicmedia_133615568_embedShare_dialog_viewArea" tabindex="0" class="s7dialogviewarea" style="height: 300px;"><span class="s7dialogbody" style="top: 77px;"><span class="s7dialogline s7dialoglabel s7dialoginputwide" id="embeddialoguelabel_9331">To share this content with others, copy and past this code:</span><span class="s7dialoglinefeed"></span><span class="s7dialogline s7dialoginputcontainer"><span class="s7dialogmessage" role="textbox" contenteditable="false" aria-readonly="true" tabindex="0" aria-labelledby="embeddialoguelabel_9331"></span></span><span class="s7dialoglinefeed"></span><span class="s7dialogline s7dialogembedsizepanel" id="dynamicmedia_133615568_embedShare_dialog_selectorContainer"><span class="s7dialoglabel s7dialogembedsizelabel" id="dynamicmedia_133615568_embedShare_dialog_lbl_s7classic_16">Embed Size</span><span id="dynamicmedia_133615568_embedShare_dialog_selectorContainer_combobox_cbxbutton" class="s7combobox" data-description="Scene7ComponentHolder" data-component="CustomComboBox" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" aria-expanded="true" aria-haspopup="listbox" expanded="true" style="display: inline-block;"><span class="s7comboboxtext" style="width: 0px; vertical-align: middle;"></span>640x480<span id="DlgActionButton_s7classic_17" class="s7button s7comboboxbutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="-1" role="button" state="up"></span></span><span class="s7dialogcustomsizepanel"><span class="s7dialogcustomsize" style="display: none;"><span class="s7comboboxtext" style="width: 0px; vertical-align: middle;"></span><span class="s7dialogcustomsizeinput"><input class="s7dialogcustomsizeinput" aria-label="width"></span></span><span class="s7dialogcustomsize" style="display: none;"><span class="s7comboboxtext" style="width: 0px; vertical-align: middle;"></span><span class="s7dialogcustomsizeinput"><input class="s7dialogcustomsizeinput" aria-label="height"></span></span></span></span><span class="s7dialoglinefeed"></span><span class="s7dialoglinefeed"></span></span></div><div class="s7dialogfooter"><div><span class="s7dialogbuttoncontainer" id="dynamicmedia_133615568_embedShare_dialog_footerPanel"><span id="DlgActionButton_s7classic_18" class="s7button s7dialogcancelbutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up">Cancel</span><span id="DlgActionButton_s7classic_19" class="s7button s7dialogactionbutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up">Select All</span></span></div></div></div></div><div id="dynamicmedia_133615568_linkShare_dialog" class="s7linkdialog" data-description="Scene7ComponentHolder" data-component="LinkDialog" data-namespace="s7classic" lang="en_us" style="position: absolute; width: 100%; height: 100%; display: none;"><div class="s7backoverlay"></div><div class="s7dialog" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="dynamicmedia_133615568_linkShare_dialog_header" style="left: 104px; top: -114px;"><div style="top: 0px; left: 0px; position: absolute; z-index: 9999;"><span style="position: relative;"></span></div><div id="dynamicmedia_133615568_linkShare_dialog_header" class="s7dialogheader"><span class="s7dialogline"><span class="s7dialogheadericon"></span><span class="s7dialogheadertext">Share Link</span></span><span id="DlgActionButton_s7classic_1A" class="s7button s7closebutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up"></span></div><div id="dynamicmedia_133615568_linkShare_dialog_viewArea" tabindex="0" class="s7dialogviewarea" style="height: 100px;"><span class="s7dialogbody" style="top: 0px;"><span class="s7dialogline s7dialoglabel s7dialoginputwide" id="sharelinklabel_5491">To share this content with others, copy and past this link:</span><span class="s7dialoglinefeed"></span><span class="s7dialogline s7dialoginputcontainer"><input class="s7dialoglink" aria-labelledby="sharelinklabel_5491" readonly="" aria-readonly="true"></span><span class="s7dialoglinefeed"></span></span></div><div class="s7dialogfooter"><div><span class="s7dialogbuttoncontainer" id="dynamicmedia_133615568_linkShare_dialog_footerPanel"><span id="DlgActionButton_s7classic_1B" class="s7button s7dialogcancelbutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up">Cancel</span><span id="DlgActionButton_s7classic_1C" class="s7button s7dialogactionbutton" data-description="Scene7ComponentHolder" data-component="DlgActionButton" data-namespace="s7classic" lang="en_us" tabindex="0" role="button" state="up">Select All</span></span></div></div></div></div></div></div>
 		</div>
 		<!-- /* Placeholder when there is no content */ -->
 		
@@ -8174,7 +8147,7 @@ h2.react-datepicker__current-month {
       
         
           
-          <img src="/content/dam/medtronic-com/products/cardiovascular/peripheral-stent-systems/everflex-entrust/images/everflex-self-expanding-stent.jpg" class="cmp-image__image" itemprop="contentUrl" data-cmp-hook-image="image" loading="eager" decoding="async" fetchpriority="high" height="500" width="1216" alt="Learn about the design features of the EverFlex™ stent that make it the number one peripheral stent on the market." style="display: block;">
+          <img src="/content/dam/medtronic-com/products/cardiovascular/peripheral-stent-systems/everflex-entrust/images/everflex-self-expanding-stent.jpg" class="cmp-image__image" itemprop="contentUrl" data-cmp-hook-image="image" loading="eager" decoding="async" fetchpriority="auto" height="500" width="1216" alt="Learn about the design features of the EverFlex™ stent that make it the number one peripheral stent on the market." style="display: block;">
           
         
       
@@ -8321,7 +8294,7 @@ h2.react-datepicker__current-month {
       
         
           
-          <img src="/content/dam/medtronic-com/products/cardiovascular/peripheral-stent-systems/everflex-entrust/images/everflex-entrust-ergonomic-handle.jpg" class="cmp-image__image" itemprop="contentUrl" data-cmp-hook-image="image" loading="eager" decoding="async" fetchpriority="high" height="500" width="1500" alt="Learn how the Entrust™ delivery system is designed for easy and accurate deployment." style="display: block;">
+          <img src="/content/dam/medtronic-com/products/cardiovascular/peripheral-stent-systems/everflex-entrust/images/everflex-entrust-ergonomic-handle.jpg" class="cmp-image__image" itemprop="contentUrl" data-cmp-hook-image="image" loading="eager" decoding="async" fetchpriority="auto" height="500" width="1500" alt="Learn how the Entrust™ delivery system is designed for easy and accurate deployment." style="display: block;">
           
         
       
@@ -8388,7 +8361,7 @@ h2.react-datepicker__current-month {
       
         
           
-          <img src="/content/dam/medtronic-com/products/cardiovascular/peripheral-stent-systems/everflex-entrust/images/everflex-low-profile-catheter.png" class="cmp-image__image" itemprop="contentUrl" data-cmp-hook-image="image" loading="eager" decoding="async" fetchpriority="high" height="180" width="1448" alt="Learn more about the features of the EverFlex™ stent with Entrust™ delivery system.">
+          <img src="/content/dam/medtronic-com/products/cardiovascular/peripheral-stent-systems/everflex-entrust/images/everflex-low-profile-catheter.png" class="cmp-image__image" itemprop="contentUrl" data-cmp-hook-image="image" loading="eager" decoding="async" fetchpriority="auto" height="180" width="1448" alt="Learn more about the features of the EverFlex™ stent with Entrust™ delivery system.">
           
         
       
@@ -8456,7 +8429,7 @@ h2.react-datepicker__current-month {
       
         
           
-          <img src="/content/dam/medtronic-com/products/cardiovascular/peripheral-stent-systems/everflex-entrust/images/everflex-entrust-retractable-outer-shaft.jpg" class="cmp-image__image" itemprop="contentUrl" data-cmp-hook-image="image" loading="eager" decoding="async" fetchpriority="high" height="500" width="500" alt="Learn more about the triaxial shaft design of the EverFlex™ stent with Entrust™ delivery system." style="display: block;">
+          <img src="/content/dam/medtronic-com/products/cardiovascular/peripheral-stent-systems/everflex-entrust/images/everflex-entrust-retractable-outer-shaft.jpg" class="cmp-image__image" itemprop="contentUrl" data-cmp-hook-image="image" loading="eager" decoding="async" fetchpriority="auto" height="500" width="500" alt="Learn more about the triaxial shaft design of the EverFlex™ stent with Entrust™ delivery system." style="display: block;">
           
         
       
@@ -8513,7 +8486,7 @@ h2.react-datepicker__current-month {
       
         
           
-          <img src="/content/dam/medtronic-com/products/cardiovascular/peripheral-stent-systems/everflex-entrust/images/everflex-entrust-inner-shaft.jpg" class="cmp-image__image" itemprop="contentUrl" data-cmp-hook-image="image" loading="eager" decoding="async" fetchpriority="high" height="500" width="500" alt="Learn more about the triaxial shaft design of the EverFlex™ stent with Entrust™ delivery system." style="display: block;">
+          <img src="/content/dam/medtronic-com/products/cardiovascular/peripheral-stent-systems/everflex-entrust/images/everflex-entrust-inner-shaft.jpg" class="cmp-image__image" itemprop="contentUrl" data-cmp-hook-image="image" loading="eager" decoding="async" fetchpriority="auto" height="500" width="500" alt="Learn more about the triaxial shaft design of the EverFlex™ stent with Entrust™ delivery system." style="display: block;">
           
         
       
@@ -8570,7 +8543,7 @@ h2.react-datepicker__current-month {
       
         
           
-          <img src="/content/dam/medtronic-com/products/cardiovascular/peripheral-stent-systems/everflex-entrust/images/everflex-entrust-isolation-shaft.jpg" class="cmp-image__image" itemprop="contentUrl" data-cmp-hook-image="image" loading="eager" decoding="async" fetchpriority="high" height="500" width="500" alt="Learn more about the triaxial shaft design of the EverFlex™ stent with Entrust™ delivery system." style="display: block;">
+          <img src="/content/dam/medtronic-com/products/cardiovascular/peripheral-stent-systems/everflex-entrust/images/everflex-entrust-isolation-shaft.jpg" class="cmp-image__image" itemprop="contentUrl" data-cmp-hook-image="image" loading="eager" decoding="async" fetchpriority="auto" height="500" width="500" alt="Learn more about the triaxial shaft design of the EverFlex™ stent with Entrust™ delivery system." style="display: block;">
           
         
       
@@ -8836,6 +8809,7 @@ h2.react-datepicker__current-month {
 
 </a>
     </div>
+        
     
 
 
@@ -8963,6 +8937,7 @@ h2.react-datepicker__current-month {
 
 </a>
     </div>
+        
     
 
 
@@ -11803,6 +11778,11 @@ vessel size<br>
                 </option>
             
                 
+                <option data-redirecturl="https://www.medtronic.com/en-ae/index.html" value="Middle East">
+                    Middle East
+                </option>
+            
+                
                 <option data-redirecturl="https://www.medtronic.com/mx-es/index.html" value="México (Mexico)">
                     México (Mexico)
                 </option>
@@ -11981,7 +11961,7 @@ vessel size<br>
     </fieldset>
 </div>
 <div class="text aem-GridColumn aem-GridColumn--default--12">
-<div data-cmp-data-layer="{&quot;productConfirmationText&quot;:{&quot;@type&quot;:&quot;medtronic/components/text&quot;,&quot;repo:modifyDate&quot;:&quot;2026-02-04T22:52:18Z&quot;,&quot;xdm:text&quot;:&quot;&lt;p&gt;Just to confirm, is this the product or product type that interests you?&lt;/p&gt;\r\n&lt;p&gt;&lt;strong&gt;{{productNamePlaceholder}}&lt;/strong&gt;&lt;/p&gt;\r\n&quot;}}" id="productConfirmationText" class="cmp-text">
+<div data-cmp-data-layer="{&quot;productConfirmationText&quot;:{&quot;@type&quot;:&quot;medtronic/components/text&quot;,&quot;repo:modifyDate&quot;:&quot;2026-02-11T18:08:50Z&quot;,&quot;xdm:text&quot;:&quot;&lt;p&gt;Just to confirm, is this the product or product type that interests you?&lt;/p&gt;\r\n&lt;p&gt;&lt;strong&gt;{{productNamePlaceholder}}&lt;/strong&gt;&lt;/p&gt;\r\n&quot;}}" id="productConfirmationText" class="cmp-text">
     <p>Just to confirm, is this the product or product type that interests you?</p>
 <p><strong>{{productNamePlaceholder}}</strong></p>
 
@@ -12023,7 +12003,7 @@ vessel size<br>
     <hr class="cmp-separator__horizontal-rule">
 </div></div>
 <div class="text aem-GridColumn aem-GridColumn--default--12">
-<div data-cmp-data-layer="{&quot;text-f40b1fcb1b&quot;:{&quot;@type&quot;:&quot;medtronic/components/text&quot;,&quot;repo:modifyDate&quot;:&quot;2026-02-04T22:47:29Z&quot;,&quot;xdm:text&quot;:&quot;&lt;table border=\&quot;1\&quot; width=\&quot;100%\&quot;&gt;\r\n&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;strong&gt;This is intended for non-urgent inquiries only.&lt;/strong&gt;&lt;br&gt;\r\nIf you have a medical emergency, call 911 immediately.&lt;br&gt;\r\nIf you have medical questions, contact your doctor.&lt;/td&gt;\r\n&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;\r\n&quot;}}" id="text-f40b1fcb1b" class="cmp-text">
+<div data-cmp-data-layer="{&quot;text-f40b1fcb1b&quot;:{&quot;@type&quot;:&quot;medtronic/components/text&quot;,&quot;repo:modifyDate&quot;:&quot;2026-02-11T18:08:50Z&quot;,&quot;xdm:text&quot;:&quot;&lt;table border=\&quot;1\&quot; width=\&quot;100%\&quot;&gt;\r\n&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;strong&gt;This is intended for non-urgent inquiries only.&lt;/strong&gt;&lt;br&gt;\r\nIf you have a medical emergency, call 911 immediately.&lt;br&gt;\r\nIf you have medical questions, contact your doctor.&lt;/td&gt;\r\n&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;\r\n&quot;}}" id="text-f40b1fcb1b" class="cmp-text">
     <table border="1" width="100%">
 <tbody><tr><td><strong>This is intended for non-urgent inquiries only.</strong><br>
 If you have a medical emergency, call 911 immediately.<br>
@@ -12047,10 +12027,6 @@ If you have medical questions, contact your doctor.</td>
     </div>
 </div>
 </div>
-<div class="separator aem-GridColumn aem-GridColumn--default--12">
-<div id="separator-8503401a24" class="cmp-separator">
-    <hr class="cmp-separator__horizontal-rule">
-</div></div>
 
     
 </div>
@@ -12387,6 +12363,11 @@ If you have medical questions, contact your doctor.</td>
                 
                 <option data-redirecturl="https://www.medtronic.com/hu-hu/index.html" value="Magyarország (Hungary)">
                     Magyarország (Hungary)
+                </option>
+            
+                
+                <option data-redirecturl="https://www.medtronic.com/en-ae/index.html" value="Middle East">
+                    Middle East
                 </option>
             
                 
@@ -13074,6 +13055,11 @@ If you have medical questions, contact your doctor.</td>
                 </option>
             
                 
+                <option data-redirecturl="https://www.medtronic.com/en-ae/index.html" value="Middle East">
+                    Middle East
+                </option>
+            
+                
                 <option data-redirecturl="https://www.medtronic.com/mx-es/index.html" value="México (Mexico)">
                     México (Mexico)
                 </option>
@@ -13730,6 +13716,11 @@ If you have medical questions, contact your doctor.</td>
                 </option>
             
                 
+                <option data-redirecturl="https://www.medtronic.com/en-ae/index.html" value="Middle East">
+                    Middle East
+                </option>
+            
+                
                 <option data-redirecturl="https://www.medtronic.com/mx-es/index.html" value="México (Mexico)">
                     México (Mexico)
                 </option>
@@ -14326,6 +14317,11 @@ If you have medical questions, contact your doctor.</td>
                 
                 <option data-redirecturl="https://www.medtronic.com/hu-hu/index.html" value="Magyarország (Hungary)">
                     Magyarország (Hungary)
+                </option>
+            
+                
+                <option data-redirecturl="https://www.medtronic.com/en-ae/index.html" value="Middle East">
+                    Middle East
                 </option>
             
                 
@@ -18957,7 +18953,7 @@ If you have medical questions, contact your doctor.</td>
     
     
         
-        <script data-ot-ignore="" type="text/javascript" src="/etc.clientlibs/medtronic/clientlibs/clientlib-site.7d3994a7aa25d2924189562b8dbeb934.js"></script>
+        <script data-ot-ignore="" type="text/javascript" src="/etc.clientlibs/medtronic/clientlibs/clientlib-site.f90ffbc4abf5dfac6abb8eb52684ce30.js"></script>
         
             
     
