@@ -20,8 +20,8 @@
 
     <div class="metric-card filterable" data-filter="matched" data-color="success">
         <p class="metric-label">Matches</p>
-        <h3 class="metric-value" style="color: var(--success);">{{ stats.matches or 0 }}</h3>
-        <p class="metric-foot">Fully matched against GUDID</p>
+        <h3 class="metric-value" style="color: var(--success);">{{ stats.device_count or 0 }}</h3>
+        <p class="metric-foot">Successfully harvested devices</p>
     </div>
 
     <div class="metric-card filterable" data-filter="partial_match" data-color="warning">
@@ -97,7 +97,13 @@
                         <span class="badge badge-muted">{{ d.status or "N/A" }}</span>
                         {% endif %}
                     </td>
-                    <td>{{ d.matched_fields or 0 }}/{{ d.total_fields or 0 }} ({{ d.match_percent or 0 }}%)</td>
+                    <td>
+                        {% if d.matched_fields is none %}
+                        <span class="match-na">&mdash;</span>
+                        {% else %}
+                        {{ d.matched_fields or 0 }}/{{ d.total_fields or 0 }} ({{ d.match_percent or 0 }}%)
+                        {% endif %}
+                    </td>
                     <td>
                         {% if d.status in ["partial_match", "mismatch"] %}
                         <a href="/review/{{ d._id }}" class="btn btn-primary btn-sm">Review</a>

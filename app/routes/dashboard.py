@@ -12,9 +12,9 @@ def dashboard(request: Request):
     if not user:
         return RedirectResponse(url="/auth/login", status_code=302)
 
-    from orchestrator import get_dashboard_stats, get_all_validations_with_devices
+    from orchestrator import get_dashboard_stats, get_all_dashboard_records
     stats = get_dashboard_stats()
-    all_results = get_all_validations_with_devices()
+    all_results = get_all_dashboard_records()
 
     return templates.TemplateResponse(
         request,

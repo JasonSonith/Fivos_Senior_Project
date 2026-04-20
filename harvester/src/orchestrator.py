@@ -474,14 +474,33 @@ def get_discrepancies(limit: int = 100) -> list[dict]:
         return []
 
 
-def get_all_validations_with_devices(limit: int = 1000) -> list[dict]:
-    """Get all validation results with joined device info for dashboard filtering."""
+def get_all_dashboard_records() -> list[dict]:
+    """Get combined device + validation records for dashboard filtering.
+
+    Returns all devices tagged as 'matched', plus partial_match/mismatch
+    validation results. Each record has a 'status' field for client-side filtering.
+    """
     from database.db_connection import get_db
     try:
         db = get_db()
-        cursor = db["validationResults"].find().sort("updated_at", -1).limit(limit)
-
         results = []
+
+        # All devices = "matched" (successfully harvested)
+        for device in db["devices"].find().sort("_harvest.harvested_at", -1):
+            serialized = _serialize_record(device)
+            serialized["status"] = "matched"
+            serialized["companyName"] = device.get("companyName", "N/A")
+            serialized["versionModelNumber"] = device.get("versionModelNumber", "N/A")
+            serialized["brandName"] = device.get("brandName", "N/A")
+            serialized["matched_fields"] = None
+            serialized["total_fields"] = None
+            serialized["match_percent"] = None
+            results.append(serialized)
+
+        # Partial match and mismatch from validation results
+        cursor = db["validationResults"].find(
+            {"status": {"$in": ["partial_match", "mismatch"]}}
+        ).sort("updated_at", -1)
         for doc in cursor:
             device = db["devices"].find_one({"_id": doc.get("device_id")})
             serialized = _serialize_record(doc)
@@ -489,9 +508,10 @@ def get_all_validations_with_devices(limit: int = 1000) -> list[dict]:
                 serialized["companyName"] = device.get("companyName", "N/A")
                 serialized["versionModelNumber"] = device.get("versionModelNumber", "N/A")
             results.append(serialized)
+
         return results
     except Exception as e:
-        logger.warning("get_all_validations_with_devices: %s", e)
+        logger.warning("get_all_dashboard_records: %s", e)
         return []
 
 
