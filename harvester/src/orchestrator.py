@@ -339,8 +339,11 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
     devices_col = db["devices"]
     validation_col = db["validationResults"]
 
+    verified_col = db["verified_devices"]
+
     if overwrite:
         validation_col.drop()
+        verified_col.drop()
 
     query = {}
     if run_id:
@@ -412,11 +415,72 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
             "created_at": datetime.now(timezone.utc),
             "updated_at": datetime.now(timezone.utc),
         })
+
+        # Fully matched devices → store in verified_devices (harvested + GUDID extras)
+        if status == "matched":
+            verified_record = dict(device)
+            verified_record.pop("_id", None)
+            # Merge GUDID fields where harvested is null
+            for field in MERGE_FIELDS:
+                if verified_record.get(field) is None and gudid_record.get(field) is not None:
+                    verified_record[field] = gudid_record[field]
+            verified_record["gudid_di"] = di
+            verified_record["verified_at"] = datetime.now(timezone.utc)
+            verified_record["source_device_id"] = device.get("_id")
+            # Upsert by model+catalog to avoid duplicates on re-validation
+            verified_col.update_one(
+                {"versionModelNumber": verified_record.get("versionModelNumber"),
+                 "catalogNumber": verified_record.get("catalogNumber")},
+                {"$set": verified_record},
+                upsert=True,
+            )
+
         # Fill null device fields from GUDID (runs after comparison to preserve original diff)
         _merge_gudid_into_device(db, device, gudid_record)
 
     result["success"] = True
     return result
+
+
+def backfill_verified_devices() -> dict:
+    """Process existing validation results and populate verified_devices for matched records."""
+    from database.db_connection import get_db
+    try:
+        db = get_db()
+        verified_col = db["verified_devices"]
+        matched_results = db["validationResults"].find({"status": "matched"})
+
+        count = 0
+        for vr in matched_results:
+            device = db["devices"].find_one({"_id": vr.get("device_id")})
+            if not device:
+                continue
+
+            gudid_record = vr.get("gudid_record") or {}
+            verified_record = dict(device)
+            verified_record.pop("_id", None)
+
+            # Merge GUDID fields where harvested is null
+            for field in MERGE_FIELDS:
+                if verified_record.get(field) is None and gudid_record.get(field) is not None:
+                    verified_record[field] = gudid_record[field]
+
+            verified_record["gudid_di"] = vr.get("gudid_di")
+            verified_record["verified_at"] = datetime.now(timezone.utc)
+            verified_record["source_device_id"] = device.get("_id")
+
+            verified_col.update_one(
+                {"versionModelNumber": verified_record.get("versionModelNumber"),
+                 "catalogNumber": verified_record.get("catalogNumber")},
+                {"$set": verified_record},
+                upsert=True,
+            )
+            count += 1
+
+        return {"success": True, "verified_count": count}
+    except Exception as e:
+        logger.warning("backfill_verified_devices: %s", e)
+        return {"success": False, "error": str(e)}
 
 
 # ---------------------------------------------------------------------------
@@ -430,12 +494,7 @@ def get_dashboard_stats() -> dict:
         device_count = db["devices"].count_documents({})
         partial_matches = db["validationResults"].count_documents({"status": "partial_match"})
         mismatches = db["validationResults"].count_documents({"status": "mismatch"})
-
-        # "Matches" = devices that don't have a partial_match, mismatch, or gudid_not_found result
-        discrepancy_device_ids = db["validationResults"].distinct(
-            "device_id", {"status": {"$in": ["partial_match", "mismatch", "gudid_not_found"]}}
-        )
-        matches = device_count - len(discrepancy_device_ids)
+        matches = db["verified_devices"].count_documents({})
 
         last_device = db["devices"].find_one(sort=[("_harvest.harvested_at", -1)])
         last_run = "No runs yet"
@@ -480,46 +539,39 @@ def get_discrepancies(limit: int = 100) -> list[dict]:
 
 
 def get_all_dashboard_records() -> list[dict]:
-    """Get combined device + validation records for dashboard filtering.
+    """Get combined verified_devices + validation discrepancies for dashboard filtering.
 
-    Devices without a partial_match/mismatch validation result are 'matched'.
-    Devices WITH a partial_match/mismatch result appear under that status instead.
-    Each device appears in exactly one category — no overlap.
+    'matched' = records from verified_devices collection (confirmed GUDID matches).
+    'partial_match'/'mismatch' = records from validationResults with those statuses.
     """
     from database.db_connection import get_db
     try:
         db = get_db()
         results = []
 
-        # Get device_ids that have partial_match, mismatch, or gudid_not_found results
-        discrepancy_device_ids = set()
+        # Verified devices = "matched"
+        for doc in db["verified_devices"].find().sort("verified_at", -1):
+            serialized = _serialize_record(doc)
+            serialized["status"] = "matched"
+            serialized["companyName"] = doc.get("companyName", "N/A")
+            serialized["versionModelNumber"] = doc.get("versionModelNumber", "N/A")
+            serialized["brandName"] = doc.get("brandName", "N/A")
+            serialized["matched_fields"] = None
+            serialized["total_fields"] = None
+            serialized["match_percent"] = None
+            results.append(serialized)
+
+        # Partial match and mismatch from validation results
         discrepancy_cursor = db["validationResults"].find(
-            {"status": {"$in": ["partial_match", "mismatch", "gudid_not_found"]}}
+            {"status": {"$in": ["partial_match", "mismatch"]}}
         ).sort("updated_at", -1)
 
         for doc in discrepancy_cursor:
-            device_id = doc.get("device_id")
-            if device_id:
-                discrepancy_device_ids.add(device_id)
-            device = db["devices"].find_one({"_id": device_id})
+            device = db["devices"].find_one({"_id": doc.get("device_id")})
             serialized = _serialize_record(doc)
             if device:
                 serialized["companyName"] = device.get("companyName", "N/A")
                 serialized["versionModelNumber"] = device.get("versionModelNumber", "N/A")
-            results.append(serialized)
-
-        # Devices NOT in the discrepancy set = "matched"
-        for device in db["devices"].find().sort("_harvest.harvested_at", -1):
-            if device.get("_id") in discrepancy_device_ids:
-                continue
-            serialized = _serialize_record(device)
-            serialized["status"] = "matched"
-            serialized["companyName"] = device.get("companyName", "N/A")
-            serialized["versionModelNumber"] = device.get("versionModelNumber", "N/A")
-            serialized["brandName"] = device.get("brandName", "N/A")
-            serialized["matched_fields"] = None
-            serialized["total_fields"] = None
-            serialized["match_percent"] = None
             results.append(serialized)
 
         return results

@@ -53,10 +53,25 @@ async def run_validation_route(request: Request, background_tasks: BackgroundTas
     )
 
 
+@router.post("/backfill-verified")
+def backfill_verified(request: Request):
+    user, redirect = require_roles(request, ["admin"])
+    if redirect:
+        return redirect
+
+    from orchestrator import backfill_verified_devices
+    result = backfill_verified_devices()
+    from fastapi.responses import RedirectResponse
+    return RedirectResponse(url="/validate/", status_code=302)
+
+
 def _do_validation(app, job_id: str):
-    from orchestrator import run_validation
+    from orchestrator import run_validation, backfill_verified_devices
     try:
         result = run_validation()
+        # Backfill verified_devices for any matched records
+        backfill = backfill_verified_devices()
+        result["verified_count"] = backfill.get("verified_count", 0)
         app.state.jobs[job_id] = {"status": "completed", "result": result}
     except Exception as e:
         app.state.jobs[job_id] = {
