@@ -39,13 +39,6 @@ services:
       - "127.0.0.1:11434:11434"
     volumes:
       - ollama_models:/root/.ollama
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
 
   ollama-init:
     image: ollama/ollama:latest
@@ -59,10 +52,8 @@ services:
     entrypoint: >
       sh -c "
         sleep 5 &&
-        ollama pull gemma4:latest &&
-        ollama pull qwen2.5:7b &&
-        ollama pull mistral &&
-        echo 'All models ready'
+        ollama pull qwen2.5:3b &&
+        echo 'Model ready'
       "
     restart: "no"
 
