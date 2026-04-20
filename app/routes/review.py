@@ -13,6 +13,9 @@ COMPARED_FIELDS = [
     ("brandName", "Brand Name"),
     ("companyName", "Company Name"),
     ("deviceDescription", "Device Description"),
+    ("MRISafetyStatus", "MRI Safety Status"),
+    ("singleUse", "Single Use"),
+    ("rx", "Prescription (Rx)"),
 ]
 
 
