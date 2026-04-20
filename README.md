@@ -14,7 +14,7 @@ This project automates most of that verification work.
 
 **Collect → Compare → Correct**
 
-**The Harvester** crawls manufacturer websites using Playwright and extracts device specs using an 8-model LLM fallback chain (gemma4 local → Groq → NVIDIA NIM → Ollama fallback). Extracted records are stored in MongoDB.
+**The Harvester** crawls manufacturer websites using Playwright and extracts device specs using a 6-model LLM fallback chain (Groq → NVIDIA NIM → local qwen2.5:3b fallback). Extracted records are stored in MongoDB.
 
 **The Validator** compares harvested records against the FDA's GUDID API — model numbers, catalog numbers, brand names, company names, and description similarity.
 
