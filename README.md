@@ -82,7 +82,7 @@ See [`docs/Fivos - Data Flow Diagram.md`](docs/Fivos%20-%20Data%20Flow%20Diagram
 
 ### Client Install (Docker)
 
-Everything needed — Python, Playwright, Ollama, MongoDB, a small local LLM — comes with the Docker image. `docker compose up` boots the whole stack on any laptop (Mac, Windows, Linux) with no GPU required.
+Everything needed — Python, Playwright, Ollama, MongoDB, a small local LLM — comes with the Docker image. `docker compose up` (run from the `docker/` subfolder) boots the whole stack on any laptop (Mac, Windows, Linux) with no GPU required.
 
 #### Prerequisites
 
@@ -94,9 +94,10 @@ Everything needed — Python, Playwright, Ollama, MongoDB, a small local LLM —
 #### Steps
 
 1. Clone the repo (or unzip the bundle Jason sent) and `cd` into it.
-2. Copy the `.env` file Jason emailed into the project root.
-3. In a terminal in the project folder, run:
+2. Copy the `.env` file Jason emailed into the project root (not into `docker/`).
+3. In a terminal, change into the `docker/` folder and start the stack:
    ```bash
+   cd docker
    docker compose up
    ```
    First run takes ~5–10 minutes (image build + local model pull). After that, starts in seconds.
@@ -106,6 +107,8 @@ Everything needed — Python, Playwright, Ollama, MongoDB, a small local LLM —
 7. The Dashboard now shows harvested devices and validation results. Click any "Partial Match" or "Mismatch" row to review discrepancies field-by-field.
 
 #### Common Commands
+
+Run these from the `docker/` folder (`cd docker` first). To run them from anywhere else, add `-f docker/docker-compose.yml` after `docker compose`.
 
 | Command | Purpose |
 |---|---|
@@ -136,7 +139,7 @@ Cloud LLMs (Groq, NVIDIA NIM) handle extraction by default. The local `qwen2.5:3
 
 #### Troubleshooting
 
-**Port conflict on 8000 / 27017 / 11434** — something on the host already uses that port. Stop the conflicting process or edit the `ports:` mappings in `docker-compose.yml`.
+**Port conflict on 8000 / 27017 / 11434** — something on the host already uses that port. Stop the conflicting process or edit the `ports:` mappings in `docker/docker-compose.yml`.
 
 **`app` crashes with "connection refused" to mongo** — the mongo healthcheck hasn't passed yet. `depends_on: condition: service_healthy` normally prevents this; if it persists, check `docker compose logs mongo`.
 
@@ -149,6 +152,7 @@ Cloud LLMs (Groq, NVIDIA NIM) handle extraction by default. The local `qwen2.5:3
 The stack above is CPU-only by default. If you have an NVIDIA GPU and the NVIDIA Container Toolkit installed, add the GPU override:
 
 ```bash
+cd docker
 docker compose -f docker-compose.yml -f docker-compose.gpu.yml up
 ```
 

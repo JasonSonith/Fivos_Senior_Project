@@ -1,10 +1,12 @@
 services:
   app:
-    build: .
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
     ports:
       - "8000:8000"
     env_file:
-      - .env
+      - ../.env
     environment:
       - FIVOS_MONGO_URI=mongodb://${MONGO_USERNAME:-fivos}:${MONGO_PASSWORD}@mongo:27017/fivos?authSource=admin
       - OLLAMA_URL=http://ollama:11434/api/chat
