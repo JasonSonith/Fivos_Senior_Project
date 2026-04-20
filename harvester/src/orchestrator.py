@@ -431,9 +431,9 @@ def get_dashboard_stats() -> dict:
         partial_matches = db["validationResults"].count_documents({"status": "partial_match"})
         mismatches = db["validationResults"].count_documents({"status": "mismatch"})
 
-        # "Matches" = devices that don't have a partial_match or mismatch result
+        # "Matches" = devices that don't have a partial_match, mismatch, or gudid_not_found result
         discrepancy_device_ids = db["validationResults"].distinct(
-            "device_id", {"status": {"$in": ["partial_match", "mismatch"]}}
+            "device_id", {"status": {"$in": ["partial_match", "mismatch", "gudid_not_found"]}}
         )
         matches = device_count - len(discrepancy_device_ids)
 
@@ -491,10 +491,10 @@ def get_all_dashboard_records() -> list[dict]:
         db = get_db()
         results = []
 
-        # Get device_ids that have partial_match or mismatch validation results
+        # Get device_ids that have partial_match, mismatch, or gudid_not_found results
         discrepancy_device_ids = set()
         discrepancy_cursor = db["validationResults"].find(
-            {"status": {"$in": ["partial_match", "mismatch"]}}
+            {"status": {"$in": ["partial_match", "mismatch", "gudid_not_found"]}}
         ).sort("updated_at", -1)
 
         for doc in discrepancy_cursor:
