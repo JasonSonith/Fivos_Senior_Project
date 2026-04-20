@@ -474,7 +474,7 @@ def get_discrepancies(limit: int = 100) -> list[dict]:
         return []
 
 
-def get_all_validations_with_devices(limit: int = 200) -> list[dict]:
+def get_all_validations_with_devices(limit: int = 1000) -> list[dict]:
     """Get all validation results with joined device info for dashboard filtering."""
     from database.db_connection import get_db
     try:
