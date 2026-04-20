@@ -74,11 +74,11 @@
             </div>
 
             <div class="review-value harvested">
-                {{ f.harvested or "N/A" }}
+                {% if f.harvested is none %}N/A{% else %}{{ f.harvested }}{% endif %}
             </div>
 
             <div class="review-value gudid">
-                {{ f.gudid or "N/A" }}
+                {% if f.gudid is none %}N/A{% else %}{{ f.gudid }}{% endif %}
             </div>
 
             <div class="review-pick">

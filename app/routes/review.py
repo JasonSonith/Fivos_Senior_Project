@@ -39,8 +39,10 @@ def review_page(request: Request, validation_id: str):
     fields = []
     for field_key, field_label in COMPARED_FIELDS:
         comp = comparison.get(field_key, {})
-        harvested_val = comp.get("harvested") or device.get(field_key, "N/A")
-        gudid_val = comp.get("gudid") or gudid_record.get(field_key, "N/A")
+        comp_h = comp.get("harvested")
+        harvested_val = comp_h if comp_h is not None else device.get(field_key, "N/A")
+        comp_g = comp.get("gudid")
+        gudid_val = comp_g if comp_g is not None else gudid_record.get(field_key, "N/A")
 
         if field_key == "deviceDescription":
             match_status = None
