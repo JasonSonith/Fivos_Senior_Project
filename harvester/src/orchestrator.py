@@ -484,13 +484,18 @@ def backfill_verified_devices() -> dict:
 
 
 def migrate_gudid_not_found() -> dict:
+    """One-time migration: rename existing gudid_not_found records to mismatch."""
     from database.db_connection import get_db
-    db = get_db()
-    r = db["validationResults"].update_many(
-        {"status": "gudid_not_found"},
-        {"$set": {"status": "mismatch"}},
-    )
-    return {"matched": r.matched_count, "modified": r.modified_count}
+    try:
+        db = get_db()
+        r = db["validationResults"].update_many(
+            {"status": "gudid_not_found"},
+            {"$set": {"status": "mismatch"}},
+        )
+        return {"matched": r.matched_count, "modified": r.modified_count}
+    except Exception as e:
+        logger.warning("migrate_gudid_not_found: %s", e)
+        return {"matched": 0, "modified": 0}
 
 
 # ---------------------------------------------------------------------------

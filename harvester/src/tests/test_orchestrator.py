@@ -125,3 +125,9 @@ class TestMigrateGudidNotFound:
             result = migrate_gudid_not_found()
 
         assert result == {"matched": 0, "modified": 0}
+
+    def test_returns_zero_on_db_error(self):
+        with patch("database.db_connection.get_db", side_effect=Exception("DB down")):
+            from orchestrator import migrate_gudid_not_found
+            result = migrate_gudid_not_found()
+        assert result == {"matched": 0, "modified": 0}
