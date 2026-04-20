@@ -12,16 +12,16 @@ def dashboard(request: Request):
     if not user:
         return RedirectResponse(url="/auth/login", status_code=302)
 
-    from orchestrator import get_dashboard_stats, get_discrepancies
+    from orchestrator import get_dashboard_stats, get_all_validations_with_devices
     stats = get_dashboard_stats()
-    discrepancies = get_discrepancies(limit=100)
+    all_results = get_all_validations_with_devices(limit=200)
 
     return templates.TemplateResponse(
         request,
         "dashboard.html",
         context={
             "stats": stats,
-            "discrepancies": discrepancies,
+            "all_results": all_results,
             "current_user": user,
         },
     )
