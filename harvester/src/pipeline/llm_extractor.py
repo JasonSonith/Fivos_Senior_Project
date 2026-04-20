@@ -29,7 +29,7 @@ MODEL_CHAIN = [
 # Groq/NVIDIA caps match free-tier rate limits; Ollama stays at 1 for CPU hosts.
 # See docs/superpowers/specs/2026-04-08-llm-extractor-parallelization-design.md
 EXTRACT_WORKERS = 4
-OLLAMA_CONCURRENCY = 1   # single GPU slot
+OLLAMA_CONCURRENCY = 1   # serialize on CPU-only hosts
 GROQ_CONCURRENCY = 3     # ~30 RPM free tier
 NVIDIA_CONCURRENCY = 4   # 40 RPM free tier
 
