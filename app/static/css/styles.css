@@ -1052,3 +1052,88 @@ a {
     background: #F0FDF4;
     border-color: var(--success);
 }
+
+/* ── Filtering ──────────────────────────────────── */
+
+.metric-card.filterable {
+    cursor: pointer;
+    transition: opacity 0.2s, box-shadow 0.2s, background 0.2s, border-left 0.2s;
+}
+
+.metric-card.filterable:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.metric-card.active-filter--success {
+    background: #f0fdf4;
+    border-left: 3px solid var(--success);
+    box-shadow: var(--shadow-md);
+}
+
+.metric-card.active-filter--warning {
+    background: #fffbeb;
+    border-left: 3px solid var(--warning);
+    box-shadow: var(--shadow-md);
+}
+
+.metric-card.active-filter--danger {
+    background: #fef2f2;
+    border-left: 3px solid var(--danger);
+    box-shadow: var(--shadow-md);
+}
+
+.metric-card.dimmed {
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.filter-indicator {
+    padding: 8px 16px;
+    font-size: 13px;
+    color: var(--text-2);
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+}
+
+.filter-indicator.visible {
+    display: flex;
+}
+
+.filter-indicator a {
+    color: var(--teal);
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.filter-indicator a:hover {
+    text-decoration: underline;
+}
+
+.domain-filter {
+    display: none;
+    padding: 0 0 16px;
+    align-items: center;
+    gap: 8px;
+}
+
+.domain-filter.visible {
+    display: flex;
+}
+
+.domain-filter label {
+    font-size: 13px;
+    color: var(--text-2);
+    white-space: nowrap;
+}
+
+.domain-filter select {
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    background: var(--surface);
+    color: var(--text);
+}
