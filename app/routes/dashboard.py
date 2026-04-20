@@ -14,7 +14,7 @@ def dashboard(request: Request):
 
     from orchestrator import get_dashboard_stats, get_all_validations_with_devices
     stats = get_dashboard_stats()
-    all_results = get_all_validations_with_devices(limit=200)
+    all_results = get_all_validations_with_devices()
 
     return templates.TemplateResponse(
         request,
