@@ -22,7 +22,10 @@ uvicorn app.main:app --port 8000                         # Web dashboard
 
 ### Docker (full stack)
 
+Compose files live in `docker/` — `cd docker` first, or pass `-f docker/docker-compose.yml` from root.
+
 ```bash
+cd docker
 docker compose up                    # Start app + mongo + ollama + model download
 docker compose up -d                 # Same, detached
 docker compose down                  # Stop (keeps volumes)
@@ -31,7 +34,7 @@ docker compose logs -f app           # Tail FastAPI logs
 docker compose exec app bash         # Shell into app container
 ```
 
-First run downloads ~17GB of Ollama models (`gemma4:latest`, `qwen2.5:7b`, `mistral`) into the `ollama_models` named volume via the `ollama-init` sidecar. Subsequent runs are instant. Requires NVIDIA Container Toolkit on the host — see `README.md` Docker Setup section.
+First run downloads `qwen2.5:3b` (~2GB) into the `ollama_models` named volume via the `ollama-init` sidecar. Cloud LLMs (Groq, NVIDIA) are primary; the local model only runs when cloud is unreachable. GPU passthrough is opt-in via `docker compose -f docker-compose.yml -f docker-compose.gpu.yml up` (requires NVIDIA Container Toolkit).
 
 ### Pipeline CLI (`harvester/src/pipeline/runner.py`)
 
@@ -52,26 +55,24 @@ In Docker, compose overrides `FIVOS_MONGO_URI` → `mongodb://mongo:27017/fivos`
 
 ```
 Manufacturing Website → Playwright scraper → Raw HTML (web-scraper/out_html/)
-  → LLM extraction (8-model fallback chain) → normalize → validate → GUDID JSON (harvester/output/)
+  → LLM extraction (6-model fallback chain) → normalize → validate → GUDID JSON (harvester/output/)
   → MongoDB (devices) → GUDID API validation → Review Dashboard (FastAPI)
 ```
 
 ### LLM Fallback Chain (`pipeline/llm_extractor.py`)
 
 ```
-1. Ollama gemma4                        (local primary, 9.6GB)
-2. Groq   llama-3.3-70b-versatile       (fastest cloud, 100k TPD limit)
-3. Groq   llama-3.1-8b-instant          (separate Groq limits)
-4. NVIDIA meta/llama-3.3-70b-instruct   (40 RPM, generous limits)
-5. NVIDIA mistralai/mistral-large       (40 RPM)
-6. NVIDIA google/gemma-2-27b-it         (40 RPM)
-7. Ollama qwen2.5:7b                    (local fallback)
-8. Ollama mistral                       (local fallback)
+1. Groq   llama-3.3-70b-versatile       (primary, fastest cloud)
+2. Groq   llama-3.1-8b-instant          (separate Groq limits)
+3. NVIDIA meta/llama-3.3-70b-instruct   (40 RPM, generous limits)
+4. NVIDIA mistralai/mistral-large       (40 RPM)
+5. NVIDIA google/gemma-2-27b-it         (40 RPM)
+6. Ollama qwen2.5:3b                    (local fallback, ~2GB)
 ```
 
-Tries top-to-bottom. On rate limit < 60s: retries once. On daily limit or long wait: disables model for session, moves to next. Groq/NVIDIA use same OpenAI-compatible `_openai_request()`. Ollama uses `/api/chat`.
+Cloud-first: Groq/NVIDIA handle normal load; local Ollama only runs when both cloud providers are unreachable. Tries top-to-bottom. On rate limit < 60s: retries once. On daily limit or long wait: disables model for session, moves to next. Groq/NVIDIA use same OpenAI-compatible `_openai_request()`. Ollama uses `/api/chat`.
 
-**Parallel batch mode:** `ThreadPoolExecutor(max_workers=4)` runs multiple files through the chain concurrently via `pipeline/parallel_batch.py`. Each model has a per-provider semaphore (`OLLAMA_CONCURRENCY=1`, `GROQ_CONCURRENCY=3`, `NVIDIA_CONCURRENCY=4`) acquired non-blocking — workers fall through to the next model when a provider is saturated instead of queueing. Gemma4 stays at 1× (GPU-bound), overflow cascades to Groq → NVIDIA. Thread-safety: `_last_model_used` is `threading.local()`, `_disabled_models` writes are locked.
+**Parallel batch mode:** `ThreadPoolExecutor(max_workers=4)` runs multiple files through the chain concurrently via `pipeline/parallel_batch.py`. Each model has a per-provider semaphore (`OLLAMA_CONCURRENCY=1`, `GROQ_CONCURRENCY=3`, `NVIDIA_CONCURRENCY=4`) acquired non-blocking — workers fall through to the next model when a provider is saturated instead of queueing. Cloud providers carry the load; Ollama stays at 1× for CPU-safe hosts. Thread-safety: `_last_model_used` is `threading.local()`, `_disabled_models` writes are locked.
 
 ### Extraction (Two-Pass)
 
@@ -108,7 +109,7 @@ Tries top-to-bottom. On rate limit < 60s: retries once. On daily limit or long w
 | Component | Role | Triggered by |
 |-----------|------|-------------|
 | **Web Scraper** (`web_scraper/scraper.py`) | Playwright HTML fetcher | `runner.py --urls` |
-| **LLM Extractor** (`pipeline/llm_extractor.py`) | Primary extractor, 7-model chain | Every file in pipeline |
+| **LLM Extractor** (`pipeline/llm_extractor.py`) | Primary extractor, 6-model chain | Every file in pipeline |
 | **Site Adapters** (`site_adapters/*.yaml`) | CSS selectors, optional override | `--adapter` flag only |
 | **Pipeline** (`pipeline/runner.py`) | End-to-end orchestration | CLI or web UI |
 
@@ -118,7 +119,7 @@ All pipeline logs go to `harvester/log-files/harvest_<timestamp>.log`. No consol
 
 ### Validation Scoring
 
-`comparison_validator.py` compares on 4 boolean fields (`versionModelNumber`, `catalogNumber`, `brandName`, `companyName`) + `description_similarity` Jaccard score. `None` fields are skipped (not counted as mismatches).
+`comparison_validator.py` compares 7 fields (`versionModelNumber`, `catalogNumber`, `brandName`, `companyName`, `MRISafetyStatus`, `singleUse`, `rx`) + `deviceDescription` Jaccard similarity score. Identifier fields return `match: None` only if harvested is null; `MRISafetyStatus`/`singleUse`/`rx` return `match: None` if either side normalizes to null. `None` fields are excluded from the score denominator.
 
 ### GUDID Fallback Merge
 
