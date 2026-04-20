@@ -110,7 +110,9 @@ class CSRFMiddleware:
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     from app.services.user_service import seed_demo_users
+    from orchestrator import migrate_gudid_not_found
     seed_demo_users()
+    migrate_gudid_not_found()
     yield
 
 
