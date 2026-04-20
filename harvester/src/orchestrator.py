@@ -483,6 +483,16 @@ def backfill_verified_devices() -> dict:
         return {"success": False, "error": str(e)}
 
 
+def migrate_gudid_not_found() -> dict:
+    from database.db_connection import get_db
+    db = get_db()
+    r = db["validationResults"].update_many(
+        {"status": "gudid_not_found"},
+        {"$set": {"status": "mismatch"}},
+    )
+    return {"matched": r.matched_count, "modified": r.modified_count}
+
+
 # ---------------------------------------------------------------------------
 # Dashboard stats & discrepancy queries
 # ---------------------------------------------------------------------------

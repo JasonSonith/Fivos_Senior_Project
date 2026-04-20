@@ -85,3 +85,43 @@ class TestRunValidationNotFound:
         assert result["mismatches"] == 1
         assert result["full_matches"] == 1
         assert result["not_found"] == 0
+
+
+class TestMigrateGudidNotFound:
+    def test_updates_gudid_not_found_to_mismatch(self):
+        mock_result = MagicMock()
+        mock_result.matched_count = 3
+        mock_result.modified_count = 3
+
+        mock_col = MagicMock()
+        mock_col.update_many.return_value = mock_result
+
+        mock_db = MagicMock()
+        mock_db.__getitem__ = MagicMock(side_effect=lambda key: mock_col)
+
+        with patch("database.db_connection.get_db", return_value=mock_db):
+            from orchestrator import migrate_gudid_not_found
+            result = migrate_gudid_not_found()
+
+        mock_col.update_many.assert_called_once_with(
+            {"status": "gudid_not_found"},
+            {"$set": {"status": "mismatch"}},
+        )
+        assert result == {"matched": 3, "modified": 3}
+
+    def test_returns_zero_counts_when_nothing_to_migrate(self):
+        mock_result = MagicMock()
+        mock_result.matched_count = 0
+        mock_result.modified_count = 0
+
+        mock_col = MagicMock()
+        mock_col.update_many.return_value = mock_result
+
+        mock_db = MagicMock()
+        mock_db.__getitem__ = MagicMock(side_effect=lambda key: mock_col)
+
+        with patch("database.db_connection.get_db", return_value=mock_db):
+            from orchestrator import migrate_gudid_not_found
+            result = migrate_gudid_not_found()
+
+        assert result == {"matched": 0, "modified": 0}

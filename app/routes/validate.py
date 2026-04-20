@@ -66,10 +66,10 @@ def backfill_verified(request: Request):
 
 
 def _do_validation(app, job_id: str):
-    from orchestrator import run_validation, backfill_verified_devices
+    from orchestrator import run_validation, backfill_verified_devices, migrate_gudid_not_found
     try:
+        migrate_gudid_not_found()
         result = run_validation()
-        # Backfill verified_devices for any matched records
         backfill = backfill_verified_devices()
         result["verified_count"] = backfill.get("verified_count", 0)
         app.state.jobs[job_id] = {"status": "completed", "result": result}
