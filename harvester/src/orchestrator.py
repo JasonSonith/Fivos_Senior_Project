@@ -364,11 +364,11 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
         )
 
         if not gudid_record:
-            result["not_found"] += 1
+            result["mismatches"] += 1
             validation_col.insert_one({
                 "device_id": device.get("_id"),
                 "brandName": device.get("brandName"),
-                "status": "gudid_not_found",
+                "status": "mismatch",
                 "matched_fields": 0,
                 "total_fields": 0,
                 "match_percent": 0.0,
