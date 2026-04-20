@@ -20,8 +20,8 @@
 
     <div class="metric-card filterable" data-filter="matched" data-color="success">
         <p class="metric-label">Matches</p>
-        <h3 class="metric-value" style="color: var(--success);">{{ stats.device_count or 0 }}</h3>
-        <p class="metric-foot">Successfully harvested devices</p>
+        <h3 class="metric-value" style="color: var(--success);">{{ stats.matches or 0 }}</h3>
+        <p class="metric-foot">Devices without discrepancies</p>
     </div>
 
     <div class="metric-card filterable" data-filter="partial_match" data-color="warning">

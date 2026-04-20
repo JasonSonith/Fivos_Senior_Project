@@ -428,9 +428,14 @@ def get_dashboard_stats() -> dict:
     try:
         db = get_db()
         device_count = db["devices"].count_documents({})
-        matches = db["validationResults"].count_documents({"status": "matched"})
         partial_matches = db["validationResults"].count_documents({"status": "partial_match"})
         mismatches = db["validationResults"].count_documents({"status": "mismatch"})
+
+        # "Matches" = devices that don't have a partial_match or mismatch result
+        discrepancy_device_ids = db["validationResults"].distinct(
+            "device_id", {"status": {"$in": ["partial_match", "mismatch"]}}
+        )
+        matches = device_count - len(discrepancy_device_ids)
 
         last_device = db["devices"].find_one(sort=[("_harvest.harvested_at", -1)])
         last_run = "No runs yet"
@@ -477,16 +482,36 @@ def get_discrepancies(limit: int = 100) -> list[dict]:
 def get_all_dashboard_records() -> list[dict]:
     """Get combined device + validation records for dashboard filtering.
 
-    Returns all devices tagged as 'matched', plus partial_match/mismatch
-    validation results. Each record has a 'status' field for client-side filtering.
+    Devices without a partial_match/mismatch validation result are 'matched'.
+    Devices WITH a partial_match/mismatch result appear under that status instead.
+    Each device appears in exactly one category — no overlap.
     """
     from database.db_connection import get_db
     try:
         db = get_db()
         results = []
 
-        # All devices = "matched" (successfully harvested)
+        # Get device_ids that have partial_match or mismatch validation results
+        discrepancy_device_ids = set()
+        discrepancy_cursor = db["validationResults"].find(
+            {"status": {"$in": ["partial_match", "mismatch"]}}
+        ).sort("updated_at", -1)
+
+        for doc in discrepancy_cursor:
+            device_id = doc.get("device_id")
+            if device_id:
+                discrepancy_device_ids.add(device_id)
+            device = db["devices"].find_one({"_id": device_id})
+            serialized = _serialize_record(doc)
+            if device:
+                serialized["companyName"] = device.get("companyName", "N/A")
+                serialized["versionModelNumber"] = device.get("versionModelNumber", "N/A")
+            results.append(serialized)
+
+        # Devices NOT in the discrepancy set = "matched"
         for device in db["devices"].find().sort("_harvest.harvested_at", -1):
+            if device.get("_id") in discrepancy_device_ids:
+                continue
             serialized = _serialize_record(device)
             serialized["status"] = "matched"
             serialized["companyName"] = device.get("companyName", "N/A")
@@ -495,18 +520,6 @@ def get_all_dashboard_records() -> list[dict]:
             serialized["matched_fields"] = None
             serialized["total_fields"] = None
             serialized["match_percent"] = None
-            results.append(serialized)
-
-        # Partial match and mismatch from validation results
-        cursor = db["validationResults"].find(
-            {"status": {"$in": ["partial_match", "mismatch"]}}
-        ).sort("updated_at", -1)
-        for doc in cursor:
-            device = db["devices"].find_one({"_id": doc.get("device_id")})
-            serialized = _serialize_record(doc)
-            if device:
-                serialized["companyName"] = device.get("companyName", "N/A")
-                serialized["versionModelNumber"] = device.get("versionModelNumber", "N/A")
             results.append(serialized)
 
         return results
