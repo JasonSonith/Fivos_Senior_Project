@@ -12,14 +12,20 @@ Compares harvested device records against the FDA GUDID database and validates r
 
 ## Comparison Scoring
 
-`compare_records()` compares 4 boolean fields + 1 similarity score:
+`compare_records()` compares 7 boolean fields + 1 similarity score:
 
 - `versionModelNumber`, `catalogNumber`: normalized exact match (strip spaces/hyphens/dots, uppercase)
 - `brandName`: case-insensitive, strip trademark symbols
 - `companyName`: uppercase, strip punctuation
 - `deviceDescription`: Jaccard word-set similarity (float 0.0–1.0)
+- `MRISafetyStatus`: normalize both sides via `normalize_mri_status()`, exact compare
+- `singleUse`, `rx`: normalize both sides via `normalize_boolean()`, exact compare
 
-Fields where harvested value is `None` → `match: None` (excluded from score denominator).
+Null handling:
+- Identifier fields (`versionModelNumber`, `catalogNumber`, `brandName`, `companyName`) → `match: None` only if **harvested** is null
+- New fields (`MRISafetyStatus`, `singleUse`, `rx`) → `match: None` if **either** side normalizes to null
+
+Fields with `match: None` are excluded from the score denominator in `orchestrator.run_validation()`.
 
 ## GUDID API
 
