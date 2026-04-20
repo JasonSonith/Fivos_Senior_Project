@@ -474,6 +474,27 @@ def get_discrepancies(limit: int = 100) -> list[dict]:
         return []
 
 
+def get_all_validations_with_devices(limit: int = 200) -> list[dict]:
+    """Get all validation results with joined device info for dashboard filtering."""
+    from database.db_connection import get_db
+    try:
+        db = get_db()
+        cursor = db["validationResults"].find().sort("updated_at", -1).limit(limit)
+
+        results = []
+        for doc in cursor:
+            device = db["devices"].find_one({"_id": doc.get("device_id")})
+            serialized = _serialize_record(doc)
+            if device:
+                serialized["companyName"] = device.get("companyName", "N/A")
+                serialized["versionModelNumber"] = device.get("versionModelNumber", "N/A")
+            results.append(serialized)
+        return results
+    except Exception as e:
+        logger.warning("get_all_validations_with_devices: %s", e)
+        return []
+
+
 def get_devices(limit: int = 100, skip: int = 0, run_id: str | None = None) -> list[dict]:
     from database.db_connection import get_db
     try:
