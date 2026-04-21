@@ -8,7 +8,6 @@ services:
     env_file:
       - ../.env
     environment:
-      - FIVOS_MONGO_URI=mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@fivos.1bnjrns.mongodb.net/?appName=Fivos
       - OLLAMA_URL=http://ollama:11434/api/chat
     volumes:
       - harvester_output:/app/harvester/output
@@ -24,9 +23,8 @@ services:
     image: mongo:7
     ports:
       - "127.0.0.1:27017:27017"
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+    env_file:
+      - ../.env
     volumes:
       - mongo_data:/data/db
     healthcheck:
@@ -37,8 +35,6 @@ services:
 
   ollama:
     image: ollama/ollama:latest
-    ports:
-      - "127.0.0.1:11434:11434"
     volumes:
       - ollama_models:/root/.ollama
 
