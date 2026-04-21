@@ -488,6 +488,41 @@ def get_devices(limit: int = 100, skip: int = 0, run_id: str | None = None) -> l
         return []
 
 
+def get_devices_with_filter(filter_status: str | None = None, limit: int = 500) -> list[dict]:
+    """Return devices optionally filtered by validation status.
+
+    filter_status: None/'all' → all devices; 'matched'/'partial_match'/'mismatch' → filtered.
+    """
+    from database.db_connection import get_db
+    try:
+        db = get_db()
+        if filter_status and filter_status != "all":
+            cursor = db["validationResults"].find({"status": filter_status}).sort("updated_at", -1).limit(limit)
+            results = []
+            for doc in cursor:
+                device = db["devices"].find_one({"_id": doc.get("device_id")})
+                serialized = _serialize_record(doc)
+                if device:
+                    for field in ("brandName", "companyName", "versionModelNumber", "catalogNumber"):
+                        serialized.setdefault(field, device.get(field))
+                results.append(serialized)
+            return results
+        else:
+            # All devices, join with validation status if available
+            cursor = db["devices"].find().sort("_harvest.harvested_at", -1).limit(limit)
+            results = []
+            for doc in cursor:
+                serialized = _serialize_record(doc)
+                val = db["validationResults"].find_one({"device_id": doc["_id"]})
+                serialized["status"] = val.get("status") if val else None
+                serialized["_val_id"] = str(val["_id"]) if val else None
+                results.append(serialized)
+            return results
+    except Exception as e:
+        logger.warning("get_devices_with_filter: %s", e)
+        return []
+
+
 def get_validation_results(limit: int = 100, skip: int = 0) -> list[dict]:
     from database.db_connection import get_db
     try:

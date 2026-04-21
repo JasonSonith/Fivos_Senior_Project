@@ -295,6 +295,20 @@ a {
     padding: 16px 18px;
 }
 
+a.metric-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: box-shadow 0.15s, border-top-color 0.15s, transform 0.1s;
+}
+
+a.metric-card-link:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    border-top-color: var(--teal-dark, var(--teal-mid));
+    transform: translateY(-2px);
+}
+
 .metric-label {
     margin: 0 0 8px;
     color: var(--muted);

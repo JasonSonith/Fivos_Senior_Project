@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <p class="eyebrow"><a href="/" style="color: inherit; text-decoration: none;">Dashboard</a> &rsaquo; {{ filter_label }}</p>
+        <h1 class="page-title">{{ filter_label }}</h1>
+        <p class="page-description">
+            {% if filter == "all" %}All harvested device records in the database.
+            {% elif filter == "matched" %}Devices that fully matched against GUDID.
+            {% elif filter == "partial_match" %}Devices where some fields differ from GUDID.
+            {% elif filter == "mismatch" %}Devices where no fields matched GUDID.
+            {% endif %}
+        </p>
+    </div>
+    <div class="hero-actions">
+        <a href="/" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+</section>
+
+<div style="display:flex; gap:0.5rem; margin-bottom:1.25rem; flex-wrap:wrap;">
+    <a href="/devices?filter=all" class="btn {% if filter == 'all' %}btn-primary{% else %}btn-secondary{% endif %} btn-sm">All Devices</a>
+    <a href="/devices?filter=matched" class="btn {% if filter == 'matched' %}btn-primary{% else %}btn-secondary{% endif %} btn-sm">Matches</a>
+    <a href="/devices?filter=partial_match" class="btn {% if filter == 'partial_match' %}btn-primary{% else %}btn-secondary{% endif %} btn-sm">Partial Matches</a>
+    <a href="/devices?filter=mismatch" class="btn {% if filter == 'mismatch' %}btn-primary{% else %}btn-secondary{% endif %} btn-sm">Mismatches</a>
+</div>
+
+<section class="panel">
+    <div class="panel-header">
+        <div>
+            <h3>{{ filter_label }} ({{ devices | length }})</h3>
+        </div>
+    </div>
+
+    {% if devices %}
+    <div class="table-wrap">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Brand Name</th>
+                    <th>Company</th>
+                    <th>Model #</th>
+                    <th>Catalog #</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for d in devices %}
+                {% set status = d.status %}
+                <tr>
+                    <td>{{ d.brandName or "N/A" }}</td>
+                    <td>{{ d.companyName or "N/A" }}</td>
+                    <td class="mono">{{ d.versionModelNumber or "N/A" }}</td>
+                    <td class="mono">{{ d.catalogNumber or "N/A" }}</td>
+                    <td>
+                        {% if status == "matched" %}
+                        <span class="badge badge-success">Matched</span>
+                        {% elif status == "partial_match" %}
+                        <span class="badge badge-warning">Partial</span>
+                        {% elif status == "mismatch" %}
+                        <span class="badge badge-danger">Mismatch</span>
+                        {% elif status == "resolved" %}
+                        <span class="badge badge-resolved">Resolved</span>
+                        {% elif status == "gudid_not_found" %}
+                        <span class="badge badge-muted">Not Found</span>
+                        {% else %}
+                        <span class="badge badge-muted">Not Validated</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% set review_id = d._val_id or d._id %}
+                        {% if status in ["partial_match", "mismatch"] and review_id %}
+                        <a href="/review/{{ review_id }}" class="btn btn-primary btn-sm">Review</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>No devices found for this filter.</p>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

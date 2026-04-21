@@ -12,29 +12,29 @@
 </section>
 
 <section class="stats-grid">
-    <div class="metric-card">
+    <a href="/devices?filter=all" class="metric-card metric-card-link">
         <p class="metric-label">Harvested Devices</p>
         <h3 class="metric-value">{{ stats.device_count or 0 }}</h3>
         <p class="metric-foot">Total devices in the database</p>
-    </div>
+    </a>
 
-    <div class="metric-card">
+    <a href="/devices?filter=matched" class="metric-card metric-card-link">
         <p class="metric-label">Matches</p>
         <h3 class="metric-value" style="color: var(--success);">{{ stats.matches or 0 }}</h3>
         <p class="metric-foot">Fully matched against GUDID</p>
-    </div>
+    </a>
 
-    <div class="metric-card">
+    <a href="/devices?filter=partial_match" class="metric-card metric-card-link">
         <p class="metric-label">Partial Matches</p>
         <h3 class="metric-value" style="color: var(--warning);">{{ stats.partial_matches or 0 }}</h3>
         <p class="metric-foot">Some fields differ from GUDID</p>
-    </div>
+    </a>
 
-    <div class="metric-card">
+    <a href="/devices?filter=mismatch" class="metric-card metric-card-link">
         <p class="metric-label">Mismatches</p>
         <h3 class="metric-value" style="color: var(--danger);">{{ stats.mismatches or 0 }}</h3>
         <p class="metric-foot">No fields matched GUDID</p>
-    </div>
+    </a>
 </section>
 
 <div class="quick-actions">
