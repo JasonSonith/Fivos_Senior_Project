@@ -289,6 +289,7 @@ a {
     border-radius: var(--radius-lg);
     padding: 20px;
     box-shadow: var(--shadow);
+    transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
 }
 
 .metric-card.small {
@@ -300,13 +301,29 @@ a.metric-card-link {
     text-decoration: none;
     color: inherit;
     cursor: pointer;
-    transition: box-shadow 0.15s, border-top-color 0.15s, transform 0.1s;
+    position: relative;
+}
+
+a.metric-card-link .metric-foot::after {
+    content: " →";
+    opacity: 0;
+    transition: opacity 150ms ease;
+    color: var(--teal-mid);
+}
+
+a.metric-card-link:hover .metric-foot::after {
+    opacity: 1;
 }
 
 a.metric-card-link:hover {
-    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-    border-top-color: var(--teal-dark, var(--teal-mid));
+    border-color: var(--teal-mid);
+    box-shadow: var(--shadow-md), 0 0 0 1px var(--teal-mid);
     transform: translateY(-2px);
+}
+
+a.metric-card-link:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow);
 }
 
 .metric-label {
