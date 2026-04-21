@@ -48,7 +48,10 @@
       "Bash(PYTHONPATH=/mnt/c/Users/Jason/workspace/Fivos_Senior_Project/harvester/src venv/bin/python3 -m pytest harvester/src/pipeline/tests/test_emitter.py -v)",
       "mcp__MCP_DOCKER__obsidian_list_files_in_dir",
       "mcp__MCP_DOCKER__obsidian_get_file_contents",
-      "mcp__MCP_DOCKER__obsidian_batch_get_file_contents"
+      "mcp__MCP_DOCKER__obsidian_batch_get_file_contents",
+      "mcp__MCP_DOCKER__obsidian_list_files_in_vault",
+      "mcp__MCP_DOCKER__obsidian_simple_search",
+      "mcp__MCP_DOCKER__obsidian_append_content"
     ]
   }
 }
