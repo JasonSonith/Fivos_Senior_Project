@@ -642,6 +642,23 @@ def get_devices(limit: int = 100, skip: int = 0, run_id: str | None = None) -> l
         return []
 
 
+def get_latest_run_id() -> str | None:
+    """Return harvest_run_id of the most recently harvested device, or None."""
+    from database.db_connection import get_db
+    try:
+        db = get_db()
+        last = db["devices"].find_one(
+            {"_harvest.harvest_run_id": {"$exists": True}},
+            sort=[("_harvest.harvested_at", -1)],
+        )
+        if not last:
+            return None
+        return last.get("_harvest", {}).get("harvest_run_id")
+    except Exception as e:
+        logger.warning("get_latest_run_id: %s", e)
+        return None
+
+
 def get_validation_results(limit: int = 100, skip: int = 0) -> list[dict]:
     from database.db_connection import get_db
     try:
