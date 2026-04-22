@@ -14,7 +14,7 @@ This project automates most of that verification work.
 
 **Collect → Compare → Correct**
 
-**The Harvester** crawls manufacturer websites using Playwright and extracts device specs using a 6-model LLM fallback chain (Groq → NVIDIA NIM → local qwen2.5:3b fallback). Extracted records are stored in MongoDB.
+**The Harvester** crawls manufacturer websites using Playwright and extracts device specs using a 5-model LLM fallback chain (local gemma4:e4b primary → NVIDIA NIM → Groq). Extracted records are stored in MongoDB.
 
 **The Validator** compares harvested records against the FDA's GUDID API — model numbers, catalog numbers, brand names, company names, and description similarity.
 
@@ -32,7 +32,7 @@ flowchart LR
     PW --> HTML[(out_html/)]
 
     HTML --> PARALLEL[parallel_batch<br/>ThreadPool × 4]
-    PARALLEL --> LLM[LLM Chain<br/>Groq → NVIDIA → qwen2.5:3b fallback<br/>per-provider semaphores]
+    PARALLEL --> LLM[LLM Chain<br/>gemma4:e4b → NVIDIA → Groq<br/>per-provider semaphores]
     OLLAMA[/Ollama/] <--> LLM
     CLOUD[/Groq + NVIDIA/] <--> LLM
     LLM --> NORM[Normalize + Regulatory<br/>+ Record Validate]
@@ -126,9 +126,9 @@ Run these from the `docker/` folder (`cd docker` first). To run them from anywhe
 - **`app`** — FastAPI dashboard + harvester pipeline, port 8000
 - **`mongo`** — MongoDB 7, localhost-only port 27017, persisted to `mongo_data` volume
 - **`ollama`** — Ollama server (CPU), localhost-only port 11434, model in `ollama_models` volume
-- **`ollama-init`** — one-shot container that pulls `qwen2.5:3b` (~2 GB) on first run
+- **`ollama-init`** — one-shot container that pulls `gemma4:e4b` on first run
 
-Cloud LLMs (Groq, NVIDIA NIM) handle extraction by default. The local `qwen2.5:3b` only runs when both cloud providers are unreachable.
+Local `gemma4:e4b` is the primary extractor. Cloud LLMs (Groq, NVIDIA NIM) absorb overflow when the Ollama semaphore is saturated and serve as full fallback when the local model fails.
 
 #### Environment Variables
 
@@ -196,7 +196,7 @@ pytest -v     # verbose
 
 ## Key Features
 
-- LLM-powered extraction with 6-model fallback chain (Groq → NVIDIA → local qwen2.5:3b fallback)
+- LLM-powered extraction with 5-model fallback chain (local gemma4:e4b primary → NVIDIA → Groq)
 - Parallel batch extraction (4 workers) with per-provider concurrency caps and non-blocking fall-through — ~6× faster than sequential on 28-URL runs
 - Two-pass extraction: page-level fields + product table rows (one record per SKU)
 - 15 fields extracted per device including regulatory compliance (NRL, OTC, sterilization, deviceKit, 510k numbers)

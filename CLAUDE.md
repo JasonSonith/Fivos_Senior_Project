@@ -34,7 +34,7 @@ docker compose logs -f app           # Tail FastAPI logs
 docker compose exec app bash         # Shell into app container
 ```
 
-First run downloads `qwen2.5:3b` (~2GB) into the `ollama_models` named volume via the `ollama-init` sidecar. Cloud LLMs (Groq, NVIDIA) are primary; the local model only runs when cloud is unreachable. GPU passthrough is opt-in via `docker compose -f docker-compose.yml -f docker-compose.gpu.yml up` (requires NVIDIA Container Toolkit).
+First run downloads `gemma4:e4b` into the `ollama_models` named volume via the `ollama-init` sidecar. The local `gemma4:e4b` is the primary extractor; cloud LLMs (Groq, NVIDIA) absorb overflow and serve as fallback. GPU passthrough is opt-in via `docker compose -f docker-compose.yml -f docker-compose.gpu.yml up` (requires NVIDIA Container Toolkit).
 
 ### Pipeline CLI (`harvester/src/pipeline/runner.py`)
 
@@ -55,22 +55,21 @@ In Docker, compose overrides `FIVOS_MONGO_URI` → `mongodb://mongo:27017/fivos`
 
 ```
 Manufacturing Website → Playwright scraper → Raw HTML (web-scraper/out_html/)
-  → LLM extraction (6-model fallback chain) → normalize → validate → GUDID JSON (harvester/output/)
+  → LLM extraction (5-model fallback chain) → normalize → validate → GUDID JSON (harvester/output/)
   → MongoDB (devices) → GUDID API validation → Review Dashboard (FastAPI)
 ```
 
 ### LLM Fallback Chain (`pipeline/llm_extractor.py`)
 
 ```
-1. Groq   llama-3.3-70b-versatile       (primary, fastest cloud)
-2. Groq   llama-3.1-8b-instant          (separate Groq limits)
-3. NVIDIA meta/llama-3.3-70b-instruct   (40 RPM, generous limits)
-4. NVIDIA mistralai/mistral-large       (40 RPM)
-5. NVIDIA google/gemma-2-27b-it         (40 RPM)
-6. Ollama qwen2.5:3b                    (local fallback, ~2GB)
+1. Ollama gemma4:e4b                    (primary, most capable per user judgment)
+2. NVIDIA mistralai/mistral-large       (~123B, strongest cloud)
+3. Groq   llama-3.3-70b-versatile       (70B, fastest provider)
+4. NVIDIA meta/llama-3.3-70b-instruct   (70B, slower-provider backup)
+5. Groq   llama-3.1-8b-instant          (8B, last resort)
 ```
 
-Cloud-first: Groq/NVIDIA handle normal load; local Ollama only runs when both cloud providers are unreachable. Tries top-to-bottom. On rate limit < 60s: retries once. On daily limit or long wait: disables model for session, moves to next. Groq/NVIDIA use same OpenAI-compatible `_openai_request()`. Ollama uses `/api/chat`.
+Local-first: gemma4:e4b is primary; cloud models absorb overflow when the Ollama semaphore is saturated and serve as fallback when the local model fails. Tries top-to-bottom. On rate limit < 60s: retries once. On daily limit or long wait: disables model for session, moves to next. Groq/NVIDIA use same OpenAI-compatible `_openai_request()`. Ollama uses `/api/chat`.
 
 **Parallel batch mode:** `ThreadPoolExecutor(max_workers=4)` runs multiple files through the chain concurrently via `pipeline/parallel_batch.py`. Each model has a per-provider semaphore (`OLLAMA_CONCURRENCY=1`, `GROQ_CONCURRENCY=3`, `NVIDIA_CONCURRENCY=4`) acquired non-blocking — workers fall through to the next model when a provider is saturated instead of queueing. Cloud providers carry the load; Ollama stays at 1× for CPU-safe hosts. Thread-safety: `_last_model_used` is `threading.local()`, `_disabled_models` writes are locked.
 
@@ -109,7 +108,7 @@ Cloud-first: Groq/NVIDIA handle normal load; local Ollama only runs when both cl
 | Component | Role | Triggered by |
 |-----------|------|-------------|
 | **Web Scraper** (`web_scraper/scraper.py`) | Playwright HTML fetcher | `runner.py --urls` |
-| **LLM Extractor** (`pipeline/llm_extractor.py`) | Primary extractor, 6-model chain | Every file in pipeline |
+| **LLM Extractor** (`pipeline/llm_extractor.py`) | Primary extractor, 5-model chain | Every file in pipeline |
 | **Site Adapters** (`site_adapters/*.yaml`) | CSS selectors, optional override | `--adapter` flag only |
 | **Pipeline** (`pipeline/runner.py`) | End-to-end orchestration | CLI or web UI |
 
