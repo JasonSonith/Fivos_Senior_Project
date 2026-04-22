@@ -17,17 +17,17 @@ NVIDIA_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434/api/chat")
 
 MODEL_CHAIN = [
-    {"provider": "groq",   "model": "llama-3.3-70b-versatile",     "env_key": "GROQ_API_KEY"},
-    {"provider": "groq",   "model": "llama-3.1-8b-instant",        "env_key": "GROQ_API_KEY"},
-    {"provider": "nvidia", "model": "meta/llama-3.3-70b-instruct", "env_key": "NVIDIA_API_KEY"},
+    {"provider": "ollama", "model": "gemma4:e4b"},
     {"provider": "nvidia", "model": "mistralai/mistral-large",     "env_key": "NVIDIA_API_KEY"},
-    {"provider": "nvidia", "model": "google/gemma-2-27b-it",       "env_key": "NVIDIA_API_KEY"},
-    {"provider": "ollama", "model": "qwen2.5:3b"},
+    {"provider": "groq",   "model": "llama-3.3-70b-versatile",     "env_key": "GROQ_API_KEY"},
+    {"provider": "nvidia", "model": "meta/llama-3.3-70b-instruct", "env_key": "NVIDIA_API_KEY"},
+    {"provider": "groq",   "model": "llama-3.1-8b-instant",        "env_key": "GROQ_API_KEY"},
 ]
 
-# Concurrency knobs — tuned for cloud-first chain + single small local fallback.
-# Groq/NVIDIA caps match free-tier rate limits; Ollama stays at 1 for CPU hosts.
-# See docs/superpowers/specs/2026-04-08-llm-extractor-parallelization-design.md
+# Concurrency knobs — gemma4:e4b is primary (local-first, capability-ordered chain).
+# OLLAMA_CONCURRENCY=1 keeps CPU hosts safe; cloud workers absorb overflow when
+# the Ollama semaphore is saturated. Groq/NVIDIA caps match free-tier rate limits.
+# See docs/superpowers/specs/2026-04-21-llm-chain-gemma4-swap-design.md
 EXTRACT_WORKERS = 4
 OLLAMA_CONCURRENCY = 1   # serialize on CPU-only hosts
 GROQ_CONCURRENCY = 3     # ~30 RPM free tier
