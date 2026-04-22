@@ -107,7 +107,7 @@
                     <td>
                         {% if d.status in ["partial_match", "mismatch"] %}
                         <a href="/review/{{ d._id }}" class="btn btn-primary btn-sm">Review</a>
-                        {% elif d.status == "matched" %}
+                        {% elif d.status == "matched" and d._id %}
                         <a href="/review/{{ d._id }}" class="btn btn-secondary btn-sm">More Information</a>
                         {% elif d.status == "resolved" %}
                         <span style="color: var(--accent-3); font-size: 13px;">Resolved</span>

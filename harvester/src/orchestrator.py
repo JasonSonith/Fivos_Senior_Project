@@ -564,8 +564,18 @@ def get_all_dashboard_records() -> list[dict]:
         db = get_db()
         results = []
 
-        # Verified devices = "matched"
-        for doc in db["verified_devices"].find().sort("verified_at", -1):
+        # Verified devices = "matched". Batch-fetch matching validation IDs so the
+        # dashboard's More Information link resolves to /review/{validation_id}.
+        verified_docs = list(db["verified_devices"].find().sort("verified_at", -1))
+        source_ids = [d["source_device_id"] for d in verified_docs if d.get("source_device_id") is not None]
+        matched_validations_by_device_id = {
+            v["device_id"]: v["_id"]
+            for v in db["validationResults"].find(
+                {"device_id": {"$in": source_ids}, "status": "matched"}
+            ).sort("updated_at", -1)
+        }
+
+        for doc in verified_docs:
             serialized = _serialize_record(doc)
             serialized["status"] = "matched"
             serialized["companyName"] = doc.get("companyName", "N/A")
@@ -574,6 +584,8 @@ def get_all_dashboard_records() -> list[dict]:
             serialized["matched_fields"] = None
             serialized["total_fields"] = None
             serialized["match_percent"] = None
+            validation_id = matched_validations_by_device_id.get(doc.get("source_device_id"))
+            serialized["_id"] = str(validation_id) if validation_id else None
             results.append(serialized)
 
         # Partial match and mismatch from validation results
