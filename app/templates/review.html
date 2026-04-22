@@ -3,12 +3,20 @@
 {% block content %}
 <section class="hero">
     <div>
+        {% if mode == "info" %}
+        <p class="eyebrow">Device Details</p>
+        <h1 class="page-title">{{ device.brandName or "Device" }} &mdash; <span class="mono">{{ device.versionModelNumber or "N/A" }}</span></h1>
+        <p class="page-description">
+            All tracked fields match GUDID. Below is the harvested record.
+        </p>
+        {% else %}
         <p class="eyebrow">Discrepancy Review</p>
         <h1 class="page-title">{{ device.brandName or "Device" }} &mdash; <span class="mono">{{ device.versionModelNumber or "N/A" }}</span></h1>
         <p class="page-description">
             Compare harvested values against GUDID and pick the correct value for each field.
             Your choices will update the device record in the database.
         </p>
+        {% endif %}
     </div>
     <div class="hero-actions">
         <a href="/" class="btn btn-secondary">Back to Dashboard</a>
@@ -19,7 +27,9 @@
     <div class="metric-card small">
         <p class="metric-label">Status</p>
         <h3 class="metric-value">
-            {% if validation.status == "partial_match" %}
+            {% if validation.status == "matched" %}
+            <span style="color: var(--success);">Matched</span>
+            {% elif validation.status == "partial_match" %}
             <span style="color: var(--warning);">Partial Match</span>
             {% elif validation.status == "mismatch" %}
             <span style="color: var(--danger);">Mismatch</span>
@@ -42,6 +52,30 @@
     </div>
 </section>
 
+{% if mode == "info" %}
+<section class="panel">
+    <div class="panel-header">
+        <div>
+            <h3>Harvested Values</h3>
+            <p>Fields collected from the manufacturer website. All values match the corresponding GUDID record.</p>
+        </div>
+    </div>
+
+    <div class="review-field-row" style="border-bottom: 2px solid var(--border); padding-bottom: 10px; grid-template-columns: 1fr 2fr;">
+        <div class="review-field-name" style="padding-top:0;">Field</div>
+        <div style="font-weight: 700; color: var(--accent-2); font-size: 11px; text-transform: uppercase; letter-spacing: .07em;">Value</div>
+    </div>
+
+    {% for f in fields %}
+    <div class="review-field-row" style="grid-template-columns: 1fr 2fr;">
+        <div class="review-field-name">{{ f.label }}</div>
+        <div class="review-value harvested">
+            {% if f.harvested is none %}N/A{% else %}{{ f.harvested }}{% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</section>
+{% else %}
 <form method="post" action="/review/{{ validation_id }}/save">
     <input type="hidden" name="csrf_token" value="{{ request.session.csrf_token }}">
     <section class="panel">
@@ -52,7 +86,6 @@
             </div>
         </div>
 
-        <!-- Column headers -->
         <div class="review-field-row" style="border-bottom: 2px solid var(--border); padding-bottom: 10px;">
             <div class="review-field-name" style="padding-top:0;">Field</div>
             <div style="font-weight: 700; color: var(--accent-2); font-size: 11px; text-transform: uppercase; letter-spacing: .07em;">Harvested Value</div>
@@ -105,4 +138,5 @@
         <a href="/" class="btn btn-secondary">Cancel</a>
     </div>
 </form>
+{% endif %}
 {% endblock %}

@@ -36,6 +36,8 @@ def review_page(request: Request, validation_id: str):
     comparison = validation.get("comparison_result") or {}
     gudid_record = validation.get("gudid_record") or {}
 
+    mode = "info" if validation.get("status") == "matched" else "review"
+
     fields = []
     for field_key, field_label in COMPARED_FIELDS:
         comp = comparison.get(field_key, {})
@@ -68,6 +70,7 @@ def review_page(request: Request, validation_id: str):
             "validation": validation,
             "device": device,
             "fields": fields,
+            "mode": mode,
             "current_user": user,
         },
     )
