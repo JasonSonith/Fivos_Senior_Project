@@ -439,6 +439,21 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
         _merge_gudid_into_device(db, device, gudid_record)
 
     result["success"] = True
+
+    # Remove JSON files from output dir so next validation only sees new harvests.
+    output_dir = os.path.abspath(_DEFAULT_OUTPUT_DIR)
+    removed = 0
+    if os.path.isdir(output_dir):
+        for fname in os.listdir(output_dir):
+            if fname.endswith(".json"):
+                try:
+                    os.remove(os.path.join(output_dir, fname))
+                    removed += 1
+                except OSError as e:
+                    logger.warning("Could not remove %s: %s", fname, e)
+    logger.info("Cleaned up %d JSON file(s) from %s", removed, output_dir)
+    result["cleaned_up"] = removed
+
     return result
 
 

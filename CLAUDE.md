@@ -17,7 +17,7 @@
 pip install -r requirements.txt && playwright install   # Install
 pytest                                                   # All tests
 python harvester/src/pipeline/cli.py                     # Interactive CLI menu
-uvicorn app.main:app --port 8000                         # Web dashboard
+python run.py                                            # Web dashboard (http://localhost:8500)
 ```
 
 ### Docker (full stack)
@@ -49,7 +49,7 @@ python harvester/src/pipeline/runner.py --input <html> --adapter <yaml>         
 ## Environment
 Copy `.env.example` → `.env`. Required: `FIVOS_MONGO_URI`, `GROQ_API_KEY`, `NVIDIA_API_KEY`, `AUTH_SECRET_KEY`. Optional: `OLLAMA_URL` (defaults to `http://localhost:11434/api/chat`; compose overrides to `http://ollama:11434/api/chat`), `UVICORN_RELOAD` (default `false`; set to the literal string `true`, case-insensitive, for local dev auto-reload — `1`, `yes`, `on` do not work).
 
-In Docker, compose overrides `FIVOS_MONGO_URI` → `mongodb://mongo:27017/fivos` and `OLLAMA_URL` → `http://ollama:11434/api/chat`. The rest of `.env` is injected via `env_file`.
+In Docker, compose overrides `OLLAMA_URL` → `http://ollama:11434/api/chat`. `FIVOS_MONGO_URI` and the rest of `.env` are injected from the project-root `.env` via `env_file`. The stack points at MongoDB Atlas; there is no local mongo service.
 
 ## Architecture
 
@@ -146,6 +146,6 @@ After validation, `_merge_gudid_into_device()` in `orchestrator.py` fills null d
 ## Docs
 
 - `docs/Fivos - Project Overview.md` — High-level project overview
-- `docs/Team Roles -Harvester Agent.md` — Team roles
-- `docs/Jason - Todo.md` — Jason's todo list
+- `docs/Fivos - Data Flow Diagram.md` — End-to-end DFD with auth, logging, phase boundaries
+- `docs/Fivos - ZAP Scan Vulnerability Report.pdf` — OWASP ZAP baseline scan results (58 PASS, 0 FAIL)
 - `docs/Target Brands.xlsx` — Target manufacturer brands

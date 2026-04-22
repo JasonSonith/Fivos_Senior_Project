@@ -5,6 +5,9 @@ services:
       dockerfile: docker/Dockerfile
     ports:
       - "8500:8500"
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     env_file:
       - ../.env
     environment:
