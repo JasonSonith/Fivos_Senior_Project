@@ -42,12 +42,12 @@ def test_non_blocking_sem_falls_through_when_saturated():
                     timeout=5,
                 )
         assert result == {"device_name": "FALLBACK"}
-        # The chain must have fallen through gemma4 to a Groq model
+        # The chain must have fallen through Ollama to any cloud provider
         chosen = get_last_model()
         chosen_provider = next(
             e["provider"] for e in llm_extractor.MODEL_CHAIN if e["model"] == chosen
         )
-        assert chosen_provider == "groq"
+        assert chosen_provider in {"groq", "nvidia"}
     finally:
         llm_extractor._provider_sems["ollama"].release()
 
