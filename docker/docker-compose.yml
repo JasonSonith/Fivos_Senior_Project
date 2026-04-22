@@ -50,7 +50,7 @@ services:
     entrypoint: >
       sh -c "
         sleep 5 &&
-        ollama pull qwen2.5:3b &&
+        ollama pull gemma4:e4b &&
         echo 'Model ready'
       "
     restart: "no"
