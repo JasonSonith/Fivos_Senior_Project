@@ -55,7 +55,7 @@ See [`docs/Fivos - Data Flow Diagram.md`](docs/Fivos%20-%20Data%20Flow%20Diagram
 |---|---|
 | Language | Python 3.13.7 |
 | Web Scraping | Playwright (async, headless Chromium) |
-| AI / LLM | Groq + NVIDIA NIM (cloud) → Ollama (local fallback) |
+| AI / LLM | Ollama gemma4:e4b (local primary) → Groq + NVIDIA NIM (cloud overflow + fallback) |
 | Database | MongoDB |
 | Web UI | FastAPI + Jinja2 |
 | Auth | bcrypt + HIBP breach check |

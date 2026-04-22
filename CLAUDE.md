@@ -71,7 +71,7 @@ Manufacturing Website → Playwright scraper → Raw HTML (web-scraper/out_html/
 
 Local-first: gemma4:e4b is primary; cloud models absorb overflow when the Ollama semaphore is saturated and serve as fallback when the local model fails. Tries top-to-bottom. On rate limit < 60s: retries once. On daily limit or long wait: disables model for session, moves to next. Groq/NVIDIA use same OpenAI-compatible `_openai_request()`. Ollama uses `/api/chat`.
 
-**Parallel batch mode:** `ThreadPoolExecutor(max_workers=4)` runs multiple files through the chain concurrently via `pipeline/parallel_batch.py`. Each model has a per-provider semaphore (`OLLAMA_CONCURRENCY=1`, `GROQ_CONCURRENCY=3`, `NVIDIA_CONCURRENCY=4`) acquired non-blocking — workers fall through to the next model when a provider is saturated instead of queueing. Cloud providers carry the load; Ollama stays at 1× for CPU-safe hosts. Thread-safety: `_last_model_used` is `threading.local()`, `_disabled_models` writes are locked.
+**Parallel batch mode:** `ThreadPoolExecutor(max_workers=4)` runs multiple files through the chain concurrently via `pipeline/parallel_batch.py`. Each model has a per-provider semaphore (`OLLAMA_CONCURRENCY=1`, `GROQ_CONCURRENCY=3`, `NVIDIA_CONCURRENCY=4`) acquired non-blocking — workers fall through to the next model when a provider is saturated instead of queueing. Local gemma4:e4b absorbs roughly 1 of every 4 batched files; cloud workers handle the rest. Ollama stays at 1× for CPU-safe hosts. Thread-safety: `_last_model_used` is `threading.local()`, `_disabled_models` writes are locked.
 
 ### Extraction (Two-Pass)
 
@@ -141,7 +141,7 @@ After validation, `_merge_gudid_into_device()` in `orchestrator.py` fills null d
 | Validation | FDA GUDID API v3 |
 | Web UI | FastAPI + Jinja2 (light mode, Fira Sans/Fira Code) |
 | Auth | bcrypt (work factor 12) + HIBP k-anonymity breach check |
-| AI | Groq + NVIDIA NIM (cloud) → Ollama (local fallback) |
+| AI | Ollama gemma4:e4b (local primary) → Groq + NVIDIA NIM (cloud overflow + fallback) |
 
 ## Docs
 
