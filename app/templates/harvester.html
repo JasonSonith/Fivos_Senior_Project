@@ -47,8 +47,12 @@
         <form method="post" action="/harvester/run-batch" enctype="multipart/form-data" class="form-grid-modern">
             <input type="hidden" name="csrf_token" value="{{ request.session.csrf_token }}">
             <div class="field">
-                <label for="file">Upload URL List (.txt)</label>
-                <input id="file" type="file" name="file" accept=".txt" required>
+                <label>Upload URL List (.txt)</label>
+                <div class="file-picker">
+                    <label for="file" class="btn btn-secondary">Choose File</label>
+                    <input id="file" type="file" name="file" accept=".txt" required hidden>
+                    <span id="file-name" class="file-name">No file chosen</span>
+                </div>
             </div>
             <p style="color: var(--muted); font-size: 13px; margin: 0;">
                 One URL per line. Lines starting with # are ignored.
@@ -148,6 +152,11 @@ function switchTab(tab) {
     document.getElementById('tab-' + tab).classList.add('active');
     event.target.classList.add('active');
 }
+
+document.getElementById('file').addEventListener('change', function(e) {
+    const name = e.target.files[0] ? e.target.files[0].name : 'No file chosen';
+    document.getElementById('file-name').textContent = name;
+});
 </script>
 
 {% if job_id %}
