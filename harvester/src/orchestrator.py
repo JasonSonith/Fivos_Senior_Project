@@ -56,6 +56,15 @@ def _is_null_list(value) -> bool:
     return value is None or (isinstance(value, list) and len(value) == 0)
 
 
+def _derive_outcome(matched_fields: int, total_fields: int) -> str:
+    """Translate unweighted match counts into the validationResults status string."""
+    if matched_fields == total_fields:
+        return "matched"
+    if matched_fields > 0:
+        return "partial_match"
+    return "mismatch"
+
+
 def _merge_gudid_into_device(db, device: dict, gudid_record: dict) -> list[str]:
     """Fill null device fields with GUDID values. Returns list of fields filled."""
     updates = {}
@@ -456,14 +465,12 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
         ) if summary["denominator"] else 0.0
         description_similarity = comparison.get("deviceDescription", {}).get("similarity") or 0.0
 
-        if matched_fields == total_fields:
-            status = "matched"
+        status = _derive_outcome(matched_fields, total_fields)
+        if status == "matched":
             result["full_matches"] += 1
-        elif matched_fields > 0:
-            status = "partial_match"
+        elif status == "partial_match":
             result["partial_matches"] += 1
         else:
-            status = "mismatch"
             result["mismatches"] += 1
 
         if gudid_record.get("productCodes") and _is_null_list(device.get("productCodes")):
