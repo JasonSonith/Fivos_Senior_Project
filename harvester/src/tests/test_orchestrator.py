@@ -61,14 +61,18 @@ class TestRunValidationNotFound:
         mock_db.__getitem__ = MagicMock(side_effect=lambda key: collections.get(key, MagicMock()))
 
         full_match_comparison = {
-            "versionModelNumber": {"harvested": "M-2", "gudid": "M-2", "match": True},
-            "catalogNumber": {"harvested": "CAT-002", "gudid": "CAT-002", "match": True},
-            "brandName": {"harvested": "Acme", "gudid": "Acme", "match": True},
-            "companyName": {"harvested": "ACME INC", "gudid": "ACME INC", "match": True},
-            "deviceDescription": {"harvested": "desc", "gudid": "desc", "description_similarity": 1.0},
-            "MRISafetyStatus": {"harvested": None, "gudid": None, "match": None},
-            "singleUse": {"harvested": None, "gudid": None, "match": None},
-            "rx": {"harvested": None, "gudid": None, "match": None},
+            "versionModelNumber": {"harvested": "M-2", "gudid": "M-2", "status": "match"},
+            "catalogNumber": {"harvested": "CAT-002", "gudid": "CAT-002", "status": "match"},
+            "brandName": {"harvested": "Acme", "gudid": "Acme", "status": "match"},
+            "companyName": {"harvested": "ACME INC", "gudid": "ACME INC", "status": "match"},
+            "deviceDescription": {"harvested": "desc", "gudid": "desc", "status": "match", "similarity": 1.0},
+            "MRISafetyStatus": {"harvested": None, "gudid": None, "status": "not_compared"},
+            "singleUse": {"harvested": None, "gudid": None, "status": "not_compared"},
+            "rx": {"harvested": None, "gudid": None, "status": "not_compared"},
+        }
+        full_match_summary = {
+            "numerator": 12, "denominator": 12,
+            "unweighted_numerator": 4, "unweighted_denominator": 4,
         }
 
         gudid_record = {"versionModelNumber": "M-2", "catalogNumber": "CAT-002",
@@ -78,7 +82,7 @@ class TestRunValidationNotFound:
              patch("validators.gudid_client.fetch_gudid_record",
                    side_effect=[(None, None), ("DI-123", gudid_record)]), \
              patch("validators.comparison_validator.compare_records",
-                   return_value=full_match_comparison):
+                   return_value=(full_match_comparison, full_match_summary)):
             from orchestrator import run_validation
             result = run_validation()
 

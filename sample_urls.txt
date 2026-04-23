@@ -1,5 +1,3 @@
-# Fivos demo sample — paste this file into the Batch Upload tab on /harvester.
-# Five manufacturers, five device types. ~2 minutes to harvest end-to-end.
 
 https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html
 https://www.goremedical.com/products/vbx/specifications

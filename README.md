@@ -88,8 +88,8 @@ Everything needed — Python, Playwright, Ollama, MongoDB, a small local LLM —
 
 1. **Docker Desktop** (Mac / Windows) or Docker Engine + Compose v2 (Linux).
    Install from https://www.docker.com/products/docker-desktop/.
-2. **~8 GB free disk space** — image layers, MongoDB volume, one small local model.
-3. **Internet for first run** — downloads the image + a ~2 GB local LLM.
+2. **~8 GB free disk space** — image layers, one local model, harvested output and log volumes.
+3. **Internet for first run** — downloads the image + a ~3 GB local LLM (`gemma4:e4b`).
 
 #### Steps
 
@@ -101,7 +101,7 @@ Everything needed — Python, Playwright, Ollama, MongoDB, a small local LLM —
    docker compose up
    ```
    First run takes ~5–10 minutes (image build + local model pull). After that, starts in seconds.
-4. Open http://localhost:8000 in your browser.
+4. Open http://localhost:8500 in your browser.
 5. Log in with **admin@fivos.local / admin123** — you'll be forced to set a new password.
 6. Open the **Harvester** page. In the **Batch Upload** tab, upload `sample_urls.txt` (included in the project root). Wait ~2 minutes.
 7. The Dashboard now shows harvested devices and validation results. Click any "Partial Match" or "Mismatch" row to review discrepancies field-by-field.
@@ -123,25 +123,26 @@ Run these from the `docker/` folder (`cd docker` first). To run them from anywhe
 
 #### Services
 
-- **`app`** — FastAPI dashboard + harvester pipeline, port 8000
-- **`mongo`** — MongoDB 7, localhost-only port 27017, persisted to `mongo_data` volume
-- **`ollama`** — Ollama server (CPU), localhost-only port 11434, model in `ollama_models` volume
+- **`app`** — FastAPI dashboard + harvester pipeline, port 8500
+- **`ollama`** — Ollama server, reached by `app` over the compose network; model cached in `ollama_models` volume
 - **`ollama-init`** — one-shot container that pulls `gemma4:e4b` on first run
+
+Database is **MongoDB Atlas** — the `FIVOS_MONGO_URI` in the delivered `.env` points at the hosted cluster, so no local mongo service is needed.
 
 Local `gemma4:e4b` is the primary extractor. Cloud LLMs (Groq, NVIDIA NIM) absorb overflow when the Ollama semaphore is saturated and serve as full fallback when the local model fails.
 
 #### Environment Variables
 
+- `FIVOS_MONGO_URI` — MongoDB Atlas connection string (`mongodb+srv://...`). Delivered out of band by Jason for the client install.
 - `GROQ_API_KEY`, `NVIDIA_API_KEY` — cloud LLM keys. Delivered out of band by Jason for the client install.
-- `MONGO_USERNAME`, `MONGO_PASSWORD` — database auth. `MONGO_PASSWORD` must be set; compose fails fast otherwise.
 - `AUTH_SECRET_KEY` — FastAPI session cookie secret. Any 32+ character random string.
 - `UVICORN_RELOAD` — set to the literal string `true` (case-insensitive) for dev auto-reload. Default `false`. `1`, `yes`, and `on` do NOT work.
 
 #### Troubleshooting
 
-**Port conflict on 8000 / 27017 / 11434** — something on the host already uses that port. Stop the conflicting process or edit the `ports:` mappings in `docker/docker-compose.yml`.
+**Port conflict on 8500** — something on the host already uses port 8500. Stop the conflicting process or edit the `ports:` mapping in `docker/docker-compose.yml`. On Windows, Hyper-V reserves dynamic port ranges; run `netsh interface ipv4 show excludedportrange protocol=tcp` to see what's excluded and pick a port outside those ranges.
 
-**`app` crashes with "connection refused" to mongo** — the mongo healthcheck hasn't passed yet. `depends_on: condition: service_healthy` normally prevents this; if it persists, check `docker compose logs mongo`.
+**`app` can't reach MongoDB Atlas** — check that `FIVOS_MONGO_URI` in `.env` is the `mongodb+srv://...` string Jason provided, and that outbound traffic to `*.mongodb.net` on port 27017 isn't blocked by your firewall.
 
 **`ollama-init` hangs on `ollama pull`** — the Ollama CDN is unreachable. Check internet connectivity. If you're on a corporate network that blocks Docker Hub or Ollama, ask your network admin to whitelist `registry.ollama.ai` and `hub.docker.com`.
 
@@ -162,7 +163,7 @@ For non-Docker dev (local Python / hot-reload):
 python3.13 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt && playwright install
 cp .env.example .env   # fill in FIVOS_MONGO_URI, GROQ_API_KEY, NVIDIA_API_KEY, AUTH_SECRET_KEY
-uvicorn app.main:app --port 8000 --reload
+UVICORN_RELOAD=true python run.py   # hot-reload dev server on http://localhost:8500
 # or run the CLI directly:
 python harvester/src/pipeline/cli.py
 ```

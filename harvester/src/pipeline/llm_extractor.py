@@ -7,6 +7,7 @@ import time
 
 import requests
 from dotenv import load_dotenv
+from pipeline.regulatory_parser import extract_premarket_submissions
 
 load_dotenv()
 
@@ -71,10 +72,6 @@ PAGE_FIELDS_SCHEMA = {
         "warning_text": {"type": ["string", "null"]},
         "MRISafetyStatus": {"type": ["string", "null"]},
         "deviceKit": {"type": ["boolean", "null"]},
-        "premarketSubmissions": {
-            "type": ["array", "null"],
-            "items": {"type": "string"},
-        },
         "environmentalConditions": {
             "type": ["object", "null"],
             "properties": {
@@ -84,6 +81,9 @@ PAGE_FIELDS_SCHEMA = {
                 },
             },
         },
+        "indicationsForUse": {"type": ["string", "null"]},
+        "contraindications": {"type": ["string", "null"]},
+        "deviceClass":       {"type": ["string", "null"], "enum": ["I", "II", "III", None]},
     },
     "required": ["device_name", "manufacturer", "description"],
 }
@@ -149,12 +149,15 @@ Include text about single-use, Rx only, sterility, contraindications. null if no
 - MRISafetyStatus: One of "MR Safe", "MR Conditional", "MR Unsafe", or null if not stated on the page.
 - deviceKit: true if this product is sold as a kit or system containing multiple distinct components \
 packaged together, false if it is a single standalone device, null if unclear.
-- premarketSubmissions: A JSON array of FDA premarket submission numbers found on the page \
-(e.g. ["K123456", "P210034"]). These start with K (510k) or P (PMA) followed by digits. \
-null if none found.
 - environmentalConditions: An object with a "conditions" array of storage/handling condition strings \
 found on the page (e.g. {{"conditions": ["Store between 15-30°C", "Keep away from humidity > 85%"]}}). \
 null if storage conditions are not stated on the page.
+- indicationsForUse: Copy the "Indications for Use" section verbatim as free text. \
+Typically appears as a paragraph near the top of the page. null if not present.
+- contraindications: Copy the "Contraindications" section verbatim as free text. \
+null if not present.
+- deviceClass: FDA device class ("I", "II", or "III") if explicitly stated on the page. \
+null if not stated. Only return one of those three literal values.
 
 Page text:
 {visible_text}"""
@@ -427,7 +430,8 @@ def extract_product_rows(table_text: str, device_name: str = "", model: str | No
 
 _PAGE_LEVEL_FIELDS = (
     "device_name", "manufacturer", "description", "warning_text",
-    "MRISafetyStatus", "deviceKit", "premarketSubmissions", "environmentalConditions",
+    "MRISafetyStatus", "deviceKit", "environmentalConditions",
+    "indicationsForUse", "contraindications", "deviceClass",
 )
 
 
@@ -442,14 +446,23 @@ def extract_all_fields(visible_text: str, table_text: str | None = None, model: 
 
     source = get_last_model() or "unknown"
 
+    combined_text = " ".join(filter(None, [
+        page_fields.get("warning_text"),
+        page_fields.get("description"),
+        page_fields.get("indicationsForUse"),
+    ]))
+    premarket = extract_premarket_submissions(combined_text)
+
     if not products:
         page_fields["_description_source"] = source
+        page_fields["premarketSubmissions"] = premarket
         return [page_fields]
 
     records = []
     for product in products:
         merged = {field: page_fields.get(field) for field in _PAGE_LEVEL_FIELDS}
         merged["_description_source"] = source
+        merged["premarketSubmissions"] = premarket
         merged["model_number"] = product.get("model_number")
         merged["catalog_number"] = product.get("catalog_number")
         for dim in ("diameter", "length", "width", "height", "weight", "volume", "pressure"):

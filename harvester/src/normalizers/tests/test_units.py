@@ -321,3 +321,29 @@ class TestManufacturerNormalization:
 
     def test_non_string_input(self):
         assert normalize_manufacturer(42) is None
+
+
+class TestFrenchConversion:
+
+    def test_french_to_mm(self):
+        result = normalize_measurement('6 Fr')
+        assert result['unit'] == 'mm'
+        assert result['value'] == pytest.approx(2.0, abs=1e-3)
+
+    def test_french_lowercase(self):
+        result = normalize_measurement('6 fr')
+        assert result['unit'] == 'mm'
+        assert result['value'] == pytest.approx(2.0, abs=1e-3)
+
+    def test_french_word(self):
+        result = normalize_measurement('9 french')
+        assert result['unit'] == 'mm'
+        assert result['value'] == pytest.approx(3.0, abs=1e-3)
+
+    def test_french_range(self):
+        result = normalize_measurement('5-7 Fr')
+        assert result['unit'] == 'mm'
+        assert result['is_range'] is True
+        assert result['value'] == pytest.approx(2.0, abs=1e-3)
+        assert result['range_low'] == pytest.approx(5 / 3, abs=1e-3)
+        assert result['range_high'] == pytest.approx(7 / 3, abs=1e-3)

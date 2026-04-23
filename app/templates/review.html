@@ -23,6 +23,15 @@
     </div>
 </section>
 
+{% if validation.status == "gudid_deactivated" %}
+<div class="banner banner-warning" style="padding: 14px 18px; border-left: 4px solid var(--warning); background: var(--warning-bg); margin-bottom: 20px;">
+    <strong>GUDID record deactivated.</strong>
+    The FDA has deactivated this device's GUDID entry
+    ({{ validation.gudid_di or "N/A" }}{% if validation.gudid_record and validation.gudid_record.publishDate %}, last published {{ validation.gudid_record.publishDate }}{% endif %}).
+    The harvested data below is the live source &mdash; no per-field comparison was run.
+</div>
+{% endif %}
+
 <section class="stats-grid">
     <div class="metric-card small">
         <p class="metric-label">Status</p>
@@ -50,9 +59,15 @@
         <p class="metric-label">GUDID DI</p>
         <h3 class="metric-value mono" style="font-size: 17px;">{{ validation.gudid_di or "N/A" }}</h3>
     </div>
+    <div class="metric-card small">
+        <p class="metric-label">GUDID Updated</p>
+        <h3 class="metric-value mono" style="font-size: 15px;">
+            {% if validation.gudid_record and validation.gudid_record.publishDate %}{{ validation.gudid_record.publishDate }}{% else %}N/A{% endif %}
+        </h3>
+    </div>
 </section>
 
-{% if mode == "info" %}
+{% if mode == "info" or validation.status == "gudid_deactivated" %}
 <section class="panel">
     <div class="panel-header">
         <div>
@@ -69,9 +84,15 @@
     {% for f in fields %}
     <div class="review-field-row info-mode">
         <div class="review-field-name">{{ f.label }}</div>
+        {% if f.key == 'deviceSizes' %}
+        <div class="review-value harvested" style="white-space: pre-line;">{{ f.harvested | format_device_sizes }}</div>
+        {% elif f.key in ('productCodes', 'premarketSubmissions') %}
+        <div class="review-value harvested">{{ f.harvested | format_code_list }}</div>
+        {% else %}
         <div class="review-value harvested">
             {% if f.harvested is none %}N/A{% else %}{{ f.harvested }}{% endif %}
         </div>
+        {% endif %}
     </div>
     {% endfor %}
 </section>
@@ -94,42 +115,83 @@
         </div>
 
         {% for f in fields %}
-        <div class="review-field-row {% if f.match is true %}matched{% endif %}">
+        <div class="review-field-row
+            {% if f.status == 'match' %}matched{% endif %}
+            {% if f.status in ['both_null', 'sku_label_skip'] %}informational{% endif %}">
             <div class="review-field-name">
                 {{ f.label }}
-                {% if f.match is true %}
-                <br><span class="match-yes" style="font-size: 11px;">MATCH</span>
-                {% elif f.match is false %}
-                <br><span class="match-no" style="font-size: 11px;">MISMATCH</span>
-                {% elif f.similarity is not none %}
-                <br><span style="font-size: 11px; color: var(--muted);">{{ "%.0f"|format((f.similarity or 0) * 100) }}% similar</span>
+                <br>
+                {% if f.status == 'match' %}
+                    <span class="match-status match">Match</span>
+                    {% if f.similarity is not none %}
+                        <span style="font-size: 11px; color: var(--muted); margin-left: 6px;">{{ "%.0f"|format((f.similarity or 0) * 100) }}% similar</span>
+                    {% endif %}
+                {% elif f.status == 'mismatch' %}
+                    <span class="match-status mismatch">Mismatch</span>
+                {% elif f.status == 'corporate_alias' %}
+                    <span class="match-status alias">Alias &rarr; {{ f.alias_group }}</span>
+                {% elif f.status == 'both_null' %}
+                    <span class="match-status both-null">No Data</span>
+                {% elif f.status == 'sku_label_skip' %}
+                    <span class="match-status sku-skip">GUDID is SKU label</span>
+                {% elif f.status == 'not_compared' %}
+                    <span class="match-status not-compared">Not Compared</span>
                 {% endif %}
             </div>
-
+            {% if f.key == 'deviceSizes' %}
+            <div class="review-value harvested" style="white-space: pre-line;">{{ f.harvested | format_device_sizes }}</div>
+            <div class="review-value gudid" style="white-space: pre-line;">{{ f.gudid | format_device_sizes }}</div>
+            {% elif f.key in ('productCodes', 'premarketSubmissions') %}
+            <div class="review-value harvested">{{ f.harvested | format_code_list }}</div>
+            <div class="review-value gudid">{{ f.gudid | format_code_list }}</div>
+            {% else %}
             <div class="review-value harvested">
                 {% if f.harvested is none %}N/A{% else %}{{ f.harvested }}{% endif %}
             </div>
-
             <div class="review-value gudid">
                 {% if f.gudid is none %}N/A{% else %}{{ f.gudid }}{% endif %}
             </div>
-
+            {% endif %}
             <div class="review-pick">
-                {% if f.match is true %}
-                <input type="hidden" name="choice_{{ f.key }}" value="harvested">
-                <span style="color: var(--success); font-size: 13px;">Matched</span>
+                {% if f.status in ['mismatch', 'not_compared'] %}
+                    <label><input type="radio" name="choice_{{ f.key }}" value="harvested" checked> Keep Harvested</label>
+                    <label><input type="radio" name="choice_{{ f.key }}" value="gudid"> Use GUDID</label>
+                {% elif f.status in ['match', 'corporate_alias'] %}
+                    <input type="hidden" name="choice_{{ f.key }}" value="harvested">
+                    <span style="color: var(--success); font-size: 13px;">
+                        {% if f.status == 'corporate_alias' %}Matched via alias{% else %}Matched{% endif %}
+                    </span>
                 {% else %}
-                <label>
-                    <input type="radio" name="choice_{{ f.key }}" value="harvested" checked>
-                    Keep Harvested
-                </label>
-                <label>
-                    <input type="radio" name="choice_{{ f.key }}" value="gudid">
-                    Use GUDID
-                </label>
+                    <span style="color: var(--muted); font-size: 13px;">&ndash;</span>
                 {% endif %}
             </div>
         </div>
+        {% if f.key == 'deviceSizes' and f.status == 'mismatch' and f.per_type %}
+            {% for pt in f.per_type %}
+            <div class="review-field-row" style="padding-left: 24px; background: #fafafa; font-size: 13px;">
+                <div class="review-field-name">
+                    &rarr; {{ pt.sizeType }}
+                    <br>
+                    {% if pt.status == 'match' %}
+                        <span class="match-status match">Match</span>
+                    {% elif pt.status == 'mismatch' %}
+                        <span class="match-status mismatch">Mismatch</span>
+                    {% elif pt.status == 'not_compared' %}
+                        <span class="match-status not-compared">Not Compared</span>
+                    {% endif %}
+                </div>
+                <div class="review-value harvested">
+                    {% if pt.harvested is none %}N/A{% else %}{{ pt.harvested }}{% endif %}
+                </div>
+                <div class="review-value gudid">
+                    {% if pt.gudid is none %}N/A{% else %}{{ pt.gudid }}{% endif %}
+                </div>
+                <div class="review-pick">
+                    <span style="color: var(--muted); font-size: 12px;">&ndash;</span>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
         {% endfor %}
     </section>
 
@@ -138,5 +200,34 @@
         <a href="/" class="btn btn-secondary">Cancel</a>
     </div>
 </form>
+{% endif %}
+
+{% if device.indicationsForUse or device.contraindications or device.deviceClass %}
+<section class="panel" style="margin-top: 20px;">
+    <div class="panel-header">
+        <div>
+            <h3>Additional Information</h3>
+            <p>Fields harvested from the manufacturer page. Not compared against GUDID.</p>
+        </div>
+    </div>
+    {% if device.deviceClass %}
+    <div class="review-field-row info-mode">
+        <div class="review-field-name">FDA Device Class</div>
+        <div class="review-value harvested">Class {{ device.deviceClass }}</div>
+    </div>
+    {% endif %}
+    {% if device.indicationsForUse %}
+    <div class="review-field-row info-mode">
+        <div class="review-field-name">Indications for Use</div>
+        <div class="review-value harvested" style="white-space: pre-wrap;">{{ device.indicationsForUse }}</div>
+    </div>
+    {% endif %}
+    {% if device.contraindications %}
+    <div class="review-field-row info-mode">
+        <div class="review-field-name">Contraindications</div>
+        <div class="review-value harvested" style="white-space: pre-wrap;">{{ device.contraindications }}</div>
+    </div>
+    {% endif %}
+</section>
 {% endif %}
 {% endblock %}

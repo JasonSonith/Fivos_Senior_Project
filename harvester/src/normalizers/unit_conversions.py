@@ -12,7 +12,11 @@ unit_conversions = {
     'ft': ('mm', lambda x: x* 304.8),
     'feet': ('mm', lambda x: x* 304.8),
     'foot': ('mm', lambda x: x* 304.8),
-    
+
+    #French (catheter/sheath sizing): 1 Fr = 1/3 mm
+    'fr': ('mm', lambda x: x / 3),
+    'french': ('mm', lambda x: x / 3),
+
     #converting weighted measurements to grams
     'g': ('g', lambda x: x),
     'grams': ('g', lambda x: x),
@@ -134,8 +138,9 @@ def normalize_measurement(raw_value: str):
         unit = range_match.group(3).strip().rstrip(".")
         midpoint = round((low + high) / 2, 4)
 
-        if unit in unit_conversions:
-            canonical_unit, converter = unit_conversions[unit]
+        unit_key = unit.lower()
+        if unit_key in unit_conversions:
+            canonical_unit, converter = unit_conversions[unit_key]
 
             return {
                 'value': round(converter(midpoint), 4),
@@ -157,8 +162,9 @@ def normalize_measurement(raw_value: str):
     value = float(match.group(1))
     unit = match.group(2).strip().rstrip(".")
 
-    if unit in unit_conversions:
-        canonical_unit, converter = unit_conversions[unit]
+    unit_key = unit.lower()
+    if unit_key in unit_conversions:
+        canonical_unit, converter = unit_conversions[unit_key]
         return {
             "value": round(converter(value), 4),
             "unit": canonical_unit,

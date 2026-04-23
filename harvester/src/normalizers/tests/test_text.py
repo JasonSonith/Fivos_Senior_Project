@@ -184,3 +184,30 @@ class TestCleanBrandName:
     def test_peripheral_ivl_catheter(self):
         result = clean_brand_name("Shockwave M5+ Peripheral IVL Catheter")
         assert result == "Shockwave M5+"
+
+
+class TestCleanBrandNameSymbols:
+    @pytest.mark.parametrize("raw,expected", [
+        ("Visi-Pro™", "Visi-Pro"),
+        ("IN.PACT®", "IN.PACT"),
+        ("Zilver PTX©", "Zilver PTX"),
+        ("Visi-ProTM", "Visi-Pro"),
+        ("Eluvia℠", "Eluvia"),
+    ])
+    def test_strips_trademark_symbols(self, raw, expected):
+        assert clean_brand_name(raw) == expected
+
+    @pytest.mark.parametrize("raw,expected", [
+        ("‘Supera’", "Supera"),
+        ("“Xience”", "Xience"),
+    ])
+    def test_strips_smart_quotes(self, raw, expected):
+        assert clean_brand_name(raw) == expected
+
+    def test_strips_nbsp_and_zero_width(self):
+        raw = "Zilver PTX​"
+        assert clean_brand_name(raw) == "Zilver PTX"
+
+    def test_strips_dagger_and_degree(self):
+        assert clean_brand_name("Acme†") == "Acme"
+        assert clean_brand_name("Brand°") == "Brand"

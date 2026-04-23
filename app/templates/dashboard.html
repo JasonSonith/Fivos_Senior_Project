@@ -12,7 +12,7 @@
 </section>
 
 <section class="stats-grid">
-    <div class="metric-card">
+    <div class="metric-card filterable" data-filter="all" data-color="info">
         <p class="metric-label">Harvested Devices</p>
         <h3 class="metric-value">{{ stats.device_count or 0 }}</h3>
         <p class="metric-foot">Total devices in the database</p>
@@ -34,6 +34,12 @@
         <p class="metric-label">Mismatches</p>
         <h3 class="metric-value" style="color: var(--danger);">{{ stats.mismatches or 0 }}</h3>
         <p class="metric-foot">No fields matched GUDID</p>
+    </div>
+
+    <div class="metric-card filterable" data-filter="gudid_deactivated" data-color="warning">
+        <p class="metric-label">Deactivated</p>
+        <h3 class="metric-value" style="color: var(--warning);">{{ stats.deactivated or 0 }}</h3>
+        <p class="metric-sublabel">GUDID entries marked deactivated by FDA</p>
     </div>
 </section>
 
@@ -97,6 +103,7 @@
                     <th>Model Number</th>
                     <th>Status</th>
                     <th>Match</th>
+                    <th>Weighted %</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -117,6 +124,8 @@
                         <span class="badge badge-warning">Partial</span>
                         {% elif d.status == "mismatch" %}
                         <span class="badge badge-danger">Mismatch</span>
+                        {% elif d.status == "gudid_deactivated" %}
+                        <span class="badge badge-warning">Deactivated</span>
                         {% elif d.status == "resolved" %}
                         <span class="badge badge-resolved">Resolved</span>
                         {% else %}
@@ -130,10 +139,13 @@
                         {{ d.matched_fields or 0 }}/{{ d.total_fields or 0 }} ({{ d.match_percent or 0 }}%)
                         {% endif %}
                     </td>
+                    <td>{% if d.weighted_percent is not none %}{{ d.weighted_percent }}%{% else %}&mdash;{% endif %}</td>
                     <td>
                         {% if d.status in ["partial_match", "mismatch"] %}
                         <a href="/review/{{ d._id }}" class="btn btn-primary btn-sm">Review</a>
                         {% elif d.status == "matched" and d._id %}
+                        <a href="/review/{{ d._id }}" class="btn btn-secondary btn-sm">More Information</a>
+                        {% elif d.status == "gudid_deactivated" and d._id %}
                         <a href="/review/{{ d._id }}" class="btn btn-secondary btn-sm">More Information</a>
                         {% elif d.status == "resolved" %}
                         <span style="color: var(--accent-3); font-size: 13px;">Resolved</span>
@@ -157,22 +169,36 @@
     let activeColor = null;
     const cards = document.querySelectorAll('.metric-card.filterable');
     const tbody = document.getElementById('results-tbody');
-    const rows = Array.from(tbody.querySelectorAll('tr'));
+    const rows = tbody ? Array.from(tbody.querySelectorAll('tr')) : [];
 
     const indicator = document.getElementById('filter-indicator');
     const indicatorText = document.getElementById('filter-indicator-text');
     const sortSelect = document.getElementById('sort-select');
     const companySelect = document.getElementById('company-select');
 
-    const companies = Array.from(new Set(
-        rows.map(r => r.dataset.company).filter(c => c && c !== 'N/A')
-    )).sort((a, b) => a.localeCompare(b));
-    companies.forEach(c => {
-        const opt = document.createElement('option');
-        opt.value = c;
-        opt.textContent = c;
-        companySelect.appendChild(opt);
-    });
+    const FILTER_CLASSES = [
+        'active-filter--success', 'active-filter--warning',
+        'active-filter--danger', 'active-filter--info', 'dimmed'
+    ];
+    const FILTER_LABELS = {
+        'all': 'all',
+        'matched': 'matched',
+        'partial_match': 'partial match',
+        'mismatch': 'mismatch',
+        'gudid_deactivated': 'deactivated',
+    };
+
+    if (companySelect) {
+        const companies = Array.from(new Set(
+            rows.map(r => r.dataset.company).filter(c => c && c !== 'N/A')
+        )).sort((a, b) => a.localeCompare(b));
+        companies.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c;
+            opt.textContent = c;
+            companySelect.appendChild(opt);
+        });
+    }
 
     cards.forEach(card => {
         card.addEventListener('click', () => {
@@ -188,15 +214,16 @@
         });
     });
 
-    sortSelect.addEventListener('change', render);
-    companySelect.addEventListener('change', render);
+    if (sortSelect) sortSelect.addEventListener('change', render);
+    if (companySelect) companySelect.addEventListener('change', render);
 
     function render() {
-        const company = companySelect.value;
-        const sortMode = sortSelect.value;
+        if (!tbody) return;
+        const company = companySelect ? companySelect.value : '';
+        const sortMode = sortSelect ? sortSelect.value : 'recent';
 
         const visible = rows.filter(row => {
-            if (activeStatus && row.dataset.status !== activeStatus) return false;
+            if (activeStatus && activeStatus !== 'all' && row.dataset.status !== activeStatus) return false;
             if (company && row.dataset.company !== company) return false;
             return true;
         });
@@ -210,7 +237,7 @@
         });
 
         cards.forEach(c => {
-            c.classList.remove('active-filter--success', 'active-filter--warning', 'active-filter--danger', 'dimmed');
+            c.classList.remove(...FILTER_CLASSES);
             if (activeStatus) {
                 if (c.dataset.filter === activeStatus) {
                     c.classList.add('active-filter--' + activeColor);
@@ -224,7 +251,7 @@
             const parts = [];
             parts.push('Showing ' + sorted.length + ' result' + (sorted.length !== 1 ? 's' : ''));
             if (activeStatus) {
-                const label = activeStatus === 'partial_match' ? 'partial match' : activeStatus;
+                const label = FILTER_LABELS[activeStatus] || activeStatus;
                 parts.push('status: ' + label);
             }
             if (company) parts.push('company: ' + company);
@@ -260,7 +287,7 @@
     window.clearFilter = function() {
         activeStatus = null;
         activeColor = null;
-        companySelect.value = '';
+        if (companySelect) companySelect.value = '';
         render();
     };
 

@@ -51,6 +51,24 @@ _OTC_PATTERNS = [
     re.compile(r"without\s+a\s+prescription", re.IGNORECASE),
 ]
 
+_PREMARKET_RE = re.compile(r"\b(K\d{6,7}|P\d{6}|DEN\d{6})\b")
+_REG_KEYWORDS = re.compile(
+    r"510\s*\(\s*k\s*\)|premarket|\bPMA\b|FDA\s+clearance|K[- ]number|cleared\s+by\s+FDA",
+    re.IGNORECASE,
+)
+
+
+def extract_premarket_submissions(text: str | None) -> list[str] | None:
+    if not text:
+        return None
+    found = set()
+    for match in _PREMARKET_RE.finditer(text):
+        start, end = match.span()
+        window = text[max(0, start - 40):min(len(text), end + 40)]
+        if _REG_KEYWORDS.search(window):
+            found.add(match.group(1))
+    return sorted(found) or None
+
 
 def parse_regulatory_from_text(warning_text: str | None) -> dict:
     """Extract boolean GUDID fields from warning/precaution text.

@@ -1,0 +1,22 @@
+{
+    "versionModelNumber": "PXB35-09-17-080",
+    "catalogNumber": "PXB35-09-17-080",
+    "brandName": "Visi-Pro",
+    "companyName": "Covidien LP",
+    "deviceDescription": "PXB35-09-17-080 STENT NITINOL",
+    "MRISafetyStatus": "MR Conditional",
+    "singleUse": "true",
+    "rx": "true",
+    "productCodes": ["DYB", "OXM"],
+    "premarketSubmissions": ["K123456", "K789012"],
+    "gmdnPTName": "Stent, Peripheral",
+    "gmdnCode": "12345",
+    "deviceCountInBase": 1,
+    "publishDate": "2023-01-15",
+    "deviceRecordStatus": "Published",
+    "issuingAgency": "GS1",
+    "lotBatch": "true",
+    "serialNumber": "false",
+    "manufacturingDate": "true",
+    "expirationDate": "true"
+}

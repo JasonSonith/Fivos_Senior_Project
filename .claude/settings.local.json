@@ -51,7 +51,12 @@
       "mcp__MCP_DOCKER__obsidian_batch_get_file_contents",
       "mcp__MCP_DOCKER__obsidian_list_files_in_vault",
       "mcp__MCP_DOCKER__obsidian_simple_search",
-      "mcp__MCP_DOCKER__obsidian_append_content"
+      "mcp__MCP_DOCKER__obsidian_append_content",
+      "Bash(git check-ignore *)",
+      "Bash(PYTHONPATH=harvester/src python3 -m pytest harvester/src/validators/tests/test_comparison_validator.py::test_compare_records_returns_tuple_with_summary -v)",
+      "Bash(PYTHONPATH=harvester/src python3 *)",
+      "Bash(grep -E \"\\\\.css$|\\\\.html$|dashboard\")",
+      "Bash(venv/bin/python -m pytest tests/test_review_formatters.py -v)"
     ]
   }
 }

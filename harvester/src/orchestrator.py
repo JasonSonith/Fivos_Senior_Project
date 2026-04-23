@@ -39,7 +39,17 @@ MERGE_FIELDS = [
     "environmentalConditions",
     "brandName", "versionModelNumber", "companyName", "deviceDescription",
     "MRISafetyStatus", "singleUse", "rx",
+    # Layer-2 additions
+    "gmdnPTName", "gmdnCode", "productCodes",
+    "deviceCountInBase",
+    "publishDate", "deviceRecordStatus",
+    "issuingAgency",
+    "lotBatch", "serialNumber", "manufacturingDate", "expirationDate",
 ]
+
+
+def _is_null_list(value) -> bool:
+    return value is None or (isinstance(value, list) and len(value) == 0)
 
 
 def _merge_gudid_into_device(db, device: dict, gudid_record: dict) -> list[str]:
@@ -332,6 +342,9 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
         "partial_matches": 0,
         "mismatches": 0,
         "not_found": 0,
+        "gudid_deactivated": 0,
+        "harvest_gap_product_codes": 0,
+        "harvest_gap_premarket": 0,
         "error": None,
     }
 
@@ -372,6 +385,7 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
                 "matched_fields": 0,
                 "total_fields": 0,
                 "match_percent": 0.0,
+                "weighted_percent": 0.0,
                 "comparison_result": None,
                 "gudid_record": None,
                 "gudid_di": di,
@@ -380,16 +394,35 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
             })
             continue
 
-        comparison = compare_records(device, gudid_record)
+        record_status = (gudid_record or {}).get("deviceRecordStatus")
+        if record_status == "Deactivated":
+            validation_col.insert_one({
+                "device_id": device["_id"],
+                "brandName": device.get("brandName"),
+                "status": "gudid_deactivated",
+                "matched_fields": None,
+                "total_fields": None,
+                "match_percent": None,
+                "weighted_percent": None,
+                "description_similarity": None,
+                "comparison_result": None,
+                "gudid_record": gudid_record,
+                "gudid_di": di,
+                "gudid_record_status": record_status,
+                "created_at": datetime.now(timezone.utc),
+                "updated_at": datetime.now(timezone.utc),
+            })
+            result["gudid_deactivated"] = result.get("gudid_deactivated", 0) + 1
+            continue
 
-        compared = {
-            k: v for k, v in comparison.items()
-            if k != "deviceDescription" and v.get("match") is not None
-        }
-        matched_fields = sum(1 for v in compared.values() if v["match"])
-        total_fields = len(compared)
-        match_percent = round((matched_fields / total_fields) * 100, 2) if total_fields > 0 else 0.0
-        description_similarity = comparison.get("deviceDescription", {}).get("description_similarity", 0.0)
+        comparison, summary = compare_records(device, gudid_record)
+        matched_fields = summary["unweighted_numerator"]
+        total_fields = summary["unweighted_denominator"]
+        match_percent = round((matched_fields / total_fields) * 100, 2) if total_fields else 0.0
+        weighted_percent = round(
+            (summary["numerator"] / summary["denominator"]) * 100, 2
+        ) if summary["denominator"] else 0.0
+        description_similarity = comparison.get("deviceDescription", {}).get("similarity") or 0.0
 
         if matched_fields == total_fields:
             status = "matched"
@@ -401,6 +434,22 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
             status = "mismatch"
             result["mismatches"] += 1
 
+        if gudid_record.get("productCodes") and _is_null_list(device.get("productCodes")):
+            logger.info(
+                "[harvest-gap] device %s (%s): GUDID productCodes=%r, harvested=null",
+                device.get("_id"), device.get("brandName"),
+                gudid_record["productCodes"],
+            )
+            result["harvest_gap_product_codes"] += 1
+
+        if gudid_record.get("premarketSubmissions") and _is_null_list(device.get("premarketSubmissions")):
+            logger.info(
+                "[harvest-gap] device %s (%s): GUDID premarketSubmissions=%r, harvested=null",
+                device.get("_id"), device.get("brandName"),
+                gudid_record["premarketSubmissions"],
+            )
+            result["harvest_gap_premarket"] += 1
+
         validation_col.insert_one({
             "device_id": device.get("_id"),
             "brandName": device.get("brandName"),
@@ -408,6 +457,7 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
             "matched_fields": matched_fields,
             "total_fields": total_fields,
             "match_percent": match_percent,
+            "weighted_percent": weighted_percent,
             "description_similarity": description_similarity,
             "comparison_result": comparison,
             "gudid_record": gudid_record,
@@ -439,6 +489,21 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
         _merge_gudid_into_device(db, device, gudid_record)
 
     result["success"] = True
+
+    # Remove JSON files from output dir so next validation only sees new harvests.
+    output_dir = os.path.abspath(_DEFAULT_OUTPUT_DIR)
+    removed = 0
+    if os.path.isdir(output_dir):
+        for fname in os.listdir(output_dir):
+            if fname.endswith(".json"):
+                try:
+                    os.remove(os.path.join(output_dir, fname))
+                    removed += 1
+                except OSError as e:
+                    logger.warning("Could not remove %s: %s", fname, e)
+    logger.info("Cleaned up %d JSON file(s) from %s", removed, output_dir)
+    result["cleaned_up"] = removed
+
     return result
 
 
@@ -510,6 +575,7 @@ def get_dashboard_stats() -> dict:
         partial_matches = db["validationResults"].count_documents({"status": "partial_match"})
         mismatches = db["validationResults"].count_documents({"status": "mismatch"})
         matches = db["verified_devices"].count_documents({})
+        deactivated_count = db["validationResults"].count_documents({"status": "gudid_deactivated"})
 
         last_device = db["devices"].find_one(sort=[("_harvest.harvested_at", -1)])
         last_run = "No runs yet"
@@ -518,13 +584,14 @@ def get_dashboard_stats() -> dict:
             last_run = harvest.get("harvested_at", "Unknown")
     except Exception as e:
         logger.warning("get_dashboard_stats: MongoDB unavailable: %s", e)
-        return {"device_count": 0, "matches": 0, "partial_matches": 0, "mismatches": 0, "last_run": "DB unavailable"}
+        return {"device_count": 0, "matches": 0, "partial_matches": 0, "mismatches": 0, "deactivated": 0, "last_run": "DB unavailable"}
 
     return {
         "device_count": device_count,
         "matches": matches,
         "partial_matches": partial_matches,
         "mismatches": mismatches,
+        "deactivated": deactivated_count,
         "last_run": last_run,
     }
 
@@ -584,13 +651,14 @@ def get_all_dashboard_records() -> list[dict]:
             serialized["matched_fields"] = None
             serialized["total_fields"] = None
             serialized["match_percent"] = None
+            serialized["weighted_percent"] = None
             validation_id = matched_validations_by_device_id.get(doc.get("source_device_id"))
             serialized["_id"] = str(validation_id) if validation_id else None
             results.append(serialized)
 
-        # Partial match and mismatch from validation results
+        # Partial match, mismatch, and deactivated from validation results
         discrepancy_docs = list(db["validationResults"].find(
-            {"status": {"$in": ["partial_match", "mismatch"]}}
+            {"status": {"$in": ["partial_match", "mismatch", "gudid_deactivated"]}}
         ).sort("updated_at", -1))
 
         device_ids = [d["device_id"] for d in discrepancy_docs if d.get("device_id") is not None]
@@ -625,6 +693,23 @@ def get_devices(limit: int = 100, skip: int = 0, run_id: str | None = None) -> l
     except Exception as e:
         logger.warning("get_devices: %s", e)
         return []
+
+
+def get_latest_run_id() -> str | None:
+    """Return harvest_run_id of the most recently harvested device, or None."""
+    from database.db_connection import get_db
+    try:
+        db = get_db()
+        last = db["devices"].find_one(
+            {"_harvest.harvest_run_id": {"$exists": True}},
+            sort=[("_harvest.harvested_at", -1)],
+        )
+        if not last:
+            return None
+        return last.get("_harvest", {}).get("harvest_run_id")
+    except Exception as e:
+        logger.warning("get_latest_run_id: %s", e)
+        return None
 
 
 def get_validation_results(limit: int = 100, skip: int = 0) -> list[dict]:

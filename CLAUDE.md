@@ -17,7 +17,7 @@
 pip install -r requirements.txt && playwright install   # Install
 pytest                                                   # All tests
 python harvester/src/pipeline/cli.py                     # Interactive CLI menu
-uvicorn app.main:app --port 8000                         # Web dashboard
+python run.py                                            # Web dashboard (http://localhost:8500)
 ```
 
 ### Docker (full stack)
@@ -49,7 +49,7 @@ python harvester/src/pipeline/runner.py --input <html> --adapter <yaml>         
 ## Environment
 Copy `.env.example` → `.env`. Required: `FIVOS_MONGO_URI`, `GROQ_API_KEY`, `NVIDIA_API_KEY`, `AUTH_SECRET_KEY`. Optional: `OLLAMA_URL` (defaults to `http://localhost:11434/api/chat`; compose overrides to `http://ollama:11434/api/chat`), `UVICORN_RELOAD` (default `false`; set to the literal string `true`, case-insensitive, for local dev auto-reload — `1`, `yes`, `on` do not work).
 
-In Docker, compose overrides `FIVOS_MONGO_URI` → `mongodb://mongo:27017/fivos` and `OLLAMA_URL` → `http://ollama:11434/api/chat`. The rest of `.env` is injected via `env_file`.
+In Docker, compose overrides `OLLAMA_URL` → `http://ollama:11434/api/chat`. `FIVOS_MONGO_URI` and the rest of `.env` are injected from the project-root `.env` via `env_file`. The stack points at MongoDB Atlas; there is no local mongo service.
 
 ## Architecture
 
@@ -118,7 +118,17 @@ All pipeline logs go to `harvester/log-files/harvest_<timestamp>.log`. No consol
 
 ### Validation Scoring
 
-`comparison_validator.py` compares 7 fields (`versionModelNumber`, `catalogNumber`, `brandName`, `companyName`, `MRISafetyStatus`, `singleUse`, `rx`) + `deviceDescription` Jaccard similarity score. Identifier fields return `match: None` only if harvested is null; `MRISafetyStatus`/`singleUse`/`rx` return `match: None` if either side normalizes to null. `None` fields are excluded from the score denominator.
+`comparison_validator.py` returns `(per_field, summary)`. Per-field `status` is one of six values: `match` / `mismatch` / `corporate_alias` / `not_compared` / `both_null` / `sku_label_skip`. Compared fields:
+
+- **Identifier (weight 3):** `versionModelNumber`, `catalogNumber`, `brandName`, `companyName`, `gmdnPTName`, `productCodes` (subset match)
+- **Enum / regulatory (weight 2):** `MRISafetyStatus`, `singleUse`, `rx`, `gmdnCode`, `deviceCountInBase`, `issuingAgency`, `premarketSubmissions` (subset)
+- **Labeling (weight 1):** `lotBatch`, `serialNumber`, `manufacturingDate`, `expirationDate`, `deviceDescription` (Jaccard, quality-gated)
+
+Scoring produces both `match_percent` (unweighted count) and `weighted_percent` (using FIELD_WEIGHTS). Status thresholds (`matched`/`partial_match`/`mismatch`) drive from unweighted only; weighted is display + audit.
+
+Corporate-alias match on `companyName` resolves via `company_aliases.py` — six seed parent groups (Medtronic, Boston Scientific, BD, Abbott, Johnson & Johnson, Stryker). Alias matches count +1 toward both numerator and denominator.
+
+GUDID deactivated short-circuit: when `deviceRecordStatus == "Deactivated"`, validation skips comparison and records `status: "gudid_deactivated"`. No merge, no verified_devices.
 
 ### GUDID Fallback Merge
 
@@ -146,6 +156,6 @@ After validation, `_merge_gudid_into_device()` in `orchestrator.py` fills null d
 ## Docs
 
 - `docs/Fivos - Project Overview.md` — High-level project overview
-- `docs/Team Roles -Harvester Agent.md` — Team roles
-- `docs/Jason - Todo.md` — Jason's todo list
+- `docs/Fivos - Data Flow Diagram.md` — End-to-end DFD with auth, logging, phase boundaries
+- `docs/Fivos - ZAP Scan Vulnerability Report.pdf` — OWASP ZAP baseline scan results (58 PASS, 0 FAIL)
 - `docs/Target Brands.xlsx` — Target manufacturer brands

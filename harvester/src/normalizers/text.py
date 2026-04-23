@@ -22,23 +22,26 @@ _BRAND_SUFFIX_RE = re.compile(
     re.IGNORECASE,
 )
 
-_TM_SYMBOLS_RE = re.compile(r"[™®©]|(?<=\w)TM(?=\s|$|\b)")
+_TM_SYMBOLS_RE = re.compile(r"[™®©℠†°]|(?<=\w)TM(?=\s|$|\b)")
+
+_SMART_QUOTES_RE = re.compile(r"[‘’“”]")
 
 
 def clean_brand_name(raw: str) -> str | None:
     """Clean a brand name for GUDID alignment.
 
-    Strips ™/®/©/TM symbols and trailing descriptive text
+    Strips ™/®/©/℠/TM symbols, smart quotes, and trailing descriptive text
     (e.g. 'drug-eluting stent', 'directional atherectomy system').
     """
     if not raw or not isinstance(raw, str):
         return None
-    text = normalize_text(raw)
+    # Strip ℠ before NFKC (which expands it to "SM")
+    pre = _TM_SYMBOLS_RE.sub("", raw)
+    text = normalize_text(pre)
     if not text:
         return None
-    # Strip TM/®/© symbols
     text = _TM_SYMBOLS_RE.sub("", text)
-    # Strip trailing descriptive suffixes
+    text = _SMART_QUOTES_RE.sub("", text)
     text = _BRAND_SUFFIX_RE.sub("", text)
     text = re.sub(r"\s+", " ", text).strip()
     return text if text else None
