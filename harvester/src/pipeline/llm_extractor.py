@@ -71,10 +71,6 @@ PAGE_FIELDS_SCHEMA = {
         "warning_text": {"type": ["string", "null"]},
         "MRISafetyStatus": {"type": ["string", "null"]},
         "deviceKit": {"type": ["boolean", "null"]},
-        "premarketSubmissions": {
-            "type": ["array", "null"],
-            "items": {"type": "string"},
-        },
         "environmentalConditions": {
             "type": ["object", "null"],
             "properties": {
@@ -84,6 +80,9 @@ PAGE_FIELDS_SCHEMA = {
                 },
             },
         },
+        "indicationsForUse": {"type": ["string", "null"]},
+        "contraindications": {"type": ["string", "null"]},
+        "deviceClass":       {"type": ["string", "null"], "enum": ["I", "II", "III", None]},
     },
     "required": ["device_name", "manufacturer", "description"],
 }
@@ -149,12 +148,15 @@ Include text about single-use, Rx only, sterility, contraindications. null if no
 - MRISafetyStatus: One of "MR Safe", "MR Conditional", "MR Unsafe", or null if not stated on the page.
 - deviceKit: true if this product is sold as a kit or system containing multiple distinct components \
 packaged together, false if it is a single standalone device, null if unclear.
-- premarketSubmissions: A JSON array of FDA premarket submission numbers found on the page \
-(e.g. ["K123456", "P210034"]). These start with K (510k) or P (PMA) followed by digits. \
-null if none found.
 - environmentalConditions: An object with a "conditions" array of storage/handling condition strings \
 found on the page (e.g. {{"conditions": ["Store between 15-30°C", "Keep away from humidity > 85%"]}}). \
 null if storage conditions are not stated on the page.
+- indicationsForUse: Copy the "Indications for Use" section verbatim as free text. \
+Typically appears as a paragraph near the top of the page. null if not present.
+- contraindications: Copy the "Contraindications" section verbatim as free text. \
+null if not present.
+- deviceClass: FDA device class ("I", "II", or "III") if explicitly stated on the page. \
+null if not stated. Only return one of those three literal values.
 
 Page text:
 {visible_text}"""
