@@ -1,6 +1,7 @@
 import re
 
 from normalizers.booleans import normalize_boolean, normalize_mri_status
+from validators.company_aliases import canonical_company
 
 
 class FieldStatus:
@@ -141,18 +142,28 @@ def compare_records(harvested, gudid):
             "status": FieldStatus.MATCH if match else FieldStatus.MISMATCH,
         }
 
-    h_company = harvested.get("companyName")
-    g_company = gudid.get("companyName")
+    h_company = harvested.get("companyName"); g_company = gudid.get("companyName")
     if _is_null(h_company) and _is_null(g_company):
         results["companyName"] = {"harvested": h_company, "gudid": g_company, "status": FieldStatus.BOTH_NULL}
-    elif not h_company:
+    elif _is_null(h_company):
         results["companyName"] = {"harvested": h_company, "gudid": g_company, "status": FieldStatus.NOT_COMPARED}
     else:
-        match = bool(g_company and _norm_company(h_company) == _norm_company(g_company))
-        results["companyName"] = {
-            "harvested": h_company, "gudid": g_company,
-            "status": FieldStatus.MATCH if match else FieldStatus.MISMATCH,
-        }
+        if g_company and _norm_company(h_company) == _norm_company(g_company):
+            results["companyName"] = {"harvested": h_company, "gudid": g_company, "status": FieldStatus.MATCH}
+        else:
+            h_canonical = canonical_company(h_company)
+            g_canonical = canonical_company(g_company)
+            if h_canonical and g_canonical and h_canonical == g_canonical:
+                results["companyName"] = {
+                    "harvested": h_company, "gudid": g_company,
+                    "status": FieldStatus.CORPORATE_ALIAS,
+                    "alias_group": h_canonical,
+                }
+            else:
+                results["companyName"] = {
+                    "harvested": h_company, "gudid": g_company,
+                    "status": FieldStatus.MISMATCH,
+                }
 
     h_desc = harvested.get("deviceDescription")
     g_desc = gudid.get("deviceDescription")

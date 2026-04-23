@@ -206,3 +206,38 @@ def test_compare_records_returns_tuple_with_summary():
     assert summary["unweighted_denominator"] >= 2
     assert summary["numerator"] >= summary["unweighted_numerator"]
     assert summary["denominator"] >= summary["unweighted_denominator"]
+
+
+def test_medtronic_vs_covidien_scores_as_corporate_alias():
+    per_field, _ = compare_records(
+        {"companyName": "Medtronic Inc.", "versionModelNumber": "X"},
+        {"companyName": "Covidien LP",    "versionModelNumber": "X"},
+    )
+    assert per_field["companyName"]["status"] == "corporate_alias"
+    assert per_field["companyName"]["alias_group"] == "Medtronic"
+
+
+def test_alias_match_counts_toward_numerator():
+    per_field, summary = compare_records(
+        {"companyName": "Medtronic Inc.", "versionModelNumber": "X"},
+        {"companyName": "Covidien LP",    "versionModelNumber": "X"},
+    )
+    assert summary["unweighted_numerator"] == 2
+    assert summary["unweighted_denominator"] == 2
+
+
+def test_cross_family_mismatch_not_alias():
+    per_field, _ = compare_records(
+        {"companyName": "Medtronic", "versionModelNumber": "X"},
+        {"companyName": "Stryker",   "versionModelNumber": "X"},
+    )
+    assert per_field["companyName"]["status"] == "mismatch"
+
+
+def test_exact_company_match_does_not_set_alias_group():
+    per_field, _ = compare_records(
+        {"companyName": "Medtronic", "versionModelNumber": "X"},
+        {"companyName": "Medtronic", "versionModelNumber": "X"},
+    )
+    assert per_field["companyName"]["status"] == "match"
+    assert "alias_group" not in per_field["companyName"]
