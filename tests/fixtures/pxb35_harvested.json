@@ -1,0 +1,12 @@
+{
+    "versionModelNumber": "PXB35-09-17-080",
+    "catalogNumber": "PXB35-09-17-080",
+    "brandName": "Visi-Pro™",
+    "companyName": "Medtronic Inc.",
+    "deviceDescription": "A peripheral vascular self-expanding nitinol stent system designed for the treatment of peripheral arterial disease in the superficial femoral artery.",
+    "MRISafetyStatus": "MR Conditional",
+    "singleUse": true,
+    "rx": true,
+    "productCodes": ["DYB"],
+    "premarketSubmissions": ["K123456"]
+}
