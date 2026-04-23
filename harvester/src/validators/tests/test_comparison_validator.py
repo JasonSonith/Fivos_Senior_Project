@@ -330,3 +330,154 @@ class TestCanonicalizeSizeEntry:
         from validators.comparison_validator import _canonicalize_size_entry
         entry = {"sizeType": "Diameter", "size": {"unit": "Millimeter", "value": "abc"}, "sizeText": None}
         assert _canonicalize_size_entry(entry) is None
+
+
+class TestCompareDeviceSizes:
+
+    def _mm(self, t, v):
+        return {"sizeType": t, "size": {"unit": "Millimeter", "value": str(v)}, "sizeText": None}
+
+    def test_both_null(self):
+        from validators.comparison_validator import _compare_device_sizes
+        result = _compare_device_sizes(None, None)
+        assert result["status"] == "both_null"
+        assert result["per_type"] == []
+
+    def test_harvested_null(self):
+        from validators.comparison_validator import _compare_device_sizes
+        result = _compare_device_sizes(None, [self._mm("Diameter", 3.5)])
+        assert result["status"] == "not_compared"
+
+    def test_harvested_empty_list(self):
+        from validators.comparison_validator import _compare_device_sizes
+        result = _compare_device_sizes([], [self._mm("Diameter", 3.5)])
+        assert result["status"] == "not_compared"
+
+    def test_gudid_null_harvested_has(self):
+        from validators.comparison_validator import _compare_device_sizes
+        result = _compare_device_sizes([self._mm("Diameter", 3.5)], None)
+        assert result["status"] == "mismatch"
+
+    def test_exact_match(self):
+        from validators.comparison_validator import _compare_device_sizes
+        result = _compare_device_sizes(
+            [self._mm("Diameter", 3.5)],
+            [self._mm("Diameter", 3.5)],
+        )
+        assert result["status"] == "match"
+        assert len(result["per_type"]) == 1
+        assert result["per_type"][0]["sizeType"] == "Diameter"
+        assert result["per_type"][0]["status"] == "match"
+
+    def test_within_tolerance(self):
+        from validators.comparison_validator import _compare_device_sizes
+        # 3.5 vs 3.52 → diff 0.02, tolerance 0.05 → match
+        result = _compare_device_sizes(
+            [self._mm("Diameter", 3.5)],
+            [self._mm("Diameter", 3.52)],
+        )
+        assert result["status"] == "match"
+
+    def test_outside_tolerance(self):
+        from validators.comparison_validator import _compare_device_sizes
+        # 3.5 vs 3.6 → diff 0.1, tolerance 0.05 → mismatch
+        result = _compare_device_sizes(
+            [self._mm("Diameter", 3.5)],
+            [self._mm("Diameter", 3.6)],
+        )
+        assert result["status"] == "mismatch"
+        assert result["per_type"][0]["status"] == "mismatch"
+
+    def test_unit_conversion_match(self):
+        from validators.comparison_validator import _compare_device_sizes
+        # Harvester has 30 Millimeter; GUDID has 3 Centimeter
+        gudid_cm = {"sizeType": "Length", "size": {"unit": "Centimeter", "value": "3"}, "sizeText": None}
+        result = _compare_device_sizes(
+            [self._mm("Length", 30)],
+            [gudid_cm],
+        )
+        assert result["status"] == "match"
+
+    def test_french_unit_match(self):
+        from validators.comparison_validator import _compare_device_sizes
+        # Harvester has 2 Millimeter (after normalize_measurement on "6 Fr");
+        # GUDID has 6 French → also 2 mm canonical
+        gudid_fr = {"sizeType": "Diameter", "size": {"unit": "French", "value": "6"}, "sizeText": None}
+        result = _compare_device_sizes(
+            [self._mm("Diameter", 2.0)],
+            [gudid_fr],
+        )
+        assert result["status"] == "match"
+
+    def test_harvester_subset_of_gudid(self):
+        from validators.comparison_validator import _compare_device_sizes
+        # Harvester: only Diameter. GUDID: Diameter, Length, Weight. All match.
+        gudid = [
+            self._mm("Diameter", 3.5),
+            self._mm("Length", 20),
+            {"sizeType": "Weight", "size": {"unit": "Gram", "value": "5"}, "sizeText": None},
+        ]
+        result = _compare_device_sizes([self._mm("Diameter", 3.5)], gudid)
+        assert result["status"] == "match"
+        assert len(result["per_type"]) == 1
+
+    def test_harvester_has_extra_type(self):
+        from validators.comparison_validator import _compare_device_sizes
+        # Harvester: Diameter + Length. GUDID: only Diameter. Length is harvester-only.
+        result = _compare_device_sizes(
+            [self._mm("Diameter", 3.5), self._mm("Length", 20)],
+            [self._mm("Diameter", 3.5)],
+        )
+        assert result["status"] == "mismatch"
+        # Length should appear in per_type as mismatch
+        length_entry = next(p for p in result["per_type"] if p["sizeType"] == "Length")
+        assert length_entry["status"] == "mismatch"
+
+    def test_one_type_mismatches(self):
+        from validators.comparison_validator import _compare_device_sizes
+        result = _compare_device_sizes(
+            [self._mm("Diameter", 3.5), self._mm("Length", 20)],
+            [self._mm("Diameter", 3.5), self._mm("Length", 18)],
+        )
+        assert result["status"] == "mismatch"
+        per_type_by_name = {p["sizeType"]: p["status"] for p in result["per_type"]}
+        assert per_type_by_name["Diameter"] == "match"
+        assert per_type_by_name["Length"] == "mismatch"
+
+    def test_sizeText_only_harvested_skipped(self):
+        from validators.comparison_validator import _compare_device_sizes
+        h = [
+            self._mm("Diameter", 3.5),
+            {"sizeType": "Length", "size": None, "sizeText": "Variable"},
+        ]
+        g = [self._mm("Diameter", 3.5)]
+        result = _compare_device_sizes(h, g)
+        assert result["status"] == "match"
+        assert len(result["per_type"]) == 1
+        assert result["per_type"][0]["sizeType"] == "Diameter"
+
+    def test_sizeText_only_gudid_not_compared(self):
+        from validators.comparison_validator import _compare_device_sizes
+        h = [self._mm("Diameter", 3.5)]
+        g = [{"sizeType": "Diameter", "size": None, "sizeText": "Variable"}]
+        result = _compare_device_sizes(h, g)
+        # No comparable entries → not_compared
+        assert result["status"] == "not_compared"
+        assert result["per_type"][0]["status"] == "not_compared"
+
+    def test_unknown_gudid_unit_not_compared(self):
+        from validators.comparison_validator import _compare_device_sizes
+        h = [self._mm("Diameter", 3.5)]
+        g = [{"sizeType": "Diameter", "size": {"unit": "NotAUnit", "value": "3.5"}, "sizeText": None}]
+        result = _compare_device_sizes(h, g)
+        assert result["status"] == "not_compared"
+
+    def test_per_type_formatted_strings(self):
+        from validators.comparison_validator import _compare_device_sizes
+        result = _compare_device_sizes(
+            [self._mm("Diameter", 3.5)],
+            [self._mm("Diameter", 3.5)],
+        )
+        pt = result["per_type"][0]
+        assert pt["harvested"] == "3.5 mm"
+        assert pt["gudid"] == "3.5 mm"

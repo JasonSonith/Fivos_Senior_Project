@@ -114,6 +114,106 @@ def _canonicalize_size_entry(entry: dict) -> dict | None:
     }
 
 
+# Absolute tolerance per canonical unit.
+_SIZE_TOLERANCE = {
+    "mm": 0.05,
+    "g": 0.1,
+    "mL": 0.1,
+    "mmHg": 0.5,
+}
+
+
+def _format_canonical(canon: dict) -> str:
+    v = canon["value"]
+    if float(v).is_integer():
+        value_str = str(int(v))
+    else:
+        value_str = f"{v:g}"
+    return f"{value_str} {canon['canonical_unit']}"
+
+
+def _compare_device_sizes(h_sizes, g_sizes):
+    h_null = _is_null(h_sizes)
+    g_null = _is_null(g_sizes)
+    if h_null and g_null:
+        return {"harvested": h_sizes, "gudid": g_sizes,
+                "status": FieldStatus.BOTH_NULL, "per_type": []}
+    if h_null:
+        return {"harvested": h_sizes, "gudid": g_sizes,
+                "status": FieldStatus.NOT_COMPARED, "per_type": []}
+    if g_null:
+        return {"harvested": h_sizes, "gudid": g_sizes,
+                "status": FieldStatus.MISMATCH, "per_type": []}
+
+    per_type = []
+    for h_entry in h_sizes:
+        h_canon = _canonicalize_size_entry(h_entry)
+        if h_canon is None:
+            continue
+        size_type = h_canon["sizeType"]
+        g_entry = next(
+            (g for g in g_sizes
+             if isinstance(g, dict) and g.get("sizeType") == size_type),
+            None,
+        )
+        if g_entry is None:
+            per_type.append({
+                "sizeType": size_type,
+                "status": FieldStatus.MISMATCH,
+                "harvested": _format_canonical(h_canon),
+                "gudid": None,
+            })
+            continue
+        g_canon = _canonicalize_size_entry(g_entry)
+        if g_canon is None:
+            per_type.append({
+                "sizeType": size_type,
+                "status": FieldStatus.NOT_COMPARED,
+                "harvested": _format_canonical(h_canon),
+                "gudid": None,
+            })
+            continue
+        if g_canon["canonical_unit"] != h_canon["canonical_unit"]:
+            per_type.append({
+                "sizeType": size_type,
+                "status": FieldStatus.NOT_COMPARED,
+                "harvested": _format_canonical(h_canon),
+                "gudid": _format_canonical(g_canon),
+            })
+            continue
+        tolerance = _SIZE_TOLERANCE.get(h_canon["canonical_unit"])
+        if tolerance is None:
+            per_type.append({
+                "sizeType": size_type,
+                "status": FieldStatus.NOT_COMPARED,
+                "harvested": _format_canonical(h_canon),
+                "gudid": _format_canonical(g_canon),
+            })
+            continue
+        matched = abs(h_canon["value"] - g_canon["value"]) <= tolerance
+        per_type.append({
+            "sizeType": size_type,
+            "status": FieldStatus.MATCH if matched else FieldStatus.MISMATCH,
+            "harvested": _format_canonical(h_canon),
+            "gudid": _format_canonical(g_canon),
+        })
+
+    comparable = [p for p in per_type if p["status"] in (FieldStatus.MATCH, FieldStatus.MISMATCH)]
+    if not comparable:
+        aggregate = FieldStatus.NOT_COMPARED
+    elif all(p["status"] == FieldStatus.MATCH for p in comparable):
+        aggregate = FieldStatus.MATCH
+    else:
+        aggregate = FieldStatus.MISMATCH
+
+    return {
+        "harvested": h_sizes,
+        "gudid": g_sizes,
+        "status": aggregate,
+        "per_type": per_type,
+    }
+
+
 _SKU_PATTERN_RE = re.compile(r"^[A-Z0-9\-_ ]+$")
 
 
