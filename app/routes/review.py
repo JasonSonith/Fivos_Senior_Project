@@ -58,7 +58,7 @@ def review_page(request: Request, validation_id: str):
     comparison = validation.get("comparison_result") or {}
     gudid_record = validation.get("gudid_record") or {}
 
-    mode = "info" if validation.get("status") in ("matched", "gudid_deactivated") else "review"
+    mode = "info" if validation.get("status") in ("matched", "gudid_deactivated", "fetch_error") else "review"
 
     fields = []
     for field_key, field_label in COMPARED_FIELDS:

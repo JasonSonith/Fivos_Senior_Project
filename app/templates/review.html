@@ -30,6 +30,12 @@
     ({{ validation.gudid_di or "N/A" }}{% if validation.gudid_record and validation.gudid_record.publishDate %}, last published {{ validation.gudid_record.publishDate }}{% endif %}).
     The harvested data below is the live source &mdash; no per-field comparison was run.
 </div>
+{% elif validation.status == "fetch_error" %}
+<div class="banner banner-warning" style="padding: 14px 18px; border-left: 4px solid var(--warning); background: var(--warning-bg); margin-bottom: 20px;">
+    <strong>Could not verify.</strong>
+    GUDID lookup failed for this device &mdash; no per-field comparison was run.
+    {% if validation.error_type %}<div class="muted" style="margin-top: 4px; font-size: 13px;">({{ validation.error_type }}{% if validation.error_message %}: {{ validation.error_message }}{% endif %})</div>{% endif %}
+</div>
 {% endif %}
 
 <section class="stats-grid">
@@ -67,7 +73,7 @@
     </div>
 </section>
 
-{% if mode == "info" or validation.status == "gudid_deactivated" %}
+{% if mode == "info" or validation.status in ("gudid_deactivated", "fetch_error") %}
 <section class="panel">
     <div class="panel-header">
         <div>
