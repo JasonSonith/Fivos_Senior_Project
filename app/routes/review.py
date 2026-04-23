@@ -27,6 +27,15 @@ COMPARED_FIELDS = [
     ("MRISafetyStatus", "MRI Safety Status"),
     ("singleUse", "Single Use"),
     ("rx", "Prescription (Rx)"),
+    ("gmdnPTName", "GMDN Term"),
+    ("gmdnCode", "GMDN Code"),
+    ("productCodes", "FDA Product Codes"),
+    ("deviceCountInBase", "Pack Quantity"),
+    ("issuingAgency", "Issuing Agency"),
+    ("lotBatch", "Labeled: Lot / Batch"),
+    ("serialNumber", "Labeled: Serial Number"),
+    ("manufacturingDate", "Labeled: Manufacturing Date"),
+    ("expirationDate", "Labeled: Expiration Date"),
 ]
 
 

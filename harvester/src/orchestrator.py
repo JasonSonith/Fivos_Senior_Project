@@ -39,6 +39,12 @@ MERGE_FIELDS = [
     "environmentalConditions",
     "brandName", "versionModelNumber", "companyName", "deviceDescription",
     "MRISafetyStatus", "singleUse", "rx",
+    # Layer-2 additions
+    "gmdnPTName", "gmdnCode", "productCodes",
+    "deviceCountInBase",
+    "publishDate", "deviceRecordStatus",
+    "issuingAgency",
+    "lotBatch", "serialNumber", "manufacturingDate", "expirationDate",
 ]
 
 

@@ -19,6 +19,11 @@ FIELD_WEIGHTS = {
     "brandName": 3,          "companyName": 3,
     "MRISafetyStatus": 2, "singleUse": 2, "rx": 2,
     "deviceDescription": 1,
+    # Layer-2 additions
+    "gmdnPTName": 3, "gmdnCode": 2, "productCodes": 3,
+    "deviceCountInBase": 2, "issuingAgency": 2,
+    "lotBatch": 1, "serialNumber": 1,
+    "manufacturingDate": 1, "expirationDate": 1,
 }
 
 _SCORED_STATUSES = {FieldStatus.MATCH, FieldStatus.CORPORATE_ALIAS, FieldStatus.MISMATCH}
@@ -107,6 +112,12 @@ def _status_from_bool(match):
     if match is False:
         return FieldStatus.MISMATCH
     return FieldStatus.NOT_COMPARED
+
+
+def _subset_match(h_list, g_list):
+    if set(h_list) <= set(g_list):
+        return FieldStatus.MATCH
+    return FieldStatus.MISMATCH
 
 
 def _build_summary(per_field):
@@ -227,6 +238,80 @@ def compare_records(harvested, gudid):
             results[field] = {"harvested": h, "gudid": g, "status": FieldStatus.BOTH_NULL}
             continue
         match, _, _ = _compare_normalized(h, g, normalizer)
+        results[field] = {
+            "harvested": h, "gudid": g,
+            "status": _status_from_bool(match),
+        }
+
+    # --- Layer 2 fields ---
+
+    # gmdnPTName — case-insensitive exact
+    h = harvested.get("gmdnPTName"); g = gudid.get("gmdnPTName")
+    if _is_null(h) and _is_null(g):
+        results["gmdnPTName"] = {"harvested": h, "gudid": g, "status": FieldStatus.BOTH_NULL}
+    elif _is_null(h):
+        results["gmdnPTName"] = {"harvested": h, "gudid": g, "status": FieldStatus.NOT_COMPARED}
+    else:
+        match = bool(g and isinstance(h, str) and isinstance(g, str)
+                     and h.strip().lower() == g.strip().lower())
+        results["gmdnPTName"] = {
+            "harvested": h, "gudid": g,
+            "status": FieldStatus.MATCH if match else FieldStatus.MISMATCH,
+        }
+
+    # gmdnCode, issuingAgency — case-sensitive exact
+    for field in ("gmdnCode", "issuingAgency"):
+        h = harvested.get(field); g = gudid.get(field)
+        if _is_null(h) and _is_null(g):
+            results[field] = {"harvested": h, "gudid": g, "status": FieldStatus.BOTH_NULL}
+            continue
+        if _is_null(h):
+            results[field] = {"harvested": h, "gudid": g, "status": FieldStatus.NOT_COMPARED}
+            continue
+        match = bool(g and str(h).strip() == str(g).strip())
+        results[field] = {
+            "harvested": h, "gudid": g,
+            "status": FieldStatus.MATCH if match else FieldStatus.MISMATCH,
+        }
+
+    # productCodes — subset match (asymmetric)
+    h_pc = harvested.get("productCodes"); g_pc = gudid.get("productCodes")
+    if _is_null(h_pc) and _is_null(g_pc):
+        results["productCodes"] = {"harvested": h_pc, "gudid": g_pc, "status": FieldStatus.BOTH_NULL}
+    elif _is_null(h_pc):
+        results["productCodes"] = {"harvested": h_pc, "gudid": g_pc, "status": FieldStatus.NOT_COMPARED}
+    elif _is_null(g_pc):
+        results["productCodes"] = {"harvested": h_pc, "gudid": g_pc, "status": FieldStatus.MISMATCH}
+    else:
+        results["productCodes"] = {
+            "harvested": h_pc, "gudid": g_pc,
+            "status": _subset_match(h_pc, g_pc),
+        }
+
+    # deviceCountInBase — integer equality
+    h_count = harvested.get("deviceCountInBase"); g_count = gudid.get("deviceCountInBase")
+    if _is_null(h_count) and _is_null(g_count):
+        results["deviceCountInBase"] = {"harvested": h_count, "gudid": g_count, "status": FieldStatus.BOTH_NULL}
+    elif _is_null(h_count):
+        results["deviceCountInBase"] = {"harvested": h_count, "gudid": g_count, "status": FieldStatus.NOT_COMPARED}
+    else:
+        match = False
+        try:
+            match = int(h_count) == int(g_count) if g_count is not None else False
+        except (TypeError, ValueError):
+            match = False
+        results["deviceCountInBase"] = {
+            "harvested": h_count, "gudid": g_count,
+            "status": FieldStatus.MATCH if match else FieldStatus.MISMATCH,
+        }
+
+    # Labeled-identifier booleans — normalize_boolean, null-asymmetric
+    for field in ("lotBatch", "serialNumber", "manufacturingDate", "expirationDate"):
+        h = harvested.get(field); g = gudid.get(field)
+        if _is_null(h) and _is_null(g):
+            results[field] = {"harvested": h, "gudid": g, "status": FieldStatus.BOTH_NULL}
+            continue
+        match, _, _ = _compare_normalized(h, g, normalize_boolean)
         results[field] = {
             "harvested": h, "gudid": g,
             "status": _status_from_bool(match),
