@@ -599,6 +599,7 @@ def get_all_dashboard_records() -> list[dict]:
             serialized["matched_fields"] = None
             serialized["total_fields"] = None
             serialized["match_percent"] = None
+            serialized["weighted_percent"] = None
             validation_id = matched_validations_by_device_id.get(doc.get("source_device_id"))
             serialized["_id"] = str(validation_id) if validation_id else None
             results.append(serialized)
