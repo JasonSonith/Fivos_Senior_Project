@@ -26,6 +26,7 @@ FIELD_WEIGHTS = {
     "lotBatch": 1, "serialNumber": 1,
     "manufacturingDate": 1, "expirationDate": 1,
     "premarketSubmissions": 2,
+    "deviceSizes": 2,
 }
 
 _SCORED_STATUSES = {FieldStatus.MATCH, FieldStatus.CORPORATE_ALIAS, FieldStatus.MISMATCH}
@@ -477,6 +478,12 @@ def compare_records(harvested, gudid):
             "harvested": h_pm, "gudid": g_pm,
             "status": _subset_match(h_pm, g_pm),
         }
+
+    # deviceSizes — subset match with per-unit absolute tolerance
+    results["deviceSizes"] = _compare_device_sizes(
+        harvested.get("deviceSizes"),
+        gudid.get("deviceSizes"),
+    )
 
     summary = _build_summary(results)
     return results, summary

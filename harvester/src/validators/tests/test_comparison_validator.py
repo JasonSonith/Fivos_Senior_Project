@@ -481,3 +481,50 @@ class TestCompareDeviceSizes:
         pt = result["per_type"][0]
         assert pt["harvested"] == "3.5 mm"
         assert pt["gudid"] == "3.5 mm"
+
+
+class TestDeviceSizesIntegration:
+    def _mm(self, t, v):
+        return {"sizeType": t, "size": {"unit": "Millimeter", "value": str(v)}, "sizeText": None}
+
+    def test_deviceSizes_appears_in_per_field_on_match(self):
+        h = {**BASE_HARVESTED, "deviceSizes": [self._mm("Diameter", 3.5)]}
+        g = {**BASE_GUDID, "deviceSizes": [self._mm("Diameter", 3.5)]}
+        per_field, _ = compare_records(h, g)
+        assert "deviceSizes" in per_field
+        assert per_field["deviceSizes"]["status"] == "match"
+        assert per_field["deviceSizes"]["per_type"][0]["sizeType"] == "Diameter"
+
+    def test_deviceSizes_mismatch_contributes_weight_2(self):
+        from validators.comparison_validator import FIELD_WEIGHTS
+        assert FIELD_WEIGHTS["deviceSizes"] == 2
+
+        h = {**BASE_HARVESTED, "deviceSizes": [self._mm("Diameter", 3.5)]}
+        g = {**BASE_GUDID, "deviceSizes": [self._mm("Diameter", 3.6)]}
+        _, summary = compare_records(h, g)
+        h_no_sizes = {**BASE_HARVESTED}
+        g_no_sizes = {**BASE_GUDID}
+        _, summary_baseline = compare_records(h_no_sizes, g_no_sizes)
+        assert summary["denominator"] == summary_baseline["denominator"] + 2
+        assert summary["numerator"] == summary_baseline["numerator"]
+
+    def test_deviceSizes_match_contributes_to_numerator(self):
+        h = {**BASE_HARVESTED, "deviceSizes": [self._mm("Diameter", 3.5)]}
+        g = {**BASE_GUDID, "deviceSizes": [self._mm("Diameter", 3.5)]}
+        _, summary = compare_records(h, g)
+
+        h_no = {**BASE_HARVESTED}
+        g_no = {**BASE_GUDID}
+        _, summary_baseline = compare_records(h_no, g_no)
+        assert summary["numerator"] == summary_baseline["numerator"] + 2
+        assert summary["denominator"] == summary_baseline["denominator"] + 2
+
+    def test_deviceSizes_not_compared_when_harvested_null(self):
+        h = {**BASE_HARVESTED}  # no deviceSizes key
+        g = {**BASE_GUDID, "deviceSizes": [self._mm("Diameter", 3.5)]}
+        per_field, summary = compare_records(h, g)
+        assert per_field["deviceSizes"]["status"] == "not_compared"
+        h_no = {**BASE_HARVESTED}
+        g_no = {**BASE_GUDID}
+        _, summary_baseline = compare_records(h_no, g_no)
+        assert summary["denominator"] == summary_baseline["denominator"]
