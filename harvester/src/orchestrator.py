@@ -48,6 +48,10 @@ MERGE_FIELDS = [
 ]
 
 
+def _is_null_list(value) -> bool:
+    return value is None or (isinstance(value, list) and len(value) == 0)
+
+
 def _merge_gudid_into_device(db, device: dict, gudid_record: dict) -> list[str]:
     """Fill null device fields with GUDID values. Returns list of fields filled."""
     updates = {}
@@ -339,6 +343,8 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
         "mismatches": 0,
         "not_found": 0,
         "gudid_deactivated": 0,
+        "harvest_gap_product_codes": 0,
+        "harvest_gap_premarket": 0,
         "error": None,
     }
 
@@ -427,6 +433,22 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
         else:
             status = "mismatch"
             result["mismatches"] += 1
+
+        if gudid_record.get("productCodes") and _is_null_list(device.get("productCodes")):
+            logger.info(
+                "[harvest-gap] device %s (%s): GUDID productCodes=%r, harvested=null",
+                device.get("_id"), device.get("brandName"),
+                gudid_record["productCodes"],
+            )
+            result["harvest_gap_product_codes"] += 1
+
+        if gudid_record.get("premarketSubmissions") and _is_null_list(device.get("premarketSubmissions")):
+            logger.info(
+                "[harvest-gap] device %s (%s): GUDID premarketSubmissions=%r, harvested=null",
+                device.get("_id"), device.get("brandName"),
+                gudid_record["premarketSubmissions"],
+            )
+            result["harvest_gap_premarket"] += 1
 
         validation_col.insert_one({
             "device_id": device.get("_id"),

@@ -44,3 +44,36 @@ def test_deactivated_short_circuit_writes_status_and_skips_compare():
     assert call_arg["matched_fields"] is None
     assert call_arg["total_fields"] is None
     assert result.get("gudid_deactivated") == 1
+
+
+def test_harvest_gap_counters_fire():
+    """When GUDID has productCodes or premarketSubmissions but device is null,
+    counters increment per device."""
+    from orchestrator import run_validation
+
+    mock_db = MagicMock()
+    mock_device = {
+        "_id": "device-456",
+        "brandName": "X",
+        "catalogNumber": "Y",
+        "versionModelNumber": "Z",
+    }
+    mock_gudid = {
+        "brandName": "X",
+        "versionModelNumber": "Z",
+        "productCodes": ["DYB"],
+        "premarketSubmissions": ["K123456"],
+        "deviceRecordStatus": "Published",
+    }
+    mock_db["devices"].find.return_value = [mock_device]
+    mock_db["validationResults"].insert_one = MagicMock()
+    mock_db["validationResults"].drop = MagicMock()
+
+    with patch("database.db_connection.get_db", return_value=mock_db), \
+         patch("validators.gudid_client.fetch_gudid_record",
+               return_value=("DI-456", mock_gudid)), \
+         patch("orchestrator._merge_gudid_into_device"):
+        result = run_validation(overwrite=False)
+
+    assert result.get("harvest_gap_product_codes") == 1
+    assert result.get("harvest_gap_premarket") == 1
