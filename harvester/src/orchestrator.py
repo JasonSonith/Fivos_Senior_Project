@@ -12,7 +12,10 @@ import logging
 import os
 import sys
 import uuid
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
+from typing import Optional
 
 _SRC_DIR = os.path.dirname(os.path.abspath(__file__))
 if _SRC_DIR not in sys.path:
@@ -63,6 +66,228 @@ def _derive_outcome(matched_fields: int, total_fields: int) -> str:
     if matched_fields > 0:
         return "partial_match"
     return "mismatch"
+
+
+GUDID_MAX_WORKERS = 8
+
+
+@dataclass
+class DeviceValidationResult:
+    """Per-device worker output. Main thread folds these into DB writes + counters."""
+    device: dict
+    outcome: str  # "matched" | "partial_match" | "mismatch" | "not_found"
+                  #  | "gudid_deactivated" | "fetch_error"
+    di: Optional[str] = None
+    gudid_record: Optional[dict] = None
+    comparison: Optional[dict] = None
+    summary: Optional[dict] = None
+    matched_fields: Optional[int] = None
+    total_fields: Optional[int] = None
+    match_percent: Optional[float] = None
+    weighted_percent: Optional[float] = None
+    description_similarity: Optional[float] = None
+    error_type: Optional[str] = None
+    error_message: Optional[str] = None
+
+
+def _validate_one_device(device: dict) -> DeviceValidationResult:
+    """Pure network + CPU work for one device. No MongoDB writes.
+
+    Safe to run from a ThreadPoolExecutor worker. All exception handling
+    happens inside; callers always get a DeviceValidationResult back.
+    """
+    try:
+        di, gudid_record = fetch_gudid_record(
+            catalog_number=device.get("catalogNumber"),
+            version_model_number=device.get("versionModelNumber"),
+        )
+    except requests.RequestException as exc:
+        logger.warning(
+            "GUDID fetch failed for catalog=%s model=%s: %s: %s",
+            device.get("catalogNumber"),
+            device.get("versionModelNumber"),
+            type(exc).__name__,
+            exc,
+        )
+        return DeviceValidationResult(
+            device=device,
+            outcome="fetch_error",
+            error_type=type(exc).__name__,
+            error_message=str(exc)[:500],
+        )
+
+    if not gudid_record:
+        return DeviceValidationResult(
+            device=device,
+            outcome="not_found",
+            di=di,
+        )
+
+    if gudid_record.get("deviceRecordStatus") == "Deactivated":
+        return DeviceValidationResult(
+            device=device,
+            outcome="gudid_deactivated",
+            di=di,
+            gudid_record=gudid_record,
+        )
+
+    comparison, summary = compare_records(device, gudid_record)
+    matched_fields = summary["unweighted_numerator"]
+    total_fields = summary["unweighted_denominator"]
+    match_percent = round((matched_fields / total_fields) * 100, 2) if total_fields else 0.0
+    weighted_percent = round(
+        (summary["numerator"] / summary["denominator"]) * 100, 2
+    ) if summary["denominator"] else 0.0
+    description_similarity = comparison.get("deviceDescription", {}).get("similarity") or 0.0
+
+    return DeviceValidationResult(
+        device=device,
+        outcome=_derive_outcome(matched_fields, total_fields),
+        di=di,
+        gudid_record=gudid_record,
+        comparison=comparison,
+        summary=summary,
+        matched_fields=matched_fields,
+        total_fields=total_fields,
+        match_percent=match_percent,
+        weighted_percent=weighted_percent,
+        description_similarity=description_similarity,
+    )
+
+
+def _persist_result(
+    res: DeviceValidationResult,
+    result: dict,
+    db,
+    validation_col,
+    verified_col,
+) -> None:
+    """Write one DeviceValidationResult to MongoDB and update counters.
+
+    Must be called from the main thread only. Preserves the document
+    shapes that the review dashboard reads today.
+    """
+    now = datetime.now(timezone.utc)
+    device = res.device
+
+    if res.outcome == "fetch_error":
+        result["errors"] += 1
+        validation_col.insert_one({
+            "device_id": device.get("_id"),
+            "brandName": device.get("brandName"),
+            "status": "fetch_error",
+            "error_type": res.error_type,
+            "error_message": res.error_message,
+            "matched_fields": None,
+            "total_fields": None,
+            "match_percent": None,
+            "weighted_percent": None,
+            "description_similarity": None,
+            "comparison_result": None,
+            "gudid_record": None,
+            "gudid_di": None,
+            "created_at": now,
+            "updated_at": now,
+        })
+        return
+
+    if res.outcome == "not_found":
+        result["mismatches"] += 1
+        validation_col.insert_one({
+            "device_id": device.get("_id"),
+            "brandName": device.get("brandName"),
+            "status": "mismatch",
+            "matched_fields": 0,
+            "total_fields": 0,
+            "match_percent": 0.0,
+            "weighted_percent": 0.0,
+            "comparison_result": None,
+            "gudid_record": None,
+            "gudid_di": res.di,
+            "created_at": now,
+            "updated_at": now,
+        })
+        return
+
+    if res.outcome == "gudid_deactivated":
+        result["gudid_deactivated"] = result.get("gudid_deactivated", 0) + 1
+        validation_col.insert_one({
+            "device_id": device["_id"],
+            "brandName": device.get("brandName"),
+            "status": "gudid_deactivated",
+            "matched_fields": None,
+            "total_fields": None,
+            "match_percent": None,
+            "weighted_percent": None,
+            "description_similarity": None,
+            "comparison_result": None,
+            "gudid_record": res.gudid_record,
+            "gudid_di": res.di,
+            "gudid_record_status": "Deactivated",
+            "created_at": now,
+            "updated_at": now,
+        })
+        return
+
+    # Compared path: matched / partial_match / mismatch
+    status = res.outcome
+    if status == "matched":
+        result["full_matches"] += 1
+    elif status == "partial_match":
+        result["partial_matches"] += 1
+    else:
+        result["mismatches"] += 1
+
+    gudid_record = res.gudid_record
+    if gudid_record.get("productCodes") and _is_null_list(device.get("productCodes")):
+        logger.info(
+            "[harvest-gap] device %s (%s): GUDID productCodes=%r, harvested=null",
+            device.get("_id"), device.get("brandName"),
+            gudid_record["productCodes"],
+        )
+        result["harvest_gap_product_codes"] += 1
+
+    if gudid_record.get("premarketSubmissions") and _is_null_list(device.get("premarketSubmissions")):
+        logger.info(
+            "[harvest-gap] device %s (%s): GUDID premarketSubmissions=%r, harvested=null",
+            device.get("_id"), device.get("brandName"),
+            gudid_record["premarketSubmissions"],
+        )
+        result["harvest_gap_premarket"] += 1
+
+    validation_col.insert_one({
+        "device_id": device.get("_id"),
+        "brandName": device.get("brandName"),
+        "status": status,
+        "matched_fields": res.matched_fields,
+        "total_fields": res.total_fields,
+        "match_percent": res.match_percent,
+        "weighted_percent": res.weighted_percent,
+        "description_similarity": res.description_similarity,
+        "comparison_result": res.comparison,
+        "gudid_record": gudid_record,
+        "gudid_di": res.di,
+        "created_at": now,
+        "updated_at": now,
+    })
+
+    if status == "matched":
+        verified_record = dict(device)
+        verified_record.pop("_id", None)
+        for merge_field in MERGE_FIELDS:
+            if verified_record.get(merge_field) is None and gudid_record.get(merge_field) is not None:
+                verified_record[merge_field] = gudid_record[merge_field]
+        verified_record["gudid_di"] = res.di
+        verified_record["verified_at"] = now
+        verified_record["source_device_id"] = device.get("_id")
+        verified_col.update_one(
+            {"versionModelNumber": verified_record.get("versionModelNumber"),
+             "catalogNumber": verified_record.get("catalogNumber")},
+            {"$set": verified_record},
+            upsert=True,
+        )
+
+    _merge_gudid_into_device(db, device, gudid_record)
 
 
 def _merge_gudid_into_device(db, device: dict, gudid_record: dict) -> list[str]:
@@ -382,150 +607,26 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
         result["error"] = "No devices found to validate"
         return result
 
-    for device in devices:
-        try:
-            di, gudid_record = fetch_gudid_record(
-                catalog_number=device.get("catalogNumber"),
-                version_model_number=device.get("versionModelNumber"),
-            )
-        except requests.RequestException as exc:
-            logger.warning(
-                "GUDID fetch failed for catalog=%s model=%s: %s: %s",
-                device.get("catalogNumber"),
-                device.get("versionModelNumber"),
-                type(exc).__name__,
-                exc,
-            )
-            result["errors"] += 1
-            now = datetime.now(timezone.utc)
-            validation_col.insert_one({
-                "device_id": device.get("_id"),
-                "brandName": device.get("brandName"),
-                "status": "fetch_error",
-                "error_type": type(exc).__name__,
-                "error_message": str(exc)[:500],
-                "matched_fields": None,
-                "total_fields": None,
-                "match_percent": None,
-                "weighted_percent": None,
-                "description_similarity": None,
-                "comparison_result": None,
-                "gudid_record": None,
-                "gudid_di": None,
-                "created_at": now,
-                "updated_at": now,
-            })
-            continue
+    # Parallel fan-out: workers do network + CPU only. Main thread collects
+    # results as they complete and writes MongoDB serially after all workers
+    # finish — no counter locks needed, no concurrent DB writes.
+    results: list[DeviceValidationResult] = []
+    completed = 0
+    total = len(devices)
 
-        if not gudid_record:
-            result["mismatches"] += 1
-            validation_col.insert_one({
-                "device_id": device.get("_id"),
-                "brandName": device.get("brandName"),
-                "status": "mismatch",
-                "matched_fields": 0,
-                "total_fields": 0,
-                "match_percent": 0.0,
-                "weighted_percent": 0.0,
-                "comparison_result": None,
-                "gudid_record": None,
-                "gudid_di": di,
-                "created_at": datetime.now(timezone.utc),
-                "updated_at": datetime.now(timezone.utc),
-            })
-            continue
+    with ThreadPoolExecutor(
+        max_workers=GUDID_MAX_WORKERS,
+        thread_name_prefix="gudid",
+    ) as pool:
+        futures = [pool.submit(_validate_one_device, d) for d in devices]
+        for fut in as_completed(futures):
+            results.append(fut.result())
+            completed += 1
+            if completed % 25 == 0 or completed == total:
+                logger.info("[gudid] %d/%d devices validated", completed, total)
 
-        record_status = (gudid_record or {}).get("deviceRecordStatus")
-        if record_status == "Deactivated":
-            validation_col.insert_one({
-                "device_id": device["_id"],
-                "brandName": device.get("brandName"),
-                "status": "gudid_deactivated",
-                "matched_fields": None,
-                "total_fields": None,
-                "match_percent": None,
-                "weighted_percent": None,
-                "description_similarity": None,
-                "comparison_result": None,
-                "gudid_record": gudid_record,
-                "gudid_di": di,
-                "gudid_record_status": record_status,
-                "created_at": datetime.now(timezone.utc),
-                "updated_at": datetime.now(timezone.utc),
-            })
-            result["gudid_deactivated"] = result.get("gudid_deactivated", 0) + 1
-            continue
-
-        comparison, summary = compare_records(device, gudid_record)
-        matched_fields = summary["unweighted_numerator"]
-        total_fields = summary["unweighted_denominator"]
-        match_percent = round((matched_fields / total_fields) * 100, 2) if total_fields else 0.0
-        weighted_percent = round(
-            (summary["numerator"] / summary["denominator"]) * 100, 2
-        ) if summary["denominator"] else 0.0
-        description_similarity = comparison.get("deviceDescription", {}).get("similarity") or 0.0
-
-        status = _derive_outcome(matched_fields, total_fields)
-        if status == "matched":
-            result["full_matches"] += 1
-        elif status == "partial_match":
-            result["partial_matches"] += 1
-        else:
-            result["mismatches"] += 1
-
-        if gudid_record.get("productCodes") and _is_null_list(device.get("productCodes")):
-            logger.info(
-                "[harvest-gap] device %s (%s): GUDID productCodes=%r, harvested=null",
-                device.get("_id"), device.get("brandName"),
-                gudid_record["productCodes"],
-            )
-            result["harvest_gap_product_codes"] += 1
-
-        if gudid_record.get("premarketSubmissions") and _is_null_list(device.get("premarketSubmissions")):
-            logger.info(
-                "[harvest-gap] device %s (%s): GUDID premarketSubmissions=%r, harvested=null",
-                device.get("_id"), device.get("brandName"),
-                gudid_record["premarketSubmissions"],
-            )
-            result["harvest_gap_premarket"] += 1
-
-        validation_col.insert_one({
-            "device_id": device.get("_id"),
-            "brandName": device.get("brandName"),
-            "status": status,
-            "matched_fields": matched_fields,
-            "total_fields": total_fields,
-            "match_percent": match_percent,
-            "weighted_percent": weighted_percent,
-            "description_similarity": description_similarity,
-            "comparison_result": comparison,
-            "gudid_record": gudid_record,
-            "gudid_di": di,
-            "created_at": datetime.now(timezone.utc),
-            "updated_at": datetime.now(timezone.utc),
-        })
-
-        # Fully matched devices → store in verified_devices (harvested + GUDID extras)
-        if status == "matched":
-            verified_record = dict(device)
-            verified_record.pop("_id", None)
-            # Merge GUDID fields where harvested is null
-            for field in MERGE_FIELDS:
-                if verified_record.get(field) is None and gudid_record.get(field) is not None:
-                    verified_record[field] = gudid_record[field]
-            verified_record["gudid_di"] = di
-            verified_record["verified_at"] = datetime.now(timezone.utc)
-            verified_record["source_device_id"] = device.get("_id")
-            # Upsert by model+catalog to avoid duplicates on re-validation
-            verified_col.update_one(
-                {"versionModelNumber": verified_record.get("versionModelNumber"),
-                 "catalogNumber": verified_record.get("catalogNumber")},
-                {"$set": verified_record},
-                upsert=True,
-            )
-
-        # Fill null device fields from GUDID (runs after comparison to preserve original diff)
-        _merge_gudid_into_device(db, device, gudid_record)
+    for res in results:
+        _persist_result(res, result, db, validation_col, verified_col)
 
     result["success"] = True
 
