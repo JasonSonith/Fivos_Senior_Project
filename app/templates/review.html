@@ -161,4 +161,33 @@
     </div>
 </form>
 {% endif %}
+
+{% if device.indicationsForUse or device.contraindications or device.deviceClass %}
+<section class="panel" style="margin-top: 20px;">
+    <div class="panel-header">
+        <div>
+            <h3>Additional Information</h3>
+            <p>Fields harvested from the manufacturer page. Not compared against GUDID.</p>
+        </div>
+    </div>
+    {% if device.deviceClass %}
+    <div class="review-field-row info-mode">
+        <div class="review-field-name">FDA Device Class</div>
+        <div class="review-value harvested">Class {{ device.deviceClass }}</div>
+    </div>
+    {% endif %}
+    {% if device.indicationsForUse %}
+    <div class="review-field-row info-mode">
+        <div class="review-field-name">Indications for Use</div>
+        <div class="review-value harvested" style="white-space: pre-wrap;">{{ device.indicationsForUse }}</div>
+    </div>
+    {% endif %}
+    {% if device.contraindications %}
+    <div class="review-field-row info-mode">
+        <div class="review-field-name">Contraindications</div>
+        <div class="review-value harvested" style="white-space: pre-wrap;">{{ device.contraindications }}</div>
+    </div>
+    {% endif %}
+</section>
+{% endif %}
 {% endblock %}
