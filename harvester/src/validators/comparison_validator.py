@@ -2,6 +2,7 @@ import re
 
 from normalizers.booleans import normalize_boolean, normalize_mri_status
 from normalizers.text import clean_brand_name
+from normalizers.unit_conversions import normalize_measurement
 from validators.company_aliases import canonical_company
 
 
@@ -88,8 +89,6 @@ def _canonicalize_size_entry(entry: dict) -> dict | None:
     Returns None when the entry lacks a numeric size, has an unknown unit,
     or has an unparseable value.
     """
-    from normalizers.unit_conversions import normalize_measurement
-
     if not isinstance(entry, dict):
         return None
     size_type = entry.get("sizeType")
@@ -110,7 +109,7 @@ def _canonicalize_size_entry(entry: dict) -> dict | None:
         return None
     return {
         "sizeType": size_type,
-        "value": float(value),
+        "value": value,
         "canonical_unit": canonical_unit,
     }
 
