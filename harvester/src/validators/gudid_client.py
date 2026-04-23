@@ -1,5 +1,15 @@
+import logging
+
 import requests
 from bs4 import BeautifulSoup
+from tenacity import (
+    before_sleep_log,
+    retry,
+    retry_if_exception_type,
+    stop_after_attempt,
+    wait_exponential,
+    wait_random,
+)
 
 
 SEARCH_URL = "https://accessgudid.nlm.nih.gov/devices/search"
@@ -7,7 +17,35 @@ LOOKUP_URL = "https://accessgudid.nlm.nih.gov/api/v3/devices/lookup.json"
 
 REQUEST_TIMEOUT = 60  # seconds
 
+logger = logging.getLogger(__name__)
 
+
+class GudidRateLimitError(requests.HTTPError):
+    """Raised when GUDID returns HTTP 429 — retried by the retry policy."""
+    pass
+
+
+def _raise_for_status_with_rate_limit(response: requests.Response) -> None:
+    """Translate HTTP 429 into GudidRateLimitError; defer other errors to requests."""
+    if response.status_code == 429:
+        raise GudidRateLimitError(response=response)
+    response.raise_for_status()
+
+
+_RETRY_POLICY = dict(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=1, max=4) + wait_random(0, 1),
+    retry=retry_if_exception_type((
+        requests.Timeout,
+        requests.ConnectionError,
+        GudidRateLimitError,
+    )),
+    before_sleep=before_sleep_log(logger, logging.INFO),
+    reraise=True,
+)
+
+
+@retry(**_RETRY_POLICY)
 def search_gudid_di(catalog_number=None, version_model_number=None):
     """Search the GUDID HTML search page to find a Device Identifier (DI).
 
@@ -19,7 +57,7 @@ def search_gudid_di(catalog_number=None, version_model_number=None):
         return None
 
     response = requests.get(SEARCH_URL, params={"query": query}, timeout=REQUEST_TIMEOUT)
-    response.raise_for_status()
+    _raise_for_status_with_rate_limit(response)
 
     soup = BeautifulSoup(response.text, "html.parser")
 
@@ -119,6 +157,7 @@ def _extract_new_fields(device: dict) -> dict:
     }
 
 
+@retry(**_RETRY_POLICY)
 def fetch_gudid_record(catalog_number=None, version_model_number=None):
     """Search for DI, then fetch structured device record from GUDID API.
 
@@ -134,7 +173,7 @@ def fetch_gudid_record(catalog_number=None, version_model_number=None):
         return None, None
 
     response = requests.get(LOOKUP_URL, params={"di": di}, timeout=REQUEST_TIMEOUT)
-    response.raise_for_status()
+    _raise_for_status_with_rate_limit(response)
 
     data = response.json()
     device = data.get("gudid", {}).get("device", {})
