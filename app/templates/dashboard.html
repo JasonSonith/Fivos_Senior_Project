@@ -169,36 +169,22 @@
     let activeColor = null;
     const cards = document.querySelectorAll('.metric-card.filterable');
     const tbody = document.getElementById('results-tbody');
-    const rows = tbody ? Array.from(tbody.querySelectorAll('tr')) : [];
+    const rows = Array.from(tbody.querySelectorAll('tr'));
 
     const indicator = document.getElementById('filter-indicator');
     const indicatorText = document.getElementById('filter-indicator-text');
     const sortSelect = document.getElementById('sort-select');
     const companySelect = document.getElementById('company-select');
 
-    const FILTER_CLASSES = [
-        'active-filter--success', 'active-filter--warning',
-        'active-filter--danger', 'active-filter--info', 'dimmed'
-    ];
-    const FILTER_LABELS = {
-        'all': 'all',
-        'matched': 'matched',
-        'partial_match': 'partial match',
-        'mismatch': 'mismatch',
-        'gudid_deactivated': 'deactivated',
-    };
-
-    if (companySelect) {
-        const companies = Array.from(new Set(
-            rows.map(r => r.dataset.company).filter(c => c && c !== 'N/A')
-        )).sort((a, b) => a.localeCompare(b));
-        companies.forEach(c => {
-            const opt = document.createElement('option');
-            opt.value = c;
-            opt.textContent = c;
-            companySelect.appendChild(opt);
-        });
-    }
+    const companies = Array.from(new Set(
+        rows.map(r => r.dataset.company).filter(c => c && c !== 'N/A')
+    )).sort((a, b) => a.localeCompare(b));
+    companies.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c;
+        opt.textContent = c;
+        companySelect.appendChild(opt);
+    });
 
     cards.forEach(card => {
         card.addEventListener('click', () => {
@@ -214,81 +200,52 @@
         });
     });
 
-    if (sortSelect) sortSelect.addEventListener('change', render);
-    if (companySelect) companySelect.addEventListener('change', render);
+    const FILTER_CLASSES = ['active-filter--success', 'active-filter--warning', 'active-filter--danger', 'active-filter--info', 'dimmed'];
+    const FILTER_LABELS = {
+        'all': 'all',
+        'matched': 'matched',
+        'partial_match': 'partial match',
+        'mismatch': 'mismatch',
+        'gudid_deactivated': 'deactivated',
+    };
+
+    sortSelect.addEventListener('change', render);
+    companySelect.addEventListener('change', render);
 
     function render() {
-        if (!tbody) return;
-        const company = companySelect ? companySelect.value : '';
-        const sortMode = sortSelect ? sortSelect.value : 'recent';
+        const company = companySelect.value;
+        const sortMode = sortSelect.value;
 
-        const visible = rows.filter(row => {
-            if (activeStatus && activeStatus !== 'all' && row.dataset.status !== activeStatus) return false;
-            if (company && row.dataset.company !== company) return false;
-            return true;
-        });
-
-        const sorted = visible.slice().sort(comparator(sortMode));
-
-        rows.forEach(r => { r.style.display = 'none'; });
-        sorted.forEach(r => {
-            r.style.display = '';
-            tbody.appendChild(r);
+        rows.forEach(row => {
+            if (row.dataset.status === status) {
+                row.style.display = '';
+                count++;
+            } else {
+                row.style.display = 'none';
+            }
         });
 
         cards.forEach(c => {
-            c.classList.remove(...FILTER_CLASSES);
-            if (activeStatus) {
-                if (c.dataset.filter === activeStatus) {
-                    c.classList.add('active-filter--' + activeColor);
-                } else if (c.classList.contains('filterable')) {
-                    c.classList.add('dimmed');
-                }
+            c.classList.remove('active-filter--success', 'active-filter--warning', 'active-filter--danger', 'dimmed');
+            if (c.dataset.filter === status) {
+                c.classList.add('active-filter--' + color);
+            } else if (c.classList.contains('filterable')) {
+                c.classList.add('dimmed');
             }
         });
 
-        if (activeStatus || company) {
-            const parts = [];
-            parts.push('Showing ' + sorted.length + ' result' + (sorted.length !== 1 ? 's' : ''));
-            if (activeStatus) {
-                const label = FILTER_LABELS[activeStatus] || activeStatus;
-                parts.push('status: ' + label);
-            }
-            if (company) parts.push('company: ' + company);
-            indicatorText.textContent = parts.join(' · ');
-            indicator.classList.add('visible');
-        } else {
-            indicator.classList.remove('visible');
-        }
-    }
-
-    function comparator(mode) {
-        switch (mode) {
-            case 'oldest':
-                return (a, b) => (a.dataset.timestamp || '').localeCompare(b.dataset.timestamp || '');
-            case 'company_asc':
-                return (a, b) => a.dataset.company.localeCompare(b.dataset.company);
-            case 'company_desc':
-                return (a, b) => b.dataset.company.localeCompare(a.dataset.company);
-            case 'brand_asc':
-                return (a, b) => a.dataset.brand.localeCompare(b.dataset.brand);
-            case 'brand_desc':
-                return (a, b) => b.dataset.brand.localeCompare(a.dataset.brand);
-            case 'match_desc':
-                return (a, b) => Number(b.dataset.matchPercent) - Number(a.dataset.matchPercent);
-            case 'match_asc':
-                return (a, b) => Number(a.dataset.matchPercent) - Number(b.dataset.matchPercent);
-            case 'recent':
-            default:
-                return (a, b) => (b.dataset.timestamp || '').localeCompare(a.dataset.timestamp || '');
-        }
+        const label = status === 'partial_match' ? 'partial match' : status;
+        indicatorText.textContent = 'Showing ' + count + ' ' + label + ' result' + (count !== 1 ? 's' : '');
+        indicator.classList.add('visible');
     }
 
     window.clearFilter = function() {
-        activeStatus = null;
-        activeColor = null;
-        if (companySelect) companySelect.value = '';
-        render();
+        activeFilter = null;
+        rows.forEach(row => row.style.display = '');
+        cards.forEach(c => {
+            c.classList.remove('active-filter--success', 'active-filter--warning', 'active-filter--danger', 'dimmed');
+        });
+        indicator.classList.remove('visible');
     };
 
     render();
