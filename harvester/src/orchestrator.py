@@ -338,6 +338,7 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
         "partial_matches": 0,
         "mismatches": 0,
         "not_found": 0,
+        "gudid_deactivated": 0,
         "error": None,
     }
 
@@ -385,6 +386,27 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
                 "created_at": datetime.now(timezone.utc),
                 "updated_at": datetime.now(timezone.utc),
             })
+            continue
+
+        record_status = (gudid_record or {}).get("deviceRecordStatus")
+        if record_status == "Deactivated":
+            validation_col.insert_one({
+                "device_id": device["_id"],
+                "brandName": device.get("brandName"),
+                "status": "gudid_deactivated",
+                "matched_fields": None,
+                "total_fields": None,
+                "match_percent": None,
+                "weighted_percent": None,
+                "description_similarity": None,
+                "comparison_result": None,
+                "gudid_record": gudid_record,
+                "gudid_di": di,
+                "gudid_record_status": record_status,
+                "created_at": datetime.now(timezone.utc),
+                "updated_at": datetime.now(timezone.utc),
+            })
+            result["gudid_deactivated"] = result.get("gudid_deactivated", 0) + 1
             continue
 
         comparison, summary = compare_records(device, gudid_record)

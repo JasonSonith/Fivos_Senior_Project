@@ -23,6 +23,15 @@
     </div>
 </section>
 
+{% if validation.status == "gudid_deactivated" %}
+<div class="banner banner-warning" style="padding: 14px 18px; border-left: 4px solid var(--warning); background: var(--warning-bg); margin-bottom: 20px;">
+    <strong>GUDID record deactivated.</strong>
+    The FDA has deactivated this device's GUDID entry
+    ({{ validation.gudid_di or "N/A" }}{% if validation.gudid_record and validation.gudid_record.publishDate %}, last published {{ validation.gudid_record.publishDate }}{% endif %}).
+    The harvested data below is the live source &mdash; no per-field comparison was run.
+</div>
+{% endif %}
+
 <section class="stats-grid">
     <div class="metric-card small">
         <p class="metric-label">Status</p>
@@ -50,9 +59,15 @@
         <p class="metric-label">GUDID DI</p>
         <h3 class="metric-value mono" style="font-size: 17px;">{{ validation.gudid_di or "N/A" }}</h3>
     </div>
+    <div class="metric-card small">
+        <p class="metric-label">GUDID Updated</p>
+        <h3 class="metric-value mono" style="font-size: 15px;">
+            {% if validation.gudid_record and validation.gudid_record.publishDate %}{{ validation.gudid_record.publishDate }}{% else %}N/A{% endif %}
+        </h3>
+    </div>
 </section>
 
-{% if mode == "info" %}
+{% if mode == "info" or validation.status == "gudid_deactivated" %}
 <section class="panel">
     <div class="panel-header">
         <div>
