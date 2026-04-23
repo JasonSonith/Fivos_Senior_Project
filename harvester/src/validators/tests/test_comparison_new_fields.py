@@ -123,3 +123,29 @@ class TestLabeledBooleans:
         g = _with_defaults({"serialNumber": "false"})
         per_field, _ = compare_records(h, g)
         assert per_field["serialNumber"]["status"] == "not_compared"
+
+
+class TestPremarketSubmissionsSubsetMatch:
+    def test_harvested_subset_match(self):
+        h = _with_defaults({"premarketSubmissions": ["K123456"]})
+        g = _with_defaults({"premarketSubmissions": ["K123456", "K789012"]})
+        per_field, _ = compare_records(h, g)
+        assert per_field["premarketSubmissions"]["status"] == "match"
+
+    def test_harvested_claims_unfiled_mismatch(self):
+        h = _with_defaults({"premarketSubmissions": ["K999999"]})
+        g = _with_defaults({"premarketSubmissions": ["K123456"]})
+        per_field, _ = compare_records(h, g)
+        assert per_field["premarketSubmissions"]["status"] == "mismatch"
+
+    def test_harvested_null_not_compared(self):
+        h = _with_defaults({"premarketSubmissions": None})
+        g = _with_defaults({"premarketSubmissions": ["K123456"]})
+        per_field, _ = compare_records(h, g)
+        assert per_field["premarketSubmissions"]["status"] == "not_compared"
+
+    def test_both_empty_both_null(self):
+        h = _with_defaults({"premarketSubmissions": []})
+        g = _with_defaults({"premarketSubmissions": []})
+        per_field, _ = compare_records(h, g)
+        assert per_field["premarketSubmissions"]["status"] == "both_null"

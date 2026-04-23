@@ -24,6 +24,7 @@ FIELD_WEIGHTS = {
     "deviceCountInBase": 2, "issuingAgency": 2,
     "lotBatch": 1, "serialNumber": 1,
     "manufacturingDate": 1, "expirationDate": 1,
+    "premarketSubmissions": 2,
 }
 
 _SCORED_STATUSES = {FieldStatus.MATCH, FieldStatus.CORPORATE_ALIAS, FieldStatus.MISMATCH}
@@ -315,6 +316,20 @@ def compare_records(harvested, gudid):
         results[field] = {
             "harvested": h, "gudid": g,
             "status": _status_from_bool(match),
+        }
+
+    # premarketSubmissions — subset match (same semantics as productCodes)
+    h_pm = harvested.get("premarketSubmissions"); g_pm = gudid.get("premarketSubmissions")
+    if _is_null(h_pm) and _is_null(g_pm):
+        results["premarketSubmissions"] = {"harvested": h_pm, "gudid": g_pm, "status": FieldStatus.BOTH_NULL}
+    elif _is_null(h_pm):
+        results["premarketSubmissions"] = {"harvested": h_pm, "gudid": g_pm, "status": FieldStatus.NOT_COMPARED}
+    elif _is_null(g_pm):
+        results["premarketSubmissions"] = {"harvested": h_pm, "gudid": g_pm, "status": FieldStatus.MISMATCH}
+    else:
+        results["premarketSubmissions"] = {
+            "harvested": h_pm, "gudid": g_pm,
+            "status": _subset_match(h_pm, g_pm),
         }
 
     summary = _build_summary(results)

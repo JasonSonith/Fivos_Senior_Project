@@ -36,6 +36,7 @@ COMPARED_FIELDS = [
     ("serialNumber", "Labeled: Serial Number"),
     ("manufacturingDate", "Labeled: Manufacturing Date"),
     ("expirationDate", "Labeled: Expiration Date"),
+    ("premarketSubmissions", "Premarket Submissions"),
 ]
 
 
