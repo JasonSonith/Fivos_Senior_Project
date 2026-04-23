@@ -139,12 +139,19 @@ def compare_records(harvested, gudid):
 
     h_desc = harvested.get("deviceDescription")
     g_desc = gudid.get("deviceDescription")
-    sim = _jaccard(h_desc, g_desc)
-    results["deviceDescription"] = {
-        "harvested": h_desc, "gudid": g_desc,
-        "status": FieldStatus.MATCH,
-        "similarity": sim,
-    }
+    if not h_desc and not g_desc:
+        results["deviceDescription"] = {
+            "harvested": h_desc, "gudid": g_desc,
+            "status": FieldStatus.NOT_COMPARED,
+            "similarity": None,
+        }
+    else:
+        sim = _jaccard(h_desc, g_desc)
+        results["deviceDescription"] = {
+            "harvested": h_desc, "gudid": g_desc,
+            "status": FieldStatus.MATCH,
+            "similarity": sim,
+        }
 
     for field, normalizer in (
         ("MRISafetyStatus", normalize_mri_status),

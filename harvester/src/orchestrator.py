@@ -372,6 +372,7 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
                 "matched_fields": 0,
                 "total_fields": 0,
                 "match_percent": 0.0,
+                "weighted_percent": 0.0,
                 "comparison_result": None,
                 "gudid_record": None,
                 "gudid_di": di,
@@ -384,6 +385,9 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
         matched_fields = summary["unweighted_numerator"]
         total_fields = summary["unweighted_denominator"]
         match_percent = round((matched_fields / total_fields) * 100, 2) if total_fields else 0.0
+        weighted_percent = round(
+            (summary["numerator"] / summary["denominator"]) * 100, 2
+        ) if summary["denominator"] else 0.0
         description_similarity = comparison.get("deviceDescription", {}).get("similarity") or 0.0
 
         if matched_fields == total_fields:
@@ -403,6 +407,7 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
             "matched_fields": matched_fields,
             "total_fields": total_fields,
             "match_percent": match_percent,
+            "weighted_percent": weighted_percent,
             "description_similarity": description_similarity,
             "comparison_result": comparison,
             "gudid_record": gudid_record,
