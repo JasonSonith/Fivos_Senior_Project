@@ -66,6 +66,28 @@
     </div>
 
     {% if all_results %}
+    <div class="results-filter-bar">
+        <div class="results-filter-field">
+            <label for="sort-select">Sort by</label>
+            <select id="sort-select">
+                <option value="recent">Most recently harvested</option>
+                <option value="oldest">Oldest first</option>
+                <option value="company_asc">Company (A–Z)</option>
+                <option value="company_desc">Company (Z–A)</option>
+                <option value="brand_asc">Brand (A–Z)</option>
+                <option value="brand_desc">Brand (Z–A)</option>
+                <option value="match_desc">Match % (high to low)</option>
+                <option value="match_asc">Match % (low to high)</option>
+            </select>
+        </div>
+        <div class="results-filter-field">
+            <label for="company-select">Company</label>
+            <select id="company-select">
+                <option value="">All companies</option>
+            </select>
+        </div>
+    </div>
+
     <div class="table-wrap">
         <table class="data-table">
             <thead>
@@ -80,7 +102,11 @@
             </thead>
             <tbody id="results-tbody">
                 {% for d in all_results %}
-                <tr data-status="{{ d.status }}">
+                <tr data-status="{{ d.status }}"
+                    data-company="{{ d.companyName or '' }}"
+                    data-brand="{{ d.brandName or '' }}"
+                    data-timestamp="{{ d.updated_at or d.verified_at or d.harvested_at or '' }}"
+                    data-match-percent="{{ d.match_percent if d.match_percent is not none else -1 }}">
                     <td>{{ d.brandName or "N/A" }}</td>
                     <td>{{ d.companyName or "N/A" }}</td>
                     <td class="mono">{{ d.versionModelNumber or "N/A" }}</td>
@@ -127,59 +153,118 @@
 
 <script>
 (function() {
-    let activeFilter = null;
+    let activeStatus = null;
+    let activeColor = null;
     const cards = document.querySelectorAll('.metric-card.filterable');
-    const rows = document.querySelectorAll('#results-tbody tr');
+    const tbody = document.getElementById('results-tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
 
     const indicator = document.getElementById('filter-indicator');
     const indicatorText = document.getElementById('filter-indicator-text');
+    const sortSelect = document.getElementById('sort-select');
+    const companySelect = document.getElementById('company-select');
+
+    const companies = Array.from(new Set(
+        rows.map(r => r.dataset.company).filter(c => c && c !== 'N/A')
+    )).sort((a, b) => a.localeCompare(b));
+    companies.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c;
+        opt.textContent = c;
+        companySelect.appendChild(opt);
+    });
 
     cards.forEach(card => {
         card.addEventListener('click', () => {
             const status = card.dataset.filter;
-            if (activeFilter === status) {
-                clearFilter();
+            if (activeStatus === status) {
+                activeStatus = null;
+                activeColor = null;
             } else {
-                applyFilter(status, card.dataset.color);
+                activeStatus = status;
+                activeColor = card.dataset.color;
             }
+            render();
         });
     });
 
-    function applyFilter(status, color) {
-        activeFilter = status;
-        let count = 0;
+    sortSelect.addEventListener('change', render);
+    companySelect.addEventListener('change', render);
 
-        rows.forEach(row => {
-            if (row.dataset.status === status) {
-                row.style.display = '';
-                count++;
-            } else {
-                row.style.display = 'none';
-            }
+    function render() {
+        const company = companySelect.value;
+        const sortMode = sortSelect.value;
+
+        const visible = rows.filter(row => {
+            if (activeStatus && row.dataset.status !== activeStatus) return false;
+            if (company && row.dataset.company !== company) return false;
+            return true;
+        });
+
+        const sorted = visible.slice().sort(comparator(sortMode));
+
+        rows.forEach(r => { r.style.display = 'none'; });
+        sorted.forEach(r => {
+            r.style.display = '';
+            tbody.appendChild(r);
         });
 
         cards.forEach(c => {
             c.classList.remove('active-filter--success', 'active-filter--warning', 'active-filter--danger', 'dimmed');
-            if (c.dataset.filter === status) {
-                c.classList.add('active-filter--' + color);
-            } else if (c.classList.contains('filterable')) {
-                c.classList.add('dimmed');
+            if (activeStatus) {
+                if (c.dataset.filter === activeStatus) {
+                    c.classList.add('active-filter--' + activeColor);
+                } else if (c.classList.contains('filterable')) {
+                    c.classList.add('dimmed');
+                }
             }
         });
 
-        const label = status === 'partial_match' ? 'partial match' : status;
-        indicatorText.textContent = 'Showing ' + count + ' ' + label + ' result' + (count !== 1 ? 's' : '');
-        indicator.classList.add('visible');
+        if (activeStatus || company) {
+            const parts = [];
+            parts.push('Showing ' + sorted.length + ' result' + (sorted.length !== 1 ? 's' : ''));
+            if (activeStatus) {
+                const label = activeStatus === 'partial_match' ? 'partial match' : activeStatus;
+                parts.push('status: ' + label);
+            }
+            if (company) parts.push('company: ' + company);
+            indicatorText.textContent = parts.join(' · ');
+            indicator.classList.add('visible');
+        } else {
+            indicator.classList.remove('visible');
+        }
+    }
+
+    function comparator(mode) {
+        switch (mode) {
+            case 'oldest':
+                return (a, b) => (a.dataset.timestamp || '').localeCompare(b.dataset.timestamp || '');
+            case 'company_asc':
+                return (a, b) => a.dataset.company.localeCompare(b.dataset.company);
+            case 'company_desc':
+                return (a, b) => b.dataset.company.localeCompare(a.dataset.company);
+            case 'brand_asc':
+                return (a, b) => a.dataset.brand.localeCompare(b.dataset.brand);
+            case 'brand_desc':
+                return (a, b) => b.dataset.brand.localeCompare(a.dataset.brand);
+            case 'match_desc':
+                return (a, b) => Number(b.dataset.matchPercent) - Number(a.dataset.matchPercent);
+            case 'match_asc':
+                return (a, b) => Number(a.dataset.matchPercent) - Number(b.dataset.matchPercent);
+            case 'recent':
+            default:
+                return (a, b) => (b.dataset.timestamp || '').localeCompare(a.dataset.timestamp || '');
+        }
     }
 
     window.clearFilter = function() {
-        activeFilter = null;
-        rows.forEach(row => row.style.display = '');
-        cards.forEach(c => {
-            c.classList.remove('active-filter--success', 'active-filter--warning', 'active-filter--danger', 'dimmed');
-        });
-        indicator.classList.remove('visible');
+        activeStatus = null;
+        activeColor = null;
+        companySelect.value = '';
+        render();
     };
+
+    render();
 })();
 </script>
 {% endblock %}

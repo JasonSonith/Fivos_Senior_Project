@@ -1137,6 +1137,47 @@ a {
     color: var(--text);
 }
 
+.results-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 0 0 16px;
+    align-items: flex-end;
+}
+
+.results-filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 200px;
+}
+
+.results-filter-field label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-2);
+    letter-spacing: 0.2px;
+    text-transform: uppercase;
+}
+
+.results-filter-field select {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-family: inherit;
+    background: var(--surface);
+    color: var(--text);
+    outline: none;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+    cursor: pointer;
+}
+
+.results-filter-field select:focus {
+    border-color: var(--blue-mid);
+    box-shadow: 0 0 0 3px rgba(26,122,196,.12);
+}
+
 .review-field-row.info-mode {
     grid-template-columns: 1fr 2fr;
 }
