@@ -1,0 +1,477 @@
+2026-04-23 11:38:10,033 [MainThread] INFO pipeline.runner: Scraping 28 URL(s)...
+2026-04-23 11:38:10,033 [MainThread] DEBUG asyncio: Using selector: EpollSelector
+2026-04-23 11:39:58,608 [MainThread] INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-admiral-drug-coated-balloon.html
+2026-04-23 11:39:58,616 [MainThread] INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-drug-coated-balloons/inpact-av-drug-coated-balloon.html
+2026-04-23 11:39:58,624 [MainThread] INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-biliary-stents/protege-everflex-self-expanding-biliary-stent-system.html
+2026-04-23 11:39:58,632 [MainThread] INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-biliary-stents/everflex-stent-system-with-entrust.html
+2026-04-23 11:39:58,639 [MainThread] INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-biliary-stents/visi-pro-balloon-expandable-peripheral-stent-system.html
+2026-04-23 11:39:58,647 [MainThread] INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/peripheral-biliary-stents/protege-gps-self-expanding-peripheral-biliary-stent-system.html
+2026-04-23 11:39:58,655 [MainThread] INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/directional-atherectomy-systems/hawkone-directional-atherectomy-system.html
+2026-04-23 11:39:58,662 [MainThread] INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/directional-atherectomy-systems/silverhawk-peripheral-plaque-excision-system.html
+2026-04-23 11:39:58,669 [MainThread] INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/directional-atherectomy-systems/turbohawk-peripheral-plaque-excision-system.html
+2026-04-23 11:39:58,678 [MainThread] INFO pipeline.runner: Scraped: https://www.medtronic.com/en-us/healthcare-professionals/products/cardiovascular/coronary-stents/resolute-onyx-drug-eluting-stent.html
+2026-04-23 11:39:58,682 [MainThread] INFO pipeline.runner: Scraped: https://www.goremedical.com/products/vbx/specifications
+2026-04-23 11:39:58,686 [MainThread] INFO pipeline.runner: Scraped: https://www.goremedical.com/products/viabahn/specifications
+2026-04-23 11:39:58,690 [MainThread] INFO pipeline.runner: Scraped: https://www.cookmedical.com/products/di_ziv_webds/
+2026-04-23 11:39:58,696 [MainThread] INFO pipeline.runner: Scraped: https://www.cookmedical.com/products/esc_zilbs635/
+2026-04-23 11:39:58,704 [MainThread] INFO pipeline.runner: Scraped: https://www.cookmedical.com/products/cf1fddb1-9f10-4002-b9a5-3f4c83c28cbc/
+2026-04-23 11:39:58,718 [MainThread] INFO pipeline.runner: Scraped: https://www.cookmedical.com/products/224e3666-308f-4244-8695-6fd23bbd671c/
+2026-04-23 11:39:58,782 [MainThread] INFO pipeline.runner: Scraped: https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/atherectomy-systems/diamondback-360/ordering-information.html
+2026-04-23 11:39:58,846 [MainThread] INFO pipeline.runner: Scraped: https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/peripheral-stents/omnilink-elite-vascular/ordering-information.html
+2026-04-23 11:39:58,915 [MainThread] INFO pipeline.runner: Scraped: https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/peripheral-stents/absolute-pro-vascular/ordering-information.html
+2026-04-23 11:39:58,921 [MainThread] INFO pipeline.runner: Scraped: https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/supera-stent-system/ordering.html
+2026-04-23 11:39:58,970 [MainThread] INFO pipeline.runner: Scraped: https://www.cardiovascular.abbott/us/en/hcp/products/peripheral-intervention/esprit-btk-resorbable-scaffold-system.html
+2026-04-23 11:39:59,033 [MainThread] INFO pipeline.runner: Scraped: https://www.cardiovascular.abbott/us/en/hcp/products/percutaneous-coronary-intervention/xience-family/xience-skypoint/ordering-information-extra-large.html
+2026-04-23 11:39:59,093 [MainThread] INFO pipeline.runner: Scraped: https://cordis.com/na/products/intervene/endovascular/self-expanding-stents/s-m-a-r-t-control-vascular-stent-system
+2026-04-23 11:39:59,102 [MainThread] INFO pipeline.runner: Scraped: https://cordis.com/apac/products/intervene/endovascular/balloon-expandble-stents/palmaz-genesis-peripheral-stent
+2026-04-23 11:39:59,107 [MainThread] INFO pipeline.runner: Scraped: https://shockwavemedical.com/en-eu/products/shockwave-m5-plus/
+2026-04-23 11:39:59,111 [MainThread] INFO pipeline.runner: Scraped: https://shockwavemedical.com/products/shockwave-e8/
+2026-04-23 11:39:59,115 [MainThread] INFO pipeline.runner: Scraped: https://shockwavemedical.com/products/shockwave-l6/
+2026-04-23 11:39:59,119 [MainThread] INFO pipeline.runner: Scraped: https://www.terumois.com/products/stents/r2p-misago2.html
+2026-04-23 11:39:59,119 [MainThread] INFO pipeline.runner: Scraped 28/28 pages.
+2026-04-23 11:40:00,017 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTP connection (1): localhost:11434
+2026-04-23 11:40:00,019 [extract_0] WARNING pipeline.llm_extractor: Ollama not available at http://localhost:11434/api/chat
+2026-04-23 11:40:00,020 [extract_0] INFO pipeline.llm_extractor: Model gemma4:e4b failed, trying next in chain
+2026-04-23 11:40:00,021 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:00,218 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:00,220 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:00,225 [extract_1] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:00,475 [extract_3] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:40:00,475 [extract_1] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:40:00,476 [extract_3] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:40:00,476 [extract_1] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:40:00,477 [extract_3] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:40:00,478 [extract_1] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:40:00,478 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:00,479 [extract_1] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:00,482 [extract_2] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:40:00,482 [extract_2] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:40:00,483 [extract_2] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:40:00,483 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:01,107 [extract_3] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:40:01,108 [extract_3] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-23 11:40:01,108 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:01,293 [extract_0] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:40:01,293 [extract_0] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:40:01,294 [extract_0] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:40:01,295 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:01,346 [extract_1] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:40:01,347 [extract_1] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-23 11:40:01,348 [extract_1] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:01,360 [extract_3] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:40:01,360 [extract_3] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:40:01,361 [extract_3] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:40:01,361 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:01,572 [extract_1] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:40:01,573 [extract_1] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:40:01,573 [extract_1] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:40:01,574 [extract_1] DEBUG pipeline.llm_extractor: groq provider saturated, falling through
+2026-04-23 11:40:01,574 [extract_1] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:01,729 [extract_2] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:40:01,730 [extract_2] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-23 11:40:01,731 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:01,889 [extract_2] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:40:01,889 [extract_2] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:40:01,890 [extract_2] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:40:01,891 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:02,162 [extract_0] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:40:02,163 [extract_0] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-23 11:40:02,164 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:02,385 [extract_0] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:40:02,385 [extract_0] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:40:02,386 [extract_0] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:40:02,386 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:02,483 [extract_3] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:40:02,484 [extract_3] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-23 11:40:02,484 [extract_3] WARNING validators.record_validator: validate_record: required field missing: model_number
+2026-04-23 11:40:02,485 [extract_3] WARNING pipeline.runner: _process_single_ollama: record rejected: ['REQUIRED_MISSING: model_number']
+2026-04-23 11:40:02,545 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:02,727 [extract_3] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:40:02,728 [extract_3] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:40:02,728 [extract_3] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:40:02,729 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:02,912 [extract_3] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 384
+2026-04-23 11:40:02,912 [extract_3] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 7.0s
+2026-04-23 11:40:02,953 [extract_2] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:40:02,955 [extract_2] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-23 11:40:03,031 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:03,105 [extract_0] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:40:03,106 [extract_0] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-23 11:40:03,146 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:03,208 [extract_2] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:40:03,208 [extract_2] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:40:03,209 [extract_2] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:40:03,209 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:03,312 [extract_0] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:40:03,312 [extract_0] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:40:03,313 [extract_0] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:40:03,314 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:03,390 [extract_2] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-23 11:40:03,390 [extract_2] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 7.8s
+2026-04-23 11:40:03,501 [extract_0] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-23 11:40:03,501 [extract_0] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 8.4s
+2026-04-23 11:40:09,955 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:10,139 [extract_3] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 384
+2026-04-23 11:40:10,139 [extract_3] WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 10331, Requested 2034. Please try again in 1.825s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-23 11:40:10,140 [extract_3] INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-23 11:40:10,141 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:11,148 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:11,287 [extract_2] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 390
+2026-04-23 11:40:11,287 [extract_2] WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 10102, Requested 1925. Please try again in 134.999999ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-23 11:40:11,288 [extract_2] INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-23 11:40:11,289 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:11,869 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:12,978 [extract_0] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:40:12,980 [extract_0] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-23 11:40:12,981 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:13,155 [extract_0] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:40:13,155 [extract_0] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:40:13,156 [extract_0] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:40:13,156 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:13,289 [extract_0] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-23 11:40:13,290 [extract_0] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 1.8s
+2026-04-23 11:40:15,105 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:15,286 [extract_0] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 382
+2026-04-23 11:40:15,286 [extract_0] WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11539, Requested 564. Please try again in 515ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-23 11:40:15,287 [extract_0] INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-23 11:40:15,288 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:16,014 [extract_0] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 200 610
+2026-04-23 11:40:16,015 [extract_0] INFO pipeline.llm_extractor: Extraction succeeded with meta/llama-3.3-70b-instruct (nvidia)
+2026-04-23 11:40:16,016 [extract_0] WARNING validators.record_validator: validate_record: required field missing: model_number
+2026-04-23 11:40:16,016 [extract_0] WARNING pipeline.runner: _process_single_ollama: record rejected: ['REQUIRED_MISSING: model_number']
+2026-04-23 11:40:16,046 [extract_2] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 200 1246
+2026-04-23 11:40:16,047 [extract_2] INFO pipeline.llm_extractor: Extraction succeeded with meta/llama-3.3-70b-instruct (nvidia)
+2026-04-23 11:40:16,048 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:16,063 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:16,278 [extract_2] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:40:16,278 [extract_2] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:40:16,279 [extract_0] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:40:16,279 [extract_2] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:40:16,279 [extract_0] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:40:16,280 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:16,281 [extract_0] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:40:16,281 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:16,432 [extract_0] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-23 11:40:16,433 [extract_0] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 8.1s
+2026-04-23 11:40:16,435 [extract_2] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 389
+2026-04-23 11:40:16,435 [extract_2] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 1.3s
+2026-04-23 11:40:17,724 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:19,782 [extract_2] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:40:19,784 [extract_2] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-23 11:40:19,823 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:20,003 [extract_2] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:40:20,003 [extract_2] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:40:20,004 [extract_2] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:40:20,004 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:20,200 [extract_2] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 384
+2026-04-23 11:40:20,201 [extract_2] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 11.4s
+2026-04-23 11:40:24,561 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:24,728 [extract_0] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 385
+2026-04-23 11:40:24,728 [extract_0] WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11011, Requested 3050. Please try again in 10.305s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-23 11:40:24,729 [extract_0] INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-23 11:40:24,730 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:31,579 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:32,491 [extract_2] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:40:32,493 [extract_2] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-23 11:40:32,494 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:32,647 [extract_2] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:40:32,648 [extract_2] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:40:32,648 [extract_2] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:40:32,649 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:32,798 [extract_2] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-23 11:40:32,799 [extract_2] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 6.2s
+2026-04-23 11:40:36,491 [extract_3] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 200 1136
+2026-04-23 11:40:36,492 [extract_3] INFO pipeline.llm_extractor: Extraction succeeded with meta/llama-3.3-70b-instruct (nvidia)
+2026-04-23 11:40:36,493 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:36,664 [extract_3] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:40:36,665 [extract_3] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:40:36,666 [extract_3] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:40:36,666 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:38,061 [extract_0] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 200 1424
+2026-04-23 11:40:38,062 [extract_0] INFO pipeline.llm_extractor: Extraction succeeded with meta/llama-3.3-70b-instruct (nvidia)
+2026-04-23 11:40:38,063 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:38,214 [extract_0] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:40:38,215 [extract_0] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:40:38,216 [extract_0] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:40:38,216 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:38,345 [extract_0] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-23 11:40:38,346 [extract_0] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 1.7s
+2026-04-23 11:40:38,373 [extract_3] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:40:38,374 [extract_3] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-23 11:40:38,441 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:38,622 [extract_3] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:40:38,623 [extract_3] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:40:38,624 [extract_3] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:40:38,624 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:38,764 [extract_3] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 385
+2026-04-23 11:40:38,764 [extract_3] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 11.2s
+2026-04-23 11:40:39,035 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:39,185 [extract_2] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 390
+2026-04-23 11:40:39,186 [extract_2] WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11838, Requested 1059. Please try again in 4.484999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-23 11:40:39,187 [extract_2] INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-23 11:40:39,188 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:40,012 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:40,140 [extract_0] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-23 11:40:40,141 [extract_0] WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11647, Requested 786. Please try again in 2.165s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-23 11:40:40,142 [extract_0] INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-23 11:40:40,142 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:40:49,939 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:40:50,070 [extract_3] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 382
+2026-04-23 11:40:50,071 [extract_3] WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 9661, Requested 2508. Please try again in 845ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-23 11:40:50,072 [extract_3] INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-23 11:40:50,073 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:41:02,337 [extract_1] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 502 122
+2026-04-23 11:41:02,337 [extract_1] WARNING pipeline.llm_extractor: meta/llama-3.3-70b-instruct request failed: 502 Server Error: Bad Gateway for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:41:02,338 [extract_1] INFO pipeline.llm_extractor: Model meta/llama-3.3-70b-instruct failed, trying next in chain
+2026-04-23 11:41:02,339 [extract_1] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:41:02,341 [extract_3] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 502 122
+2026-04-23 11:41:02,341 [extract_3] WARNING pipeline.llm_extractor: meta/llama-3.3-70b-instruct request failed: 502 Server Error: Bad Gateway for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:41:02,342 [extract_3] INFO pipeline.llm_extractor: Model meta/llama-3.3-70b-instruct failed, trying next in chain
+2026-04-23 11:41:02,342 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:41:03,196 [extract_3] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:41:03,197 [extract_3] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.1-8b-instant (groq)
+2026-04-23 11:41:03,198 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:41:03,433 [extract_3] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:41:03,434 [extract_3] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:41:03,435 [extract_3] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:41:03,435 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:41:05,091 [extract_1] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:41:05,092 [extract_1] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.1-8b-instant (groq)
+2026-04-23 11:41:05,133 [extract_1] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:41:05,361 [extract_1] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:41:05,362 [extract_1] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:41:05,363 [extract_1] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:41:05,363 [extract_1] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:41:05,519 [extract_0] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 502 122
+2026-04-23 11:41:05,520 [extract_0] WARNING pipeline.llm_extractor: meta/llama-3.3-70b-instruct request failed: 502 Server Error: Bad Gateway for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:41:05,520 [extract_0] INFO pipeline.llm_extractor: Model meta/llama-3.3-70b-instruct failed, trying next in chain
+2026-04-23 11:41:05,521 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:41:05,649 [extract_0] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 377
+2026-04-23 11:41:05,649 [extract_0] INFO pipeline.llm_extractor: llama-3.1-8b-instant rate limited, retrying in 5.5s
+2026-04-23 11:41:06,867 [extract_1] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:41:06,868 [extract_1] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-23 11:41:06,868 [extract_1] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:41:06,994 [extract_3] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:41:06,996 [extract_3] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-23 11:41:07,060 [extract_1] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:41:07,065 [extract_1] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:41:07,067 [extract_1] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:41:07,071 [extract_1] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:41:07,102 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:42:57,207 [extract_1] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-23 11:42:57,207 [extract_1] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 2.7s
+2026-04-23 11:41:07,283 [extract_3] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:41:07,284 [extract_3] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:41:07,284 [extract_3] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:41:07,285 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:41:07,425 [extract_3] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 384
+2026-04-23 11:41:07,425 [extract_3] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 9.5s
+2026-04-23 11:41:09,961 [extract_1] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:41:11,192 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:41:11,325 [extract_0] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 378
+2026-04-23 11:41:11,326 [extract_0] WARNING pipeline.llm_extractor: llama-3.1-8b-instant request failed: Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5376, Requested 1023. Please try again in 3.99s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-23 11:41:11,327 [extract_0] INFO pipeline.llm_extractor: Model llama-3.1-8b-instant failed, trying next in chain
+2026-04-23 11:41:11,327 [extract_0] ERROR pipeline.llm_extractor: All models in chain exhausted, extraction failed
+2026-04-23 11:41:11,327 [extract_0] WARNING validators.record_validator: validate_record: required field missing: model_number
+2026-04-23 11:41:11,328 [extract_0] WARNING pipeline.runner: _process_single_ollama: record rejected: ['REQUIRED_MISSING: model_number']
+2026-04-23 11:41:11,497 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:41:11,781 [extract_0] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:41:11,782 [extract_0] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:41:11,782 [extract_0] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:41:11,783 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:41:11,911 [extract_0] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 391
+2026-04-23 11:41:11,912 [extract_0] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 16.3s
+2026-04-23 11:41:13,269 [extract_1] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:41:13,271 [extract_1] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-23 11:41:13,351 [extract_1] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:41:13,580 [extract_1] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:41:13,580 [extract_1] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:41:13,581 [extract_1] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:41:13,581 [extract_1] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:41:13,715 [extract_1] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 384
+2026-04-23 11:41:13,716 [extract_1] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 18.8s
+2026-04-23 11:41:16,967 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:41:17,102 [extract_3] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-23 11:41:17,103 [extract_3] WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 11233, Requested 2745. Please try again in 9.89s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-23 11:41:17,104 [extract_3] INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-23 11:41:17,104 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:41:20,837 [extract_3] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 200 924
+2026-04-23 11:41:20,838 [extract_3] INFO pipeline.llm_extractor: Extraction succeeded with meta/llama-3.3-70b-instruct (nvidia)
+2026-04-23 11:41:20,839 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:41:21,022 [extract_3] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:41:21,022 [extract_3] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:41:21,023 [extract_3] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:41:21,023 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:41:21,178 [extract_3] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 390
+2026-04-23 11:41:21,178 [extract_3] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 5.2s
+2026-04-23 11:41:26,412 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:41:26,576 [extract_3] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 382
+2026-04-23 11:41:26,577 [extract_3] WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 9339, Requested 2815. Please try again in 770ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-23 11:41:26,578 [extract_3] INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-23 11:41:26,579 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:41:28,191 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:41:29,164 [extract_0] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:41:29,166 [extract_0] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-23 11:41:29,166 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:41:29,370 [extract_0] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:41:29,370 [extract_0] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:41:29,371 [extract_0] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:41:29,371 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:41:29,616 [extract_0] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-23 11:41:29,617 [extract_0] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 2.4s
+2026-04-23 11:41:32,058 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:43:22,223 [extract_0] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 382
+2026-04-23 11:43:22,224 [extract_0] WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 9983, Requested 2835. Please try again in 4.09s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-23 11:43:22,225 [extract_0] INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-23 11:43:22,226 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:41:32,545 [extract_1] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:41:33,473 [extract_1] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:41:33,475 [extract_1] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-23 11:41:33,476 [extract_1] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:41:33,688 [extract_1] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:41:33,688 [extract_1] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:41:33,689 [extract_1] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:41:33,689 [extract_1] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:41:33,850 [extract_1] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 384
+2026-04-23 11:41:33,850 [extract_1] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 6.9s
+2026-04-23 11:41:40,724 [extract_1] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:41:40,953 [extract_1] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-23 11:41:40,954 [extract_1] WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 10008, Requested 2798. Please try again in 4.03s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-23 11:41:40,955 [extract_1] INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-23 11:41:40,956 [extract_1] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:41:53,829 [extract_2] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 200 5928
+2026-04-23 11:41:53,830 [extract_2] INFO pipeline.llm_extractor: Extraction succeeded with meta/llama-3.3-70b-instruct (nvidia)
+2026-04-23 11:41:53,959 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:41:54,135 [extract_2] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:41:54,135 [extract_2] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:41:54,136 [extract_2] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:41:54,137 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:41:55,171 [extract_2] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:41:55,173 [extract_2] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-23 11:41:55,173 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:41:55,375 [extract_2] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:41:55,375 [extract_2] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:41:55,376 [extract_2] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:41:55,376 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:41:57,357 [extract_2] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:41:57,358 [extract_2] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-23 11:41:57,413 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:41:57,569 [extract_2] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:41:57,570 [extract_2] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:41:57,571 [extract_2] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:41:57,571 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:41:57,711 [extract_2] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 385
+2026-04-23 11:41:57,712 [extract_2] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 24.2s
+2026-04-23 11:42:02,776 [extract_3] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 200 3981
+2026-04-23 11:42:02,777 [extract_3] INFO pipeline.llm_extractor: Extraction succeeded with meta/llama-3.3-70b-instruct (nvidia)
+2026-04-23 11:42:02,827 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:42:03,047 [extract_3] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:42:03,047 [extract_3] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:42:03,048 [extract_3] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:42:03,048 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:42:03,236 [extract_3] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-23 11:42:03,237 [extract_3] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 4.6s
+2026-04-23 11:42:07,890 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:42:08,030 [extract_3] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 382
+2026-04-23 11:42:08,030 [extract_3] WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 8892, Requested 3766. Please try again in 3.29s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-23 11:42:08,032 [extract_3] INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-23 11:42:08,032 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:42:17,024 [extract_3] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 200 1225
+2026-04-23 11:42:17,025 [extract_3] INFO pipeline.llm_extractor: Extraction succeeded with meta/llama-3.3-70b-instruct (nvidia)
+2026-04-23 11:42:17,026 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:42:17,202 [extract_3] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:42:17,203 [extract_3] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:42:17,203 [extract_3] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:42:17,204 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:42:21,932 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:42:22,062 [extract_2] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-23 11:42:22,063 [extract_2] WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 8887, Requested 4778. Please try again in 8.325s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-23 11:42:22,064 [extract_2] INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-23 11:42:22,065 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:42:23,487 [extract_3] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:42:23,489 [extract_3] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-23 11:42:23,661 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:42:23,829 [extract_3] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:42:23,830 [extract_3] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:42:23,830 [extract_3] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:42:23,831 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:42:23,968 [extract_3] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 384
+2026-04-23 11:42:23,969 [extract_3] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 9.1s
+2026-04-23 11:42:25,328 [extract_2] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 200 1190
+2026-04-23 11:42:25,329 [extract_2] INFO pipeline.llm_extractor: Extraction succeeded with meta/llama-3.3-70b-instruct (nvidia)
+2026-04-23 11:42:25,329 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:42:25,509 [extract_2] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:42:25,509 [extract_2] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:42:25,510 [extract_2] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:42:25,511 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:42:25,644 [extract_2] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 385
+2026-04-23 11:42:25,645 [extract_2] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 27.3s
+2026-04-23 11:42:27,049 [extract_0] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 200 4190
+2026-04-23 11:42:27,050 [extract_0] INFO pipeline.llm_extractor: Extraction succeeded with meta/llama-3.3-70b-instruct (nvidia)
+2026-04-23 11:42:27,174 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:44:17,344 [extract_0] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:44:17,344 [extract_0] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:44:17,345 [extract_0] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:44:17,346 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:42:27,501 [extract_0] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 384
+2026-04-23 11:42:27,502 [extract_0] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 9.8s
+2026-04-23 11:42:33,070 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:42:33,239 [extract_3] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-23 11:42:33,239 [extract_3] WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 10050, Requested 2602. Please try again in 3.26s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-23 11:42:33,240 [extract_3] INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-23 11:42:33,241 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:44:27,323 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:42:38,119 [extract_0] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:42:38,121 [extract_0] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-23 11:42:38,121 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:42:38,286 [extract_0] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:42:38,287 [extract_0] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:42:38,288 [extract_0] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:42:38,288 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:42:39,058 [extract_0] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:42:39,060 [extract_0] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-23 11:42:39,231 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:42:39,400 [extract_0] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:42:39,400 [extract_0] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:42:39,401 [extract_0] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:42:39,402 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:42:39,532 [extract_0] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-23 11:42:39,532 [extract_0] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 7.2s
+2026-04-23 11:42:46,782 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:42:47,409 [extract_0] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 200 None
+2026-04-23 11:42:47,410 [extract_0] INFO pipeline.llm_extractor: Extraction succeeded with llama-3.3-70b-versatile (groq)
+2026-04-23 11:42:47,411 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:42:47,585 [extract_0] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:42:47,585 [extract_0] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:42:47,586 [extract_0] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:42:47,586 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:42:47,721 [extract_0] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 384
+2026-04-23 11:42:47,721 [extract_0] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 6.1s
+2026-04-23 11:42:51,344 [extract_3] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 200 1160
+2026-04-23 11:42:51,345 [extract_3] INFO pipeline.llm_extractor: Extraction succeeded with meta/llama-3.3-70b-instruct (nvidia)
+2026-04-23 11:42:51,345 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:42:51,521 [extract_3] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:42:51,521 [extract_3] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:42:51,522 [extract_3] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:42:51,523 [extract_3] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:42:51,665 [extract_3] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 384
+2026-04-23 11:42:51,665 [extract_3] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 6.8s
+2026-04-23 11:42:52,906 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:42:53,048 [extract_2] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-23 11:42:53,049 [extract_2] WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 10653, Requested 2001. Please try again in 3.27s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-23 11:42:53,050 [extract_2] INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-23 11:42:53,050 [extract_2] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:42:53,827 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:42:53,964 [extract_0] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 390
+2026-04-23 11:42:53,965 [extract_0] WARNING pipeline.llm_extractor: llama-3.3-70b-versatile request failed: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kn01z77tetkvax708vws8zxa` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 10470, Requested 2778. Please try again in 6.239999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing
+2026-04-23 11:42:53,966 [extract_0] INFO pipeline.llm_extractor: Model llama-3.3-70b-versatile failed, trying next in chain
+2026-04-23 11:42:53,967 [extract_0] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:42:54,718 [extract_1] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 200 4975
+2026-04-23 11:42:54,719 [extract_1] INFO pipeline.llm_extractor: Extraction succeeded with meta/llama-3.3-70b-instruct (nvidia)
+2026-04-23 11:42:54,845 [extract_1] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): integrate.api.nvidia.com:443
+2026-04-23 11:42:55,094 [extract_1] DEBUG urllib3.connectionpool: https://integrate.api.nvidia.com:443 "POST /v1/chat/completions HTTP/1.1" 404 162
+2026-04-23 11:42:55,094 [extract_1] WARNING pipeline.llm_extractor: mistralai/mistral-large request failed: 404 Client Error: Not Found for url: https://integrate.api.nvidia.com/v1/chat/completions
+2026-04-23 11:42:55,095 [extract_1] INFO pipeline.llm_extractor: Model mistralai/mistral-large failed, trying next in chain
+2026-04-23 11:42:55,096 [extract_1] DEBUG urllib3.connectionpool: Starting new HTTPS connection (1): api.groq.com:443
+2026-04-23 11:42:55,241 [extract_1] DEBUG urllib3.connectionpool: https://api.groq.com:443 "POST /openai/v1/chat/completions HTTP/1.1" 429 383
+2026-04-23 11:42:55,241 [extract_1] INFO pipeline.llm_extractor: llama-3.3-70b-versatile rate limited, retrying in 5.0s
