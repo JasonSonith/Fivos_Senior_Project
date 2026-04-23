@@ -28,7 +28,7 @@ class TestRunValidationNotFound:
         mock_db.__getitem__ = MagicMock(side_effect=lambda key: collections.get(key, MagicMock()))
 
         with patch("database.db_connection.get_db", return_value=mock_db), \
-             patch("validators.gudid_client.fetch_gudid_record", return_value=(None, None)):
+             patch("orchestrator.fetch_gudid_record", return_value=(None, None)):
             from orchestrator import run_validation
             result = run_validation()
 
@@ -79,9 +79,9 @@ class TestRunValidationNotFound:
                         "brandName": "Acme", "companyName": "ACME INC"}
 
         with patch("database.db_connection.get_db", return_value=mock_db), \
-             patch("validators.gudid_client.fetch_gudid_record",
+             patch("orchestrator.fetch_gudid_record",
                    side_effect=[(None, None), ("DI-123", gudid_record)]), \
-             patch("validators.comparison_validator.compare_records",
+             patch("orchestrator.compare_records",
                    return_value=(full_match_comparison, full_match_summary)):
             from orchestrator import run_validation
             result = run_validation()
@@ -177,9 +177,9 @@ class TestRunValidationErrorIsolation:
                 "catalogNumber": catalog_number,
             })
 
-        monkeypatch.setattr("validators.gudid_client.fetch_gudid_record", fake_fetch)
+        monkeypatch.setattr("orchestrator.fetch_gudid_record", fake_fetch)
         monkeypatch.setattr(
-            "validators.comparison_validator.compare_records",
+            "orchestrator.compare_records",
             lambda h, g: ({}, {"numerator": 1, "denominator": 1,
                                "unweighted_numerator": 1, "unweighted_denominator": 1}),
         )

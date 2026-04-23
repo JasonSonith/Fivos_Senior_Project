@@ -21,6 +21,9 @@ if _SRC_DIR not in sys.path:
 import requests
 from bson import ObjectId
 
+from validators.gudid_client import fetch_gudid_record
+from validators.comparison_validator import compare_records
+
 logger = logging.getLogger(__name__)
 
 _DEFAULT_HTML_DIR = os.path.join(_SRC_DIR, "web-scraper", "out_html")
@@ -333,8 +336,6 @@ def lookup_gudid_device(di: str | None = None, model_number: str | None = None) 
 def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
     """Validate harvested devices against GUDID. Default: append (no overwrite)."""
     from database.db_connection import get_db
-    from validators.gudid_client import fetch_gudid_record
-    from validators.comparison_validator import compare_records
 
     result = {
         "success": False,
