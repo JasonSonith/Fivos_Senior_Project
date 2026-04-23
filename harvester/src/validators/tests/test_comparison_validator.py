@@ -241,3 +241,25 @@ def test_exact_company_match_does_not_set_alias_group():
     )
     assert per_field["companyName"]["status"] == "match"
     assert "alias_group" not in per_field["companyName"]
+
+
+def test_deviceDescription_sku_label_skip_status():
+    per_field, _ = compare_records(
+        {"deviceDescription": "A peripheral stent for treating arterial disease.",
+         "versionModelNumber": "PXB35"},
+        {"deviceDescription": "PXB35 STENT",
+         "versionModelNumber": "PXB35"},
+    )
+    assert per_field["deviceDescription"]["status"] == "sku_label_skip"
+    assert per_field["deviceDescription"]["similarity"] is None
+
+
+def test_deviceDescription_prose_both_sides_scores_match():
+    per_field, _ = compare_records(
+        {"deviceDescription": "A peripheral stent for arterial disease treatment.",
+         "versionModelNumber": "X"},
+        {"deviceDescription": "Peripheral vascular stent for treating arterial disease.",
+         "versionModelNumber": "X"},
+    )
+    assert per_field["deviceDescription"]["status"] == "match"
+    assert per_field["deviceDescription"]["similarity"] > 0

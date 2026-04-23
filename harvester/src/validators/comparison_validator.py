@@ -63,6 +63,35 @@ def _compare_normalized(harvested, gudid, normalizer):
     return h_norm == g_norm, h_norm, g_norm
 
 
+_SKU_PATTERN_RE = re.compile(r"^[A-Z0-9\-_ ]+$")
+
+
+def _gudid_description_is_sku_label(
+    gudid_value: str | None,
+    model_number: str | None,
+    catalog_number: str | None,
+) -> bool:
+    if not gudid_value or not isinstance(gudid_value, str):
+        return False
+    stripped = gudid_value.strip()
+    if not stripped:
+        return False
+    if len(stripped) < 40:
+        return True
+    lowered = stripped.lower()
+    for ident in (model_number, catalog_number):
+        if ident and isinstance(ident, str) and ident.lower() in lowered:
+            return True
+    letters = [c for c in stripped if c.isalpha()]
+    if len(letters) >= 3:
+        upper_ratio = sum(1 for c in letters if c.isupper()) / len(letters)
+        if upper_ratio >= 0.70:
+            return True
+    if _SKU_PATTERN_RE.fullmatch(stripped):
+        return True
+    return False
+
+
 def _is_null(value) -> bool:
     if value is None:
         return True
@@ -165,12 +194,19 @@ def compare_records(harvested, gudid):
                     "status": FieldStatus.MISMATCH,
                 }
 
-    h_desc = harvested.get("deviceDescription")
-    g_desc = gudid.get("deviceDescription")
+    h_desc = harvested.get("deviceDescription"); g_desc = gudid.get("deviceDescription")
+    model_no = harvested.get("versionModelNumber")
+    catalog_no = harvested.get("catalogNumber")
     if _is_null(h_desc) and _is_null(g_desc):
         results["deviceDescription"] = {
             "harvested": h_desc, "gudid": g_desc,
             "status": FieldStatus.BOTH_NULL,
+            "similarity": None,
+        }
+    elif _gudid_description_is_sku_label(g_desc, model_no, catalog_no):
+        results["deviceDescription"] = {
+            "harvested": h_desc, "gudid": g_desc,
+            "status": FieldStatus.SKU_LABEL_SKIP,
             "similarity": None,
         }
     else:
