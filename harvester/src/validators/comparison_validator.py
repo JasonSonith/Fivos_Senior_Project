@@ -69,6 +69,16 @@ def _compare_normalized(harvested, gudid, normalizer):
     return h_norm == g_norm, h_norm, g_norm
 
 
+def _is_null(value) -> bool:
+    if value is None:
+        return True
+    if isinstance(value, str) and not value.strip():
+        return True
+    if isinstance(value, (list, tuple)) and len(value) == 0:
+        return True
+    return False
+
+
 # GUDID long-form unit → short code recognized by normalize_measurement.
 _GUDID_UNIT_SHORT = {
     "Millimeter": "mm",
@@ -239,16 +249,6 @@ def _gudid_description_is_sku_label(
         if upper_ratio >= 0.70:
             return True
     if _SKU_PATTERN_RE.fullmatch(stripped):
-        return True
-    return False
-
-
-def _is_null(value) -> bool:
-    if value is None:
-        return True
-    if isinstance(value, str) and not value.strip():
-        return True
-    if isinstance(value, (list, tuple)) and len(value) == 0:
         return True
     return False
 
