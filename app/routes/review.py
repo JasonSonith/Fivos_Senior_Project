@@ -3,6 +3,8 @@ from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 from app.services.auth_guard import require_roles
+from app.services.review_formatters import format_code_list, format_device_sizes
+
 
 def _field_status(comp_entry: dict) -> str:
     if "status" in comp_entry:
@@ -17,6 +19,8 @@ def _field_status(comp_entry: dict) -> str:
 
 router = APIRouter(prefix="/review", tags=["Review"])
 templates = Jinja2Templates(directory="app/templates")
+templates.env.filters["format_device_sizes"] = format_device_sizes
+templates.env.filters["format_code_list"] = format_code_list
 
 COMPARED_FIELDS = [
     ("versionModelNumber", "Version / Model Number"),
