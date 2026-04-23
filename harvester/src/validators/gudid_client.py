@@ -5,6 +5,8 @@ from bs4 import BeautifulSoup
 SEARCH_URL = "https://accessgudid.nlm.nih.gov/devices/search"
 LOOKUP_URL = "https://accessgudid.nlm.nih.gov/api/v3/devices/lookup.json"
 
+REQUEST_TIMEOUT = 60  # seconds
+
 
 def search_gudid_di(catalog_number=None, version_model_number=None):
     """Search the GUDID HTML search page to find a Device Identifier (DI).
@@ -16,7 +18,7 @@ def search_gudid_di(catalog_number=None, version_model_number=None):
     if not query:
         return None
 
-    response = requests.get(SEARCH_URL, params={"query": query}, timeout=15)
+    response = requests.get(SEARCH_URL, params={"query": query}, timeout=REQUEST_TIMEOUT)
     response.raise_for_status()
 
     soup = BeautifulSoup(response.text, "html.parser")
@@ -131,7 +133,7 @@ def fetch_gudid_record(catalog_number=None, version_model_number=None):
     if not di:
         return None, None
 
-    response = requests.get(LOOKUP_URL, params={"di": di}, timeout=15)
+    response = requests.get(LOOKUP_URL, params={"di": di}, timeout=REQUEST_TIMEOUT)
     response.raise_for_status()
 
     data = response.json()
@@ -175,7 +177,7 @@ def lookup_by_di(di):
         return None
 
     try:
-        response = requests.get(LOOKUP_URL, params={"di": di}, timeout=15)
+        response = requests.get(LOOKUP_URL, params={"di": di}, timeout=REQUEST_TIMEOUT)
         response.raise_for_status()
         data = response.json()
         return data.get("gudid", {}).get("device")
