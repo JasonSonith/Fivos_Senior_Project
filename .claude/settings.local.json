@@ -51,7 +51,8 @@
       "mcp__MCP_DOCKER__obsidian_batch_get_file_contents",
       "mcp__MCP_DOCKER__obsidian_list_files_in_vault",
       "mcp__MCP_DOCKER__obsidian_simple_search",
-      "mcp__MCP_DOCKER__obsidian_append_content"
+      "mcp__MCP_DOCKER__obsidian_append_content",
+      "Bash(git check-ignore *)"
     ]
   }
 }
