@@ -135,3 +135,65 @@ class TestMigrateGudidNotFound:
             from orchestrator import migrate_gudid_not_found
             result = migrate_gudid_not_found()
         assert result == {"matched": 0, "modified": 0}
+
+
+class TestRunValidationErrorIsolation:
+    """One flaky GUDID call must not kill the whole batch."""
+
+    def test_timeout_on_one_device_does_not_kill_run(self, monkeypatch):
+        import requests
+        from orchestrator import run_validation
+
+        devices = [
+            {"_id": "dev1", "catalogNumber": "A1", "versionModelNumber": "M1", "brandName": "B1"},
+            {"_id": "dev2", "catalogNumber": "A2", "versionModelNumber": "M2", "brandName": "B2"},
+            {"_id": "dev3", "catalogNumber": "A3", "versionModelNumber": "M3", "brandName": "B3"},
+        ]
+
+        class FakeCollection:
+            def __init__(self):
+                self.docs = []
+            def drop(self): self.docs.clear()
+            def find(self, query=None): return iter(devices)
+            def insert_one(self, doc): self.docs.append(doc)
+            def update_one(self, *a, **kw): pass
+
+        class FakeDb(dict):
+            def __init__(self):
+                self["devices"] = FakeCollection()
+                self["validationResults"] = FakeCollection()
+                self["verified_devices"] = FakeCollection()
+
+        fake_db = FakeDb()
+        monkeypatch.setattr("database.db_connection.get_db", lambda: fake_db)
+
+        # Device 2 times out; devices 1 and 3 return a simple matched record.
+        def fake_fetch(catalog_number=None, version_model_number=None):
+            if catalog_number == "A2":
+                raise requests.Timeout("simulated timeout")
+            return (f"DI-{catalog_number}", {
+                "brandName": f"B{catalog_number[-1]}",
+                "versionModelNumber": version_model_number,
+                "catalogNumber": catalog_number,
+            })
+
+        monkeypatch.setattr("validators.gudid_client.fetch_gudid_record", fake_fetch)
+        monkeypatch.setattr(
+            "validators.comparison_validator.compare_records",
+            lambda h, g: ({}, {"numerator": 1, "denominator": 1,
+                               "unweighted_numerator": 1, "unweighted_denominator": 1}),
+        )
+
+        result = run_validation(overwrite=True)
+
+        assert result["success"] is True
+        assert result["total"] == 3
+        assert result["errors"] == 1
+
+        val_docs = fake_db["validationResults"].docs
+        assert len(val_docs) == 3
+        statuses = sorted(d["status"] for d in val_docs)
+        assert "fetch_error" in statuses
+        fetch_err_doc = next(d for d in val_docs if d["status"] == "fetch_error")
+        assert fetch_err_doc["error_type"] == "Timeout"
+        assert "simulated timeout" in fetch_err_doc["error_message"]

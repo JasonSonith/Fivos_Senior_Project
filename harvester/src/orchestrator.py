@@ -18,6 +18,7 @@ _SRC_DIR = os.path.dirname(os.path.abspath(__file__))
 if _SRC_DIR not in sys.path:
     sys.path.insert(0, _SRC_DIR)
 
+import requests
 from bson import ObjectId
 
 logger = logging.getLogger(__name__)
@@ -345,6 +346,7 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
         "gudid_deactivated": 0,
         "harvest_gap_product_codes": 0,
         "harvest_gap_premarket": 0,
+        "errors": 0,
         "error": None,
     }
 
@@ -371,10 +373,39 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
         return result
 
     for device in devices:
-        di, gudid_record = fetch_gudid_record(
-            catalog_number=device.get("catalogNumber"),
-            version_model_number=device.get("versionModelNumber"),
-        )
+        try:
+            di, gudid_record = fetch_gudid_record(
+                catalog_number=device.get("catalogNumber"),
+                version_model_number=device.get("versionModelNumber"),
+            )
+        except requests.RequestException as exc:
+            logger.warning(
+                "GUDID fetch failed for catalog=%s model=%s: %s: %s",
+                device.get("catalogNumber"),
+                device.get("versionModelNumber"),
+                type(exc).__name__,
+                exc,
+            )
+            result["errors"] += 1
+            now = datetime.now(timezone.utc)
+            validation_col.insert_one({
+                "device_id": device.get("_id"),
+                "brandName": device.get("brandName"),
+                "status": "fetch_error",
+                "error_type": type(exc).__name__,
+                "error_message": str(exc)[:500],
+                "matched_fields": None,
+                "total_fields": None,
+                "match_percent": None,
+                "weighted_percent": None,
+                "description_similarity": None,
+                "comparison_result": None,
+                "gudid_record": None,
+                "gudid_di": None,
+                "created_at": now,
+                "updated_at": now,
+            })
+            continue
 
         if not gudid_record:
             result["mismatches"] += 1
