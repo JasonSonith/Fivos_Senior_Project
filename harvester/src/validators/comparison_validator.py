@@ -3,6 +3,26 @@ import re
 from normalizers.booleans import normalize_boolean, normalize_mri_status
 
 
+class FieldStatus:
+    MATCH = "match"
+    MISMATCH = "mismatch"
+    NOT_COMPARED = "not_compared"
+    BOTH_NULL = "both_null"
+    CORPORATE_ALIAS = "corporate_alias"
+    SKU_LABEL_SKIP = "sku_label_skip"
+
+
+FIELD_WEIGHTS = {
+    "versionModelNumber": 3, "catalogNumber": 3,
+    "brandName": 3,          "companyName": 3,
+    "MRISafetyStatus": 2, "singleUse": 2, "rx": 2,
+    "deviceDescription": 1,
+}
+
+_SCORED_STATUSES = {FieldStatus.MATCH, FieldStatus.CORPORATE_ALIAS, FieldStatus.MISMATCH}
+_NUMERATOR_STATUSES = {FieldStatus.MATCH, FieldStatus.CORPORATE_ALIAS}
+
+
 def _norm_model(value):
     if not value:
         return ""
@@ -35,11 +55,6 @@ def _jaccard(a, b):
 
 
 def _compare_normalized(harvested, gudid, normalizer):
-    """Normalize both sides then exact-compare.
-
-    Returns (match, h_norm, g_norm). match is None if either side
-    normalizes to None (skipped from score denominator).
-    """
     h_norm = normalizer(harvested) if harvested is not None else None
     g_norm = normalizer(gudid) if gudid is not None else None
     if h_norm is None or g_norm is None:
@@ -47,72 +62,102 @@ def _compare_normalized(harvested, gudid, normalizer):
     return h_norm == g_norm, h_norm, g_norm
 
 
+def _status_from_bool(match):
+    if match is True:
+        return FieldStatus.MATCH
+    if match is False:
+        return FieldStatus.MISMATCH
+    return FieldStatus.NOT_COMPARED
+
+
+def _build_summary(per_field):
+    numerator = 0
+    denominator = 0
+    unweighted_num = 0
+    unweighted_den = 0
+    for field, result in per_field.items():
+        status = result.get("status")
+        if field == "deviceDescription":
+            if status == FieldStatus.MATCH:
+                weight = FIELD_WEIGHTS.get(field, 1)
+                numerator += weight
+                denominator += weight
+            elif status == FieldStatus.MISMATCH:
+                denominator += FIELD_WEIGHTS.get(field, 1)
+            continue
+        if status in _SCORED_STATUSES:
+            unweighted_den += 1
+            weight = FIELD_WEIGHTS.get(field, 1)
+            denominator += weight
+            if status in _NUMERATOR_STATUSES:
+                unweighted_num += 1
+                numerator += weight
+    return {
+        "numerator": numerator,
+        "denominator": denominator,
+        "unweighted_numerator": unweighted_num,
+        "unweighted_denominator": unweighted_den,
+    }
+
+
 def compare_records(harvested, gudid):
     results = {}
 
-    # Model number fields — normalize (uppercase, strip spaces/hyphens/dots)
-    # match=None means "not compared" (harvested value missing)
     for field in ("versionModelNumber", "catalogNumber"):
         h = harvested.get(field)
         g = gudid.get(field)
         if not h:
-            results[field] = {"harvested": h, "gudid": g, "match": None}
+            results[field] = {"harvested": h, "gudid": g, "status": FieldStatus.NOT_COMPARED}
         else:
+            match = bool(g and _norm_model(h) == _norm_model(g))
             results[field] = {
-                "harvested": h,
-                "gudid": g,
-                "match": bool(g and _norm_model(h) == _norm_model(g)),
+                "harvested": h, "gudid": g,
+                "status": FieldStatus.MATCH if match else FieldStatus.MISMATCH,
             }
 
-    # Brand name — case-insensitive, strip trademark symbols
     h_brand = harvested.get("brandName")
     g_brand = gudid.get("brandName")
     if not h_brand:
-        results["brandName"] = {"harvested": h_brand, "gudid": g_brand, "match": None}
+        results["brandName"] = {"harvested": h_brand, "gudid": g_brand, "status": FieldStatus.NOT_COMPARED}
     else:
+        match = bool(g_brand and _norm_brand(h_brand) == _norm_brand(g_brand))
         results["brandName"] = {
-            "harvested": h_brand,
-            "gudid": g_brand,
-            "match": bool(g_brand and _norm_brand(h_brand) == _norm_brand(g_brand)),
+            "harvested": h_brand, "gudid": g_brand,
+            "status": FieldStatus.MATCH if match else FieldStatus.MISMATCH,
         }
 
-    # Company name — uppercase, strip punctuation
     h_company = harvested.get("companyName")
     g_company = gudid.get("companyName")
     if not h_company:
-        results["companyName"] = {"harvested": h_company, "gudid": g_company, "match": None}
+        results["companyName"] = {"harvested": h_company, "gudid": g_company, "status": FieldStatus.NOT_COMPARED}
     else:
+        match = bool(g_company and _norm_company(h_company) == _norm_company(g_company))
         results["companyName"] = {
-            "harvested": h_company,
-            "gudid": g_company,
-            "match": bool(g_company and _norm_company(h_company) == _norm_company(g_company)),
+            "harvested": h_company, "gudid": g_company,
+            "status": FieldStatus.MATCH if match else FieldStatus.MISMATCH,
         }
 
-    # Device description — Jaccard similarity score, not a boolean match
     h_desc = harvested.get("deviceDescription")
     g_desc = gudid.get("deviceDescription")
+    sim = _jaccard(h_desc, g_desc)
     results["deviceDescription"] = {
-        "harvested": h_desc,
-        "gudid": g_desc,
-        "description_similarity": _jaccard(h_desc, g_desc),
+        "harvested": h_desc, "gudid": g_desc,
+        "status": FieldStatus.MATCH,
+        "similarity": sim,
     }
 
-    # MRI safety status — enum; normalize both sides. Skip if either normalizes to None.
-    h_mri = harvested.get("MRISafetyStatus")
-    g_mri = gudid.get("MRISafetyStatus")
-    match, _, _ = _compare_normalized(h_mri, g_mri, normalize_mri_status)
-    results["MRISafetyStatus"] = {"harvested": h_mri, "gudid": g_mri, "match": match}
+    for field, normalizer in (
+        ("MRISafetyStatus", normalize_mri_status),
+        ("singleUse", normalize_boolean),
+        ("rx", normalize_boolean),
+    ):
+        h = harvested.get(field)
+        g = gudid.get(field)
+        match, _, _ = _compare_normalized(h, g, normalizer)
+        results[field] = {
+            "harvested": h, "gudid": g,
+            "status": _status_from_bool(match),
+        }
 
-    # Single use — boolean; normalize both sides. Skip if either normalizes to None.
-    h_su = harvested.get("singleUse")
-    g_su = gudid.get("singleUse")
-    match, _, _ = _compare_normalized(h_su, g_su, normalize_boolean)
-    results["singleUse"] = {"harvested": h_su, "gudid": g_su, "match": match}
-
-    # Prescription (Rx) — boolean; same strategy as singleUse.
-    h_rx = harvested.get("rx")
-    g_rx = gudid.get("rx")
-    match, _, _ = _compare_normalized(h_rx, g_rx, normalize_boolean)
-    results["rx"] = {"harvested": h_rx, "gudid": g_rx, "match": match}
-
-    return results
+    summary = _build_summary(results)
+    return results, summary

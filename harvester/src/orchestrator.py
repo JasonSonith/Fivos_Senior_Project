@@ -380,16 +380,11 @@ def run_validation(run_id: str | None = None, overwrite: bool = False) -> dict:
             })
             continue
 
-        comparison = compare_records(device, gudid_record)
-
-        compared = {
-            k: v for k, v in comparison.items()
-            if k != "deviceDescription" and v.get("match") is not None
-        }
-        matched_fields = sum(1 for v in compared.values() if v["match"])
-        total_fields = len(compared)
-        match_percent = round((matched_fields / total_fields) * 100, 2) if total_fields > 0 else 0.0
-        description_similarity = comparison.get("deviceDescription", {}).get("description_similarity", 0.0)
+        comparison, summary = compare_records(device, gudid_record)
+        matched_fields = summary["unweighted_numerator"]
+        total_fields = summary["unweighted_denominator"]
+        match_percent = round((matched_fields / total_fields) * 100, 2) if total_fields else 0.0
+        description_similarity = comparison.get("deviceDescription", {}).get("similarity") or 0.0
 
         if matched_fields == total_fields:
             status = "matched"

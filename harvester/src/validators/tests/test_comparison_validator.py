@@ -22,26 +22,26 @@ class TestIdentifierFieldsRegression:
     """Existing four identifier fields + description similarity must keep working."""
 
     def test_all_four_identifiers_match(self):
-        result = compare_records(BASE_HARVESTED, BASE_GUDID)
-        assert result["versionModelNumber"]["match"] is True
-        assert result["catalogNumber"]["match"] is True
-        assert result["brandName"]["match"] is True
-        assert result["companyName"]["match"] is True
+        per_field, _ = compare_records(BASE_HARVESTED, BASE_GUDID)
+        assert per_field["versionModelNumber"]["status"] == "match"
+        assert per_field["catalogNumber"]["status"] == "match"
+        assert per_field["brandName"]["status"] == "match"
+        assert per_field["companyName"]["status"] == "match"
 
     def test_model_number_mismatch(self):
         harvested = {**BASE_HARVESTED, "versionModelNumber": "XYZ"}
-        result = compare_records(harvested, BASE_GUDID)
-        assert result["versionModelNumber"]["match"] is False
+        per_field, _ = compare_records(harvested, BASE_GUDID)
+        assert per_field["versionModelNumber"]["status"] == "mismatch"
 
     def test_description_similarity_present(self):
-        result = compare_records(BASE_HARVESTED, BASE_GUDID)
-        assert "description_similarity" in result["deviceDescription"]
-        assert result["deviceDescription"]["description_similarity"] == 1.0
+        per_field, _ = compare_records(BASE_HARVESTED, BASE_GUDID)
+        assert "similarity" in per_field["deviceDescription"]
+        assert per_field["deviceDescription"]["similarity"] == 1.0
 
     def test_harvested_model_none_skips(self):
         harvested = {**BASE_HARVESTED, "versionModelNumber": None}
-        result = compare_records(harvested, BASE_GUDID)
-        assert result["versionModelNumber"]["match"] is None
+        per_field, _ = compare_records(harvested, BASE_GUDID)
+        assert per_field["versionModelNumber"]["status"] == "not_compared"
 
 
 class TestMRISafetyStatus:
@@ -49,38 +49,38 @@ class TestMRISafetyStatus:
     def test_match_exact(self):
         harvested = {**BASE_HARVESTED, "MRISafetyStatus": "MR Safe"}
         gudid = {**BASE_GUDID, "MRISafetyStatus": "MR Safe"}
-        result = compare_records(harvested, gudid)
-        assert result["MRISafetyStatus"]["match"] is True
+        per_field, _ = compare_records(harvested, gudid)
+        assert per_field["MRISafetyStatus"]["status"] == "match"
 
     def test_match_variant_normalization(self):
         harvested = {**BASE_HARVESTED, "MRISafetyStatus": "mri safe"}
         gudid = {**BASE_GUDID, "MRISafetyStatus": "MR Safe"}
-        result = compare_records(harvested, gudid)
-        assert result["MRISafetyStatus"]["match"] is True
+        per_field, _ = compare_records(harvested, gudid)
+        assert per_field["MRISafetyStatus"]["status"] == "match"
 
     def test_mismatch(self):
         harvested = {**BASE_HARVESTED, "MRISafetyStatus": "MR Safe"}
         gudid = {**BASE_GUDID, "MRISafetyStatus": "MR Conditional"}
-        result = compare_records(harvested, gudid)
-        assert result["MRISafetyStatus"]["match"] is False
+        per_field, _ = compare_records(harvested, gudid)
+        assert per_field["MRISafetyStatus"]["status"] == "mismatch"
 
     def test_harvested_null_skips(self):
         harvested = {**BASE_HARVESTED, "MRISafetyStatus": None}
         gudid = {**BASE_GUDID, "MRISafetyStatus": "MR Safe"}
-        result = compare_records(harvested, gudid)
-        assert result["MRISafetyStatus"]["match"] is None
+        per_field, _ = compare_records(harvested, gudid)
+        assert per_field["MRISafetyStatus"]["status"] == "not_compared"
 
     def test_gudid_null_skips(self):
         harvested = {**BASE_HARVESTED, "MRISafetyStatus": "MR Safe"}
         gudid = {**BASE_GUDID, "MRISafetyStatus": None}
-        result = compare_records(harvested, gudid)
-        assert result["MRISafetyStatus"]["match"] is None
+        per_field, _ = compare_records(harvested, gudid)
+        assert per_field["MRISafetyStatus"]["status"] == "not_compared"
 
     def test_both_null_skips(self):
         harvested = {**BASE_HARVESTED, "MRISafetyStatus": None}
         gudid = {**BASE_GUDID, "MRISafetyStatus": None}
-        result = compare_records(harvested, gudid)
-        assert result["MRISafetyStatus"]["match"] is None
+        per_field, _ = compare_records(harvested, gudid)
+        assert per_field["MRISafetyStatus"]["status"] == "not_compared"
 
 
 class TestSingleUse:
@@ -88,38 +88,38 @@ class TestSingleUse:
     def test_match_true(self):
         harvested = {**BASE_HARVESTED, "singleUse": True}
         gudid = {**BASE_GUDID, "singleUse": True}
-        result = compare_records(harvested, gudid)
-        assert result["singleUse"]["match"] is True
+        per_field, _ = compare_records(harvested, gudid)
+        assert per_field["singleUse"]["status"] == "match"
 
     def test_match_false(self):
         harvested = {**BASE_HARVESTED, "singleUse": False}
         gudid = {**BASE_GUDID, "singleUse": False}
-        result = compare_records(harvested, gudid)
-        assert result["singleUse"]["match"] is True
+        per_field, _ = compare_records(harvested, gudid)
+        assert per_field["singleUse"]["status"] == "match"
 
     def test_mismatch(self):
         harvested = {**BASE_HARVESTED, "singleUse": True}
         gudid = {**BASE_GUDID, "singleUse": False}
-        result = compare_records(harvested, gudid)
-        assert result["singleUse"]["match"] is False
+        per_field, _ = compare_records(harvested, gudid)
+        assert per_field["singleUse"]["status"] == "mismatch"
 
     def test_gudid_string_true_normalizes(self):
         harvested = {**BASE_HARVESTED, "singleUse": True}
         gudid = {**BASE_GUDID, "singleUse": "true"}
-        result = compare_records(harvested, gudid)
-        assert result["singleUse"]["match"] is True
+        per_field, _ = compare_records(harvested, gudid)
+        assert per_field["singleUse"]["status"] == "match"
 
     def test_harvested_null_skips(self):
         harvested = {**BASE_HARVESTED, "singleUse": None}
         gudid = {**BASE_GUDID, "singleUse": True}
-        result = compare_records(harvested, gudid)
-        assert result["singleUse"]["match"] is None
+        per_field, _ = compare_records(harvested, gudid)
+        assert per_field["singleUse"]["status"] == "not_compared"
 
     def test_gudid_null_skips(self):
         harvested = {**BASE_HARVESTED, "singleUse": True}
         gudid = {**BASE_GUDID, "singleUse": None}
-        result = compare_records(harvested, gudid)
-        assert result["singleUse"]["match"] is None
+        per_field, _ = compare_records(harvested, gudid)
+        assert per_field["singleUse"]["status"] == "not_compared"
 
 
 class TestRx:
@@ -127,29 +127,41 @@ class TestRx:
     def test_match_true(self):
         harvested = {**BASE_HARVESTED, "rx": True}
         gudid = {**BASE_GUDID, "rx": True}
-        result = compare_records(harvested, gudid)
-        assert result["rx"]["match"] is True
+        per_field, _ = compare_records(harvested, gudid)
+        assert per_field["rx"]["status"] == "match"
 
     def test_match_false(self):
         harvested = {**BASE_HARVESTED, "rx": False}
         gudid = {**BASE_GUDID, "rx": False}
-        result = compare_records(harvested, gudid)
-        assert result["rx"]["match"] is True
+        per_field, _ = compare_records(harvested, gudid)
+        assert per_field["rx"]["status"] == "match"
 
     def test_mismatch(self):
         harvested = {**BASE_HARVESTED, "rx": True}
         gudid = {**BASE_GUDID, "rx": False}
-        result = compare_records(harvested, gudid)
-        assert result["rx"]["match"] is False
+        per_field, _ = compare_records(harvested, gudid)
+        assert per_field["rx"]["status"] == "mismatch"
 
     def test_gudid_string_false_normalizes(self):
         harvested = {**BASE_HARVESTED, "rx": False}
         gudid = {**BASE_GUDID, "rx": "false"}
-        result = compare_records(harvested, gudid)
-        assert result["rx"]["match"] is True
+        per_field, _ = compare_records(harvested, gudid)
+        assert per_field["rx"]["status"] == "match"
 
     def test_both_null_skips(self):
         harvested = {**BASE_HARVESTED, "rx": None}
         gudid = {**BASE_GUDID, "rx": None}
-        result = compare_records(harvested, gudid)
-        assert result["rx"]["match"] is None
+        per_field, _ = compare_records(harvested, gudid)
+        assert per_field["rx"]["status"] == "not_compared"
+
+
+def test_compare_records_returns_tuple_with_summary():
+    harvested = {"versionModelNumber": "ABC-123", "brandName": "X"}
+    gudid = {"versionModelNumber": "ABC123", "brandName": "X"}
+    per_field, summary = compare_records(harvested, gudid)
+    assert per_field["versionModelNumber"]["status"] == "match"
+    assert per_field["brandName"]["status"] == "match"
+    assert summary["unweighted_numerator"] >= 2
+    assert summary["unweighted_denominator"] >= 2
+    assert summary["numerator"] >= summary["unweighted_numerator"]
+    assert summary["denominator"] >= summary["unweighted_denominator"]

@@ -4,6 +4,17 @@ from fastapi.templating import Jinja2Templates
 
 from app.services.auth_guard import require_roles
 
+def _field_status(comp_entry: dict) -> str:
+    if "status" in comp_entry:
+        return comp_entry["status"]
+    legacy = comp_entry.get("match")
+    if legacy is True:
+        return "match"
+    if legacy is False:
+        return "mismatch"
+    return "not_compared"
+
+
 router = APIRouter(prefix="/review", tags=["Review"])
 templates = Jinja2Templates(directory="app/templates")
 
@@ -46,19 +57,22 @@ def review_page(request: Request, validation_id: str):
         comp_g = comp.get("gudid")
         gudid_val = comp_g if comp_g is not None else gudid_record.get(field_key, "N/A")
 
+        status = _field_status(comp)
+
         if field_key == "deviceDescription":
-            match_status = None
-            similarity = comp.get("description_similarity", 0)
+            similarity = comp.get("similarity") if comp.get("similarity") is not None else comp.get("description_similarity", 0)
+            legacy_match = None  # preserve template "% similar" rendering until Task 8
         else:
-            match_status = comp.get("match")
             similarity = None
+            legacy_match = True if status == "match" else (False if status == "mismatch" else None)
 
         fields.append({
             "key": field_key,
             "label": field_label,
             "harvested": harvested_val,
             "gudid": gudid_val,
-            "match": match_status,
+            "status": status,
+            "match": legacy_match,
             "similarity": similarity,
         })
 
