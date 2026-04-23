@@ -35,6 +35,12 @@
         <h3 class="metric-value" style="color: var(--danger);">{{ stats.mismatches or 0 }}</h3>
         <p class="metric-foot">No fields matched GUDID</p>
     </div>
+
+    <div class="metric-card">
+        <p class="metric-label">Deactivated</p>
+        <h3 class="metric-value" style="color: var(--warning);">{{ stats.deactivated or 0 }}</h3>
+        <p class="metric-sublabel">GUDID entries marked deactivated by FDA</p>
+    </div>
 </section>
 
 <div class="quick-actions">

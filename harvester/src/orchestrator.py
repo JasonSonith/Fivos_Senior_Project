@@ -575,6 +575,7 @@ def get_dashboard_stats() -> dict:
         partial_matches = db["validationResults"].count_documents({"status": "partial_match"})
         mismatches = db["validationResults"].count_documents({"status": "mismatch"})
         matches = db["verified_devices"].count_documents({})
+        deactivated_count = db["validationResults"].count_documents({"status": "gudid_deactivated"})
 
         last_device = db["devices"].find_one(sort=[("_harvest.harvested_at", -1)])
         last_run = "No runs yet"
@@ -583,13 +584,14 @@ def get_dashboard_stats() -> dict:
             last_run = harvest.get("harvested_at", "Unknown")
     except Exception as e:
         logger.warning("get_dashboard_stats: MongoDB unavailable: %s", e)
-        return {"device_count": 0, "matches": 0, "partial_matches": 0, "mismatches": 0, "last_run": "DB unavailable"}
+        return {"device_count": 0, "matches": 0, "partial_matches": 0, "mismatches": 0, "deactivated": 0, "last_run": "DB unavailable"}
 
     return {
         "device_count": device_count,
         "matches": matches,
         "partial_matches": partial_matches,
         "mismatches": mismatches,
+        "deactivated": deactivated_count,
         "last_run": last_run,
     }
 
