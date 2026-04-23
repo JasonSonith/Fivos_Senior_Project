@@ -62,10 +62,19 @@ def review_page(request: Request, validation_id: str):
     fields = []
     for field_key, field_label in COMPARED_FIELDS:
         comp = comparison.get(field_key, {})
-        comp_h = comp.get("harvested")
-        harvested_val = comp_h if comp_h is not None else device.get(field_key, "N/A")
-        comp_g = comp.get("gudid")
-        gudid_val = comp_g if comp_g is not None else gudid_record.get(field_key, "N/A")
+
+        if comp:
+            # Trust the comparison snapshot. The device doc may have been backfilled
+            # from GUDID after validation ran (gudid_sourced_fields), so falling back
+            # to it would falsely show GUDID values on the harvested side.
+            comp_h = comp.get("harvested")
+            comp_g = comp.get("gudid")
+            harvested_val = comp_h if comp_h not in (None, "", []) else "N/A"
+            gudid_val = comp_g if comp_g not in (None, "", []) else "N/A"
+        else:
+            # No comparison ran (e.g., gudid_deactivated). Fall back to source docs.
+            harvested_val = device.get(field_key, "N/A")
+            gudid_val = gudid_record.get(field_key, "N/A")
 
         status = _field_status(comp)
         similarity = None
