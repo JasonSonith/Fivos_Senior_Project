@@ -4,4 +4,5 @@ harvester/src/web-scraper/out_html/*.html
 venv/
 __pycache__/
 *.pyc
+.cache/
 harvester/output/*.json

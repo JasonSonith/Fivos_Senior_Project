@@ -162,6 +162,11 @@ def collect_options(mode: dict) -> dict:
 
     options["verbose"] = prompt_yes_no("Verbose logging?", default=False)
 
+    if mode["validate"]:
+        options["use_cache"] = prompt_yes_no("Use GUDID disk cache?", default=True)
+    else:
+        options["use_cache"] = True
+
     return options
 
 
@@ -280,6 +285,8 @@ def run_mode(mode: dict, options: dict):
     # Step 4: Validation
     val = None
     if mode["validate"]:
+        from validators import gudid_cache
+        gudid_cache.set_enabled(options.get("use_cache", True))
         status = StatusLine("Validating")
         status.start()
         try:

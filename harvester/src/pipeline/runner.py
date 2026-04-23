@@ -621,12 +621,18 @@ def main():
     parser.add_argument("--validate", action="store_true", help="Run GUDID validation after extraction")
     parser.add_argument("--no-validate", action="store_true", dest="no_validate",
                         help="Skip GUDID validation (only relevant with --urls)")
+    parser.add_argument("--no-cache", action="store_true", dest="no_cache",
+                        help="Bypass the GUDID disk cache for this run.")
     args = parser.parse_args()
 
     logging.basicConfig(
         level=logging.DEBUG if args.verbose else logging.INFO,
         format="%(asctime)s [%(threadName)s] %(levelname)s %(name)s: %(message)s",
     )
+
+    # Toggle GUDID disk cache for this run
+    from validators import gudid_cache
+    gudid_cache.set_enabled(not args.no_cache)
 
     # Determine effective modes
     end_to_end = args.urls is not None

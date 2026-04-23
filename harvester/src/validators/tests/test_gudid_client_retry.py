@@ -17,6 +17,18 @@ def no_retry_sleep(monkeypatch):
     monkeypatch.setattr("time.sleep", lambda *a, **kw: None)
 
 
+@pytest.fixture(autouse=True)
+def reset_gudid_cache(tmp_path, monkeypatch):
+    """Point gudid_cache at a per-test tmp dir; reset module state."""
+    from validators import gudid_cache
+    monkeypatch.setattr(gudid_cache, "_CACHE_ROOT", tmp_path / "gudid")
+    monkeypatch.setattr(gudid_cache, "_cache", None)
+    gudid_cache.set_enabled(True)
+    yield
+    if gudid_cache._cache is not None:
+        gudid_cache._cache.close()
+
+
 def _mock_response(status_code: int, json_data: dict | None = None, text: str = ""):
     resp = MagicMock(spec=requests.Response)
     resp.status_code = status_code

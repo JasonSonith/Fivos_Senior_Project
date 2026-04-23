@@ -163,13 +163,24 @@ def fetch_gudid_record(catalog_number=None, version_model_number=None):
 
     Returns (di, record_dict) where record_dict contains all MERGE_FIELDS,
     or (di, None) if device not found, or (None, None) if search fails.
+
+    Results (positive and negative) are cached in gudid_cache with 24h TTL
+    keyed on sha1(catalog_number|version_model_number). Failed HTTP calls
+    (Timeout/ConnectionError/429) are retried by the policy and not cached.
     """
+    from validators import gudid_cache  # local import — cache module is optional in tests
+
+    cached = gudid_cache.get(catalog_number, version_model_number)
+    if cached is not None:
+        return cached
+
     di = search_gudid_di(
         catalog_number=catalog_number,
         version_model_number=version_model_number,
     )
 
     if not di:
+        gudid_cache.set(catalog_number, version_model_number, None, None)
         return None, None
 
     response = requests.get(LOOKUP_URL, params={"di": di}, timeout=REQUEST_TIMEOUT)
@@ -179,6 +190,7 @@ def fetch_gudid_record(catalog_number=None, version_model_number=None):
     device = data.get("gudid", {}).get("device", {})
 
     if not device:
+        gudid_cache.set(catalog_number, version_model_number, di, None)
         return di, None
 
     sterilization = device.get("sterilization") or {}
@@ -188,7 +200,7 @@ def fetch_gudid_record(catalog_number=None, version_model_number=None):
         s["submissionNumber"] for s in submissions if s.get("submissionNumber")
     ]
 
-    return di, {
+    record = {
         "brandName": device.get("brandName"),
         "versionModelNumber": device.get("versionModelNumber"),
         "catalogNumber": device.get("catalogNumber"),
@@ -208,6 +220,8 @@ def fetch_gudid_record(catalog_number=None, version_model_number=None):
         "deviceSizes": _extract_device_sizes(device),
         **_extract_new_fields(device),
     }
+    gudid_cache.set(catalog_number, version_model_number, di, record)
+    return di, record
 
 
 def lookup_by_di(di):
