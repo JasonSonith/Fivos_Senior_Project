@@ -152,9 +152,9 @@
                 {% endif %}
             </div>
         </div>
-        {% if f.key == 'deviceSizes' and f.per_type %}
+        {% if f.key == 'deviceSizes' and f.status == 'mismatch' and f.per_type %}
             {% for pt in f.per_type %}
-            <div class="review-field-row review-subrow" style="padding-left: 24px; background: var(--subrow-bg, #fafafa); font-size: 13px;">
+            <div class="review-field-row" style="padding-left: 24px; background: #fafafa; font-size: 13px;">
                 <div class="review-field-name">
                     &rarr; {{ pt.sizeType }}
                     <br>
