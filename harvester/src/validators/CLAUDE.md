@@ -87,6 +87,31 @@ Deactivated records do NOT populate `verified_devices` and do NOT trigger `_merg
   `error_message` (first 500 chars). The review dashboard renders a neutral
   "Could not verify" banner for these — no side-by-side comparison.
 
+## Parallelization
+
+`run_validation()` uses `ThreadPoolExecutor(max_workers=8, thread_name_prefix="gudid")`.
+Workers run the pure worker `_validate_one_device()` (network + CPU only); the main
+thread folds the returned `DeviceValidationResult` dataclasses into counters and writes
+all MongoDB collections (`validationResults`, `verified_devices`, `devices`) serially.
+Thread names appear as `[gudid_0]` … `[gudid_7]` in log lines. `max_workers=8` is the
+hard cap — raising it requires a spec amendment. NLM's ToS caps all its APIs at
+20 rps/IP; 8 workers × median ~1.5 s/call ≈ 5 rps steady-state.
+
+## Local cache
+
+`gudid_cache.py` wraps `diskcache` at `.cache/gudid/` with:
+- Key: `sha1(catalog_number | version_model_number)`
+- Value: `(di, record_dict_or_sentinel)` tuple; negative results cached via
+  `__GUDID_NOT_FOUND__` sentinel so repeat runs never hit the network
+- TTL: 24 hours (NLM's caching recommendation ceiling)
+- Module-level enable flag toggled via `set_enabled(bool)`
+
+`fetch_gudid_record` checks the cache first; on miss runs the normal search + lookup
+path and writes the result. Failed HTTP calls (`Timeout`/`ConnectionError`/`429`)
+are NOT cached — tenacity retries, and if all retries fail the exception propagates
+untouched. Disable per run via `--no-cache` on `runner.py` or the interactive
+"Use GUDID disk cache?" prompt in `cli.py`.
+
 ## Record Validation
 
 Blocking: missing `device_name`/`manufacturer`/`model_number`, invalid `source_url`.

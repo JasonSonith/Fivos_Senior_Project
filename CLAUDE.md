@@ -56,7 +56,7 @@ In Docker, compose overrides `OLLAMA_URL` → `http://ollama:11434/api/chat`. `F
 ```
 Manufacturing Website → Playwright scraper → Raw HTML (web-scraper/out_html/)
   → LLM extraction (5-model fallback chain) → normalize → validate → GUDID JSON (harvester/output/)
-  → MongoDB (devices) → GUDID API validation → Review Dashboard (FastAPI)
+  → MongoDB (devices) → GUDID API validation (8-worker parallel, 24h disk cache) → Review Dashboard (FastAPI)
 ```
 
 ### LLM Fallback Chain (`pipeline/llm_extractor.py`)
