@@ -157,5 +157,15 @@ class TestDeviceSizesExtraction:
             {"not_a_size_type": "bad"},
         ]}}
         sizes = _extract_device_sizes(device)
+        assert sizes is not None
         assert len(sizes) == 1
         assert sizes[0]["sizeType"] == "Diameter"
+
+    def test_deviceSizes_as_list_returns_none(self):
+        from validators.gudid_client import _extract_device_sizes
+        # GUDID API has been known to return unexpected shapes for nested objects
+        assert _extract_device_sizes({"deviceSizes": [{"sizeType": "X"}]}) is None
+
+    def test_deviceSize_as_string_returns_none(self):
+        from validators.gudid_client import _extract_device_sizes
+        assert _extract_device_sizes({"deviceSizes": {"deviceSize": "a string"}}) is None
