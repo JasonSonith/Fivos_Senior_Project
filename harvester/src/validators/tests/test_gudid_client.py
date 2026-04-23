@@ -122,3 +122,40 @@ class TestDefensiveExtraction:
         ]}}
         result = _extract_new_fields(device)
         assert result["issuingAgency"] == "AGENCY-0"
+
+
+class TestDeviceSizesExtraction:
+    def test_flattens_deviceSizes_array(self):
+        from validators.gudid_client import _extract_device_sizes
+        device = {
+            "deviceSizes": {
+                "deviceSize": [
+                    {"sizeType": "Diameter", "size": {"unit": "Millimeter", "value": "3.5"}, "sizeText": None},
+                    {"sizeType": "Length",   "size": {"unit": "Millimeter", "value": "20"},  "sizeText": None},
+                ]
+            }
+        }
+        sizes = _extract_device_sizes(device)
+        assert sizes == [
+            {"sizeType": "Diameter", "size": {"unit": "Millimeter", "value": "3.5"}, "sizeText": None},
+            {"sizeType": "Length",   "size": {"unit": "Millimeter", "value": "20"},  "sizeText": None},
+        ]
+
+    def test_missing_key_returns_none(self):
+        from validators.gudid_client import _extract_device_sizes
+        assert _extract_device_sizes({}) is None
+        assert _extract_device_sizes({"deviceSizes": None}) is None
+        assert _extract_device_sizes({"deviceSizes": {}}) is None
+        assert _extract_device_sizes({"deviceSizes": {"deviceSize": None}}) is None
+        assert _extract_device_sizes({"deviceSizes": {"deviceSize": []}}) is None
+
+    def test_malformed_entries_filtered(self):
+        from validators.gudid_client import _extract_device_sizes
+        device = {"deviceSizes": {"deviceSize": [
+            {"sizeType": "Diameter", "size": {"unit": "Millimeter", "value": "3.5"}, "sizeText": None},
+            "not a dict",
+            {"not_a_size_type": "bad"},
+        ]}}
+        sizes = _extract_device_sizes(device)
+        assert len(sizes) == 1
+        assert sizes[0]["sizeType"] == "Diameter"

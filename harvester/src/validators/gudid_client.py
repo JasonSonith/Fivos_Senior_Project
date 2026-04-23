@@ -46,6 +46,25 @@ def _extract_storage_conditions(device: dict) -> dict | None:
     return {"conditions": texts} if texts else None
 
 
+def _extract_device_sizes(device: dict) -> list[dict] | None:
+    """Flatten GUDID deviceSizes.deviceSize[] into a list.
+
+    Returns None when the array is missing or empty. Filters out non-dict
+    entries and entries missing sizeType. Never raises.
+    """
+    sizes_obj = device.get("deviceSizes") or {}
+    if not isinstance(sizes_obj, dict):
+        return None
+    size_list = sizes_obj.get("deviceSize") or []
+    if not isinstance(size_list, list):
+        return None
+    flattened = [
+        entry for entry in size_list
+        if isinstance(entry, dict) and entry.get("sizeType")
+    ]
+    return flattened if flattened else None
+
+
 def _extract_new_fields(device: dict) -> dict:
     gmdn_terms = device.get("gmdnTerms") or {}
     if not isinstance(gmdn_terms, dict):
@@ -145,6 +164,7 @@ def fetch_gudid_record(catalog_number=None, version_model_number=None):
         "deviceKit": device.get("deviceKit"),
         "premarketSubmissions": submission_numbers or None,
         "environmentalConditions": _extract_storage_conditions(device),
+        "deviceSizes": _extract_device_sizes(device),
         **_extract_new_fields(device),
     }
 
