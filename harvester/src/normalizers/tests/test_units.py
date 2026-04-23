@@ -339,3 +339,11 @@ class TestFrenchConversion:
         result = normalize_measurement('9 french')
         assert result['unit'] == 'mm'
         assert result['value'] == pytest.approx(3.0, abs=1e-3)
+
+    def test_french_range(self):
+        result = normalize_measurement('5-7 Fr')
+        assert result['unit'] == 'mm'
+        assert result['is_range'] is True
+        assert result['value'] == pytest.approx(2.0, abs=1e-3)
+        assert result['range_low'] == pytest.approx(5 / 3, abs=1e-3)
+        assert result['range_high'] == pytest.approx(7 / 3, abs=1e-3)
