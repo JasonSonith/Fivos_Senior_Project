@@ -76,11 +76,11 @@ class TestMRISafetyStatus:
         per_field, _ = compare_records(harvested, gudid)
         assert per_field["MRISafetyStatus"]["status"] == "not_compared"
 
-    def test_both_null_skips(self):
+    def test_both_null_yields_both_null(self):
         harvested = {**BASE_HARVESTED, "MRISafetyStatus": None}
         gudid = {**BASE_GUDID, "MRISafetyStatus": None}
         per_field, _ = compare_records(harvested, gudid)
-        assert per_field["MRISafetyStatus"]["status"] == "not_compared"
+        assert per_field["MRISafetyStatus"]["status"] == "both_null"
 
 
 class TestSingleUse:
@@ -148,11 +148,52 @@ class TestRx:
         per_field, _ = compare_records(harvested, gudid)
         assert per_field["rx"]["status"] == "match"
 
-    def test_both_null_skips(self):
+    def test_both_null_yields_both_null(self):
         harvested = {**BASE_HARVESTED, "rx": None}
         gudid = {**BASE_GUDID, "rx": None}
         per_field, _ = compare_records(harvested, gudid)
-        assert per_field["rx"]["status"] == "not_compared"
+        assert per_field["rx"]["status"] == "both_null"
+
+
+def test_both_null_brand_name_yields_both_null_status():
+    per_field, _ = compare_records(
+        {"brandName": None, "versionModelNumber": "X"},
+        {"brandName": None, "versionModelNumber": "X"},
+    )
+    assert per_field["brandName"]["status"] == "both_null"
+
+
+def test_both_empty_string_company_yields_both_null():
+    per_field, _ = compare_records(
+        {"companyName": "", "versionModelNumber": "X"},
+        {"companyName": "", "versionModelNumber": "X"},
+    )
+    assert per_field["companyName"]["status"] == "both_null"
+
+
+def test_both_null_excluded_from_denominator():
+    per_field, summary = compare_records(
+        {"brandName": None, "versionModelNumber": "X"},
+        {"brandName": None, "versionModelNumber": "X"},
+    )
+    # versionModelNumber matches (counts), brandName both-null (excluded)
+    assert summary["unweighted_denominator"] == 1
+
+
+def test_both_null_device_description_yields_both_null_status():
+    per_field, _ = compare_records(
+        {"versionModelNumber": "X"},
+        {"versionModelNumber": "X"},
+    )
+    assert per_field["deviceDescription"]["status"] == "both_null"
+
+
+def test_both_null_mri_safety_status():
+    per_field, _ = compare_records(
+        {"MRISafetyStatus": None, "versionModelNumber": "X"},
+        {"MRISafetyStatus": None, "versionModelNumber": "X"},
+    )
+    assert per_field["MRISafetyStatus"]["status"] == "both_null"
 
 
 def test_compare_records_returns_tuple_with_summary():

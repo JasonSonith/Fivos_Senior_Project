@@ -62,6 +62,16 @@ def _compare_normalized(harvested, gudid, normalizer):
     return h_norm == g_norm, h_norm, g_norm
 
 
+def _is_null(value) -> bool:
+    if value is None:
+        return True
+    if isinstance(value, str) and not value.strip():
+        return True
+    if isinstance(value, (list, tuple)) and len(value) == 0:
+        return True
+    return False
+
+
 def _status_from_bool(match):
     if match is True:
         return FieldStatus.MATCH
@@ -106,6 +116,9 @@ def compare_records(harvested, gudid):
     for field in ("versionModelNumber", "catalogNumber"):
         h = harvested.get(field)
         g = gudid.get(field)
+        if _is_null(h) and _is_null(g):
+            results[field] = {"harvested": h, "gudid": g, "status": FieldStatus.BOTH_NULL}
+            continue
         if not h:
             results[field] = {"harvested": h, "gudid": g, "status": FieldStatus.NOT_COMPARED}
         else:
@@ -117,7 +130,9 @@ def compare_records(harvested, gudid):
 
     h_brand = harvested.get("brandName")
     g_brand = gudid.get("brandName")
-    if not h_brand:
+    if _is_null(h_brand) and _is_null(g_brand):
+        results["brandName"] = {"harvested": h_brand, "gudid": g_brand, "status": FieldStatus.BOTH_NULL}
+    elif not h_brand:
         results["brandName"] = {"harvested": h_brand, "gudid": g_brand, "status": FieldStatus.NOT_COMPARED}
     else:
         match = bool(g_brand and _norm_brand(h_brand) == _norm_brand(g_brand))
@@ -128,7 +143,9 @@ def compare_records(harvested, gudid):
 
     h_company = harvested.get("companyName")
     g_company = gudid.get("companyName")
-    if not h_company:
+    if _is_null(h_company) and _is_null(g_company):
+        results["companyName"] = {"harvested": h_company, "gudid": g_company, "status": FieldStatus.BOTH_NULL}
+    elif not h_company:
         results["companyName"] = {"harvested": h_company, "gudid": g_company, "status": FieldStatus.NOT_COMPARED}
     else:
         match = bool(g_company and _norm_company(h_company) == _norm_company(g_company))
@@ -139,10 +156,10 @@ def compare_records(harvested, gudid):
 
     h_desc = harvested.get("deviceDescription")
     g_desc = gudid.get("deviceDescription")
-    if not h_desc and not g_desc:
+    if _is_null(h_desc) and _is_null(g_desc):
         results["deviceDescription"] = {
             "harvested": h_desc, "gudid": g_desc,
-            "status": FieldStatus.NOT_COMPARED,
+            "status": FieldStatus.BOTH_NULL,
             "similarity": None,
         }
     else:
@@ -160,6 +177,9 @@ def compare_records(harvested, gudid):
     ):
         h = harvested.get(field)
         g = gudid.get(field)
+        if _is_null(h) and _is_null(g):
+            results[field] = {"harvested": h, "gudid": g, "status": FieldStatus.BOTH_NULL}
+            continue
         match, _, _ = _compare_normalized(h, g, normalizer)
         results[field] = {
             "harvested": h, "gudid": g,
