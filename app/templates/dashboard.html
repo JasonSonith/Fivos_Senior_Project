@@ -75,6 +75,7 @@
                     <th>Model Number</th>
                     <th>Status</th>
                     <th>Match</th>
+                    <th>Weighted %</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -104,6 +105,7 @@
                         {{ d.matched_fields or 0 }}/{{ d.total_fields or 0 }} ({{ d.match_percent or 0 }}%)
                         {% endif %}
                     </td>
+                    <td>{% if d.weighted_percent is not none %}{{ d.weighted_percent }}%{% else %}&mdash;{% endif %}</td>
                     <td>
                         {% if d.status in ["partial_match", "mismatch"] %}
                         <a href="/review/{{ d._id }}" class="btn btn-primary btn-sm">Review</a>
