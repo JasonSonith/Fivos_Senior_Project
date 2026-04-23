@@ -17,3 +17,10 @@ def test_schema_no_longer_has_premarket_submissions():
 def test_deviceClass_enum_restriction():
     props = PAGE_FIELDS_SCHEMA["properties"]
     assert props["deviceClass"]["enum"] == ["I", "II", "III", None]
+
+
+def test_page_level_fields_includes_layer3():
+    from pipeline.llm_extractor import _PAGE_LEVEL_FIELDS
+    assert "indicationsForUse" in _PAGE_LEVEL_FIELDS
+    assert "contraindications" in _PAGE_LEVEL_FIELDS
+    assert "deviceClass" in _PAGE_LEVEL_FIELDS

@@ -431,6 +431,7 @@ def extract_product_rows(table_text: str, device_name: str = "", model: str | No
 _PAGE_LEVEL_FIELDS = (
     "device_name", "manufacturer", "description", "warning_text",
     "MRISafetyStatus", "deviceKit", "environmentalConditions",
+    "indicationsForUse", "contraindications", "deviceClass",
 )
 
 
