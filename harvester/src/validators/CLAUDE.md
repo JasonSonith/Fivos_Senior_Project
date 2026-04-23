@@ -39,6 +39,7 @@ Compares harvested device records against the FDA GUDID database and validates r
 | `premarketSubmissions` | 2 | set(h) ⊆ set(g) |
 | `lotBatch`, `serialNumber`, `manufacturingDate`, `expirationDate` | 1 each | normalize_boolean |
 | `deviceDescription` | 1 | Jaccard, quality-gated |
+| `deviceSizes` | 2 | subset by sizeType, unit-canonicalized, per-unit absolute tolerance (mm 0.05, g/mL 0.1, mmHg 0.5). Result carries a `per_type` list used by the review UI — sub-rows render only on aggregate `mismatch`. |
 
 **Weighted vs unweighted scoring:** every field contributes `FIELD_WEIGHTS[field]` to the weighted numerator/denominator and `1` to the unweighted counts. Validation status (`matched`/`partial_match`/`mismatch`) is always derived from unweighted — weighted is display/audit only.
 
