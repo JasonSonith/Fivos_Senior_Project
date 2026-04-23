@@ -1085,6 +1085,12 @@ a {
     box-shadow: var(--shadow-md);
 }
 
+.metric-card.active-filter--info {
+    background: var(--info-bg);
+    border-left: 3px solid var(--info);
+    box-shadow: var(--shadow-md);
+}
+
 .metric-card.dimmed {
     opacity: 0.45;
     cursor: pointer;

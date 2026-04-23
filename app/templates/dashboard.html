@@ -12,7 +12,7 @@
 </section>
 
 <section class="stats-grid">
-    <div class="metric-card">
+    <div class="metric-card filterable" data-filter="all" data-color="info">
         <p class="metric-label">Harvested Devices</p>
         <h3 class="metric-value">{{ stats.device_count or 0 }}</h3>
         <p class="metric-foot">Total devices in the database</p>
@@ -36,7 +36,7 @@
         <p class="metric-foot">No fields matched GUDID</p>
     </div>
 
-    <div class="metric-card">
+    <div class="metric-card filterable" data-filter="gudid_deactivated" data-color="warning">
         <p class="metric-label">Deactivated</p>
         <h3 class="metric-value" style="color: var(--warning);">{{ stats.deactivated or 0 }}</h3>
         <p class="metric-sublabel">GUDID entries marked deactivated by FDA</p>
@@ -98,6 +98,8 @@
                         <span class="badge badge-warning">Partial</span>
                         {% elif d.status == "mismatch" %}
                         <span class="badge badge-danger">Mismatch</span>
+                        {% elif d.status == "gudid_deactivated" %}
+                        <span class="badge badge-warning">Deactivated</span>
                         {% elif d.status == "resolved" %}
                         <span class="badge badge-resolved">Resolved</span>
                         {% else %}
@@ -116,6 +118,8 @@
                         {% if d.status in ["partial_match", "mismatch"] %}
                         <a href="/review/{{ d._id }}" class="btn btn-primary btn-sm">Review</a>
                         {% elif d.status == "matched" and d._id %}
+                        <a href="/review/{{ d._id }}" class="btn btn-secondary btn-sm">More Information</a>
+                        {% elif d.status == "gudid_deactivated" and d._id %}
                         <a href="/review/{{ d._id }}" class="btn btn-secondary btn-sm">More Information</a>
                         {% elif d.status == "resolved" %}
                         <span style="color: var(--accent-3); font-size: 13px;">Resolved</span>
@@ -153,12 +157,21 @@
         });
     });
 
+    const FILTER_CLASSES = ['active-filter--success', 'active-filter--warning', 'active-filter--danger', 'active-filter--info', 'dimmed'];
+    const FILTER_LABELS = {
+        'all': 'all',
+        'matched': 'matched',
+        'partial_match': 'partial match',
+        'mismatch': 'mismatch',
+        'gudid_deactivated': 'deactivated',
+    };
+
     function applyFilter(status, color) {
         activeFilter = status;
         let count = 0;
 
         rows.forEach(row => {
-            if (row.dataset.status === status) {
+            if (status === 'all' || row.dataset.status === status) {
                 row.style.display = '';
                 count++;
             } else {
@@ -167,7 +180,7 @@
         });
 
         cards.forEach(c => {
-            c.classList.remove('active-filter--success', 'active-filter--warning', 'active-filter--danger', 'dimmed');
+            c.classList.remove(...FILTER_CLASSES);
             if (c.dataset.filter === status) {
                 c.classList.add('active-filter--' + color);
             } else if (c.classList.contains('filterable')) {
@@ -175,7 +188,7 @@
             }
         });
 
-        const label = status === 'partial_match' ? 'partial match' : status;
+        const label = FILTER_LABELS[status] || status;
         indicatorText.textContent = 'Showing ' + count + ' ' + label + ' result' + (count !== 1 ? 's' : '');
         indicator.classList.add('visible');
     }
@@ -184,7 +197,7 @@
         activeFilter = null;
         rows.forEach(row => row.style.display = '');
         cards.forEach(c => {
-            c.classList.remove('active-filter--success', 'active-filter--warning', 'active-filter--danger', 'dimmed');
+            c.classList.remove(...FILTER_CLASSES);
         });
         indicator.classList.remove('visible');
     };

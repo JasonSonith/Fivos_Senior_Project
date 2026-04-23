@@ -656,9 +656,9 @@ def get_all_dashboard_records() -> list[dict]:
             serialized["_id"] = str(validation_id) if validation_id else None
             results.append(serialized)
 
-        # Partial match and mismatch from validation results
+        # Partial match, mismatch, and deactivated from validation results
         discrepancy_docs = list(db["validationResults"].find(
-            {"status": {"$in": ["partial_match", "mismatch"]}}
+            {"status": {"$in": ["partial_match", "mismatch", "gudid_deactivated"]}}
         ).sort("updated_at", -1))
 
         device_ids = [d["device_id"] for d in discrepancy_docs if d.get("device_id") is not None]
