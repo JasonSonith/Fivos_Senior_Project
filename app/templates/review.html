@@ -90,9 +90,15 @@
     {% for f in fields %}
     <div class="review-field-row info-mode">
         <div class="review-field-name">{{ f.label }}</div>
+        {% if f.key == 'deviceSizes' %}
+        <div class="review-value harvested" style="white-space: pre-line;">{{ f.harvested | format_device_sizes }}</div>
+        {% elif f.key in ('productCodes', 'premarketSubmissions') %}
+        <div class="review-value harvested">{{ f.harvested | format_code_list }}</div>
+        {% else %}
         <div class="review-value harvested">
             {% if f.harvested is none %}N/A{% else %}{{ f.harvested }}{% endif %}
         </div>
+        {% endif %}
     </div>
     {% endfor %}
 </section>
@@ -138,12 +144,20 @@
                     <span class="match-status not-compared">Not Compared</span>
                 {% endif %}
             </div>
+            {% if f.key == 'deviceSizes' %}
+            <div class="review-value harvested" style="white-space: pre-line;">{{ f.harvested | format_device_sizes }}</div>
+            <div class="review-value gudid" style="white-space: pre-line;">{{ f.gudid | format_device_sizes }}</div>
+            {% elif f.key in ('productCodes', 'premarketSubmissions') %}
+            <div class="review-value harvested">{{ f.harvested | format_code_list }}</div>
+            <div class="review-value gudid">{{ f.gudid | format_code_list }}</div>
+            {% else %}
             <div class="review-value harvested">
                 {% if f.harvested is none %}N/A{% else %}{{ f.harvested }}{% endif %}
             </div>
             <div class="review-value gudid">
                 {% if f.gudid is none %}N/A{% else %}{{ f.gudid }}{% endif %}
             </div>
+            {% endif %}
             <div class="review-pick">
                 {% if f.status in ['mismatch', 'not_compared'] %}
                     <label><input type="radio" name="choice_{{ f.key }}" value="harvested" checked> Keep Harvested</label>
