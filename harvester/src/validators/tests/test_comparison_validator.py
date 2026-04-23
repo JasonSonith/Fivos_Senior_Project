@@ -263,3 +263,11 @@ def test_deviceDescription_prose_both_sides_scores_match():
     )
     assert per_field["deviceDescription"]["status"] == "match"
     assert per_field["deviceDescription"]["similarity"] > 0
+
+
+def test_norm_brand_strips_descriptive_suffix():
+    per_field, _ = compare_records(
+        {"brandName": "Zilver PTX drug-eluting stent", "versionModelNumber": "X"},
+        {"brandName": "Zilver PTX",                    "versionModelNumber": "X"},
+    )
+    assert per_field["brandName"]["status"] == "match"

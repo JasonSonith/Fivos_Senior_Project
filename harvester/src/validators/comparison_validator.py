@@ -1,6 +1,7 @@
 import re
 
 from normalizers.booleans import normalize_boolean, normalize_mri_status
+from normalizers.text import clean_brand_name
 from validators.company_aliases import canonical_company
 
 
@@ -31,10 +32,8 @@ def _norm_model(value):
 
 
 def _norm_brand(value):
-    if not value:
-        return ""
-    cleaned = re.sub(r"[™®†°]", "", str(value))
-    return re.sub(r"\s+", " ", cleaned).strip().lower()
+    cleaned = clean_brand_name(value) if value else None
+    return (cleaned or "").lower()
 
 
 def _norm_company(value):
