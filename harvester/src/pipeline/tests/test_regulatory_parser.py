@@ -1,4 +1,5 @@
-from pipeline.regulatory_parser import parse_regulatory_from_text
+import pytest
+from pipeline.regulatory_parser import parse_regulatory_from_text, extract_premarket_submissions
 
 
 class TestSingleUse:
@@ -155,3 +156,55 @@ class TestOTC:
     def test_rx_only_does_not_set_otc(self):
         result = parse_regulatory_from_text("Rx only.")
         assert "otc" not in result
+
+
+class TestPremarketSubmissionsExtraction:
+    def test_positive_with_510k_keyword(self):
+        text = "510(k) clearance K123456 granted in 2023"
+        assert extract_premarket_submissions(text) == ["K123456"]
+
+    def test_positive_with_pma_keyword(self):
+        text = "PMA P210034 approved by FDA"
+        assert extract_premarket_submissions(text) == ["P210034"]
+
+    def test_positive_cleared_by_fda(self):
+        text = "Cleared by FDA under K123456 and K789012"
+        assert sorted(extract_premarket_submissions(text)) == ["K123456", "K789012"]
+
+    def test_positive_k_number_keyword(self):
+        text = "K-number K123456 is on file"
+        assert extract_premarket_submissions(text) == ["K123456"]
+
+    def test_positive_den_number(self):
+        text = "De novo clearance: DEN123456 premarket"
+        assert extract_premarket_submissions(text) == ["DEN123456"]
+
+    def test_negative_catalog_like_no_keyword(self):
+        text = "K1234567 STENT VISI PRO"
+        assert extract_premarket_submissions(text) is None
+
+    def test_negative_product_code_context_doesnt_count(self):
+        text = "Product code K1234567 in our catalog"
+        assert extract_premarket_submissions(text) is None
+
+    def test_multiple_matches_each_needs_own_keyword(self):
+        """K1 has keyword within 40 chars, K2 doesn't — only K1 extracted."""
+        text = "Our 510(k) K111111 was filed. Lot of non-regulatory padding here now. K2222222 catalog entry."
+        assert extract_premarket_submissions(text) == ["K111111"]
+
+    def test_empty_returns_none(self):
+        assert extract_premarket_submissions("") is None
+        assert extract_premarket_submissions(None) is None
+
+    def test_deduplicates_and_sorts(self):
+        text = "510(k) K222222 and also K111111 and K111111 again premarket"
+        assert extract_premarket_submissions(text) == ["K111111", "K222222"]
+
+    def test_negative_fda_recall_doesnt_count(self):
+        """'FDA recall' near a catalog K-number shouldn't trigger — FDA alone is not a regulatory keyword."""
+        text = "FDA recall: K1234567 affected."
+        assert extract_premarket_submissions(text) is None
+
+    def test_negative_fda_regulated_doesnt_count(self):
+        text = "Warning from FDA: part K1234567 defective."
+        assert extract_premarket_submissions(text) is None

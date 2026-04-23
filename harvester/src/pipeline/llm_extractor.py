@@ -7,6 +7,7 @@ import time
 
 import requests
 from dotenv import load_dotenv
+from pipeline.regulatory_parser import extract_premarket_submissions
 
 load_dotenv()
 
@@ -429,7 +430,7 @@ def extract_product_rows(table_text: str, device_name: str = "", model: str | No
 
 _PAGE_LEVEL_FIELDS = (
     "device_name", "manufacturer", "description", "warning_text",
-    "MRISafetyStatus", "deviceKit", "premarketSubmissions", "environmentalConditions",
+    "MRISafetyStatus", "deviceKit", "environmentalConditions",
 )
 
 
@@ -444,14 +445,23 @@ def extract_all_fields(visible_text: str, table_text: str | None = None, model: 
 
     source = get_last_model() or "unknown"
 
+    combined_text = " ".join(filter(None, [
+        page_fields.get("warning_text"),
+        page_fields.get("description"),
+        page_fields.get("indicationsForUse"),
+    ]))
+    premarket = extract_premarket_submissions(combined_text)
+
     if not products:
         page_fields["_description_source"] = source
+        page_fields["premarketSubmissions"] = premarket
         return [page_fields]
 
     records = []
     for product in products:
         merged = {field: page_fields.get(field) for field in _PAGE_LEVEL_FIELDS}
         merged["_description_source"] = source
+        merged["premarketSubmissions"] = premarket
         merged["model_number"] = product.get("model_number")
         merged["catalog_number"] = product.get("catalog_number")
         for dim in ("diameter", "length", "width", "height", "weight", "volume", "pressure"):
