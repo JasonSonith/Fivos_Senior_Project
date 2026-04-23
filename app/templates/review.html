@@ -152,6 +152,32 @@
                 {% endif %}
             </div>
         </div>
+        {% if f.key == 'deviceSizes' and f.per_type %}
+            {% for pt in f.per_type %}
+            <div class="review-field-row review-subrow" style="padding-left: 24px; background: var(--subrow-bg, #fafafa); font-size: 13px;">
+                <div class="review-field-name">
+                    &rarr; {{ pt.sizeType }}
+                    <br>
+                    {% if pt.status == 'match' %}
+                        <span class="match-status match">Match</span>
+                    {% elif pt.status == 'mismatch' %}
+                        <span class="match-status mismatch">Mismatch</span>
+                    {% elif pt.status == 'not_compared' %}
+                        <span class="match-status not-compared">Not Compared</span>
+                    {% endif %}
+                </div>
+                <div class="review-value harvested">
+                    {% if pt.harvested is none %}N/A{% else %}{{ pt.harvested }}{% endif %}
+                </div>
+                <div class="review-value gudid">
+                    {% if pt.gudid is none %}N/A{% else %}{{ pt.gudid }}{% endif %}
+                </div>
+                <div class="review-pick">
+                    <span style="color: var(--muted); font-size: 12px;">&ndash;</span>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
         {% endfor %}
     </section>
 

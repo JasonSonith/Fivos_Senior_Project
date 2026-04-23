@@ -37,6 +37,7 @@ COMPARED_FIELDS = [
     ("manufacturingDate", "Labeled: Manufacturing Date"),
     ("expirationDate", "Labeled: Expiration Date"),
     ("premarketSubmissions", "Premarket Submissions"),
+    ("deviceSizes", "Device Sizes"),
 ]
 
 
@@ -89,6 +90,7 @@ def review_page(request: Request, validation_id: str):
             "status": status,
             "alias_group": comp.get("alias_group"),
             "similarity": similarity,
+            "per_type": comp.get("per_type") if field_key == "deviceSizes" else None,
         })
 
     return templates.TemplateResponse(
