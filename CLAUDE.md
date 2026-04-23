@@ -118,7 +118,17 @@ All pipeline logs go to `harvester/log-files/harvest_<timestamp>.log`. No consol
 
 ### Validation Scoring
 
-`comparison_validator.py` compares 7 fields (`versionModelNumber`, `catalogNumber`, `brandName`, `companyName`, `MRISafetyStatus`, `singleUse`, `rx`) + `deviceDescription` Jaccard similarity score. Identifier fields return `match: None` only if harvested is null; `MRISafetyStatus`/`singleUse`/`rx` return `match: None` if either side normalizes to null. `None` fields are excluded from the score denominator.
+`comparison_validator.py` returns `(per_field, summary)`. Per-field `status` is one of six values: `match` / `mismatch` / `corporate_alias` / `not_compared` / `both_null` / `sku_label_skip`. Compared fields:
+
+- **Identifier (weight 3):** `versionModelNumber`, `catalogNumber`, `brandName`, `companyName`, `gmdnPTName`, `productCodes` (subset match)
+- **Enum / regulatory (weight 2):** `MRISafetyStatus`, `singleUse`, `rx`, `gmdnCode`, `deviceCountInBase`, `issuingAgency`, `premarketSubmissions` (subset)
+- **Labeling (weight 1):** `lotBatch`, `serialNumber`, `manufacturingDate`, `expirationDate`, `deviceDescription` (Jaccard, quality-gated)
+
+Scoring produces both `match_percent` (unweighted count) and `weighted_percent` (using FIELD_WEIGHTS). Status thresholds (`matched`/`partial_match`/`mismatch`) drive from unweighted only; weighted is display + audit.
+
+Corporate-alias match on `companyName` resolves via `company_aliases.py` — six seed parent groups (Medtronic, Boston Scientific, BD, Abbott, Johnson & Johnson, Stryker). Alias matches count +1 toward both numerator and denominator.
+
+GUDID deactivated short-circuit: when `deviceRecordStatus == "Deactivated"`, validation skips comparison and records `status: "gudid_deactivated"`. No merge, no verified_devices.
 
 ### GUDID Fallback Merge
 

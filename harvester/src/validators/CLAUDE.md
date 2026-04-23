@@ -24,9 +24,21 @@ Compares harvested device records against the FDA GUDID database and validates r
 | `sku_label_skip` | — | — | Amber badge (deviceDescription only, quality check triggered) |
 
 **Compared fields (unweighted denominator):**
-- Identifier-level (high weight 3): `versionModelNumber`, `catalogNumber`, `brandName`, `companyName`
-- Enum/regulatory (medium weight 2): `MRISafetyStatus`, `singleUse`, `rx`
-- Description (low weight 1): `deviceDescription` (quality-gated; see below)
+
+| Field | Weight | Semantic |
+|---|---|---|
+| `versionModelNumber` | 3 | normalized exact |
+| `catalogNumber` | 3 | normalized exact |
+| `brandName` | 3 | normalized via clean_brand_name |
+| `companyName` | 3 | normalized + alias fallback |
+| `gmdnPTName` | 3 | case-insensitive exact |
+| `productCodes` | 3 | set(h) ⊆ set(g) |
+| `MRISafetyStatus` | 2 | normalize_mri_status |
+| `singleUse`, `rx` | 2 each | normalize_boolean |
+| `gmdnCode`, `deviceCountInBase`, `issuingAgency` | 2 each | exact |
+| `premarketSubmissions` | 2 | set(h) ⊆ set(g) |
+| `lotBatch`, `serialNumber`, `manufacturingDate`, `expirationDate` | 1 each | normalize_boolean |
+| `deviceDescription` | 1 | Jaccard, quality-gated |
 
 **Weighted vs unweighted scoring:** every field contributes `FIELD_WEIGHTS[field]` to the weighted numerator/denominator and `1` to the unweighted counts. Validation status (`matched`/`partial_match`/`mismatch`) is always derived from unweighted — weighted is display/audit only.
 
@@ -43,6 +55,15 @@ Compares harvested device records against the FDA GUDID database and validates r
 On trigger: `status=sku_label_skip`, `similarity=None`, field excluded from both scoring formulas.
 
 Null handling (legacy four identifier fields): harvested null → `not_compared` (asymmetric — present-harvested + null-GUDID still scores `mismatch`). All other fields: either-side null → `not_compared`. Both sides null: `both_null` for every field.
+
+## GUDID deactivated short-circuit
+
+When `fetch_gudid_record()` returns a device with `deviceRecordStatus == "Deactivated"`, `run_validation()` skips `compare_records()` entirely and writes a `validationResults` document with:
+- `status: "gudid_deactivated"`
+- `matched_fields`, `total_fields`, `match_percent`, `weighted_percent`, `description_similarity`: all `None`
+- `comparison_result`: `None`
+
+Deactivated records do NOT populate `verified_devices` and do NOT trigger `_merge_gudid_into_device()` — stale GUDID shouldn't overwrite live harvested data. The review page shows a warning banner and falls back to the `mode="info"` read-only layout.
 
 ## GUDID API
 

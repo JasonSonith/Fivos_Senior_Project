@@ -56,6 +56,25 @@ DATE_FIELDS        = {"approval_date", "clearance_date", "expiration_date"}
 MEASUREMENT_FIELDS = {"length", "width", "height", "diameter", "weight", "volume", "pressure"}
 ```
 
+## Premarket Submission Extraction
+
+`premarketSubmissions` (K-numbers, PMA numbers, DEN-numbers) are extracted via regex in `regulatory_parser.extract_premarket_submissions()`, NOT via the LLM. The regex requires a regulatory keyword (510(k), premarket, PMA, FDA clearance, K-number, cleared by FDA) within ±40 characters of each match — this prevents false positives on catalog SKUs that happen to start with `K` followed by 6–7 digits.
+
+The LLM pipeline (`extract_all_fields`) invokes the regex extractor over the concatenation of `warning_text`, `description`, and `indicationsForUse` after the page-fields pass returns. `premarketSubmissions` is attached to each record before insertion into MongoDB.
+
+## LLM Schema Fields (Pass 1 — page-level)
+
+`extract_page_fields()` prompts the LLM for:
+- `device_name`, `manufacturer`, `description`, `warning_text`
+- `MRISafetyStatus` (enum string)
+- `deviceKit` (bool)
+- `environmentalConditions` (object with conditions array)
+- `indicationsForUse` (free text; added PR2)
+- `contraindications` (free text; added PR2)
+- `deviceClass` (enum "I"/"II"/"III"; added PR2)
+
+`premarketSubmissions` is NOT in the LLM schema — populated by regex post-processing after the pass returns.
+
 ## Error Handling ("never crash the run")
 
 | Stage | Failure | Behavior |
