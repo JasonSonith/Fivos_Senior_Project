@@ -58,13 +58,9 @@ def review_page(request: Request, validation_id: str):
         gudid_val = comp_g if comp_g is not None else gudid_record.get(field_key, "N/A")
 
         status = _field_status(comp)
-
+        similarity = None
         if field_key == "deviceDescription":
             similarity = comp.get("similarity") if comp.get("similarity") is not None else comp.get("description_similarity", 0)
-            legacy_match = None  # preserve template "% similar" rendering until Task 8
-        else:
-            similarity = None
-            legacy_match = True if status == "match" else (False if status == "mismatch" else None)
 
         fields.append({
             "key": field_key,
@@ -72,7 +68,7 @@ def review_page(request: Request, validation_id: str):
             "harvested": harvested_val,
             "gudid": gudid_val,
             "status": status,
-            "match": legacy_match,
+            "alias_group": comp.get("alias_group"),
             "similarity": similarity,
         })
 

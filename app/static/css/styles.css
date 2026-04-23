@@ -41,6 +41,10 @@
     --success:     #047857;
     --warning:     #B45309;
     --danger:      #B91C1C;
+    --info:        #1d4ed8;
+    --info-bg:     #eff6ff;
+    --muted-bg:    #f3f4f6;
+    --warning-bg:  #fef3c7;
 
     /* Shadows */
     --shadow-sm:   0 1px 2px rgba(0,30,70,.05);
@@ -1161,4 +1165,26 @@ a {
     color: var(--muted);
     font-size: 13px;
     word-break: break-all;
+}
+
+/* ── Match-Status Badges ──────────────────────────── */
+
+.match-status {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+.match-status.match          { background: rgba(34, 197, 94, 0.1);  color: var(--success); }
+.match-status.mismatch       { background: rgba(239, 68, 68, 0.1);  color: var(--danger);  }
+.match-status.alias          { background: var(--info-bg);          color: var(--info);    }
+.match-status.both-null      { background: var(--muted-bg);         color: var(--muted);   }
+.match-status.sku-skip       { background: var(--warning-bg);       color: var(--warning); }
+.match-status.not-compared   { background: var(--muted-bg);         color: var(--muted);   }
+
+.review-field-row.informational {
+    opacity: 0.7;
 }

@@ -94,39 +94,46 @@
         </div>
 
         {% for f in fields %}
-        <div class="review-field-row {% if f.match is true %}matched{% endif %}">
+        <div class="review-field-row
+            {% if f.status == 'match' %}matched{% endif %}
+            {% if f.status in ['both_null', 'sku_label_skip'] %}informational{% endif %}">
             <div class="review-field-name">
                 {{ f.label }}
-                {% if f.match is true %}
-                <br><span class="match-yes" style="font-size: 11px;">MATCH</span>
-                {% elif f.match is false %}
-                <br><span class="match-no" style="font-size: 11px;">MISMATCH</span>
-                {% elif f.similarity is not none %}
-                <br><span style="font-size: 11px; color: var(--muted);">{{ "%.0f"|format((f.similarity or 0) * 100) }}% similar</span>
+                <br>
+                {% if f.status == 'match' %}
+                    <span class="match-status match">Match</span>
+                    {% if f.similarity is not none %}
+                        <span style="font-size: 11px; color: var(--muted); margin-left: 6px;">{{ "%.0f"|format((f.similarity or 0) * 100) }}% similar</span>
+                    {% endif %}
+                {% elif f.status == 'mismatch' %}
+                    <span class="match-status mismatch">Mismatch</span>
+                {% elif f.status == 'corporate_alias' %}
+                    <span class="match-status alias">Alias &rarr; {{ f.alias_group }}</span>
+                {% elif f.status == 'both_null' %}
+                    <span class="match-status both-null">No Data</span>
+                {% elif f.status == 'sku_label_skip' %}
+                    <span class="match-status sku-skip">GUDID is SKU label</span>
+                {% elif f.status == 'not_compared' %}
+                    <span class="match-status not-compared">Not Compared</span>
                 {% endif %}
             </div>
-
             <div class="review-value harvested">
                 {% if f.harvested is none %}N/A{% else %}{{ f.harvested }}{% endif %}
             </div>
-
             <div class="review-value gudid">
                 {% if f.gudid is none %}N/A{% else %}{{ f.gudid }}{% endif %}
             </div>
-
             <div class="review-pick">
-                {% if f.match is true %}
-                <input type="hidden" name="choice_{{ f.key }}" value="harvested">
-                <span style="color: var(--success); font-size: 13px;">Matched</span>
+                {% if f.status in ['mismatch', 'not_compared'] %}
+                    <label><input type="radio" name="choice_{{ f.key }}" value="harvested" checked> Keep Harvested</label>
+                    <label><input type="radio" name="choice_{{ f.key }}" value="gudid"> Use GUDID</label>
+                {% elif f.status in ['match', 'corporate_alias'] %}
+                    <input type="hidden" name="choice_{{ f.key }}" value="harvested">
+                    <span style="color: var(--success); font-size: 13px;">
+                        {% if f.status == 'corporate_alias' %}Matched via alias{% else %}Matched{% endif %}
+                    </span>
                 {% else %}
-                <label>
-                    <input type="radio" name="choice_{{ f.key }}" value="harvested" checked>
-                    Keep Harvested
-                </label>
-                <label>
-                    <input type="radio" name="choice_{{ f.key }}" value="gudid">
-                    Use GUDID
-                </label>
+                    <span style="color: var(--muted); font-size: 13px;">&ndash;</span>
                 {% endif %}
             </div>
         </div>
