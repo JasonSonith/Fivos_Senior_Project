@@ -270,14 +270,14 @@ All four paths return `None` without crashing.
 | `gmdnPTName` | `device.gmdnTerms.gmdn[0].gmdnPTName` | string | Yes | Normalized case-fold exact | 3 |
 | `gmdnCode` | `device.gmdnTerms.gmdn[0].gmdnCode` | string | Yes | Exact | 2 |
 | `productCodes` | `device.productCodes.fdaProductCode[].productCode` | `list[str]` | Yes | `set(harvested) ⊆ set(gudid)` → match | 3 |
-| `deviceCountInBase` | `device.deviceCountInBase` | int | Yes | Integer equality | 2 |
-| `publishDate` | `device.publishDate` (fallback: `device.devicePublishDate`) | ISO date | No — metadata | — | — |
+| `deviceCountInBase` | `device.deviceCount` | int | Yes | Integer equality | 2 |
+| `publishDate` | `device.devicePublishDate` | ISO date | No — metadata | — | — |
 | `deviceRecordStatus` | `device.deviceRecordStatus` | string | No — drives §3 short-circuit | — | — |
-| `issuingAgency` | `device.identifiers.identifier[0].issuingAgency` | string | Yes | Exact | 2 |
-| `lotBatch` | `device.identifiers.identifier[0].lotBatch` | bool | Yes | `normalize_boolean`, null-asymmetric | 1 |
-| `serialNumber` | `device.identifiers.identifier[0].serialNumber` | bool | Yes | `normalize_boolean`, null-asymmetric | 1 |
-| `manufacturingDate` | `device.identifiers.identifier[0].manufacturingDate` | bool | Yes | `normalize_boolean`, null-asymmetric | 1 |
-| `expirationDate` | `device.identifiers.identifier[0].expirationDate` | bool | Yes | `normalize_boolean`, null-asymmetric | 1 |
+| `issuingAgency` | `device.identifiers.identifier[Primary].deviceIdIssuingAgency` | string | Yes | Exact | 2 |
+| `lotBatch` | `device.lotBatch` | bool | Yes | `normalize_boolean`, null-asymmetric | 1 |
+| `serialNumber` | `device.serialNumber` | bool | Yes | `normalize_boolean`, null-asymmetric | 1 |
+| `manufacturingDate` | `device.manufacturingDate` | bool | Yes | `normalize_boolean`, null-asymmetric | 1 |
+| `expirationDate` | `device.expirationDate` | bool | Yes | `normalize_boolean`, null-asymmetric | 1 |
 
 **Set-compare rules** for `productCodes` and (Layer 3) `premarketSubmissions`:
 - Both empty → `both_null`

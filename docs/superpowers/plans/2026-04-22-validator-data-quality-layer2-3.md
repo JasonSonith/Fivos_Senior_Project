@@ -1841,12 +1841,68 @@ Before merging PR2 to `main`:
 
 ## Task 1 path verification findings (fill in after running)
 
+**Important note:** `gudid_record` stored in `validationResults` is a *normalized projection*
+(16 comparison fields only), not the raw API response. Running the script against stored docs
+yields null for all 11 paths. The real-data check was done by querying the live GUDID API
+directly for 3 known DIs (10705032057615, 00195451000539, 00195451000201).
+
 ```
-<paste output of scripts/verify_gudid_paths.py here>
+DI 10705032057615 (PALMAZ GENESIS):
+  gmdnPTName             = 'Bare-metal biliary stent'          → resolves cleanly
+  gmdnCode               = '43691'                             → resolves cleanly
+  productCodes           = ['FGE']                             → resolves cleanly
+  deviceCountInBase      = None  (actual key: deviceCount=1)   → SPEC PATH WRONG
+  publishDate            = None  (actual key: devicePublishDate='2024-07-31T00:00:00.000Z') → SPEC PATH WRONG
+  deviceRecordStatus     = 'Published'                         → resolves cleanly
+  issuingAgency          = None  (actual key: deviceIdIssuingAgency='GS1')  → SPEC PATH WRONG
+  lotBatch               = None  (lives at device.lotBatch=True, not identifier) → SPEC PATH WRONG
+  serialNumber           = None  (lives at device.serialNumber=False)        → SPEC PATH WRONG
+  manufacturingDate      = None  (lives at device.manufacturingDate=False)   → SPEC PATH WRONG
+  expirationDate         = None  (lives at device.expirationDate=True)       → SPEC PATH WRONG
+
+DI 00195451000539 (Shockwave E8):
+  gmdnPTName = 'Intravascular lithotripsy system catheter, balloon, peripheral' → resolves cleanly
+  gmdnCode   = '66729'                  → resolves cleanly
+  productCodes = ['PPN', 'OEZ', 'JAA'] → resolves cleanly (multiple codes)
+  deviceCount=1, devicePublishDate='2024-04-17T...', deviceRecordStatus='Published'
+  deviceIdIssuingAgency='GS1', lotBatch=True, serialNumber=True
+
+DI 00195451000201 (Shockwave M5+):
+  gmdnCode='66729', productCodes=['JAA', 'OEZ', 'PPN']
+  deviceCount=1, devicePublishDate='2021-05-11T...', deviceRecordStatus='Published'
+  deviceIdIssuingAgency='GS1', lotBatch=True, serialNumber=False
 ```
 
 Any paths that differed from the spec:
 
 ```
-<document divergences here; update spec + re-commit if needed>
+5 path corrections required. Spec updated in:
+docs/superpowers/specs/2026-04-22-validator-harvester-data-quality-design.md
+
+1. deviceCountInBase
+   Spec: device.deviceCountInBase
+   Real: device.deviceCount  (deviceCountInBase always null; deviceCount=1 for all samples)
+
+2. publishDate
+   Spec: device.publishDate (fallback: device.devicePublishDate)
+   Real: device.publishDate is always null. device.devicePublishDate always populates.
+         Spec updated to use device.devicePublishDate directly (no fallback needed).
+
+3. issuingAgency
+   Spec: device.identifiers.identifier[0].issuingAgency
+   Real: device.identifiers.identifier[Primary].deviceIdIssuingAgency
+         Key name is deviceIdIssuingAgency; should select Primary-type identifier,
+         not blindly take index 0 (index 0 may be a Package identifier).
+
+4. lotBatch / serialNumber / manufacturingDate / expirationDate
+   Spec: device.identifiers.identifier[0].<field>
+   Real: device.<field>  (top-level booleans, not inside identifiers)
+         All four live directly on the device object.
+         lotBatch and expirationDate = True; serialNumber and manufacturingDate = False
+         for the tested samples. These are boolean flags, as the spec expected.
+
+5 paths confirmed correct without changes:
+   gmdnPTName, gmdnCode, productCodes, deviceRecordStatus — all resolve cleanly.
+   deviceRecordStatus = "Published" across all tested samples (Deactivated branch
+   will not be exercised by current data, but the path is correct).
 ```
