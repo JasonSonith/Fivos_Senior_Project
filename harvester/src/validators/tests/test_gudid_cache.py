@@ -54,3 +54,56 @@ class TestGudidCache:
         tmp_cache.set("CAT-B", "MOD-X", "DI-B", {"brandName": "B"})
         assert tmp_cache.get("CAT-A", "MOD-X") == ("DI-A", {"brandName": "A"})
         assert tmp_cache.get("CAT-B", "MOD-X") == ("DI-B", {"brandName": "B"})
+
+
+class TestFetchGudidRecordShortCircuitsHttp:
+    """End-to-end: second fetch_gudid_record call with same inputs does no HTTP."""
+
+    def test_second_call_does_zero_http(self, tmp_cache, monkeypatch):
+        from unittest.mock import MagicMock, patch
+        from validators import gudid_client
+        import requests
+
+        monkeypatch.setattr("time.sleep", lambda *a, **kw: None)
+
+        # Return a stable DI from search, and a stable record from the JSON GET.
+        monkeypatch.setattr(gudid_client, "search_gudid_di", MagicMock(return_value="DI-123"))
+
+        lookup_resp = MagicMock(spec=requests.Response)
+        lookup_resp.status_code = 200
+        lookup_resp.json.return_value = {"gudid": {"device": {"brandName": "X"}}}
+        lookup_resp.raise_for_status.return_value = None
+
+        with patch.object(gudid_client.requests, "get", return_value=lookup_resp) as mock_get:
+            di1, rec1 = gudid_client.fetch_gudid_record(catalog_number="CAT", version_model_number="MOD")
+            first_pass_calls = mock_get.call_count
+            assert first_pass_calls > 0
+
+            # Second call with same inputs — should short-circuit via cache.
+            di2, rec2 = gudid_client.fetch_gudid_record(catalog_number="CAT", version_model_number="MOD")
+            assert mock_get.call_count == first_pass_calls, (
+                f"Expected 0 new HTTP calls on cached run, got "
+                f"{mock_get.call_count - first_pass_calls}"
+            )
+
+        assert di1 == di2 == "DI-123"
+        # fetch_gudid_record shapes the record with all MERGE_FIELDS, many of
+        # which will be None since our mock only populated brandName.
+        assert rec1 == rec2
+        assert rec1["brandName"] == "X"
+
+    def test_negative_result_also_cached(self, tmp_cache, monkeypatch):
+        from unittest.mock import MagicMock
+        from validators import gudid_client
+
+        monkeypatch.setattr("time.sleep", lambda *a, **kw: None)
+
+        search_mock = MagicMock(return_value=None)
+        monkeypatch.setattr(gudid_client, "search_gudid_di", search_mock)
+
+        # First call: search runs and returns None; second call should skip search.
+        assert gudid_client.fetch_gudid_record(catalog_number="CAT", version_model_number="MOD") == (None, None)
+        assert search_mock.call_count == 1
+
+        assert gudid_client.fetch_gudid_record(catalog_number="CAT", version_model_number="MOD") == (None, None)
+        assert search_mock.call_count == 1, "Second call should have been served from cache"
