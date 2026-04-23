@@ -695,6 +695,11 @@ def main():
             print(f"  Partial matches:  {val['partial_matches']}")
             print(f"  Mismatches:       {val['mismatches']}")
             print(f"  Not found:        {val['not_found']}")
+            errors = val.get("errors", 0)
+            if errors > 0:
+                print(f"  \033[93mErrors:           {errors}\033[0m")
+            else:
+                print(f"  Errors:           {errors}")
         else:
             print(f"  Validation error: {val.get('error')}")
 

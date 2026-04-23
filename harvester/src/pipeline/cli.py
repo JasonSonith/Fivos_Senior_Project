@@ -321,6 +321,11 @@ def run_mode(mode: dict, options: dict):
         else:
             print(f"  Mismatches:       {val['mismatches']}")
         print(f"  Not found:        {val['not_found']}")
+        errors = val.get("errors", 0)
+        if errors > 0:
+            print(f"  \033[93mErrors:           {errors}{RESET}")
+        else:
+            print(f"  Errors:           {errors}")
     elif val:
         print(f"\n  Validation error: {val.get('error')}")
 
