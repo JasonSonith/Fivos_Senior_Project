@@ -71,6 +71,22 @@ Deactivated records do NOT populate `verified_devices` and do NOT trigger `_merg
 - Search (HTML scrape): `https://accessgudid.nlm.nih.gov/devices/search`
 - Lookup (JSON): `https://accessgudid.nlm.nih.gov/api/v3/devices/lookup.json?di=...`
 
+## Error handling & retries
+
+- **Timeout:** 60 s on all three request sites (`REQUEST_TIMEOUT` constant in `gudid_client.py`).
+- **Retry policy** (tenacity, applied to `search_gudid_di` and `fetch_gudid_record`):
+  3 attempts, `wait_exponential(multiplier=1, min=1, max=4) + wait_random(0, 1)` jitter,
+  retries **only** on `requests.Timeout`, `requests.ConnectionError`, and `GudidRateLimitError`
+  (HTTP 429). Other 4xx fail fast on first attempt. `reraise=True` so the original
+  exception reaches callers, not tenacity's `RetryError`.
+- **Batch isolation:** `orchestrator.run_validation()` wraps each `fetch_gudid_record`
+  call in `try/except requests.RequestException`. Failed devices are recorded with
+  `status: "fetch_error"` in `validationResults` and counted in `result["errors"]`.
+  One device's failure never kills the batch run.
+- **`fetch_error` documents** carry `error_type` (exception class name) and
+  `error_message` (first 500 chars). The review dashboard renders a neutral
+  "Could not verify" banner for these — no side-by-side comparison.
+
 ## Record Validation
 
 Blocking: missing `device_name`/`manufacturer`/`model_number`, invalid `source_url`.
