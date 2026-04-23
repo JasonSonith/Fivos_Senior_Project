@@ -1,3 +1,5 @@
+import pytest
+
 from validators.comparison_validator import compare_records
 
 
@@ -271,3 +273,60 @@ def test_norm_brand_strips_descriptive_suffix():
         {"brandName": "Zilver PTX",                    "versionModelNumber": "X"},
     )
     assert per_field["brandName"]["status"] == "match"
+
+
+class TestCanonicalizeSizeEntry:
+    def test_millimeter_passes_through(self):
+        from validators.comparison_validator import _canonicalize_size_entry
+        entry = {"sizeType": "Diameter", "size": {"unit": "Millimeter", "value": "3.5"}, "sizeText": None}
+        assert _canonicalize_size_entry(entry) == {
+            "sizeType": "Diameter", "value": 3.5, "canonical_unit": "mm"
+        }
+
+    def test_inch_converts_to_mm(self):
+        from validators.comparison_validator import _canonicalize_size_entry
+        entry = {"sizeType": "Length", "size": {"unit": "Inch", "value": "1"}, "sizeText": None}
+        result = _canonicalize_size_entry(entry)
+        assert result["canonical_unit"] == "mm"
+        assert result["value"] == 25.4
+
+    def test_french_converts_to_mm(self):
+        from validators.comparison_validator import _canonicalize_size_entry
+        entry = {"sizeType": "Diameter", "size": {"unit": "French", "value": "6"}, "sizeText": None}
+        result = _canonicalize_size_entry(entry)
+        assert result["canonical_unit"] == "mm"
+        assert result["value"] == pytest.approx(2.0, abs=1e-3)
+
+    def test_centimeter_converts_to_mm(self):
+        from validators.comparison_validator import _canonicalize_size_entry
+        entry = {"sizeType": "Length", "size": {"unit": "Centimeter", "value": "3"}, "sizeText": None}
+        result = _canonicalize_size_entry(entry)
+        assert result["canonical_unit"] == "mm"
+        assert result["value"] == 30.0
+
+    def test_gram_passes_through(self):
+        from validators.comparison_validator import _canonicalize_size_entry
+        entry = {"sizeType": "Weight", "size": {"unit": "Gram", "value": "5"}, "sizeText": None}
+        result = _canonicalize_size_entry(entry)
+        assert result["canonical_unit"] == "g"
+        assert result["value"] == 5.0
+
+    def test_sizeText_only_returns_none(self):
+        from validators.comparison_validator import _canonicalize_size_entry
+        entry = {"sizeType": "Diameter", "size": None, "sizeText": "N/A"}
+        assert _canonicalize_size_entry(entry) is None
+
+    def test_missing_size_returns_none(self):
+        from validators.comparison_validator import _canonicalize_size_entry
+        entry = {"sizeType": "Diameter", "sizeText": None}
+        assert _canonicalize_size_entry(entry) is None
+
+    def test_unknown_unit_returns_none(self):
+        from validators.comparison_validator import _canonicalize_size_entry
+        entry = {"sizeType": "Diameter", "size": {"unit": "SomeMadeUpUnit", "value": "1"}, "sizeText": None}
+        assert _canonicalize_size_entry(entry) is None
+
+    def test_non_numeric_value_returns_none(self):
+        from validators.comparison_validator import _canonicalize_size_entry
+        entry = {"sizeType": "Diameter", "size": {"unit": "Millimeter", "value": "abc"}, "sizeText": None}
+        assert _canonicalize_size_entry(entry) is None

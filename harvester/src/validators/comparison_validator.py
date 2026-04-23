@@ -68,6 +68,53 @@ def _compare_normalized(harvested, gudid, normalizer):
     return h_norm == g_norm, h_norm, g_norm
 
 
+# GUDID long-form unit → short code recognized by normalize_measurement.
+_GUDID_UNIT_SHORT = {
+    "Millimeter": "mm",
+    "Centimeter": "cm",
+    "Meter": "m",
+    "Inch": "in",
+    "French": "Fr",
+    "Gram": "g",
+    "Kilogram": "kg",
+    "Milliliter": "mL",
+    "Millimeter Mercury": "mmHg",
+}
+
+
+def _canonicalize_size_entry(entry: dict) -> dict | None:
+    """Convert a GUDID-shaped size entry to {sizeType, value, canonical_unit}.
+
+    Returns None when the entry lacks a numeric size, has an unknown unit,
+    or has an unparseable value.
+    """
+    from normalizers.unit_conversions import normalize_measurement
+
+    if not isinstance(entry, dict):
+        return None
+    size_type = entry.get("sizeType")
+    size = entry.get("size")
+    if not size_type or not isinstance(size, dict):
+        return None
+    raw_unit = size.get("unit")
+    raw_value = size.get("value")
+    if raw_unit is None or raw_value is None:
+        return None
+    short_unit = _GUDID_UNIT_SHORT.get(raw_unit)
+    if short_unit is None:
+        return None
+    normalized = normalize_measurement(f"{raw_value} {short_unit}")
+    value = normalized.get("value")
+    canonical_unit = normalized.get("unit")
+    if value is None or canonical_unit is None:
+        return None
+    return {
+        "sizeType": size_type,
+        "value": float(value),
+        "canonical_unit": canonical_unit,
+    }
+
+
 _SKU_PATTERN_RE = re.compile(r"^[A-Z0-9\-_ ]+$")
 
 
